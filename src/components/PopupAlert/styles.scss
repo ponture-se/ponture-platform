@@ -1,0 +1,27 @@
+.popup {
+  padding: 15px;
+  padding-top: 5px;
+  .popup-icon {
+    color: rgb(56, 132, 255);
+    font-size: 45px;
+  }
+  .popup-messsages {
+    padding: 10px 0;
+    display: flex;
+    flex-direction: column;
+    .popup-title {
+      font-size: 20px;
+      font-weight: 500;
+    }
+    .popup-messsage {
+    }
+  }
+  .popup-ations {
+    padding-top: 10px;
+    display: flex;
+    button {
+      margin-right: 10px;
+      display: flex;
+    }
+  }
+}

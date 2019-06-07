@@ -1,0 +1,60 @@
+.notifies {
+  position: fixed;
+  top: 0px;
+  width: 370px;
+  right: 0px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px 20px;
+  z-index: 100000000000;
+  .custom-notify {
+    min-height: 55px;
+    width: 100%;
+    display: flex;
+    margin-bottom: 10px;
+    box-shadow: 0 0 5px lightgray;
+    .leftbox {
+      width: 30px;
+      color: white;
+      display: flex;
+      justify-content: center;
+      padding-top: 10px;
+      font-size: 14px;
+      border-radius: 3px 0 0 3px;
+    }
+    .centerbox {
+      flex: 1;
+      padding: 7px 10px;
+      font-size: 14px;
+    }
+    .rightbox {
+      border-radius: 0 3px 3px 0;
+      cursor: pointer;
+      font-size: 11px;
+      padding: 10px;
+      i {
+        transition-duration: 0.2s;
+        opacity: 0.7;
+      }
+      &:hover i {
+        opacity: 1;
+        transition-duration: 0.2s;
+      }
+    }
+  }
+
+  .item-enter {
+    opacity: 0;
+  }
+  .item-enter-active {
+    opacity: 1;
+    transition: opacity 500ms ease-in;
+  }
+  .item-exit {
+    opacity: 1;
+  }
+  .item-exit-active {
+    opacity: 0;
+    transition: opacity 500ms ease-in;
+  }
+}
