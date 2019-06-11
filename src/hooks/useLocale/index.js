@@ -1,7 +1,7 @@
 import { useContext } from 'react'
 import { LocaleContext } from './localeContext'
 import en from './locales/en'
-import fa from './locales/fa'
+import sv from './locales/sv'
 
 const useLocale = () => {
   const [state, setState] = useContext(LocaleContext)
@@ -16,18 +16,18 @@ const useLocale = () => {
           direction: 'ltr'
         }))
         break
-      case 'fa':
+      case 'sv':
         setState(state => ({
           ...state,
-          appLocale: fa,
+          appLocale: sv,
           currentLang: locale,
-          direction: 'rtl'
+          direction: 'ltr'
         }))
         break
       default:
         setState(state => ({
           ...state,
-          appLocale: en,
+          appLocale: sv,
           currentLang: locale,
           direction: 'ltr'
         }))
@@ -37,9 +37,9 @@ const useLocale = () => {
 
   return {
     setLocale,
-    appLocale: state.appLocale ? state.appLocale : {},
-    direction: state.direction ? state.direction : 'rtl',
-    currentLang: state.currentLang ? state.currentLang : 'fa'
+    appLocale: state.appLocale ? state.appLocale : undefined,
+    direction: state.direction ? state.direction : 'ltr',
+    currentLang: state.currentLang ? state.currentLang : 'sv'
   }
 }
 

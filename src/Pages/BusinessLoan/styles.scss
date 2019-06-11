@@ -1,0 +1,291 @@
+@import "./../../styles/mixins.scss";
+.bl {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  &__header {
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    @include variable(header, height, 75px);
+    @include variable(header-bg, background, white);
+    @include variable(header-box-shadow, box-shadow, 0 0 3px lightgray);
+  }
+  &__logo {
+    width: 150px;
+    left: 20px;
+    top: 20px;
+    img {
+      width: 100%;
+    }
+  }
+  &__content {
+    flex: 1;
+    overflow: auto;
+  }
+  &__form {
+    padding-bottom: 0px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    p {
+      margin-bottom: 50px;
+    }
+    &__header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      @include variable(
+        bl-mainform-header-borderBottom,
+        border-bottom,
+        1px solid whitesmoke
+      );
+      span {
+        @include variable(bl-mainform-header-fontSize, font-size, 23px);
+        padding: 0 10px;
+      }
+    }
+    &__circleIcon {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include variable(
+        bl-mainform-header-circle-bg,
+        background,
+        rgb(66, 204, 173)
+      );
+      @include variable(bl-mainform-header-circle-fontSize, font-size, 25px);
+      @include variable(bl-mainform-header-circle-color, color, white);
+      @include variable(flex-direction, flex-direction, row);
+    }
+  }
+  &__mainform {
+    padding: 0 6%;
+    padding-bottom: 6%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+  }
+  &__contactInfo {
+    border-radius: 3px;
+    margin-top: 20px;
+    padding: 0 6%;
+    display: flex;
+    flex-direction: column;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+    &__header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      @include variable(
+        bl-mainform-header-borderBottom,
+        border-bottom,
+        1px solid whitesmoke
+      );
+      span {
+        @include variable(bl-mainform-header-fontSize, font-size, 23px);
+        padding: 0 10px;
+      }
+    }
+    &__circleIcon {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include variable(
+        bl-mainform-header-circle-bg,
+        background,
+        rgb(66, 204, 173)
+      );
+      @include variable(bl-mainform-header-circle-fontSize, font-size, 25px);
+      @include variable(bl-mainform-header-circle-color, color, white);
+      @include variable(flex-direction, flex-direction, row);
+    }
+  }
+  &__input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+
+    &.--sliderInput {
+      margin-bottom: 50px;
+      .bl__rangeElement {
+        display: flex;
+        align-items: center;
+        // padding: 20px 0;
+        border-radius: 3px;
+        .input-range__track--active {
+          @include variable(
+            input-range-active-bg,
+            background,
+            rgb(66, 204, 173)
+          );
+        }
+        .input-range__slider {
+          @include variable(input-range-bg, background, rgb(66, 204, 173));
+          border: 1px solid gray;
+        }
+        .input-range__label--min {
+          left: 2%;
+        }
+        .input-range__label--max {
+          right: 2%;
+        }
+        .rangeElement__left {
+          width: 30px;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+        .rangeElement__center {
+          flex: 1;
+        }
+        .rangeElement__right {
+          width: 30px;
+          display: flex;
+          align-items: center;
+          font-weight: bolder;
+          cursor: pointer;
+          flex-direction: row-reverse;
+        }
+      }
+    }
+    &__label {
+      margin-bottom: 10px;
+    }
+    &__sliderLabel {
+      margin-bottom: 25px;
+    }
+    &__element {
+      .options-items {
+        padding: 6px;
+        cursor: pointer;
+        &:hover {
+          background: rgb(250, 250, 250);
+        }
+      }
+      .element-group {
+        display: flex;
+        border: 1px solid lightgray;
+        height: 38px;
+        border-radius: 5px;
+        
+        &__left {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+          span{
+              color: gray
+          }
+        }
+        &__center {
+          flex: 1;
+          .my-input {
+            border: none;
+            height: 100%;
+          }
+        }
+        &__right {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+        }
+      }
+    }
+  }
+  &__actions {
+    @include variable(bl-actions-border, border-top, 0.5px solid lightgray);
+    padding: 25px;
+    display: flex;
+    @include variable(flex-direction, flex-direction, row);
+    justify-content: flex-end;
+  }
+}
+
+.my-input {
+  width: 100%;
+  height: 38px;
+  border-radius: 5px;
+  padding: 0 5px;
+  @include variable(my-input-border, border, 1px solid lightgray);
+  &:focus {
+    @include variable(my-input-focus-color, outline-color, rgb(66, 204, 173));
+    @include variable(
+      my-input-focus-box-shadow,
+      box-shadow,
+      0 0 4px rgb(66, 204, 173)
+    );
+  }
+}
+.my-btn {
+  border-radius: 3px;
+  &.--primary {
+  }
+  &.--success {
+    @include variable(my-btn-success-bg, background, rgb(66, 204, 173));
+    @include variable(my-btn-success-color, color, white);
+    border: none;
+    padding: 10px 15px;
+    transition-duration: 0.5s;
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-success-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+  .bl__form {
+    width: 92%;
+    margin: 4%;
+  }
+}
+@media (min-width: 576px) {
+  .bl__form {
+    width: 92%;
+    margin: 4%;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .bl__form {
+    width: 768px;
+    margin: 40px auto;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .bl__form {
+    width: 768px;
+    margin: 40px auto;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .bl__form {
+    width: 768px;
+    margin: 40px auto;
+  }
+}
