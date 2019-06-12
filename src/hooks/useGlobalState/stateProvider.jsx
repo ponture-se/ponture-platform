@@ -1,9 +1,4 @@
 import React, { useEffect } from "react";
-import {
-  NotificationBar,
-  setNotif,
-  useNotification,
-} from "./../../components/Commons/NotficationBar";
 import { StateProvider } from "./index";
 const Provider = props => {
   // const [notifiIfo] = useNotification();

@@ -37,6 +37,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      @include variable(flex-direction, flex-direction, row);
       @include variable(
         bl-mainform-header-borderBottom,
         border-bottom,
@@ -86,6 +87,7 @@
       display: flex;
       align-items: center;
       margin-bottom: 20px;
+      @include variable(flex-direction, flex-direction, row);
       @include variable(
         bl-mainform-header-borderBottom,
         border-bottom,
@@ -117,7 +119,18 @@
     display: flex;
     flex-direction: column;
     margin-bottom: 20px;
-
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      @include variable(flex-direction, flex-direction, row);
+      .loanAmountValue {
+        font-weight: bold;
+        font-size: 20px;
+      }
+    }
+    &__label {
+      @include variable(text-align, text-align, left);
+    }
     &.--sliderInput {
       margin-bottom: 50px;
       .bl__rangeElement {
@@ -180,14 +193,14 @@
         border: 1px solid lightgray;
         height: 38px;
         border-radius: 5px;
-        
+        @include variable(flex-direction, flex-direction, row);
         &__left {
           display: flex;
           align-items: center;
           justify-content: center;
           width: 35px;
-          span{
-              color: gray
+          span {
+            color: gray;
           }
         }
         &__center {
@@ -205,22 +218,37 @@
         }
       }
     }
+    &.--invalid {
+      .my-input {
+        outline: none;
+        border: 1px solid red;
+      }
+    }
+    .validation-messsage {
+      color: red;
+      font-size: 13px;
+      display: block;
+      @include variable(text-align, text-align, left);
+    }
   }
   &__actions {
     @include variable(bl-actions-border, border-top, 0.5px solid lightgray);
-    padding: 25px;
+    padding: 6% 0;
     display: flex;
     @include variable(flex-direction, flex-direction, row);
     justify-content: flex-end;
   }
 }
-
+select {
+  @include variable(direction, direction, ltr);
+}
 .my-input {
   width: 100%;
   height: 38px;
   border-radius: 5px;
   padding: 0 5px;
   @include variable(my-input-border, border, 1px solid lightgray);
+  @include variable(text-align, text-align, right);
   &:focus {
     @include variable(my-input-focus-color, outline-color, rgb(66, 204, 173));
     @include variable(

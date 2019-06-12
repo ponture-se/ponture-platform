@@ -1,5 +1,5 @@
 export default {
-  'text-align': 'left',
-  'flex-direction': 'row',
-  direction: 'ltr'
+  'text-align': 'right',
+  'flex-direction': 'row-reverse',
+  direction: 'rtl'
 }

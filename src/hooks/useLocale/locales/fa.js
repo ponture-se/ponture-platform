@@ -1,0 +1,30 @@
+export default {
+  BACK: 'برگشت',
+  NEXT: 'بعدی',
+  SUBMIT: 'ارسال',
+  PREVIOUS: 'قبلی',
+  MONTH: 'ماه',
+  BISINUSS_LOAN: 'وام شرکتی',
+  BL_LOAN_AMOUNT: 'مقدار وام',
+  BL_LOAN_PERIOD: 'مدت زمان وام',
+  BL_REASON_LOAN: 'دلیل دریافت وام',
+  BL_REASON_LOAN_OTHER: 'دلیل دیگر',
+  BL_PERSONAL_NUMBER: 'شماره ملی',
+  BL_COMPANY_NAME: 'نام شرکت',
+  BL_ORGANIZATION_NAME: 'نام سازمان',
+  BL_CONTACT_BOX_TITLE: 'اطلاعات تماس',
+  BL_PHONE_NUMBER: 'تلفن',
+  BL_EMAIL: 'پست الکترونیکی',
+  BL_TERMS: 'من تمامی قوانین را قبول دارم',
+  BL_TERMS_LINK: 'بررسی قوانین در سایت',
+  PHONE_NUMBER_IS_REQUIRED: 'شماره تلفن ضروری می باشد',
+  PHONE_NUMBER_IN_CORRECT: 'شماره تلفن اشتباه می باشد',
+  EMAIL_IS_REQUIRED: 'پست الکترونیکی ضروری می باشد',
+  EMAIL_IN_CORRECT: 'پست الکترونیکی اشتباه می باشد',
+  OTHER_REASON_IS_REQUIRED: 'ضروری می باشد',
+  PERSONAL_NUMBER_IS_REQUIRED: 'شماره ملی ضروری می باشد',
+  PERSONAL_NUMBER_IN_CORRECT:
+    'شماره ملی اشتباه است (مثال :19800101-1234, 198001011234, 800101-1234, 8001011234)',
+  PERSONAL_NUMBER_PLACEHOLDER:
+    'مثال:19800101-1234, 198001011234, 800101-1234, 8001011234'
+}

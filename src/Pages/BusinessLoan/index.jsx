@@ -13,21 +13,29 @@ import {
 import "./styles.scss";
 
 const loanReasonOptions = [
-  { value: "1", title: { sv: "Renovering", en: "" } },
-  { value: "2", title: { sv: "Förvärvsköp" } },
-  { value: "3", title: { sv: "Anställa personal" } },
-  { value: "4", title: { sv: "Oväntade utgifter" } },
-  { value: "5", title: { sv: "Finansiera skulder" } },
-  { value: "6", title: { sv: "Generell likviditet/kassaflöde" } },
-  { value: "7", title: { sv: "Inköp av lager" } },
-  { value: "8", title: { sv: "Oväntade utgifter" } },
-  { value: "9", title: { sv: "Marknadsföring" } },
-  { value: "10", title: { sv: "Säsongsinvestering" } },
-  { value: "11", title: { sv: "Fastighetsfinansiering" } },
-  { value: "12", title: { sv: "Övrigt" } },
+  { id: "1", title: { sv: "Renovering", fa: "Renovering" } },
+  { id: "2", title: { sv: "Förvärvsköp", fa: "Förvärvsköp" } },
+  { id: "3", title: { sv: "Anställa personal", fa: "Anställa personal" } },
+  { id: "4", title: { sv: "Oväntade utgifter", fa: "Oväntade utgifter" } },
+  { id: "5", title: { sv: "Finansiera skulder", fa: "Finansiera skulder" } },
+  {
+    id: "6",
+    title: {
+      sv: "Generell likviditet/kassaflöde",
+      fa: "Generell likviditet/kassaflöde",
+    },
+  },
+  { id: "7", title: { sv: "Inköp av lager", fa: "Inköp av lager" } },
+  { id: "8", title: { sv: "Oväntade utgifter", fa: "Oväntade utgifter" } },
+  { id: "9", title: { sv: "Marknadsföring", fa: "Marknadsföring" } },
+  { id: "10", title: { sv: "Säsongsinvestering", fa: "Säsongsinvestering" } },
+  {
+    id: "11",
+    title: { sv: "Fastighetsfinansiering", fa: "Fastighetsfinansierin" },
+  },
+  { id: "12", title: { sv: "Övrigt", fa: "Övrigt" } },
 ];
 
-const loanAmountStep = 5000;
 const loanAmountMax = 10000000;
 const loanAmountMin = 10000;
 const loanPeriodStep = 1;
@@ -41,33 +49,106 @@ function isBankId(bankId) {
   return personalNumber_regex.test(bankId);
 }
 const myInputPattern = /^([0-9]*[-]?)[0-9]*$/;
-const personalNumber_regex = /^(19|20)?[0-9]{2}(0|1)[0-9][0-3][0-9][-]?[0-9]{4}$/;
+
 function useRegexedString(regex) {
   const [str, _setStr] = React.useState("");
-  const setStr = React.useCallback(
+  const setStr = useCallback(
     newStr => newStr.match(regex) && _setStr(newStr) && [regex]
   );
   return [str, setStr];
 }
+
+function validateEmail(email) {
+  var re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+  return re.test(String(email).toLowerCase());
+}
+
+function isPhoneNumber(phoneNumber) {
+  var p = /^((((0{2}?)|(\+){1})46)|0)7[\d]{8}/;
+  return p.test(phoneNumber);
+}
+
 export default function BusinessLoan(props) {
-  const { setLocale, appLocale, currentLang } = useLocale();
+  const { setLocale, t, appLocale, currentLang } = useLocale();
+
   useTheme("theme1");
-  useLayout("ltr");
+  useLayout(process.env.REACT_APP_DEFAULT_LAYOUT || "ltr");
   useEffect(() => {
-    setLocale("sv");
+    setLocale(process.env.REACT_APP_DEFAULT_LANGUAGE || "sv");
   }, []);
 
-  const [loanAmount, setLoanAmount] = useState(5000000);
+  const [loanAmount, setLoanAmount] = useState(2500000);
+  const [loanAmountDisplay, setLoanAmountDisplay] = useState(2500000);
+  const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(12);
-  const [loanReason, setLoanReason] = useState(loanReasonOptions[6]);
+  const [loanReason, setLoanReason] = useState("6");
   const [loanReasonOther, setLoanReasonOther] = useState();
+  const [otherReasonIsValid, toggleOtherReasonValidation] = useState(true);
+  const [
+    otherReasonValidationMessage,
+    setOtherReasonValidationMessage,
+  ] = useState();
   const [personalNumber, setPersonalNumber] = useRegexedString(myInputPattern);
+  const [personalNumberIsValid, togglePersonalNumberValidation] = useState(
+    true
+  );
+  const [
+    personalNumberValidationMessage,
+    setPersonalNumberValidationMessage,
+  ] = useState();
+  const [companies, setCompanies] = useState();
+  const [companyName, setCompanyName] = useState();
+  const [orgName, setOrgName] = useState();
+  const [phoneNumber, setPhoneNumber] = useState();
+  const [phoneNumberIsValid, togglePhoneNumberValidation] = useState(true);
+  const [
+    phoneNumberValidationMessage,
+    setPhoneNumberValidationMessage,
+  ] = useState();
+  const [personalNumberSpinner, togglePersonalNumberSpinner] = useState(false);
+  const [email, setEmail] = useState();
+  const [emailIsValid, toggleEmailValidation] = useState(true);
+  const [emailValidationMessage, setEmailValidationMessage] = useState();
+  const [terms, toggleTermsChecked] = useState(false);
+  const [termValidation, toggleTermValidaiton] = useState(false);
 
-  const handleLoanAmount = useCallback(val => setLoanAmount(val), [loanAmount]);
+  const [form, setForm] = useState({
+    loanAmount: 2500000,
+    loanPeriod: 12,
+    loanReason: "6",
+    loanReasonOtherDesc: undefined,
+    personalNumber: undefined,
+    oraganziationNumber: undefined,
+    phoneNumber: undefined,
+    email: undefined,
+    terms: false,
+  });
+
+  useEffect(() => {
+    setLoanAmountDisplay(
+      loanAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+    );
+  }, [loanAmount]);
+
+  const handleLoanAmount = useCallback(
+    val => {
+      setLoanAmount(val);
+
+      if (val <= 100000) {
+        setLoanAmountStep(5000);
+      } else if (val <= 500000) {
+        setLoanAmountStep(25000);
+      } else if (val <= 1000000) {
+        setLoanAmountStep(50000);
+      } else {
+        setLoanAmountStep(100000);
+      }
+    },
+    [loanAmount]
+  );
+
   const handleLoanPeriod = useCallback(val => setLoanPeriod(val), [loanPeriod]);
-  const handleLoanReasonChanged = useCallback(val => {
-    setLoanReason(val);
-  }, []);
+
   const handleMinusLoanAmount = useCallback(
     val => {
       setLoanAmount(step => {
@@ -108,16 +189,105 @@ export default function BusinessLoan(props) {
     },
     [loanPeriod]
   );
-
+  const handleLoanReasonChanged = useCallback(e => {
+    setLoanReason(e.target.value);
+  }, []);
+  const handleOtherReasonChanged = useCallback(
+    e => {
+      if (e.target.value.length === 0) {
+        toggleOtherReasonValidation(false);
+        setOtherReasonValidationMessage(t("OTHER_REASON_IS_REQUIRED"));
+      } else {
+        toggleOtherReasonValidation(true);
+      }
+      setLoanReasonOther(e.target.value);
+    },
+    [loanReasonOther, appLocale]
+  );
   const handlePersonalNumberChanged = useCallback(
     e => {
+      if (e.target.value.length === 0) {
+        togglePersonalNumberValidation(false);
+        setPersonalNumberValidationMessage(t("PERSONAL_NUMBER_IS_REQUIRED"));
+      } else {
+        if (!isBankId(e.target.value)) {
+          togglePersonalNumberValidation(false);
+          setPersonalNumberValidationMessage(t("PERSONAL_NUMBER_IN_CORRECT"));
+        } else {
+          togglePersonalNumberValidation(true);
+          _verifyPersonalNumber(e.target.value);
+        }
+      }
       setPersonalNumber(e.target.value);
-      if (!isBankId(e.target.value)) {
-        console.log(false);
-      } else console.log(true);
     },
-    [personalNumber]
+    [personalNumber, appLocale]
   );
+  function _verifyPersonalNumber(bankId) {
+    togglePersonalNumberSpinner(true);
+    setTimeout(() => {
+      togglePersonalNumberSpinner(false);
+    }, 2000);
+  }
+  const handlePhoneNumberChanged = useCallback(
+    e => {
+      if (e.target.value.length === 0) {
+        togglePhoneNumberValidation(false);
+        setPhoneNumberValidationMessage(t("PHONE_NUMBER_IS_REQUIRED"));
+      } else {
+        if (!isPhoneNumber(e.target.value)) {
+          togglePhoneNumberValidation(false);
+          setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
+        } else togglePhoneNumberValidation(true);
+      }
+      setPhoneNumber(e.target.value);
+    },
+    [phoneNumber, appLocale]
+  );
+  const handleEmailChanged = useCallback(
+    e => {
+      if (e.target.value.length === 0) {
+        toggleEmailValidation(false);
+        setEmailValidationMessage(t("EMAIL_IS_REQUIRED"));
+      } else {
+        if (!validateEmail(e.target.value)) {
+          toggleEmailValidation(false);
+          setEmailValidationMessage(t("EMAIL_IN_CORRECT"));
+        } else toggleEmailValidation(true);
+      }
+      setEmail(e.target.value);
+    },
+    [email, appLocale]
+  );
+  let chk;
+  const handleTermChanged = useCallback(
+    e => {
+      toggleTermsChecked(e.target.checked);
+      chk = e.target.checked;
+      setForm(f => {
+        const newForm = { ...f, terms: chk };
+        return newForm;
+      });
+      toggleTermValidaiton(!chk);
+    },
+    [terms]
+  );
+  function handleSubmitClicked() {
+    handlePersonalNumberChanged({
+      target: { value: personalNumber ? personalNumber : "" },
+    });
+    handlePhoneNumberChanged({
+      target: { value: phoneNumber ? phoneNumber : "" },
+    });
+    handleEmailChanged({
+      target: { value: email ? email : "" },
+    });
+    if (loanReason === "12") {
+      handleOtherReasonChanged({
+        target: { value: loanReasonOther ? loanReasonOther : "" },
+      });
+    }
+    toggleTermValidaiton(!form["terms"]);
+  }
   return appLocale ? (
     <div className="bl">
       <div className="bl__header">
@@ -135,9 +305,15 @@ export default function BusinessLoan(props) {
               <span>{appLocale["BISINUSS_LOAN"]}</span>
             </div>
             <div className="bl__input --sliderInput animated fadeIn">
-              <label className="bl__input__label bl__input__sliderLabel">
-                {appLocale["BL_LOAN_AMOUNT"]}
-              </label>
+              <div className="bl__input__header">
+                <label className="bl__input__label bl__input__sliderLabel">
+                  {t("BL_LOAN_AMOUNT")}
+                </label>
+                <span className="bl__input__label bl__input__sliderLabel loanAmountValue">
+                  {loanAmountDisplay + " kr"}
+                </span>
+              </div>
+
               <div className="bl__rangeElement">
                 <div
                   className="rangeElement__left"
@@ -147,8 +323,6 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="rangeElement__center">
                   <InputRange
-                    draggableTrack
-                    allowSameValues
                     formatLabel={value => `${value} kr`}
                     step={loanAmountStep}
                     track="slider"
@@ -168,7 +342,7 @@ export default function BusinessLoan(props) {
             </div>
             <div className="bl__input --sliderInput animated fadeIn">
               <label className="bl__input__label bl__input__sliderLabel">
-                {appLocale["BL_LOAN_PERIOD"]}
+                {t("BL_LOAN_PERIOD")}
               </label>
               <div className="bl__rangeElement">
                 <div
@@ -179,7 +353,7 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="rangeElement__center">
                   <InputRange
-                    formatLabel={value => `${value} month`}
+                    formatLabel={value => `${value} ${t("MONTH")}`}
                     step={loanPeriodStep}
                     maxValue={loanPeriodMax}
                     minValue={loanPeriodMin}
@@ -196,41 +370,58 @@ export default function BusinessLoan(props) {
               </div>
             </div>
             <div className="bl__input animated fadeIn">
-              <label className="bl__input__label">
-                {appLocale["BL_REASON_LOAN"]}
-              </label>
+              <label className="bl__input__label">{t("BL_REASON_LOAN")}</label>
               <div className="bl__input__element">
-                <Select
-                  styles={customStyles}
-                  menuPlacement="top"
-                  closeMenuOnScroll={true}
-                  closeMenuOnSelect={true}
-                  defaultValue={loanReasonOptions[5]}
+                <select
+                  className="my-input"
+                  value={loanReason}
                   onChange={handleLoanReasonChanged}
-                  options={loanReasonOptions}
-                  isMulti={false}
-                  isSearchable={false}
-                  components={{
-                    Option: CustomOption,
-                    MultiValueLabel,
-                    SingleValue,
-                  }}
-                />
+                >
+                  {loanReasonOptions.map(opt => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.title[currentLang]}
+                    </option>
+                  ))}
+                </select>
               </div>
             </div>
-            {loanReason.value === "12" && (
-              <div className="bl__input animated fadeIn">
+            {loanReason === "12" && (
+              <div
+                className={
+                  "bl__input animated fadeIn " +
+                  (!otherReasonIsValid ? "--invalid" : "")
+                }
+              >
                 <label className="bl__input__label">
-                  {appLocale["BL_REASON_LOAN_OTHER"]}
+                  {t("BL_REASON_LOAN_OTHER")}
                 </label>
                 <div className="bl__input__element">
-                  <input type="text" className="my-input" placeholder="" />
+                  <div className="element-group">
+                    <div className="element-group__center">
+                      <input
+                        type="text"
+                        className="my-input"
+                        value={loanReasonOther}
+                        onChange={handleOtherReasonChanged}
+                      />
+                    </div>
+                  </div>
+                  {!otherReasonIsValid && (
+                    <span className="validation-messsage">
+                      {otherReasonValidationMessage}
+                    </span>
+                  )}
                 </div>
               </div>
             )}
-            <div className="bl__input animated fadeIn">
+            <div
+              className={
+                "bl__input animated fadeIn " +
+                (!personalNumberIsValid ? "--invalid" : "")
+              }
+            >
               <label className="bl__input__label">
-                {appLocale["BL_PERSONAL_NUMBER"]}
+                {t("BL_PERSONAL_NUMBER")}
               </label>
               <div className="bl__input__element">
                 <div className="element-group">
@@ -238,32 +429,49 @@ export default function BusinessLoan(props) {
                     <input
                       type="text"
                       className="my-input"
-                      placeholder="examples: 12345678-1234, 123456781234, 345678-1234, 3456781234"
+                      placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
                       value={personalNumber}
                       onChange={handlePersonalNumberChanged}
                       maxLength="13"
+                      disabled={personalNumberSpinner ? true : false}
                     />
                   </div>
-                  <div className="element-group__left">
-                    <CircleSpinner show={true} size="small" />
-                  </div>
+                  {personalNumberSpinner && (
+                    <div className="element-group__left">
+                      <CircleSpinner show={true} size="small" />
+                    </div>
+                  )}
                 </div>
+                {!personalNumberIsValid && (
+                  <span className="validation-messsage">
+                    {personalNumberValidationMessage}
+                  </span>
+                )}
+              </div>
+            </div>
+            <div className="bl__input animated fadeIn">
+              <label className="bl__input__label">{t("BL_COMPANY_NAME")}</label>
+              <div className="bl__input__element">
+                <select
+                  className="my-input"
+                  disabled={companies && companies.length > 0 ? false : true}
+                  //   value={loanReason}
+                  //   onChange={handleLoanReasonChanged}
+                >
+                  {/* {loanReasonOptions.map(opt => (
+                    <option key={opt.id} value={opt.id}>
+                      {opt.title[currentLang]}
+                    </option>
+                  ))} */}
+                </select>
               </div>
             </div>
             <div className="bl__input animated fadeIn">
               <label className="bl__input__label">
-                {appLocale["BL_COMPANY_NAME"]}
+                {t("BL_ORGANIZATION_NAME")}
               </label>
               <div className="bl__input__element">
-                <input type="text" className="my-input" placeholder="" />
-              </div>
-            </div>
-            <div className="bl__input animated fadeIn">
-              <label className="bl__input__label">
-                {appLocale["BL_ORGANIZATION_NAME"]}
-              </label>
-              <div className="bl__input__element">
-                <input type="text" className="my-input" placeholder="" />
+                <input type="text" className="my-input" readOnly />
               </div>
             </div>
           </div>
@@ -272,48 +480,95 @@ export default function BusinessLoan(props) {
               <div className="bl__contactInfo__circleIcon">
                 <i className="icon-request" />
               </div>
-              <span>{appLocale["BL_CONTACT_BOX_TITLE"]}</span>
+              <span>{t("BL_CONTACT_BOX_TITLE")}</span>
             </div>
-            <div className="bl__input animated fadeIn">
-              <label className="bl__input__label">
-                {appLocale["BL_PHONE_NUMBER"]}
-              </label>
+            <div
+              className={
+                "bl__input animated fadeIn " +
+                (!phoneNumberIsValid ? "--invalid" : "")
+              }
+            >
+              <label className="bl__input__label">{t("BL_PHONE_NUMBER")}</label>
               <div className="bl__input__element">
                 <div className="element-group">
                   <div className="element-group__left">
                     <span className="icon-phone" />
                   </div>
                   <div className="element-group__center">
-                    <input type="text" className="my-input" placeholder="" />
+                    <input
+                      type="text"
+                      className="my-input"
+                      placeholder="00467902660255"
+                      value={phoneNumber}
+                      onChange={handlePhoneNumberChanged}
+                    />
                   </div>
                 </div>
+                {!phoneNumberIsValid && (
+                  <span className="validation-messsage">
+                    {phoneNumberValidationMessage}
+                  </span>
+                )}
               </div>
             </div>
-            <div className="bl__input animated fadeIn">
-              <label className="bl__input__label">
-                {appLocale["BL_EMAIL"]}
-              </label>
+
+            <div
+              className={
+                "bl__input animated fadeIn " +
+                (!emailIsValid ? "--invalid" : "")
+              }
+            >
+              <label className="bl__input__label">{t("BL_EMAIL")}</label>
               <div className="bl__input__element">
                 <div className="element-group">
                   <div className="element-group__left">
                     <span className="icon-envelope" />
                   </div>
                   <div className="element-group__center">
-                    <input type="text" className="my-input" placeholder="" />
+                    <input
+                      type="text"
+                      className="my-input"
+                      placeholder="example@mail.com"
+                      value={email}
+                      onChange={handleEmailChanged}
+                    />
                   </div>
                 </div>
+                {!emailIsValid && (
+                  <span className="validation-messsage">
+                    {emailValidationMessage}
+                  </span>
+                )}
               </div>
             </div>
             <div className="bl__input animated fadeIn">
               <label className="customCheckbox">
-                <input type="checkbox" id="dateDisablePast" />
+                <input
+                  type="checkbox"
+                  id="terms"
+                  checked={terms}
+                  onChange={handleTermChanged}
+                />
                 <span className="checkmark" />
-                <span>{appLocale["BL_TERMS"]}</span>
+                <span>
+                  {t("BL_TERMS")}{" "}
+                  <a href="https://www.ponture.com/eula" target="_blank">
+                    {t("BL_TERMS_LINK")}
+                  </a>
+                </span>
               </label>
+              {termValidation && (
+                <span className="validation-messsage">
+                  Accepting our terms and conditions is required
+                </span>
+              )}
             </div>
             <div className="bl__actions">
-              <button className="my-btn --success">
-                {appLocale["SUBMIT"]}
+              <button
+                className="my-btn --success"
+                onClick={handleSubmitClicked}
+              >
+                {t("SUBMIT")}
               </button>
             </div>
           </div>
@@ -322,41 +577,3 @@ export default function BusinessLoan(props) {
     </div>
   ) : null;
 }
-const customStyles = {
-  control: (base, state) => ({
-    ...base,
-    boxShadow: state.isFocused ? "0 0 4px rgb(66, 204, 173)" : "none",
-    borderColor: state.isFocused ? "rgb(66, 204, 173)" : base.borderColor,
-    outlineColor: state.isFocused ? "rgb(66, 204, 173)" : base.borderColor,
-    // You can also use state.isFocused to conditionally style based on the focus state
-  }),
-};
-const SingleValue = props => {
-  const { currentLang } = useLocale();
-
-  const { data } = props;
-  return (
-    <components.SingleValue {...props}>
-      <div className="options-single-selected">{data.title[currentLang]}</div>
-    </components.SingleValue>
-  );
-};
-const MultiValueLabel = props => {
-  const { data } = props;
-  return (
-    <components.MultiValueLabel {...props}>
-      <div className="options-multiple-selected">{data.value}</div>
-    </components.MultiValueLabel>
-  );
-};
-
-const CustomOption = ({ innerProps, isDisabled, data }) => {
-  const { currentLang } = useLocale();
-  if (!isDisabled) {
-    return (
-      <div {...innerProps} className="options-items">
-        {data.title[currentLang]}
-      </div>
-    );
-  } else return null;
-};

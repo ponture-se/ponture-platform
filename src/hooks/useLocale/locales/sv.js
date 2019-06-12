@@ -3,6 +3,7 @@ export default {
   NEXT: 'بعدی',
   SUBMIT: 'lämna',
   PREVIOUS: 'قبلی',
+  MONTH: 'månad',
   BISINUSS_LOAN: 'affärslån',
   BL_LOAN_AMOUNT: 'Önskat Lånebelopp',
   BL_LOAN_PERIOD: 'Önskad låneperiod',
@@ -14,5 +15,16 @@ export default {
   BL_CONTACT_BOX_TITLE: 'kontaktdetalj',
   BL_PHONE_NUMBER: 'Telefon',
   BL_EMAIL: 'E-post',
-  BL_TERMS: 'Härmed godkänner jag användarvillkoren. läs våra användarvillkor'
+  BL_TERMS: 'Härmed godkänner jag användarvillkoren.',
+  BL_TERMS_LINK: 'läs våra användarvillkor',
+  PHONE_NUMBER_IS_REQUIRED: 'Telefon krävs',
+  PHONE_NUMBER_IN_CORRECT: 'Telefon är felaktigt',
+  EMAIL_IS_REQUIRED: 'e-post krävs',
+  EMAIL_IN_CORRECT: 'email är felaktigt',
+  OTHER_REASON_IS_REQUIRED: 'krävs',
+  PERSONAL_NUMBER_IS_REQUIRED: 'Personligt nummer krävs',
+  PERSONAL_NUMBER_IN_CORRECT:
+    'Personligt nummer är felaktigt (exempel:19800101-1234, 198001011234, 800101-1234, 8001011234)',
+  PERSONAL_NUMBER_PLACEHOLDER:
+    'exempel:19800101-1234, 198001011234, 800101-1234, 8001011234)'
 }
