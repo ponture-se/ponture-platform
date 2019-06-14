@@ -152,6 +152,12 @@
         .input-range__slider {
           @include variable(input-range-bg, background, rgb(66, 204, 173));
           border: 1px solid gray;
+          width: 27px !important;
+          height: 27px !important;
+          margin-top: -0.9rem;
+        }
+        .input-range__label--value {
+          top: -2.2rem;
         }
         .input-range__label--min {
           left: 2%;
