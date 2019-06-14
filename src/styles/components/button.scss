@@ -1,0 +1,131 @@
+.btn {
+  font-family: "OpenSance";
+  border-radius: 3px;
+  border: none;
+  transition-duration: 0.5s;
+  padding: 10px 15px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  &.--small {
+    padding: 7px 10px !important;
+  }
+  &.--medium {
+    padding: 10px 15px;
+  }
+  &.--large {
+    padding: 15px 20px;
+  }
+  &.--light {
+    @include variable(my-btn-light-bg, background, rgb(66, 204, 173));
+    @include variable(my-btn-light-color, color, white);
+    border: none;
+    transition-duration: 0.5s;
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-light-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+    &:hover {
+      @include variable(my-btn-light-hover-bg, background, rgb(66, 204, 173));
+    }
+  }
+   &.--outline-light {
+    border-width: 1px;
+    border-style: solid;
+    @include variable(my-btn-light-bg, border-color, rgb(66, 204, 173));
+    @include variable(my-btn-light-bg, color, rgb(66, 204, 173));
+    transition-duration: 0.3s;
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-warning-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+    &:hover {
+      @include variable(my-btn-light-bg, background, blue);
+      @include variable(my-btn-light-color, color, white);
+    }
+  }
+  &.--primary {
+    @include variable(my-btn-primary-bg, background, rgb(66, 204, 173));
+    @include variable(my-btn-primary-color, color, white);
+    border: none;
+    transition-duration: 0.5s;
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-warning-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+    &:hover {
+      @include variable(my-btn-primary-hover-bg, background, rgb(66, 204, 173));
+    }
+  }
+  &.--outline-primary {
+    border-width: 1px;
+    border-style: solid;
+    @include variable(my-btn-primary-bg, border-color, rgb(66, 204, 173));
+    @include variable(my-btn-primary-bg, color, rgb(66, 204, 173));
+    transition-duration: 0.3s;
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-warning-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+    &:hover {
+      @include variable(my-btn-primary-bg, background, blue);
+      @include variable(my-btn-primary-color, color, white);
+    }
+  }
+  &.--success {
+    @include variable(my-btn-success-bg, background, rgb(66, 204, 173));
+    @include variable(my-btn-success-color, color, white);
+    border: none;
+    transition-duration: 0.5s;
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-success-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+    &:hover {
+      @include variable(my-btn-success-hover-bg, background, rgb(66, 204, 173));
+    }
+  }
+  &.--warning {
+    @include variable(my-btn-warning-bg, background, rgb(66, 204, 173));
+    @include variable(my-btn-warning-color, color, white);
+
+    &:focus {
+      outline: none;
+      @include variable(
+        my-btn-warning-shadow,
+        box-shadow,
+        0 0 5px rgb(66, 204, 173)
+      );
+      transition-duration: 0.5s;
+    }
+    &:hover {
+      @include variable(my-btn-warning-hover-bg, background, rgb(66, 204, 173));
+    }
+  }
+}

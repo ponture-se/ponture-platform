@@ -20,9 +20,10 @@ const loanReasonOptions = [
   { id: "5", title: { sv: "Finansiera skulder", fa: "Finansiera skulder" } },
   {
     id: "6",
+    selected: true,
     title: {
-      sv: "Generell likviditet/kassaflöde",
-      fa: "Generell likviditet/kassaflöde",
+      sv: "Generell likviditet",
+      fa: "Generell likviditet",
     },
   },
   { id: "7", title: { sv: "Inköp av lager", fa: "Inköp av lager" } },
@@ -81,8 +82,9 @@ export default function BusinessLoan(props) {
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(2500000);
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(12);
-  const [loanReason, setLoanReason] = useState("6");
+  const [loanReasons, setLoanReasons] = useState(loanReasonOptions);
   const [loanReasonOther, setLoanReasonOther] = useState();
+  const [loanReasonOtherVisiblity, toggleOtherLoanVisibility] = useState();
   const [otherReasonIsValid, toggleOtherReasonValidation] = useState(true);
   const [
     otherReasonValidationMessage,
@@ -141,7 +143,7 @@ export default function BusinessLoan(props) {
       } else if (val <= 1000000) {
         setLoanAmountStep(50000);
       } else {
-        setLoanAmountStep(100000);
+        setLoanAmountStep(125000);
       }
     },
     [loanAmount]
@@ -189,9 +191,33 @@ export default function BusinessLoan(props) {
     },
     [loanPeriod]
   );
-  const handleLoanReasonChanged = useCallback(e => {
-    setLoanReason(e.target.value);
-  }, []);
+  const handleReasonSelect = useCallback(
+    reason => {
+      const rList = loanReasons.map(item => {
+        if (item.id === reason.id) {
+          item.selected = !item.selected;
+          if (reason.id === "12") {
+            toggleOtherLoanVisibility(item.selected);
+          }
+        }
+        return item;
+      });
+      let notSelected = true;
+      for (let i = 0; i < loanReasons.length; i++) {
+        const element = loanReasons[i];
+        if (element.selected === true) {
+          notSelected = false;
+          break;
+        }
+      }
+      if (notSelected) {
+        rList[5].selected = true;
+      }
+      setLoanReasons(rList);
+    },
+    [loanReasons]
+  );
+
   const handleOtherReasonChanged = useCallback(
     e => {
       if (e.target.value.length === 0) {
@@ -271,6 +297,14 @@ export default function BusinessLoan(props) {
     },
     [terms]
   );
+  const handleBankIdClicked = useCallback(
+    e => {
+      setTimeout(() => {
+        setCompanies([{}]);
+      }, 2000);
+    },
+    [terms]
+  );
   function handleSubmitClicked() {
     handlePersonalNumberChanged({
       target: { value: personalNumber ? personalNumber : "" },
@@ -281,7 +315,7 @@ export default function BusinessLoan(props) {
     handleEmailChanged({
       target: { value: email ? email : "" },
     });
-    if (loanReason === "12") {
+    if (loanReasonOtherVisiblity) {
       handleOtherReasonChanged({
         target: { value: loanReasonOther ? loanReasonOther : "" },
       });
@@ -371,21 +405,19 @@ export default function BusinessLoan(props) {
             </div>
             <div className="bl__input animated fadeIn">
               <label className="bl__input__label">{t("BL_REASON_LOAN")}</label>
-              <div className="bl__input__element">
-                <select
-                  className="my-input"
-                  value={loanReason}
-                  onChange={handleLoanReasonChanged}
-                >
-                  {loanReasonOptions.map(opt => (
-                    <option key={opt.id} value={opt.id}>
-                      {opt.title[currentLang]}
-                    </option>
-                  ))}
-                </select>
+              <div className="loanReasons">
+                {loanReasons.map(r => (
+                  <div
+                    className={"btnReason " + (r.selected ? "--active" : "")}
+                    onClick={() => handleReasonSelect(r)}
+                  >
+                    {r.title[currentLang]}
+                  </div>
+                ))}
               </div>
             </div>
-            {loanReason === "12" && (
+
+            {loanReasonOtherVisiblity && (
               <div
                 className={
                   "bl__input animated fadeIn " +
@@ -449,129 +481,146 @@ export default function BusinessLoan(props) {
                 )}
               </div>
             </div>
-            <div className="bl__input animated fadeIn">
-              <label className="bl__input__label">{t("BL_COMPANY_NAME")}</label>
-              <div className="bl__input__element">
-                <select
-                  className="my-input"
-                  disabled={companies && companies.length > 0 ? false : true}
-                  //   value={loanReason}
-                  //   onChange={handleLoanReasonChanged}
-                >
-                  {/* {loanReasonOptions.map(opt => (
+            {(!companies || companies.length === 0) && (
+              <button
+                className="btn --success --large bankIdBtn"
+                onClick={handleBankIdClicked}
+              >
+                Identify With BankID
+              </button>
+            )}
+            {companies && companies.length > 0 && (
+              <>
+                <div className="bl__input animated fadeIn">
+                  <label className="bl__input__label">
+                    {t("BL_COMPANY_NAME")}
+                  </label>
+                  <div className="bl__input__element">
+                    <select
+                      className="my-input"
+                      disabled={
+                        companies && companies.length > 0 ? false : true
+                      }
+                      //   value={loanReason}
+                      //   onChange={handleLoanReasonChanged}
+                    >
+                      {/* {loanReasonOptions.map(opt => (
                     <option key={opt.id} value={opt.id}>
                       {opt.title[currentLang]}
                     </option>
                   ))} */}
-                </select>
-              </div>
-            </div>
-            <div className="bl__input animated fadeIn">
-              <label className="bl__input__label">
-                {t("BL_ORGANIZATION_NAME")}
-              </label>
-              <div className="bl__input__element">
-                <input type="text" className="my-input" readOnly />
-              </div>
-            </div>
+                    </select>
+                  </div>
+                </div>
+                <div className="bl__input animated fadeIn">
+                  <label className="bl__input__label">
+                    {t("BL_ORGANIZATION_NAME")}
+                  </label>
+                  <div className="bl__input__element">
+                    <input type="text" className="my-input" readOnly />
+                  </div>
+                </div>
+              </>
+            )}
           </div>
-          <div className="bl__contactInfo">
-            <div className="bl__contactInfo__header">
-              <div className="bl__contactInfo__circleIcon">
-                <i className="icon-request" />
-              </div>
-              <span>{t("BL_CONTACT_BOX_TITLE")}</span>
-            </div>
-            <div
-              className={
-                "bl__input animated fadeIn " +
-                (!phoneNumberIsValid ? "--invalid" : "")
-              }
-            >
-              <label className="bl__input__label">{t("BL_PHONE_NUMBER")}</label>
-              <div className="bl__input__element">
-                <div className="element-group">
-                  <div className="element-group__left">
-                    <span className="icon-phone" />
-                  </div>
-                  <div className="element-group__center">
-                    <input
-                      type="text"
-                      className="my-input"
-                      placeholder="00467902660255"
-                      value={phoneNumber}
-                      onChange={handlePhoneNumberChanged}
-                    />
-                  </div>
+          {companies && companies.length > 0 && (
+            <div className="bl__contactInfo">
+              <div className="bl__contactInfo__header">
+                <div className="bl__contactInfo__circleIcon">
+                  <i className="icon-request" />
                 </div>
-                {!phoneNumberIsValid && (
-                  <span className="validation-messsage">
-                    {phoneNumberValidationMessage}
-                  </span>
-                )}
+                <span>{t("BL_CONTACT_BOX_TITLE")}</span>
               </div>
-            </div>
-
-            <div
-              className={
-                "bl__input animated fadeIn " +
-                (!emailIsValid ? "--invalid" : "")
-              }
-            >
-              <label className="bl__input__label">{t("BL_EMAIL")}</label>
-              <div className="bl__input__element">
-                <div className="element-group">
-                  <div className="element-group__left">
-                    <span className="icon-envelope" />
-                  </div>
-                  <div className="element-group__center">
-                    <input
-                      type="text"
-                      className="my-input"
-                      placeholder="example@mail.com"
-                      value={email}
-                      onChange={handleEmailChanged}
-                    />
-                  </div>
-                </div>
-                {!emailIsValid && (
-                  <span className="validation-messsage">
-                    {emailValidationMessage}
-                  </span>
-                )}
-              </div>
-            </div>
-            <div className="bl__input animated fadeIn">
-              <label className="customCheckbox">
-                <input
-                  type="checkbox"
-                  id="terms"
-                  checked={terms}
-                  onChange={handleTermChanged}
-                />
-                <span className="checkmark" />
-                <span>
-                  {t("BL_TERMS")}{" "}
-                  <a href="https://www.ponture.com/eula" target="_blank">
-                    {t("BL_TERMS_LINK")}
-                  </a>
-                </span>
-              </label>
-              {termValidation && (
-                <span className="validation-messsage">
-                  Accepting our terms and conditions is required
-                </span>
-              )}
-            </div>
-            <div className="bl__actions">
-              <button
-                className="my-btn --success"
-                onClick={handleSubmitClicked}
+              <div
+                className={
+                  "bl__input animated fadeIn " +
+                  (!phoneNumberIsValid ? "--invalid" : "")
+                }
               >
-                {t("SUBMIT")}
-              </button>
+                <label className="bl__input__label">
+                  {t("BL_PHONE_NUMBER")}
+                </label>
+                <div className="bl__input__element">
+                  <div className="element-group">
+                    <div className="element-group__left">
+                      <span className="icon-phone" />
+                    </div>
+                    <div className="element-group__center">
+                      <input
+                        type="text"
+                        className="my-input"
+                        placeholder="00467902660255"
+                        value={phoneNumber}
+                        onChange={handlePhoneNumberChanged}
+                      />
+                    </div>
+                  </div>
+                  {!phoneNumberIsValid && (
+                    <span className="validation-messsage">
+                      {phoneNumberValidationMessage}
+                    </span>
+                  )}
+                </div>
+              </div>
+
+              <div
+                className={
+                  "bl__input animated fadeIn " +
+                  (!emailIsValid ? "--invalid" : "")
+                }
+              >
+                <label className="bl__input__label">{t("BL_EMAIL")}</label>
+                <div className="bl__input__element">
+                  <div className="element-group">
+                    <div className="element-group__left">
+                      <span className="icon-envelope" />
+                    </div>
+                    <div className="element-group__center">
+                      <input
+                        type="text"
+                        className="my-input"
+                        placeholder="example@mail.com"
+                        value={email}
+                        onChange={handleEmailChanged}
+                      />
+                    </div>
+                  </div>
+                  {!emailIsValid && (
+                    <span className="validation-messsage">
+                      {emailValidationMessage}
+                    </span>
+                  )}
+                </div>
+              </div>
+              <div className="bl__input animated fadeIn">
+                <label className="customCheckbox">
+                  <input
+                    type="checkbox"
+                    id="terms"
+                    checked={terms}
+                    onChange={handleTermChanged}
+                  />
+                  <span className="checkmark" />
+                  <span>
+                    {t("BL_TERMS")}{" "}
+                    <a href="https://www.ponture.com/eula" target="_blank">
+                      {t("BL_TERMS_LINK")}
+                    </a>
+                  </span>
+                </label>
+                {termValidation && (
+                  <span className="validation-messsage">
+                    Accepting our terms and conditions is required
+                  </span>
+                )}
+              </div>
+              <div className="bl__actions">
+                <button className="btn --success" onClick={handleSubmitClicked}>
+                  {t("SUBMIT")}
+                </button>
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </div>
