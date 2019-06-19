@@ -12,65 +12,8 @@ const Provider = props => {
   const initialState = {
     isAuthenticated:
       token !== undefined && token !== null && token.length > 0 ? true : false,
-    spaceInfo: undefined,
-    userInfo: undefined,
-    contentTypeTemlates: [],
-    contentTypes: [],
-    fields: [],
-    categories: [],
-    contents: [],
-    requests: [],
-    users: [],
-    assets: [],
-    status: [
-      {
-        id: "0",
-        name: "draft",
-        icon: "icon-draft",
-      },
-      {
-        id: "1",
-        name: "archived",
-        icon: "icon-archive",
-      },
-      {
-        id: "2",
-        name: "changed",
-        icon: "icon-refresh",
-      },
-      {
-        id: "3",
-        name: "published",
-        icon: "icon-publish",
-      },
-    ],
+    b_loan_moreInfo_visibility: false,
     notifies: [],
-    sysLocales: [
-      {
-        name: "en",
-        title: "English (United State) (en-US)",
-      },
-      {
-        name: "fa",
-        title: "فارسی (ایران) (fa)",
-      },
-      {
-        name: "de",
-        title: "German (Germany) (de-DE)",
-      },
-      {
-        name: "sv",
-        title: "Swedish (Sweden) (sw-SV)",
-      },
-    ],
-    apiKeys: [],
-    webhooks: [],
-    t: {},
-    spinner: true,
-    mp_categories: [],
-    mp_contentTypes: [],
-    mp_requests: [],
-    mp_requestDetail: {},
   };
 
   const reducer = (state, action) => {
@@ -82,6 +25,13 @@ const Provider = props => {
           isAuthenticated: false,
         };
         return logout;
+      case "TOGGLE_B_L_MORE_INFO":
+        //   storageManager.removeItem("token");
+        const moreInfo = {
+          ...state,
+          b_loan_moreInfo_visibility: action.value,
+        };
+        return moreInfo;
       case "ADD_NOTIFY":
         let newItem = { ...action.value };
         newItem.id = Math.random();

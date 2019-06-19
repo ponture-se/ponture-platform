@@ -1,7 +1,15 @@
 import useTheme from './useTheme'
+import useNumberRegex from './useNumberRegex'
 import useLayout from './useLayout'
 import useLocale from './useLocale'
 import useGlobalState from './useGlobalState'
-import useLocalStorage from './useLocalStorage'
+import useCookie from './useCookie'
 
-export { useGlobalState, useLocalStorage, useTheme, useLayout, useLocale }
+export {
+  useGlobalState,
+  useCookie,
+  useTheme,
+  useLayout,
+  useLocale,
+  useNumberRegex
+}

@@ -1,17 +1,25 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { BrowserRouter, Route, Switch, Redirect } from 'react-router-dom'
-import 'bootstrap/dist/css/bootstrap.css'
+// import 'bootstrap/dist/css/bootstrap.css'
 
 import StateProvider from './hooks/useGlobalState/stateProvider'
 import { LocaleProvider } from './hooks/useLocale/localeContext'
+import { useTheme, useLocale, useLayout } from './hooks'
 import './styles/app.scss'
-import 'animate.css'
 import Notifies from './components/Notifies'
 
 import Routes from './routes'
 import PrivateRoute from './PrivateRoute'
 
 const App = () => {
+  const [layout, setLayout] = useState(
+    process.env.REACT_APP_DEFAULT_LAYOUT || 'ltr'
+  )
+  useTheme('theme1')
+  useLayout(layout)
+  useEffect(() => {
+    setLayout('ltr')
+  }, [])
   return (
     <StateProvider>
       <LocaleProvider>

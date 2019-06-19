@@ -7,13 +7,16 @@
 @import "./components/formInput.scss";
 @import "./components/button.scss";
 
-
+// animate
+@import "./animate.css";
 @font-face {
   font-family: "OpenSance";
   src: url("./../assets/fonts/OpenSans-Semibold.ttf");
   font-weight: bold;
 }
-
+* {
+  box-sizing: border-box;
+}
 body {
   font-family: OpenSance;
   overflow-x: hidden;
@@ -98,6 +101,9 @@ div::-moz-scrollbar-thumb:hover {
   -ms-user-select: none;
   user-select: none;
   @include variable(direction, direction, ltr);
+  &__text {
+    font-size: 13px;
+  }
   /* Hide the browser's default checkbox */
   input {
     position: absolute;

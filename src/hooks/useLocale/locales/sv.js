@@ -12,7 +12,7 @@ export default {
   BL_PERSONAL_NUMBER: 'Personnummer',
   BL_COMPANY_NAME: 'Företagsnamn',
   BL_ORGANIZATION_NAME: 'Organisationsnummer',
-  BL_CONTACT_BOX_TITLE: 'kontaktdetalj',
+  BL_CONTACT_BOX_TITLE: 'kontakt detalj',
   BL_PHONE_NUMBER: 'Telefon',
   BL_EMAIL: 'E-post',
   BL_TERMS: 'Härmed godkänner jag användarvillkoren.',
@@ -24,7 +24,8 @@ export default {
   OTHER_REASON_IS_REQUIRED: 'krävs',
   PERSONAL_NUMBER_IS_REQUIRED: 'Personligt nummer krävs',
   PERSONAL_NUMBER_IN_CORRECT:
-    'Personligt nummer är felaktigt (exempel:19800101-1234, 198001011234, 800101-1234, 8001011234)',
-  PERSONAL_NUMBER_PLACEHOLDER:
-    'exempel:19800101-1234, 198001011234, 800101-1234, 8001011234)'
+    'Personligt nummer är felaktigt (exempel:19800101-1234)',
+  PERSONAL_NUMBER_PLACEHOLDER: 'exempel:19800101-1234',
+  BL_VERIFY_PID_BTN: 'Identifiera med BankID',
+  BL_TERMS_IS_REQUIRED: 'Godkännande av våra villkor är obligatorisk'
 }
