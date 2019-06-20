@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useCallback, useRef } from "react";
 import "./styles.scss";
 import CircleSpinner from "../../components/CircleSpinner";
-import { getToken } from "./../../api/business-loan-api";
+import { verifyPersonalNumber } from "./../../api/business-loan-api";
 import { useGlobalState, useLocale } from "./../../hooks";
 
 export default function BloanVerifyBankId(props) {
@@ -11,7 +11,77 @@ export default function BloanVerifyBankId(props) {
 
   useEffect(() => {
     let didCancel = false;
-
+    const { personalNumber } = props.match.params;
+    verifyPersonalNumber()
+      .onOk(result => {
+        if (!didCancel) {
+          if (result) {
+            window.open(result);
+          }
+          //   toggleSpinner(false);
+        }
+      })
+      .onServerError(result => {
+        if (!didCancel) {
+          toggleSpinner(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Server Error",
+            },
+          });
+        }
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+          toggleSpinner(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Bad Request",
+            },
+          });
+        }
+      })
+      .unAuthorized(result => {
+        if (!didCancel) {
+          toggleSpinner(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Un Authorized",
+            },
+          });
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          toggleSpinner(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Unknown Error",
+            },
+          });
+        }
+      })
+      .onRequestError(result => {
+        if (!didCancel) {
+          toggleSpinner(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: result,
+            },
+          });
+        }
+      })
+      .call(personalNumber);
     return () => {
       didCancel = true;
     };

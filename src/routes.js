@@ -5,11 +5,11 @@ import BankIdVerify from './Pages/B_LoanBankId'
 // const Home = withResolver(HomeComponent)
 
 const routes = [
-  {
-    path: '/verifyBankId/:personalNumber',
-    component: BankIdVerify,
-    isPublic: true
-  },
+  // {
+  //   path: '/verifyBankId/:personalNumber',
+  //   component: BankIdVerify,
+  //   isPublic: true
+  // },
   {
     path: '',
     component: BusinessLoan,

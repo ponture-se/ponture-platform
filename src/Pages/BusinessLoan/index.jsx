@@ -12,7 +12,11 @@ import {
   useNumberRegex,
 } from "./../../hooks";
 import "./styles.scss";
-import { getToken, getCompanies } from "./../../api/business-loan-api";
+import {
+  getToken,
+  verifyPersonalNumber,
+  getCompanies,
+} from "./../../api/business-loan-api";
 
 const loanReasonOptions = [
   { id: "1", title: { sv: "Renovering", fa: "Renovering" } },
@@ -105,6 +109,16 @@ function isPhoneNumber(phoneNumber) {
   var p = /^((((0{2}?)|(\+){1})?46)|0)[\d]{8}/;
   return p.test(phoneNumber);
 }
+function getParameterByName(name, url) {
+  if (!url) url = window.location.href;
+  name = name.replace(/[\[\]]/g, "\\$&");
+  var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+    results = regex.exec(url);
+  if (!results) return null;
+  if (!results[2]) return "";
+  return decodeURIComponent(results[2].replace(/\+/g, " "));
+}
+
 // =====================================================================
 export default function BusinessLoan(props) {
   let didCancel = false;
@@ -187,40 +201,112 @@ export default function BusinessLoan(props) {
   const [verifyingSpinner, toggleVerifyingSpinner] = useState(false);
 
   useEffect(() => {
-    getCompanies()
-      .onOk(result => {
-        if (!didCancel) {
-          setCompanies(result);
-          // toggleSpinner(false);
-        }
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          // toggleSpinner(false);
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          //  toggleSpinner(false);
-        }
-      })
-      .unAuthorized(result => {
-        if (!didCancel) {
-          // toggleSpinner(false);
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          //  toggleSpinner(false);
-        }
-      })
-      .onRequestError(result => {
-        if (!didCancel) {
-          //  toggleSpinner(false);
-        }
-      })
+    const error = getParameterByName("error");
+    const relaystate = getParameterByName("relaystate");
+    if (relaystate && (!error || error === false)) {
+      getToken()
+        .onOk(result => {
+          if (!didCancel) {
+            const token = result.access_token ? result.access_token : "";
+            const pId = personalNumber ? personalNumber : "";
+            getCompanies()
+              .onOk(result => {
+                if (!didCancel) {
+                  setCompanies(result);
+                  // toggleVerifyingSpinner(false);
+                }
+              })
+              .onServerError(result => {
+                if (!didCancel) {
+                  // toggleVerifyingSpinner(false);
+                }
+              })
+              .onBadRequest(result => {
+                if (!didCancel) {
+                  //  toggleVerifyingSpinner(false);
+                }
+              })
+              .unAuthorized(result => {
+                if (!didCancel) {
+                  // toggleVerifyingSpinner(false);
+                }
+              })
+              .unKnownError(result => {
+                if (!didCancel) {
+                  //  toggleVerifyingSpinner(false);
+                }
+              })
+              .onRequestError(result => {
+                if (!didCancel) {
+                  //  toggleVerifyingSpinner(false);
+                }
+              })
 
-      .call();
+              .call(token, pId);
+          }
+        })
+        .onServerError(result => {
+          if (!didCancel) {
+            toggleVerifyingSpinner(false);
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Server Error",
+              },
+            });
+          }
+        })
+        .onBadRequest(result => {
+          if (!didCancel) {
+            toggleVerifyingSpinner(false);
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Bad Request",
+              },
+            });
+          }
+        })
+        .unAuthorized(result => {
+          if (!didCancel) {
+            toggleVerifyingSpinner(false);
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Un Authorized",
+              },
+            });
+          }
+        })
+        .unKnownError(result => {
+          if (!didCancel) {
+            toggleVerifyingSpinner(false);
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Unknown Error",
+              },
+            });
+          }
+        })
+        .onRequestError(result => {
+          if (!didCancel) {
+            toggleVerifyingSpinner(false);
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: result.message,
+              },
+            });
+          }
+        })
+        .call();
+    }
     return () => {
       didCancel = true;
     };
@@ -429,12 +515,13 @@ export default function BusinessLoan(props) {
         });
       } else {
         toggleVerifyingSpinner(true);
-        getToken()
+        // props.history.push("/verifyBankId/" + personalNumber);
+        verifyPersonalNumber()
           .onOk(result => {
-            if (!didCancel) {
-              props.history.push("/verifyBankId/" + personalNumber);
-              toggleVerifyingSpinner(false);
-            }
+            if (!didCancel)
+              if (result) {
+                window.location.replace(result.link);
+              }
           })
           .onServerError(result => {
             if (!didCancel) {
@@ -491,12 +578,12 @@ export default function BusinessLoan(props) {
                 type: "ADD_NOTIFY",
                 value: {
                   type: "error",
-                  message: result.message,
+                  message: result ? result : "",
                 },
               });
             }
           })
-          .call();
+          .call(personalNumber);
       }
     },
     [appLocale, personalNumber]
