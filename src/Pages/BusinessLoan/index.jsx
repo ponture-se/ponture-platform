@@ -253,7 +253,8 @@ export default function BusinessLoan(props) {
     );
   }, [loanAmount]);
 
-  function _getCompanies(access_token, relaystate, pId) {
+  function _getCompanies(access_token, relaystate, pNumber) {
+    const pId = pNumber.replace("-", "");
     getCompanies()
       .onOk(result => {
         if (!didCancel) {
@@ -602,13 +603,14 @@ export default function BusinessLoan(props) {
           needs.push(l.id);
         }
       }
-      let pID = personalNumber;
-      if (!pID.includes("-")) {
-        pID = pID.slice(0, pID.length - 4) + "-" + pID.slice(pID.length - 4);
-      }
+      // let pID = personalNumber;
+      // if (!pID.includes("-")) {
+      //   pID = pID.slice(0, pID.length - 4) + "-" + pID.slice(pID.length - 4);
+      // }
+      const pId = personalNumber.replace("-", "");
       const obj = {
         orgNumber: selectedCompany ? selectedCompany.CID : "",
-        personalNumber: pID,
+        personalNumber: pId,
         amount: parseInt(loanAmount),
         amourtizationPeriod: parseInt(loanPeriod),
         need: needs,
@@ -692,6 +694,14 @@ export default function BusinessLoan(props) {
         })
         .call(access_token, relayState, obj);
     }
+  }
+  function backtoLoan() {
+    changeTab(1);
+    setCompanies();
+    dispatch({
+      type: "TOGGLE_B_L_MORE_INFO",
+      value: false,
+    });
   }
 
   return (
@@ -1040,7 +1050,7 @@ export default function BusinessLoan(props) {
                   {t("BL_SUCCESS_BOTTOM_MESSAGE")}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn btn-light">
+                  <button className="btn btn-light" onClick={backtoLoan}>
                     {t("BL_SUCCESS_MORE_LOAN")}
                   </button>
                 </div>
@@ -1065,7 +1075,7 @@ export default function BusinessLoan(props) {
                   {t("BL_SUCCESS_FALSE_BOTTOM_MESSAGE")}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn btn-light">
+                  <button className="btn btn-light" onClick={backtoLoan}>
                     {t("BL_SUCCESS_MORE_LOAN")}
                   </button>
                 </div>
