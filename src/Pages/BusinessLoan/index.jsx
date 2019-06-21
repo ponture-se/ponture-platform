@@ -108,7 +108,9 @@ export default function BusinessLoan(props) {
         ? JSON.parse(_loanReasons)
         : loanReasonOptions,
     loanReasonOtherDesc:
-      _loanReasonOther && _loanReasonOther.length > 0 ? _loanReasonOther : "",
+      _loanReasonOther && _loanReasonOther.length > 0
+        ? _loanReasonOther
+        : undefined,
     personalNumber:
       _personalNumber && _personalNumber.length > 0
         ? _personalNumber
@@ -173,17 +175,24 @@ export default function BusinessLoan(props) {
   useEffect(() => {
     const error = getParameterByName("error");
     const relaystate = getParameterByName("relaystate");
-    if (relaystate && (!error || error === "false")) {
-      const pId = personalNumber ? personalNumber : "";
-      dispatch({
-        type: "TOGGLE_B_L_MORE_INFO",
-        value: true,
-      });
-      taggleIsErrorBankId(false);
-      const access_token = process.env.REACT_APP_TOEKN
-        ? process.env.REACT_APP_TOEKN
-        : token;
-      _getCompanies(access_token, relaystate, pId);
+    if (relaystate) {
+      if (!error || error === "false") {
+        const pId = personalNumber ? personalNumber : "";
+        dispatch({
+          type: "TOGGLE_B_L_MORE_INFO",
+          value: true,
+        });
+        taggleIsErrorBankId(false);
+        const access_token = process.env.REACT_APP_TOEKN
+          ? process.env.REACT_APP_TOEKN
+          : token;
+        _getCompanies(access_token, relaystate, pId);
+      } else {
+        dispatch({
+          type: "TOGGLE_B_L_MORE_INFO",
+          value: true,
+        });
+      }
     }
     return () => {
       didCancel = true;
@@ -315,6 +324,9 @@ export default function BusinessLoan(props) {
           item.selected = !item.selected;
           if (reason.id === "12") {
             toggleOtherLoanVisibility(item.selected);
+            if (!item.selected) {
+              _setLoanReasonOther("");
+            }
           }
         }
         return item;
