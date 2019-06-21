@@ -223,7 +223,7 @@ export default function BusinessLoan(props) {
     const relaystate = getParameterByName("relaystate");
     if (relaystate) {
       setRelayState(relaystate);
-      // props.history.push("");
+       props.history.push("");
       if (!error || error === "false") {
         const pId = personalNumber ? personalNumber : "";
         dispatch({
