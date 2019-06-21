@@ -191,16 +191,15 @@ export function verifyPersonalNumber () {
     }
   }
 
-  const _call = async (token, personalNumber) => {
+  const _call = async personalNumber => {
     try {
       const url =
-        'https://crmdev-ponture-crmdev.cs84.force.com/services/apexrest/verifyBankID?pId=' +
+        'https://crmdev-ponture-crmdev.cs84.force.com/oauth/services/apexrest/verify?pId=' +
         personalNumber
       var rawResponse = await fetch(url, {
         method: 'GET',
         crossOrigin: true,
         headers: {
-          Authorization: 'Bearer ' + token,
           Accept: 'application/json',
           'Access-Control-Allow-Origin': '*'
         }

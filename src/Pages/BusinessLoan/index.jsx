@@ -13,7 +13,6 @@ import {
 } from "./../../hooks";
 import "./styles.scss";
 import {
-  getToken,
   verifyPersonalNumber,
   getCompanies,
   submitLoan,
@@ -184,13 +183,7 @@ export default function BusinessLoan(props) {
       const access_token = process.env.REACT_APP_TOEKN
         ? process.env.REACT_APP_TOEKN
         : token;
-      if (!access_token) {
-        _getToken(t => {
-          _getCompanies(t, relaystate, pId);
-        });
-      } else {
-        _getCompanies(access_token, relaystate, pId);
-      }
+      _getCompanies(access_token, relaystate, pId);
     }
     return () => {
       didCancel = true;
@@ -203,78 +196,6 @@ export default function BusinessLoan(props) {
     );
   }, [loanAmount]);
 
-  function _getToken(callback) {
-    getToken()
-      .onOk(result => {
-        if (!didCancel) {
-          setToken(result.access_token);
-          if (callback) {
-            callback(result.access_token);
-          }
-        }
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Server Error",
-            },
-          });
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Bad Request",
-            },
-          });
-        }
-      })
-      .unAuthorized(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Un Authorized",
-            },
-          });
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Unknown Error",
-            },
-          });
-        }
-      })
-      .onRequestError(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: result.message,
-            },
-          });
-        }
-      })
-      .call();
-  }
   function _getCompanies(access_token, relaystate, pId) {
     getCompanies()
       .onOk(result => {
@@ -508,87 +429,80 @@ export default function BusinessLoan(props) {
       } else {
         // props.history.push("/verifyBankId/" + personalNumber);
         toggleVerifyingSpinner(true);
-        const access_token = process.env.REACT_APP_TOEKN
-          ? process.env.REACT_APP_TOEKN
-          : undefined;
-        if (access_token) _verifyPID(access_token);
-        else
-          _getToken(t => {
-            _verifyPID(t);
-          });
+        verifyPersonalNumber()
+          .onOk(result => {
+            if (!didCancel)
+              if (result) {
+                if (result.link) window.location.replace(result.link);
+                if (result.access_token) setToken(result.access_token);
+              }
+            toggleVerifyingSpinner(false);
+          })
+          .onServerError(result => {
+            if (!didCancel) {
+              toggleVerifyingSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: "Server Error",
+                },
+              });
+            }
+          })
+          .onBadRequest(result => {
+            if (!didCancel) {
+              toggleVerifyingSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: "Bad Request",
+                },
+              });
+            }
+          })
+          .unAuthorized(result => {
+            if (!didCancel) {
+              toggleVerifyingSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: "Un Authorized",
+                },
+              });
+            }
+          })
+          .unKnownError(result => {
+            if (!didCancel) {
+              toggleVerifyingSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: "Unknown Error",
+                },
+              });
+            }
+          })
+          .onRequestError(result => {
+            if (!didCancel) {
+              toggleVerifyingSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: result ? result : "",
+                },
+              });
+            }
+          })
+          .call(personalNumber);
       }
     },
     [appLocale, personalNumber]
   );
-  function _verifyPID(access_token) {
-    verifyPersonalNumber()
-      .onOk(result => {
-        if (!didCancel)
-          if (result && result.link) window.location.replace(result.link);
-          else toggleVerifyingSpinner(false);
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Server Error",
-            },
-          });
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Bad Request",
-            },
-          });
-        }
-      })
-      .unAuthorized(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Un Authorized",
-            },
-          });
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Unknown Error",
-            },
-          });
-        }
-      })
-      .onRequestError(result => {
-        if (!didCancel) {
-          toggleVerifyingSpinner(false);
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: result ? result : "",
-            },
-          });
-        }
-      })
-      .call(access_token, personalNumber);
-  }
   function handleSubmitClicked() {
     if (
       !personalNumber ||
