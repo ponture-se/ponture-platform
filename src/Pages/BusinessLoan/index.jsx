@@ -74,7 +74,7 @@ function isNumber(number) {
   return p.test(number);
 }
 function isPersonalNumber(pId) {
-  const p = /^([0-9]{8}[-]?)[0-9]*$/;
+  const p = /^(19|20)?[0-9]{2}(0|1)[0-9][0-3][0-9][-]?[0-9]{4}$/;
   return p.test(pId);
 }
 
@@ -223,7 +223,7 @@ export default function BusinessLoan(props) {
     const relaystate = getParameterByName("relaystate");
     if (relaystate) {
       setRelayState(relaystate);
-       props.history.push("");
+      props.history.push("");
       if (!error || error === "false") {
         const pId = personalNumber ? personalNumber : "";
         dispatch({
@@ -483,83 +483,86 @@ export default function BusinessLoan(props) {
   );
   const handleBankIdClicked = useCallback(
     e => {
-      if (!personalNumber) {
-        handlePersonalNumberChanged({
-          target: { value: personalNumber ? personalNumber : "" },
-        });
-      } else {
-        // props.history.push("/verifyBankId/" + personalNumber);
-        toggleVerifyingSpinner(true);
-        verifyPersonalNumber()
-          .onOk(result => {
-            if (!didCancel)
-              if (result) {
-                if (result.link) window.location.replace(result.link);
-                if (result.access_token) setToken(result.access_token);
+      if (!verifyingSpinner) {
+        if (!personalNumber) {
+          handlePersonalNumberChanged({
+            target: { value: personalNumber ? personalNumber : "" },
+          });
+        } else {
+          // props.history.push("/verifyBankId/" + personalNumber);
+          toggleVerifyingSpinner(true);
+          const pId = personalNumber.replace("-", "");
+          verifyPersonalNumber()
+            .onOk(result => {
+              if (!didCancel)
+                if (result) {
+                  if (result.link) window.location.replace(result.link);
+                  if (result.access_token) setToken(result.access_token);
+                }
+              toggleVerifyingSpinner(false);
+            })
+            .onServerError(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                dispatch({
+                  type: "ADD_NOTIFY",
+                  value: {
+                    type: "error",
+                    message: "Server Error",
+                  },
+                });
               }
-            toggleVerifyingSpinner(false);
-          })
-          .onServerError(result => {
-            if (!didCancel) {
-              toggleVerifyingSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: "Server Error",
-                },
-              });
-            }
-          })
-          .onBadRequest(result => {
-            if (!didCancel) {
-              toggleVerifyingSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: "Bad Request",
-                },
-              });
-            }
-          })
-          .unAuthorized(result => {
-            if (!didCancel) {
-              toggleVerifyingSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: "Un Authorized",
-                },
-              });
-            }
-          })
-          .unKnownError(result => {
-            if (!didCancel) {
-              toggleVerifyingSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: "Unknown Error",
-                },
-              });
-            }
-          })
-          .onRequestError(result => {
-            if (!didCancel) {
-              toggleVerifyingSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: result ? result : "",
-                },
-              });
-            }
-          })
-          .call(personalNumber);
+            })
+            .onBadRequest(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                dispatch({
+                  type: "ADD_NOTIFY",
+                  value: {
+                    type: "error",
+                    message: "Bad Request",
+                  },
+                });
+              }
+            })
+            .unAuthorized(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                dispatch({
+                  type: "ADD_NOTIFY",
+                  value: {
+                    type: "error",
+                    message: "Un Authorized",
+                  },
+                });
+              }
+            })
+            .unKnownError(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                dispatch({
+                  type: "ADD_NOTIFY",
+                  value: {
+                    type: "error",
+                    message: "Unknown Error",
+                  },
+                });
+              }
+            })
+            .onRequestError(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                dispatch({
+                  type: "ADD_NOTIFY",
+                  value: {
+                    type: "error",
+                    message: result ? result : "",
+                  },
+                });
+              }
+            })
+            .call(pId);
+        }
       }
     },
     [appLocale, personalNumber]

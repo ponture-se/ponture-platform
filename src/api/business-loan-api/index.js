@@ -220,7 +220,7 @@ export function verifyPersonalNumber () {
           _notFound()
           break
         case 500:
-          _onServerError()
+          _onServerError(result)
           break
         default:
           _unKnownError()
@@ -316,8 +316,7 @@ export function getCompanies () {
       var rawResponse = await fetch(url, {
         method: 'GET',
         headers: {
-          authorization: 'Bearer ' + token,
-          'Content-Type': 'application/json',
+          Authorization: 'Bearer ' + token,
           sessionid: sessionId
         }
       })
@@ -457,7 +456,7 @@ export function submitLoan () {
           _notFound()
           break
         case 500:
-          _onServerError()
+          _onServerError(result)
           break
         default:
           _unKnownError()
