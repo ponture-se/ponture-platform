@@ -428,7 +428,7 @@ export function submitLoan () {
   const _call = async (token, sessionId, loan) => {
     try {
       const url =
-        'https://crmdev-ponture-crmdev.cs84.force.com/services/apexrest/updateCompany'
+        'https://crmdev-ponture-crmdev.cs84.force.com/services/apexrest/submit'
 
       var rawResponse = await fetch(url, {
         method: 'POST',

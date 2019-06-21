@@ -37,5 +37,6 @@ export default {
   BL_SUCCESS_FALSE_TOP_MESSAGE:
     'Tack för ditt intresse för att ansöka om lån hos oss. Tyvärr kunde du inte verifiera dig genom ditt BankID. Vi spara din låneansökan och våra finanskonsulter kommer att kontakta dig inom kort. Om du vill följa upp eller har fågor och funderingar om din ansökan gärna konakta våra finanskonsulter via kontakt oss förmulärt',
   BL_SUCCESS_FALSE_BOTTOM_MESSAGE:
-    'För att hantera ditt ärende sparar vi dina data, information, och uppgifter du lämnar hos oss eller vi samlar från andra system i vårt säkert system och delas med våra finansiella partners enligt våra integretetpolicy och Finansinspektionens reglar.'
+    'För att hantera ditt ärende sparar vi dina data, information, och uppgifter du lämnar hos oss eller vi samlar från andra system i vårt säkert system och delas med våra finansiella partners enligt våra integretetpolicy och Finansinspektionens reglar.',
+  BL_SUCCESS_MORE_LOAN: 'begära mer lån'
 }

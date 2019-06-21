@@ -69,10 +69,18 @@ function validateEmail(email) {
   return re.test(String(email).toLowerCase());
 }
 
-function isPhoneNumber(phoneNumber) {
-  // var p = /^(( ( (0{2}?) | (\+) {1}) 46)|0)7[\d]{8}/;
-  var p = /^((((0{2}?)|(\+){1})?46)|0)[\d]{8}/;
-  return p.test(phoneNumber);
+function isNumber(number) {
+  var p = /^[0-9]*$/;
+  return p.test(number);
+}
+function isPersonalNumber(pId) {
+  const p = /^([0-9]{8}[-]?)[0-9]*$/;
+  return p.test(pId);
+}
+
+function isPhoneNumber(phone) {
+  const p = /^((\+)|[0-9]*)[0-9]*$/;
+  return p.test(phone);
 }
 function getParameterByName(name, url) {
   if (!url) url = window.location.href;
@@ -98,31 +106,52 @@ export default function BusinessLoan(props) {
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
   const [_email, _setEmail] = useCookie("_email");
 
-  const formInitValues = {
+  let formInitValues = {
     loanAmount:
-      _loanAmount && _loanAmount.length > 0 ? parseInt(_loanAmount) : 3500000,
+      _loanAmount && _loanAmount.length > 0 && isNumber(_loanAmount)
+        ? parseInt(_loanAmount)
+        : 3500000,
     loanPeriod:
-      _loanPeriod && _loanPeriod.length > 0 ? parseInt(_loanPeriod) : 12,
-    loanReasons:
-      _loanReasons && _loanReasons.length > 0
-        ? JSON.parse(_loanReasons)
-        : loanReasonOptions,
+      _loanPeriod && _loanPeriod.length > 0 && isNumber(_loanPeriod)
+        ? parseInt(_loanPeriod)
+        : 12,
     loanReasonOtherDesc:
       _loanReasonOther && _loanReasonOther.length > 0
         ? _loanReasonOther
         : undefined,
     personalNumber:
-      _personalNumber && _personalNumber.length > 0
+      _personalNumber &&
+      _personalNumber.length > 0 &&
+      isPersonalNumber(_personalNumber)
         ? _personalNumber
         : undefined,
     company: undefined,
-    phoneNumber: _phoneNumber && _phoneNumber.length > 0 ? _phoneNumber : "",
-    email: _email && _email.length > 0 ? _email : "",
+    phoneNumber:
+      _phoneNumber && _phoneNumber.length > 0 && isPhoneNumber(_phoneNumber)
+        ? _phoneNumber
+        : "",
+    email: _email && _email.length > 0 && validateEmail(_email) ? _email : "",
     terms: false,
   };
+  if (_loanReasons && _loanReasons.length > 0 && _loanReasons !== "undefined") {
+    try {
+      const a = JSON.parse(_loanReasons);
+      if (Array.isArray(a)) {
+        formInitValues["loanReasons"] = a;
+      } else {
+        formInitValues["loanReasons"] = loanReasonOptions;
+      }
+    } catch (error) {
+      formInitValues["loanReasons"] = loanReasonOptions;
+    }
+  } else {
+    formInitValues["loanReasons"] = loanReasonOptions;
+  }
+
   const { t, appLocale, currentLang } = useLocale();
 
   const [tab, changeTab] = useState(1);
+  const [relayState, setRelayState] = useState();
   const [isErrorBankId, taggleIsErrorBankId] = useState(true);
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
@@ -131,12 +160,29 @@ export default function BusinessLoan(props) {
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(formInitValues.loanPeriod);
   const [loanReasons, setLoanReasons] = useState(formInitValues.loanReasons);
-  const [loanReasonOther, setLoanReasonOther] = useState(
-    formInitValues.loanReasonOtherDesc
-  );
-  const [loanReasonOtherVisiblity, toggleOtherLoanVisibility] = useState(
-    formInitValues.loanReasonOtherDesc ? true : false
-  );
+  const [loanReasonOther, setLoanReasonOther] = useState(() => {
+    for (let i = 0; i < formInitValues.loanReasons.length; i++) {
+      const l = formInitValues.loanReasons[i];
+      if (l.id === "12") {
+        if (l.selected === true) {
+          return formInitValues.loanReasonOtherDesc;
+        } else {
+          return "";
+        }
+      }
+    }
+    return "";
+  });
+  const [loanReasonOtherVisiblity, toggleOtherLoanVisibility] = useState(() => {
+    for (let i = 0; i < formInitValues.loanReasons.length; i++) {
+      const l = formInitValues.loanReasons[i];
+      if (l.id === "12") {
+        if (l.selected === true) return true;
+        return false;
+      }
+    }
+    return false;
+  });
   const [otherReasonIsValid, toggleOtherReasonValidation] = useState(true);
   const [
     otherReasonValidationMessage,
@@ -176,6 +222,8 @@ export default function BusinessLoan(props) {
     const error = getParameterByName("error");
     const relaystate = getParameterByName("relaystate");
     if (relaystate) {
+      setRelayState(relaystate);
+      // props.history.push("");
       if (!error || error === "false") {
         const pId = personalNumber ? personalNumber : "";
         dispatch({
@@ -325,6 +373,7 @@ export default function BusinessLoan(props) {
           if (reason.id === "12") {
             toggleOtherLoanVisibility(item.selected);
             if (!item.selected) {
+              setLoanReasonOther("");
               _setLoanReasonOther("");
             }
           }
@@ -542,7 +591,7 @@ export default function BusinessLoan(props) {
       toggleTermValidaiton(!form["terms"]);
     } else {
       toggleSubmitSpinner(true);
-      const relaystate = getParameterByName("relaystate");
+
       let needs = [];
       for (let i = 0; i < loanReasons.length; i++) {
         const l = loanReasons[i];
@@ -569,7 +618,14 @@ export default function BusinessLoan(props) {
         : token;
       submitLoan()
         .onOk(result => {
-          if (!didCancel) changeTab(2);
+          if (!didCancel) {
+            changeTab(2);
+            _setLoanAmount();
+            _setLoanPeriod();
+            _setLoanReasonOther();
+            _setLoanReasons();
+            _setPersonalNumber();
+          }
         })
         .onServerError(result => {
           if (!didCancel) {
@@ -631,7 +687,7 @@ export default function BusinessLoan(props) {
             });
           }
         })
-        .call(access_token, relaystate, obj);
+        .call(access_token, relayState, obj);
     }
   }
 
@@ -731,7 +787,9 @@ export default function BusinessLoan(props) {
                         }
                         onClick={() => handleReasonSelect(r)}
                       >
-                        {r.title && r.title[currentLang]}
+                        <div className="btnReason__title">
+                          {r.title && r.title[currentLang]}
+                        </div>
                         {r.selected && (
                           <div className="btnReason__active">
                             <span className="icon-checkmark" />
@@ -789,7 +847,7 @@ export default function BusinessLoan(props) {
                           value={personalNumber}
                           onChange={handlePersonalNumberChanged}
                           maxLength="13"
-                          // disabled={personalNumberSpinner ? true : false}
+                          disabled={b_loan_moreInfo_visibility ? true : false}
                         />
                       </div>
                       {/* {personalNumberSpinner && (
@@ -979,7 +1037,9 @@ export default function BusinessLoan(props) {
                   {t("BL_SUCCESS_BOTTOM_MESSAGE")}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn btn-light">Request Loan</button>
+                  <button className="btn btn-light">
+                    {t("BL_SUCCESS_MORE_LOAN")}
+                  </button>
                 </div>
               </div>
             ) : (
@@ -1002,7 +1062,9 @@ export default function BusinessLoan(props) {
                   {t("BL_SUCCESS_FALSE_BOTTOM_MESSAGE")}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn btn-light">Request Loan</button>
+                  <button className="btn btn-light">
+                    {t("BL_SUCCESS_MORE_LOAN")}
+                  </button>
                 </div>
               </div>
             ))}

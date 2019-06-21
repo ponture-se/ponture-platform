@@ -262,6 +262,14 @@
       transition-duration: 0.2s;
       position: relative;
       font-family: OpenSanceBold;
+      &__title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        font-family: OpenSanceBold;
+        text-align: center;
+      }
       &:hover {
         border-width: 2px;
         transition-duration: 0.2s;
@@ -407,7 +415,6 @@ select {
 }
 .userInputs {
   display: flex;
-  @include variable(flex-direction, flex-direction, row);
   .bl__input {
     width: 100%;
     margin: 0 10px;
@@ -440,12 +447,21 @@ select {
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .bl__form {
-    width: 92%;
-    margin: 4%;
+    width: calc(100%);
+    margin: 7px 0;
   }
-  .btnReason,
-  .companyWidget {
+  .btnReason {
     width: calc(50% - 20px);
+  }
+  .companyWidget {
+    width: calc(100% - 20px);
+  }
+  .userInputs {
+    flex-direction: column;
+    .bl__input {
+      margin: 0;
+      margin-bottom: 10px;
+    }
   }
 }
 @media (min-width: 576px) {
@@ -459,6 +475,9 @@ select {
 
   .companyWidget {
     width: calc(50% - 20px);
+  }
+  .userInputs {
+    flex-direction: column;
   }
 }
 
@@ -475,6 +494,9 @@ select {
   .companyWidget {
     width: calc(33.33% - 20px);
   }
+  .userInputs {
+    @include variable(flex-direction, flex-direction, row);
+  }
 }
 
 // Large devices (desktops, 992px and up)
@@ -488,6 +510,9 @@ select {
   }
   .companyWidget {
     width: calc(33.33% - 20px);
+  }
+  .userInputs {
+    @include variable(flex-direction, flex-direction, row);
   }
 }
 
@@ -507,5 +532,8 @@ select {
   .bl__successBox {
     min-height: 200px;
     background: white;
+  }
+  .userInputs {
+    @include variable(flex-direction, flex-direction, row);
   }
 }
