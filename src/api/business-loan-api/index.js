@@ -456,6 +456,7 @@ export function submitLoan () {
           _notFound()
           break
         case 500:
+          console.log('status 500', result)
           _onServerError(result)
           break
         default:
@@ -463,6 +464,7 @@ export function submitLoan () {
           break
       }
     } catch (error) {
+      console.log('request error', error)
       _onRequestError(error.message)
     }
   }
