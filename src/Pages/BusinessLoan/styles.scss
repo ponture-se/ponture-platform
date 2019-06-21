@@ -132,6 +132,7 @@
       .loanAmountValue {
         font-weight: bold;
         font-size: 20px;
+        font-family: OpenSanceBold;
       }
     }
     &__label {
@@ -238,7 +239,7 @@
     }
     .validation-messsage {
       color: red;
-      font-size: 13px;
+      font-size: 12px;
       display: block;
       @include variable(text-align, text-align, left);
     }
@@ -260,6 +261,7 @@
       height: 60px;
       transition-duration: 0.2s;
       position: relative;
+      font-family: OpenSanceBold;
       &:hover {
         border-width: 2px;
         transition-duration: 0.2s;
@@ -294,10 +296,18 @@
       margin: 10px;
       cursor: pointer;
       font-weight: normal;
-      height: 60px;
+      height: 70px;
       transition-duration: 0.2s;
       position: relative;
       background: whitesmoke;
+      &__cName {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        font-family: OpenSanceBold;
+        text-align: center;
+      }
       &__orgNumber {
         font-size: 11px;
         color: gray;
@@ -335,9 +345,79 @@
     @include variable(flex-direction, flex-direction, row);
     justify-content: flex-end;
   }
+  &__successBox {
+    padding: 3% 6%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+    &__top {
+      display: flex;
+      align-items: center;
+      @include variable(flex-direction, flex-direction, row);
+      .submitIcon {
+        margin-right: 10px;
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        background-color: rgb(66, 204, 173);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+      }
+      .text {
+        font-family: OpenSanceBold;
+        font-size: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+    .shortInfo {
+      margin: 0;
+      margin: 0;
+      padding: 10px 0;
+      font-size: 15px;
+    }
+    .longDesc {
+      font-size: 14px;
+      line-height: 2;
+      padding-bottom: 20px;
+      text-align: justify;
+      a {
+        padding: 0 5px;
+      }
+      @include variable(direction, direction, ltr);
+    }
+    hr {
+      background: transparent;
+      width: 100%;
+      opacity: 0.5;
+    }
+    &__actions {
+      display: flex;
+      @include variable(flex-direction, flex-direction, row);
+    }
+  }
 }
 select {
   @include variable(direction, direction, ltr);
+}
+.userInputs {
+  display: flex;
+  @include variable(flex-direction, flex-direction, row);
+  .bl__input {
+    width: 100%;
+    margin: 0 10px;
+  }
+}
+.termChk {
+  margin: 20px 10px;
+  .validation-messsage {
+    margin-top: 10px;
+  }
 }
 .my-input {
   width: 100%;
@@ -373,9 +453,12 @@ select {
     width: 92%;
     margin: 4%;
   }
-  .btnReason,
+  .btnReason {
+    width: calc(33.33% - 20px);
+  }
+
   .companyWidget {
-    width: calc(33.33% -20px);
+    width: calc(50% - 20px);
   }
 }
 
@@ -385,9 +468,12 @@ select {
     width: 768px;
     margin: 40px auto;
   }
-  .btnReason,
+  .btnReason {
+    width: calc(33.33% - 20px);
+  }
+
   .companyWidget {
-    width: calc(25% - 20px);
+    width: calc(33.33% - 20px);
   }
 }
 
@@ -397,9 +483,11 @@ select {
     width: 768px;
     margin: 40px auto;
   }
-  .btnReason,
-  .companyWidget {
+  .btnReason {
     width: calc(25% - 20px);
+  }
+  .companyWidget {
+    width: calc(33.33% - 20px);
   }
 }
 
@@ -409,8 +497,15 @@ select {
     width: 768px;
     margin: 40px auto;
   }
-  .btnReason,
-  .companyWidget {
+  .btnReason {
     width: calc(25% - 20px);
+  }
+
+  .companyWidget {
+    width: calc(33.33% - 20px);
+  }
+  .bl__successBox {
+    min-height: 200px;
+    background: white;
   }
 }
