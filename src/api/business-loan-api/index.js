@@ -444,6 +444,7 @@ export function submitLoan () {
 
       switch (status) {
         case 200:
+        case 201:
           _onOk(result)
           break
         case 400:

@@ -29,6 +29,7 @@ export default {
   PERSONAL_NUMBER_IN_CORRECT:
     'Personligt nummer är felaktigt (exempel:19800101-1234)',
   PERSONAL_NUMBER_PLACEHOLDER: 'exempel:19800101-1234',
+  COMAPNIES_REQUIRED_ERROR: 'vänligen välj ett företag. det är ett krav',
   BL_VERIFY_PID_BTN: 'Identifiera med BankID',
   BL_TERMS_IS_REQUIRED: 'Godkännande av våra villkor är obligatorisk',
   BL_SUCCESS_TOP_MESSAGE: `Tack för din ansökan. Vi startar automatiskt att hitta låne offerter för dig. Du får ett autamiskt epostmedellande från oss om din ansökan. Gärna kika din e-post inkrog. Om du vill följa upp eller har fågor och funderingar om din ansökan gärna konakta våra finanskonsulter via kontakt oss förmulärt (link to Kontakt Oss page on ponture.com)`,

@@ -200,6 +200,7 @@ export default function BusinessLoan(props) {
   ] = useState();
   const [companies, setCompanies] = useState();
   const [selectedCompany, setCompany] = useState();
+  const [companyIsValid, toggleCompanyValidation] = useState(true);
   const [phoneNumber, setPhoneNumber] = useNumberRegex(
     formInitValues.phoneNumber
   );
@@ -222,24 +223,26 @@ export default function BusinessLoan(props) {
     const error = getParameterByName("error");
     const relaystate = getParameterByName("relaystate");
     if (relaystate) {
-      setRelayState(relaystate);
       props.history.push("");
-      if (!error || error === "false") {
-        const pId = personalNumber ? personalNumber : "";
-        dispatch({
-          type: "TOGGLE_B_L_MORE_INFO",
-          value: true,
-        });
-        taggleIsErrorBankId(false);
-        const access_token = process.env.REACT_APP_TOEKN
-          ? process.env.REACT_APP_TOEKN
-          : token;
-        _getCompanies(access_token, relaystate, pId);
-      } else {
-        dispatch({
-          type: "TOGGLE_B_L_MORE_INFO",
-          value: true,
-        });
+      if (personalNumber && personalNumber.length > 0) {
+        setRelayState(relaystate);
+        if (!error || error === "false") {
+          const pId = personalNumber ? personalNumber : "";
+          dispatch({
+            type: "TOGGLE_B_L_MORE_INFO",
+            value: true,
+          });
+          taggleIsErrorBankId(false);
+          const access_token = process.env.REACT_APP_TOEKN
+            ? process.env.REACT_APP_TOEKN
+            : token;
+          _getCompanies(access_token, relaystate, pId);
+        } else {
+          dispatch({
+            type: "TOGGLE_B_L_MORE_INFO",
+            value: true,
+          });
+        }
       }
     }
     return () => {
@@ -320,7 +323,7 @@ export default function BusinessLoan(props) {
         let result;
         if (step - loanAmountStep >= loanAmountMin)
           result = step - loanAmountStep;
-        result = loanAmountMin;
+        else result = loanAmountMin;
         _setLoanAmount(result);
         return result;
       });
@@ -333,7 +336,7 @@ export default function BusinessLoan(props) {
         let result;
         if (step + loanAmountStep <= loanAmountMax)
           result = step + loanAmountStep;
-        result = loanAmountMax;
+        else result = loanAmountMax;
         _setLoanAmount(result);
         return result;
       });
@@ -346,7 +349,7 @@ export default function BusinessLoan(props) {
         let result;
         if (step - loanPeriodStep >= loanPeriodMin)
           result = step - loanPeriodStep;
-        result = loanPeriodMin;
+        else result = loanPeriodMin;
         _setLoanPeriod(result);
         return result;
       });
@@ -359,7 +362,7 @@ export default function BusinessLoan(props) {
         let result;
         if (step + loanPeriodStep <= loanPeriodMax)
           result = step + loanPeriodStep;
-        result = loanPeriodMax;
+        else result = loanPeriodMax;
         _setLoanPeriod(result);
         return result;
       });
@@ -576,7 +579,8 @@ export default function BusinessLoan(props) {
         (!loanReasonOther || loanReasonOther.length === 0)) ||
       phoneNumber.length === 0 ||
       email.length === 0 ||
-      !terms
+      !terms ||
+      (companies && companies.length > 0 && !selectedCompany)
     ) {
       handlePersonalNumberChanged({
         target: { value: personalNumber ? personalNumber : "" },
@@ -593,7 +597,9 @@ export default function BusinessLoan(props) {
         });
       }
       toggleTermValidaiton(!form["terms"]);
+      if (companyIsValid) toggleCompanyValidation(false);
     } else {
+      if (!companyIsValid) toggleCompanyValidation(true);
       toggleSubmitSpinner(true);
 
       let needs = [];
@@ -624,12 +630,12 @@ export default function BusinessLoan(props) {
       submitLoan()
         .onOk(result => {
           if (!didCancel) {
-            changeTab(2);
             _setLoanAmount();
             _setLoanPeriod();
             _setLoanReasonOther();
             _setLoanReasons();
             _setPersonalNumber();
+            changeTab(2);
           }
         })
         .onServerError(result => {
@@ -696,12 +702,7 @@ export default function BusinessLoan(props) {
     }
   }
   function backtoLoan() {
-    changeTab(1);
-    setCompanies();
-    dispatch({
-      type: "TOGGLE_B_L_MORE_INFO",
-      value: false,
-    });
+    window.location.reload();
   }
 
   return (
@@ -863,11 +864,6 @@ export default function BusinessLoan(props) {
                           disabled={b_loan_moreInfo_visibility ? true : false}
                         />
                       </div>
-                      {/* {personalNumberSpinner && (
-                      <div className="element-group__left">
-                        <CircleSpinner show={true} size="small" />
-                      </div>
-                    )} */}
                     </div>
                     {!personalNumberIsValid && (
                       <span className="validation-messsage">
@@ -916,6 +912,11 @@ export default function BusinessLoan(props) {
                         </div>
                       ))}
                     </div>
+                    {!companyIsValid && (
+                      <span className="validation-messsage">
+                        {t("COMAPNIES_REQUIRED_ERROR")}
+                      </span>
+                    )}
                   </div>
                 )}
               </div>
