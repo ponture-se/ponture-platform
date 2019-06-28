@@ -80,7 +80,7 @@ function isPersonalNumber(pId) {
 }
 
 function isPhoneNumber(phone) {
-  const p = /^((\+)|[0-9]*)[0-9]*$/;
+  const p = /^(((\+)|[0-9]*)[0-9]){9,13}$/;
   return p.test(phone);
 }
 function getParameterByName(name, url) {
@@ -241,6 +241,7 @@ export default function BusinessLoan(props) {
         toggleMainSpinner(false);
         changeTab(2);
         submitErrorMode();
+        resetForm();
       } else {
         _loadNeeds();
       }
@@ -422,6 +423,7 @@ export default function BusinessLoan(props) {
             toggleMainSpinner(false);
             // toggleVerifyingSpinner(false);
           } else {
+            toggleMainSpinner(false);
             changeTab(2);
             submitErrorMode();
           }
@@ -641,12 +643,23 @@ export default function BusinessLoan(props) {
     },
     [form, personalNumber, appLocale]
   );
+  function handlePersonalNumberKeyPressed(e) {
+    const key = e.which || e.key;
+    if (key === 13) {
+      handleBankIdClicked();
+    }
+  }
   const handlePhoneNumberChanged = useCallback(
     e => {
       if (e.target.value.length === 0) {
         togglePhoneNumberValidation(false);
         setPhoneNumberValidationMessage(t("PHONE_NUMBER_IS_REQUIRED"));
-      } else togglePhoneNumberValidation(true);
+      } else {
+        if (e.target.value.length < 9) {
+          togglePhoneNumberValidation(false);
+          setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
+        } else togglePhoneNumberValidation(true);
+      }
       //  else {
       //   if (!isPhoneNumber(e.target.value)) {
       //     togglePhoneNumberValidation(false);
@@ -845,11 +858,7 @@ export default function BusinessLoan(props) {
       submitLoan()
         .onOk(result => {
           if (!didCancel) {
-            _setLoanAmount();
-            _setLoanPeriod();
-            _setLoanReasonOther();
-            _setLoanReasons();
-            _setPersonalNumber();
+            resetForm();
             changeTab(2);
           }
         })
@@ -929,11 +938,7 @@ export default function BusinessLoan(props) {
       submitLoan()
         .onOk(result => {
           if (!didCancel) {
-            _setLoanAmount();
-            _setLoanPeriod();
-            _setLoanReasonOther();
-            _setLoanReasons();
-            _setPersonalNumber();
+            resetForm();
           }
         })
         .onServerError(result => {})
@@ -944,7 +949,13 @@ export default function BusinessLoan(props) {
         .call(access_token, relayState, obj);
     }
   }
-
+  function resetForm() {
+    _setLoanAmount();
+    _setLoanPeriod();
+    _setLoanReasonOther();
+    _setLoanReasons();
+    _setPersonalNumber();
+  }
   function backtoLoan() {
     window.location.reload();
   }
@@ -1116,6 +1127,7 @@ export default function BusinessLoan(props) {
                             onChange={handlePersonalNumberChanged}
                             maxLength="13"
                             disabled={b_loan_moreInfo_visibility ? true : false}
+                            onKeyDown={handlePersonalNumberKeyPressed}
                           />
                         </div>
                       </div>
@@ -1339,7 +1351,7 @@ export default function BusinessLoan(props) {
                   </div>
                   <div className="bl__successBox__actions">
                     <button className="btn btn-light" onClick={backtoLoan}>
-                      {t("BL_SUCCESS_MORE_LOAN")}
+                      {t("APPLY_AGAIN")}
                     </button>
                   </div>
                 </div>

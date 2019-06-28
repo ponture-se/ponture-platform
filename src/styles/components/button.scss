@@ -23,8 +23,13 @@
     padding: 0 20px !important;
   }
   &.--light {
-    @include variable(my-btn-light-bg, background, rgb(66, 204, 173));
+    @include variable(my-btn-light-bg, -webkit-background-color, lightgray);
+    @include variable(my-btn-light-bg, -moz-background-color, lightgray);
+    @include variable(my-btn-light-bg, -ms-background-color, lightgray);
+    @include variable(my-btn-light-bg, -o-background-color, lightgray);
+    @include variable(my-btn-light-bg, background-color, lightgray);
     @include variable(my-btn-light-color, color, white);
+    background-color: lightgray;
     border: none;
     transition-duration: 0.5s;
     &:focus {
@@ -37,7 +42,7 @@
       transition-duration: 0.5s;
     }
     &:hover {
-      @include variable(my-btn-light-hover-bg, background, rgb(66, 204, 173));
+      @include variable(my-btn-light-hover-bg, background-color, lightgray);
     }
   }
   &.--outline-light {
