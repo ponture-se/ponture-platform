@@ -1,9 +1,251 @@
 @import "./../../styles/mixins.scss";
 
 .bl {
-  //   display: flex;
-  //   flex-direction: column;
-  //   height: 100vh;
+  &__loading {
+    height: calc(100vh - 85px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    @include variable(header, margin-top, 75px);
+
+    .loading {
+      position: relative;
+      height: 90px;
+      width: 90px;
+      margin: 20px auto;
+      border: none;
+    }
+
+    .square {
+      position: absolute;
+      height: 40px;
+      width: 40px;
+      background: rgb(66, 204, 173);
+      opacity: 0.2;
+    }
+
+    .square-a {
+      -webkit-animation: fadeIn 2s infinite;
+      -moz-animation: fadeIn 2s infinite;
+      animation: fadeIn 2s infinite;
+    }
+
+    .state1a {
+      top: 0;
+      left: 0;
+    }
+
+    .state2a {
+      top: 0;
+      left: 50px;
+      -webkit-animation-delay: 500ms;
+      -moz-animation-delay: 500ms;
+      animation-delay: 500ms;
+    }
+
+    .state3a {
+      top: 50px;
+      left: 50px;
+      -webkit-animation-delay: 1000ms;
+      -moz-animation-delay: 1000ms;
+      animation-delay: 1000ms;
+    }
+
+    .state4a {
+      top: 50px;
+      left: 0;
+      -webkit-animation-delay: 1500ms;
+      -moz-animation-delay: 1500ms;
+      animation-delay: 1500ms;
+    }
+
+    /*Square a blink blink*/
+    @-webkit-keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+    }
+    @-moz-keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes state1-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state1-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state1-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes state2-animation {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state2-animation {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state2-animation {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes state3-animation {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state3-animation {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state3-animation {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes state4-animation {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 0;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state4-animation {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 0;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state4-animation {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 0;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
   &__header {
     z-index: 10;
     display: flex;
@@ -375,6 +617,11 @@
         align-items: center;
         justify-content: center;
         font-size: 32px;
+        &.error{
+          background-color: transparent;
+          color: red;
+          font-size: 42px;
+        }
       }
       .text {
         font-family: OpenSanceBold;
@@ -408,6 +655,14 @@
       display: flex;
       @include variable(flex-direction, flex-direction, row);
     }
+  }
+  &__errorBox {
+    padding: 3% 6%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
   }
 }
 select {

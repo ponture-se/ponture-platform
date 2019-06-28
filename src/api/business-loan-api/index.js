@@ -1,5 +1,6 @@
 const config = process.env
-
+const baseUrl = config.REACT_APP_BUSINESS_LOAN_BASE_URL
+const needsListUrl = baseUrl + config.REACT_APP_BUSINESS_LOAN_NEEDS_LIST
 export function getToken () {
   let _onOkCallBack
   function _onOk (result) {
@@ -264,6 +265,119 @@ export function verifyPersonalNumber () {
   }
 }
 
+export function getNeedsList () {
+  let _onOkCallBack
+  function _onOk (result) {
+    if (_onOkCallBack) {
+      _onOkCallBack(result)
+    }
+  }
+  let _onServerErrorCallBack
+  function _onServerError (result) {
+    if (_onServerErrorCallBack) {
+      _onServerErrorCallBack(result)
+    }
+  }
+  let _onBadRequestCallBack
+  function _onBadRequest (result) {
+    if (_onBadRequestCallBack) {
+      _onBadRequestCallBack(result)
+    }
+  }
+  let _unAuthorizedCallBack
+  function _unAuthorized (result) {
+    if (_unAuthorizedCallBack) {
+      _unAuthorizedCallBack(result)
+    }
+  }
+  let _notFoundCallBack
+  function _notFound (result) {
+    if (_notFoundCallBack) {
+      _notFoundCallBack(result)
+    }
+  }
+  let _onRequestErrorCallBack
+  function _onRequestError (result) {
+    if (_onRequestErrorCallBack) {
+      _onRequestErrorCallBack(result)
+    }
+  }
+  let _unKnownErrorCallBack
+  function _unKnownError (result) {
+    if (_unKnownErrorCallBack) {
+      _unKnownErrorCallBack(result)
+    }
+  }
+
+  const _call = async (lang = 'sv') => {
+    try {
+      const url = needsListUrl + '?lang=' + lang
+      var rawResponse = await fetch(url, {
+        method: 'GET'
+      })
+
+      const status = rawResponse.status
+      const result = await rawResponse.json()
+      // const status = 500
+      // const result = ''
+
+      switch (status) {
+        case 200:
+          _onOk(result)
+          break
+        case 400:
+          _onBadRequest(result)
+          break
+        case 401:
+          _unAuthorized(result)
+          break
+        case 404:
+          _notFound(result)
+          break
+        case 500:
+          _onServerError(result)
+          break
+        default:
+          _unKnownError(result)
+          break
+      }
+    } catch (error) {
+      _onRequestError(error)
+    }
+  }
+
+  return {
+    call: _call,
+    onOk: function (callback) {
+      _onOkCallBack = callback
+      return this
+    },
+    onServerError: function (callback) {
+      _onServerErrorCallBack = callback
+      return this
+    },
+    onBadRequest: function (callback) {
+      _onBadRequestCallBack = callback
+      return this
+    },
+    notFound: function (callback) {
+      _notFoundCallBack = callback
+      return this
+    },
+    unAuthorized: function (callback) {
+      _unAuthorizedCallBack = callback
+      return this
+    },
+    onRequestError: function (callback) {
+      _onRequestErrorCallBack = callback
+      return this
+    },
+    unKnownError: function (callback) {
+      _unKnownErrorCallBack = callback
+      return this
+    }
+  }
+}
 export function getCompanies () {
   let _onOkCallBack
   function _onOk (result) {
