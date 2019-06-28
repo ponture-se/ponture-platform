@@ -236,8 +236,8 @@ export default function BusinessLoan(props) {
     const relaystate = getParameterByName("relaystate");
 
     if (error && error === "true") {
+      props.history.push("");
       if (personalNumber && personalNumber.length > 0) {
-        props.history.push("");
         toggleMainSpinner(false);
         changeTab(2);
         submitErrorMode();
@@ -610,7 +610,6 @@ export default function BusinessLoan(props) {
     },
     [loanReasons]
   );
-  function selectGeneralNeed() {}
   const handleOtherReasonChanged = useCallback(
     e => {
       if (e.target.value.length === 0) {
@@ -819,7 +818,7 @@ export default function BusinessLoan(props) {
         });
       }
       toggleTermValidaiton(!form["terms"]);
-      if (companyIsValid) toggleCompanyValidation(false);
+      if (!selectedCompany) toggleCompanyValidation(false);
     } else {
       if (!companyIsValid) toggleCompanyValidation(true);
       toggleSubmitSpinner(true);
@@ -1325,7 +1324,7 @@ export default function BusinessLoan(props) {
                     {t("BL_SUCCESS_BOTTOM_MESSAGE")}
                   </div>
                   <div className="bl__successBox__actions">
-                    <button className="btn btn-light" onClick={backtoLoan}>
+                    <button className="btn --light" onClick={backtoLoan}>
                       {t("BL_SUCCESS_MORE_LOAN")}
                     </button>
                   </div>
@@ -1350,7 +1349,7 @@ export default function BusinessLoan(props) {
                     {t("BL_SUCCESS_FALSE_BOTTOM_MESSAGE")}
                   </div>
                   <div className="bl__successBox__actions">
-                    <button className="btn btn-light" onClick={backtoLoan}>
+                    <button className="btn --light" onClick={backtoLoan}>
                       {t("APPLY_AGAIN")}
                     </button>
                   </div>
