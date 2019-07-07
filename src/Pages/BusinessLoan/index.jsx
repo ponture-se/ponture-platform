@@ -19,31 +19,6 @@ import {
   getNeedsList,
 } from "./../../api/business-loan-api";
 
-// const loanReasonOptions = [
-//   { id: "1", title: { sv: "Renovering", fa: "Renovering" } },
-//   { id: "2", title: { sv: "Förvärvsköp", fa: "Förvärvsköp" } },
-//   { id: "3", title: { sv: "Anställa personal", fa: "Anställa personal" } },
-//   { id: "4", title: { sv: "Oväntade utgifter", fa: "Oväntade utgifter" } },
-//   { id: "5", title: { sv: "Finansiera skulder", fa: "Finansiera skulder" } },
-//   {
-//     id: "6",
-//     selected: true,
-//     title: {
-//       sv: "Generell likviditet",
-//       fa: "Generell likviditet",
-//     },
-//   },
-//   { id: "7", title: { sv: "Inköp av lager", fa: "Inköp av lager" } },
-//   { id: "8", title: { sv: "Oväntade utgifter", fa: "Oväntade utgifter" } },
-//   { id: "9", title: { sv: "Marknadsföring", fa: "Marknadsföring" } },
-//   { id: "10", title: { sv: "Säsongsinvestering", fa: "Säsongsinvestering" } },
-//   {
-//     id: "11",
-//     title: { sv: "Fastighetsfinansiering", fa: "Fastighetsfinansierin" },
-//   },
-//   { id: "12", title: { sv: "Övrigt", fa: "Övrigt" } },
-// ];
-
 const loanAmountMax = 10000000;
 const loanAmountMin = 10000;
 const loanPeriodStep = 1;
@@ -111,7 +86,7 @@ export default function BusinessLoan(props) {
   const [utm_source] = useCookie("utm_source");
   const [utm_medium] = useCookie("utm_medium");
   const [utm_campaign] = useCookie("utm_campaign");
-  const [at_gd] = useCookie("at_gd");
+  const [ad_gd] = useCookie("ad_gd");
 
   let formInitValues = {
     loanAmount:
@@ -795,7 +770,7 @@ export default function BusinessLoan(props) {
   function handleSubmitClicked() {
     if (
       !personalNumber ||
-      personalNumber.length === 0 ||
+      personalNumber.length < 9 ||
       (loanReasonOtherVisiblity &&
         (!loanReasonOther || loanReasonOther.length === 0)) ||
       phoneNumber.length === 0 ||
@@ -849,7 +824,7 @@ export default function BusinessLoan(props) {
         utm_source,
         utm_medium,
         utm_campaign,
-        at_gd,
+        ad_gd,
       };
       const access_token = process.env.REACT_APP_TOEKN
         ? process.env.REACT_APP_TOEKN
@@ -958,7 +933,6 @@ export default function BusinessLoan(props) {
   function backtoLoan() {
     window.location.reload();
   }
-
   return (
     <div className="bl">
       <div className="bl__header">
@@ -1125,7 +1099,9 @@ export default function BusinessLoan(props) {
                             value={personalNumber}
                             onChange={handlePersonalNumberChanged}
                             maxLength="13"
-                            disabled={b_loan_moreInfo_visibility ? true : false}
+                            disabled={
+                              b_loan_moreInfo_visibility ? true : false
+                            }
                             onKeyDown={handlePersonalNumberKeyPressed}
                           />
                         </div>
@@ -1161,7 +1137,8 @@ export default function BusinessLoan(props) {
                           <div
                             className={
                               "companyWidget " +
-                              (selectedCompany && selectedCompany.CID === c.CID
+                              (selectedCompany &&
+                              selectedCompany.CID === c.CID
                                 ? "--active"
                                 : "")
                             }
@@ -1174,11 +1151,12 @@ export default function BusinessLoan(props) {
                             <span className="companyWidget__orgNumber">
                               {c.CID}
                             </span>
-                            {selectedCompany && selectedCompany.CID === c.CID && (
-                              <div className="companyWidget__active">
-                                <span className="icon-checkmark" />
-                              </div>
-                            )}
+                            {selectedCompany &&
+                              selectedCompany.CID === c.CID && (
+                                <div className="companyWidget__active">
+                                  <span className="icon-checkmark" />
+                                </div>
+                              )}
                           </div>
                         ))}
                       </div>
@@ -1317,7 +1295,9 @@ export default function BusinessLoan(props) {
                     {t("BL_SUCCESS_TOP_MESSAGE")}
                     <br />
                     {t("EMAIL")}:
-                    <a href="mailto:contact@ponture.com">contact@ponture.com</a>
+                    <a href="mailto:contact@ponture.com">
+                      contact@ponture.com
+                    </a>
                     <br />
                     {t("TELEPHONE")}: 010 129 29 20
                     <br />
@@ -1342,7 +1322,9 @@ export default function BusinessLoan(props) {
                     {t("BL_SUCCESS_FALSE_TOP_MESSAGE")}
                     <br />
                     {t("EMAIL")}:
-                    <a href="mailto:contact@ponture.com">contact@ponture.com</a>
+                    <a href="mailto:contact@ponture.com">
+                      contact@ponture.com
+                    </a>
                     <br />
                     {t("TELEPHONE")}: 010 129 29 20
                     <br />
@@ -1369,7 +1351,7 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="bl__successBox__actions">
                   <button className="btn btn-light" onClick={backtoLoan}>
-                    {t("Refresh")}
+                    {t("REFRESH")}
                   </button>
                 </div>
               </div>
@@ -1377,6 +1359,49 @@ export default function BusinessLoan(props) {
           </div>
         </div>
       )}
+      <div className="modal-back">
+        <div className="modal">
+          <div className="bankId__centerBox animated fadeIn faster">
+            <div className="bankId__centerBox__header">
+              <img
+                src={require("./../../assets/bankidLogo.png")}
+                alt="logo"
+              />
+              <span>Verifiera med BankId</span>
+            </div>
+            <div className="bankId__centerBox__body">
+              <span className="description">
+                För att fortsätta, kommer BankId att omdirigera dig,
+                e-postadress, språk preferens och profilbild med ponture.com
+              </span>
+              {/* {spinner && ( */}
+              <div className="spinner">
+                <CircleSpinner show={true} size="large" />
+                <span>Anslut till bankId...</span>
+              </div>
+              {/* )} */}
+              {/* {!spinner && (
+              <div className="success animated fadeIn">
+                <span className="icon-checkmark icon" />
+                <span className="text">
+                  Please open the link to verify your personal number
+                </span>
+              </div>
+            )} */}
+            </div>
+            <div className="bankId__centerBox__footer">
+              {/* {!spinner && ( */}
+              <button
+                className="btn --light"
+                //onClick={handleCancel}
+              >
+                Avbryt verifiering
+              </button>
+              {/* )} */}
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

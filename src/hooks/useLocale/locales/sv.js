@@ -4,6 +4,7 @@ export default {
   MONTH: 'månad',
   ERROR: 'Fel',
   EMAIL: 'Emai.',
+  REFRESH:"Uppfriskande",
   APPLY_AGAIN: 'Ansök igen',
   ERROR_OCCURRED: 'Fel har uppstått',
   LOADING_TEXT: 'Vänligen vänta en stund...',

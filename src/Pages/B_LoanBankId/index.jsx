@@ -137,5 +137,6 @@ export default function BloanVerifyBankId(props) {
         </div>
       </div>
     </div>
-  );
+ 
+ );
 }
