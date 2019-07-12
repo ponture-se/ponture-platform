@@ -1,10 +1,11 @@
 export default {
+  CLOSE: 'Stänga',
   SUBMIT: 'lämna',
   SUBMITTED: 'Lämnats',
   MONTH: 'månad',
   ERROR: 'Fel',
   EMAIL: 'Emai.',
-  REFRESH:"Uppfriskande",
+  REFRESH: 'Uppfriskande',
   APPLY_AGAIN: 'Ansök igen',
   ERROR_OCCURRED: 'Fel har uppstått',
   LOADING_TEXT: 'Vänligen vänta en stund...',
@@ -66,5 +67,27 @@ export default {
   COMPANIES_ERROR_UNKNOWN:
     'Förfrågan misslyckades på grund av ett oväntat villkor som uppstod. Under tiden kan du försöka igen',
   COMPANIES_ERROR_REQUEST_ERROR:
-    'Förfrågan misslyckades på grund av ett oväntat villkor som uppstod. Under tiden kan du försöka igen'
+    'Förfrågan misslyckades på grund av ett oväntat villkor som uppstod. Under tiden kan du försöka igen',
+  BL_VERIFY_MODAL_TITLE: 'Verifiera med BankId',
+  BL_VERIFY_MODAL_INFO:
+    'För att fortsätta, kommer BankId att omdirigera dig,e-postadress, språk preferens och profilbild med ponture.com',
+  BL_VERIFY_MODAL_LOADING: 'Anslut till bankId...',
+  BL_VERIFY_MODAL_CANCEL_BTN: 'Avbryt verifiering',
+  RFA1: 'Starta BankID-appen',
+  CANCEL_VERIFY: 'Du avbokade verifieringen',
+  VERIFYIED_SUCCESS: 'Du bekräftade bankans framgångsrikt.',
+  VERIFY_STARTED_COMPUTER:
+    'Söker efter BankID, det kan ta en liten stund… Om det har gått några sekunder och inget BankID har hittats har du sannolikt inget BankID som går att använda för den aktuella inloggningen/underskriften i den här datorn. Om du har ett BankIDkort, sätt in det i kortläsaren. Om du inte har något BankID kan du hämta ett hos din internetbank. Om du har ett BankID på en annan enhet kan du starta din BankID-app där',
+  VERIFY_NO_CLIENT: 'Det verkar ingen klient',
+  VERIFY_USER_CANCEL: 'Åtgärden avbruten.',
+  VERIFY_EXPIRED:
+    'BankID-appen svarar inte. Kontrollera att den är startad och att du har internetanslutning. Om du inte har något giltigt BankID kan du hämta ett hos din Bank. Försök sedan igen.',
+  VERIFY_ERROR: 'fel har uppstått',
+
+  INTERNAL_SERVER_ERROR: 'Internt serverfel',
+  BAD_REQUEST: 'Dålig förfrågan',
+  UN_AUTHORIZED: 'Obehörig',
+  ON_REQUEST_ERROR: 'Begärningsfel',
+  UNKNOWN_ERROR: 'Okänt fel',
+  ERROR_HAS_OCCURRED:"Fel har uppstått"
 }

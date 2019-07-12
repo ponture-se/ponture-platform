@@ -1,5 +1,8 @@
 @import "./../../styles/mixins.scss";
-
+.input-range__track,
+.input-range__slider-container {
+  transition: none;
+}
 .bl {
   &__loading {
     height: calc(100vh - 85px);
@@ -805,7 +808,6 @@ select {
   align-items: center;
   justify-content: center;
   .modal {
-    width: 500px;
     border: 1px solid rgba(0, 0, 0, 0.2);
     border-radius: 0.3rem;
     min-height: 300px;
@@ -813,6 +815,37 @@ select {
     outline: 0;
     background-clip: padding-box;
   }
+}
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+.modal {
+    width: 95%;
+    margin: 0 2.5%;
+   }
+}
+@media (min-width: 576px) {
+ .modal {
+    width: 500px;
+   }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+ .modal {
+    width: 500px;
+   }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+   .modal {
+    width: 500px;
+   }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  
 }
 
 .bankId__centerBox {
@@ -854,19 +887,55 @@ select {
         margin-top: 20px;
       }
     }
-    .success {
+    .collectSuccess {
       display: flex;
-      background-color: rgb(66, 204, 173);
-      color: white;
       padding: 15px;
       margin-top: 20px;
       border-radius: 3px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
       .icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: rgb(66, 204, 173);
         font-size: 25px;
+        color: white;
+        margin: 20px 0;
       }
       .text {
         margin: 0 5px;
-        font-size: 14px;
+        font-size: 18px;
+      }
+    }
+    .error {
+      display: flex;
+      padding: 15px;
+      margin-top: 30px;
+      border-radius: 3px;
+      flex: 1;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      .icon {
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 55px;
+        color: red;
+        margin: 20px 0;
+      }
+      .text {
+        font-size: 15px;
+        text-align: justify;
       }
     }
   }

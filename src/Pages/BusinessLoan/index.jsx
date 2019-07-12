@@ -1,24 +1,23 @@
 import React, { useState, useEffect, useCallback, useMemo } from "react";
 import InputRange from "react-input-range";
 import "react-input-range/lib/css/index.css";
-import Select, { components } from "react-select";
 import CircleSpinner from "./../../components/CircleSpinner";
 import {
   useGlobalState,
   useLocale,
   useCookie,
-  useLayout,
-  useTheme,
   useNumberRegex,
 } from "./../../hooks";
 import "./styles.scss";
 import {
-  verifyPersonalNumber,
+  startBankId,
+  cancelVerify,
   getCompanies,
   submitLoan,
   getNeedsList,
 } from "./../../api/business-loan-api";
-
+import VerifyBankIdModal from "./VerifyBankIdModal";
+//
 const loanAmountMax = 10000000;
 const loanAmountMin = 10000;
 const loanPeriodStep = 1;
@@ -73,7 +72,7 @@ export default function BusinessLoan(props) {
   let didCancel = false;
   const [{ b_loan_moreInfo_visibility }, dispatch] = useGlobalState();
 
-  const [token, setToken] = useCookie("ponture_token");
+  //const [token, setToken] = useCookie("ponture_token");
   const [_loanAmount, _setLoanAmount] = useCookie("_loanAmount");
   const [_loanPeriod, _setLoanPeriod] = useCookie("_loanPeriod");
   const [_loanReasons, _setLoanReasons] = useCookie("_loanReasons");
@@ -132,8 +131,10 @@ export default function BusinessLoan(props) {
 
   const { t, appLocale, currentLang } = useLocale();
 
+  const [token, setToken] = useState();
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [tab, changeTab] = useState(1);
+  const [verifyModal, toggleVerifyModal] = useState();
   const [relayState, setRelayState] = useState();
   const [isErrorBankId, taggleIsErrorBankId] = useState(true);
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
@@ -205,40 +206,12 @@ export default function BusinessLoan(props) {
   const [verifyingSpinner, toggleVerifyingSpinner] = useState(false);
   const [submitSpinner, toggleSubmitSpinner] = useState(false);
   const [error, setError] = useState();
+  const [startResult, setStartResult] = useState();
+  const [bankIdResult, setBankIdResult] = useState();
 
   useEffect(() => {
-    const error = getParameterByName("error");
-    const relaystate = getParameterByName("relaystate");
-
-    if (error && error === "true") {
-      props.history.push("");
-      if (personalNumber && personalNumber.length > 0) {
-        toggleMainSpinner(false);
-        changeTab(2);
-        submitErrorMode();
-        resetForm();
-      } else {
-        _loadNeeds();
-      }
-    } else {
-      if (relaystate) {
-        props.history.push("");
-        if (personalNumber && personalNumber.length > 0) {
-          setRelayState(relaystate);
-          if (!loanReasons) {
-            _loadNeeds(() => {
-              initCompanies(error, relaystate);
-            });
-          } else {
-            initCompanies(error, relaystate);
-          }
-        } else {
-          _loadNeeds();
-        }
-      } else {
-        _loadNeeds();
-      }
-    }
+     _loadNeeds();
+    
     return () => {
       didCancel = true;
     };
@@ -363,115 +336,115 @@ export default function BusinessLoan(props) {
       })
       .call(currentLang);
   }
-  function initCompanies(er, rs) {
-    if (!er || er === "false") {
-      dispatch({
-        type: "TOGGLE_B_L_MORE_INFO",
-        value: true,
-      });
-      taggleIsErrorBankId(false);
-      let pId = personalNumber ? personalNumber : "";
-      if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-      const access_token = process.env.REACT_APP_TOEKN
-        ? process.env.REACT_APP_TOEKN
-        : token;
-      _getCompanies(access_token, rs, pId);
-    } else {
-      toggleMainSpinner(false);
-      changeTab(3);
-      setError({
-        sender: "bankId",
-        type: "falseError",
-        message: "",
-      });
-      submitErrorMode();
-      //submmit(personalNumber)
-    }
-  }
-  function _getCompanies(access_token, relaystate, pNumber) {
-    const pId = pNumber.replace("-", "");
-    getCompanies()
-      .onOk(result => {
-        if (!didCancel) {
-          if (result && result.length > 0) {
-            setCompanies(result);
-            toggleMainSpinner(false);
-            // toggleVerifyingSpinner(false);
-          } else {
-            toggleMainSpinner(false);
-            changeTab(2);
-            submitErrorMode();
-          }
-        }
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "companies",
-            type: "serverError",
-            message: t("NEEDS_ERROR_500"),
-          });
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "companies",
-            type: "Bad Request",
-            message: t("NEEDS_ERROR_400"),
-          });
-        }
-      })
-      .unAuthorized(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "companies",
-            type: "unAuthorized",
-            message: t("NEEDS_ERROR_401"),
-          });
-        }
-      })
-      .notFound(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "companies",
-            type: "notFound",
-            message: t("NEEDS_ERROR_404"),
-          });
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "companies",
-            type: "unKnownError",
-            message: t("NEEDS_ERROR_UNKNOWN"),
-          });
-        }
-      })
-      .onRequestError(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "companies",
-            type: "requestError",
-            message: t("NEEDS_ERROR_REQUEST_ERROR"),
-          });
-        }
-      })
-      .call(access_token, relaystate, pId);
-  }
+  // function initCompanies(er, rs) {
+  //   if (!er || er === "false") {
+  //     dispatch({
+  //       type: "TOGGLE_B_L_MORE_INFO",
+  //       value: true,
+  //     });
+  //     taggleIsErrorBankId(false);
+  //     let pId = personalNumber ? personalNumber : "";
+  //     if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
+  //     const access_token = process.env.REACT_APP_TOEKN
+  //       ? process.env.REACT_APP_TOEKN
+  //       : token;
+  //     _getCompanies(access_token, rs, pId);
+  //   } else {
+  //     toggleMainSpinner(false);
+  //     changeTab(3);
+  //     setError({
+  //       sender: "bankId",
+  //       type: "falseError",
+  //       message: "",
+  //     });
+  //     submitErrorMode();
+  //     //submmit(personalNumber)
+  //   }
+  // }
+  // function _getCompanies(access_token, relaystate, pNumber) {
+  //   const pId = pNumber.replace("-", "");
+  //   getCompanies()
+  //     .onOk(result => {
+  //       if (!didCancel) {
+  //         if (result && result.length > 0) {
+  //           setCompanies(result);
+  //           toggleMainSpinner(false);
+  //           // toggleVerifyingSpinner(false);
+  //         } else {
+  //           toggleMainSpinner(false);
+  //           changeTab(2);
+  //           submitErrorMode();
+  //         }
+  //       }
+  //     })
+  //     .onServerError(result => {
+  //       if (!didCancel) {
+  //         toggleMainSpinner(false);
+  //         changeTab(3);
+  //         setError({
+  //           sender: "companies",
+  //           type: "serverError",
+  //           message: t("NEEDS_ERROR_500"),
+  //         });
+  //       }
+  //     })
+  //     .onBadRequest(result => {
+  //       if (!didCancel) {
+  //         toggleMainSpinner(false);
+  //         changeTab(3);
+  //         setError({
+  //           sender: "companies",
+  //           type: "Bad Request",
+  //           message: t("NEEDS_ERROR_400"),
+  //         });
+  //       }
+  //     })
+  //     .unAuthorized(result => {
+  //       if (!didCancel) {
+  //         toggleMainSpinner(false);
+  //         changeTab(3);
+  //         setError({
+  //           sender: "companies",
+  //           type: "unAuthorized",
+  //           message: t("NEEDS_ERROR_401"),
+  //         });
+  //       }
+  //     })
+  //     .notFound(result => {
+  //       if (!didCancel) {
+  //         toggleMainSpinner(false);
+  //         changeTab(3);
+  //         setError({
+  //           sender: "companies",
+  //           type: "notFound",
+  //           message: t("NEEDS_ERROR_404"),
+  //         });
+  //       }
+  //     })
+  //     .unKnownError(result => {
+  //       if (!didCancel) {
+  //         toggleMainSpinner(false);
+  //         changeTab(3);
+  //         setError({
+  //           sender: "companies",
+  //           type: "unKnownError",
+  //           message: t("NEEDS_ERROR_UNKNOWN"),
+  //         });
+  //       }
+  //     })
+  //     .onRequestError(result => {
+  //       if (!didCancel) {
+  //         toggleMainSpinner(false);
+  //         changeTab(3);
+  //         setError({
+  //           sender: "companies",
+  //           type: "requestError",
+  //           message: t("NEEDS_ERROR_REQUEST_ERROR"),
+  //         });
+  //       }
+  //     })
+  //     .call(access_token, relaystate, pId);
+  // }
   const handleLoanAmount = useCallback(
     val => {
       setLoanAmount(val);
@@ -688,18 +661,16 @@ export default function BusinessLoan(props) {
             target: { value: personalNumber ? personalNumber : "" },
           });
         } else {
-          // props.history.push("/verifyBankId/" + personalNumber);
           toggleVerifyingSpinner(true);
           let pId = personalNumber.replace("-", "");
           if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-          verifyPersonalNumber()
+          startBankId()
             .onOk(result => {
-              if (!didCancel)
-                if (result) {
-                  if (result.link) window.location.replace(result.link);
-                  if (result.access_token) setToken(result.access_token);
-                }
-              toggleVerifyingSpinner(false);
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                setStartResult(result);
+                toggleVerifyModal(true);
+              }
             })
             .onServerError(result => {
               if (!didCancel) {
@@ -768,6 +739,7 @@ export default function BusinessLoan(props) {
     [appLocale, personalNumber]
   );
   function handleSubmitClicked() {
+    if (!submitSpinner) {
     if (
       !personalNumber ||
       personalNumber.length < 9 ||
@@ -811,8 +783,9 @@ export default function BusinessLoan(props) {
       // }
       let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
+      
       const obj = {
-        orgNumber: selectedCompany ? selectedCompany.CID : "",
+        orgNumber: selectedCompany ? selectedCompany.companyId : "",
         personalNumber: pId,
         amount: parseInt(loanAmount),
         amourtizationPeriod: parseInt(loanPeriod),
@@ -825,15 +798,26 @@ export default function BusinessLoan(props) {
         utm_medium,
         utm_campaign,
         ad_gd,
+        bankid:bankIdResult
       };
-      const access_token = process.env.REACT_APP_TOEKN
-        ? process.env.REACT_APP_TOEKN
-        : token;
+      // const access_token = process.env.REACT_APP_TOEKN
+      //   ? process.env.REACT_APP_TOEKN
+      //   : token;
       submitLoan()
         .onOk(result => {
           if (!didCancel) {
-            resetForm();
-            changeTab(2);
+            if (result.errors) {
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: t("ERROR_HAS_OCCURRED"),
+                },
+              });  
+            } else{
+              resetForm();
+              changeTab(2);
+            }
           }
         })
         .onServerError(result => {
@@ -843,7 +827,7 @@ export default function BusinessLoan(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Server Error",
+                message: t("INTERNAL_SERVER_ERROR"),
               },
             });
           }
@@ -855,7 +839,7 @@ export default function BusinessLoan(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Bad Request",
+                message:t("BAD_REQUEST"),
               },
             });
           }
@@ -867,7 +851,7 @@ export default function BusinessLoan(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Un Authorized",
+                message: t("UN_AUTHORIZED")
               },
             });
           }
@@ -879,7 +863,7 @@ export default function BusinessLoan(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Unknown Error",
+                message:t("UNKNOWN_ERROR"),
               },
             });
           }
@@ -891,12 +875,13 @@ export default function BusinessLoan(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: result ? result : "",
+                message: result ? result : t("ON_REQUEST_ERROR"),
               },
             });
           }
         })
-        .call(access_token, relayState, obj);
+        .call(obj);
+    }
     }
   }
   function submitErrorMode() {
@@ -906,9 +891,9 @@ export default function BusinessLoan(props) {
       const obj = {
         personalNumber: pId,
       };
-      const access_token = process.env.REACT_APP_TOEKN
-        ? process.env.REACT_APP_TOEKN
-        : token;
+      // const access_token = process.env.REACT_APP_TOEKN
+      //   ? process.env.REACT_APP_TOEKN
+      //   : token;
       submitLoan()
         .onOk(result => {
           if (!didCancel) {
@@ -920,7 +905,7 @@ export default function BusinessLoan(props) {
         .unAuthorized(result => {})
         .unKnownError(result => {})
         .onRequestError(result => {})
-        .call(access_token, relayState, obj);
+        .call(obj);
     }
   }
   function resetForm() {
@@ -933,6 +918,64 @@ export default function BusinessLoan(props) {
   function backtoLoan() {
     window.location.reload();
   }
+  function handleCloseVerifyModal(isSuccess,result,bIdResult) {
+    toggleVerifyModal(false);
+    if (isSuccess) {
+      if (result && result.length > 0) {
+        dispatch({
+        type: "TOGGLE_B_L_MORE_INFO",
+        value: true,
+      });
+        setBankIdResult(bIdResult)
+        setCompanies(result);
+      } else {
+        toggleMainSpinner(false);
+        changeTab(2);
+        submitErrorMode();
+      }
+    }else if(isSuccess===false){
+       changeTab(3);
+       setError(result);
+    }
+  }
+  function handleCancelVerify() {
+    toggleVerifyModal(false);
+    dispatch({
+      type: "ADD_NOTIFY",
+      value: {
+        type: "warning",
+        message: t("CANCEL_VERIFY"),
+      },
+    });
+    cancelVerify()
+      .onOk(result => {})
+      .onServerError(result => {
+        if (!didCancel) {
+        }
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+        }
+      })
+      .unAuthorized(result => {
+        if (!didCancel) {
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+        }
+      })
+      .onRequestError(result => {
+        if (!didCancel) {
+        }
+      })
+      .call(startResult.orderRef);
+  }
+  function handleSuccessCollect(result) {
+    if (result) {
+      toggleVerifyModal(false);
+    }
+  }
   return (
     <div className="bl">
       <div className="bl__header">
@@ -942,11 +985,11 @@ export default function BusinessLoan(props) {
       </div>
       {mainSpinner ? (
         <div className="bl__loading">
-          <div class="loading">
-            <div class="square square-a state1a" />
-            <div class="square square-a state2a" />
-            <div class="square square-a state3a" />
-            <div class="square square-a state4a" />
+          <div className="loading">
+            <div className="square square-a state1a" />
+            <div className="square square-a state2a" />
+            <div className="square square-a state3a" />
+            <div className="square square-a state4a" />
           </div>
           <h2>{t("LOADING_TEXT")}</h2>
         </div>
@@ -981,6 +1024,7 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
+                          draggableTrack={true}
                           formatLabel={value => `${value} kr`}
                           step={loanAmountStep}
                           track="slider"
@@ -999,9 +1043,14 @@ export default function BusinessLoan(props) {
                     </div>
                   </div>
                   <div className="bl__input --sliderInput animated fadeIn">
-                    <label className="bl__input__label bl__input__sliderLabel">
-                      {t("BL_LOAN_PERIOD")}
-                    </label>
+                    <div className="bl__input__header">
+                      <label className="bl__input__label bl__input__sliderLabel">
+                        {t("BL_LOAN_PERIOD")}
+                      </label>
+                      <span className="bl__input__label bl__input__sliderLabel loanAmountValue">
+                        {loanPeriod + " " + t("MONTH")}
+                      </span>
+                    </div>
                     <div className="bl__rangeElement">
                       <div
                         className="rangeElement__left"
@@ -1099,9 +1148,7 @@ export default function BusinessLoan(props) {
                             value={personalNumber}
                             onChange={handlePersonalNumberChanged}
                             maxLength="13"
-                            disabled={
-                              b_loan_moreInfo_visibility ? true : false
-                            }
+                            disabled={b_loan_moreInfo_visibility ? true : false}
                             onKeyDown={handlePersonalNumberKeyPressed}
                           />
                         </div>
@@ -1135,28 +1182,27 @@ export default function BusinessLoan(props) {
                       <div className="options">
                         {companies.map(c => (
                           <div
+                          key={c.companyId}
                             className={
                               "companyWidget " +
-                              (selectedCompany &&
-                              selectedCompany.CID === c.CID
+                              (selectedCompany && selectedCompany.companyId === c.companyId
                                 ? "--active"
                                 : "")
                             }
                             onClick={() => handleSelectCompany(c)}
-                            title={c.Cname}
+                            title={c.companyName}
                           >
                             <div className="companyWidget__cName">
-                              {c.Cname}
+                              {c.companyName}
                             </div>
                             <span className="companyWidget__orgNumber">
-                              {c.CID}
+                              {c.companyId}
                             </span>
-                            {selectedCompany &&
-                              selectedCompany.CID === c.CID && (
-                                <div className="companyWidget__active">
-                                  <span className="icon-checkmark" />
-                                </div>
-                              )}
+                            {selectedCompany && selectedCompany.companyId === c.companyId && (
+                              <div className="companyWidget__active">
+                                <span className="icon-checkmark" />
+                              </div>
+                            )}
                           </div>
                         ))}
                       </div>
@@ -1295,9 +1341,7 @@ export default function BusinessLoan(props) {
                     {t("BL_SUCCESS_TOP_MESSAGE")}
                     <br />
                     {t("EMAIL")}:
-                    <a href="mailto:contact@ponture.com">
-                      contact@ponture.com
-                    </a>
+                    <a href="mailto:contact@ponture.com">contact@ponture.com</a>
                     <br />
                     {t("TELEPHONE")}: 010 129 29 20
                     <br />
@@ -1322,9 +1366,7 @@ export default function BusinessLoan(props) {
                     {t("BL_SUCCESS_FALSE_TOP_MESSAGE")}
                     <br />
                     {t("EMAIL")}:
-                    <a href="mailto:contact@ponture.com">
-                      contact@ponture.com
-                    </a>
+                    <a href="mailto:contact@ponture.com">contact@ponture.com</a>
                     <br />
                     {t("TELEPHONE")}: 010 129 29 20
                     <br />
@@ -1359,49 +1401,14 @@ export default function BusinessLoan(props) {
           </div>
         </div>
       )}
-      <div className="modal-back">
-        <div className="modal">
-          <div className="bankId__centerBox animated fadeIn faster">
-            <div className="bankId__centerBox__header">
-              <img
-                src={require("./../../assets/bankidLogo.png")}
-                alt="logo"
-              />
-              <span>Verifiera med BankId</span>
-            </div>
-            <div className="bankId__centerBox__body">
-              <span className="description">
-                För att fortsätta, kommer BankId att omdirigera dig,
-                e-postadress, språk preferens och profilbild med ponture.com
-              </span>
-              {/* {spinner && ( */}
-              <div className="spinner">
-                <CircleSpinner show={true} size="large" />
-                <span>Anslut till bankId...</span>
-              </div>
-              {/* )} */}
-              {/* {!spinner && (
-              <div className="success animated fadeIn">
-                <span className="icon-checkmark icon" />
-                <span className="text">
-                  Please open the link to verify your personal number
-                </span>
-              </div>
-            )} */}
-            </div>
-            <div className="bankId__centerBox__footer">
-              {/* {!spinner && ( */}
-              <button
-                className="btn --light"
-                //onClick={handleCancel}
-              >
-                Avbryt verifiering
-              </button>
-              {/* )} */}
-            </div>
-          </div>
-        </div>
-      </div>
+      {verifyModal && (
+        <VerifyBankIdModal
+          startResult={startResult}
+          personalNumber={personalNumber}
+          onClose={handleCloseVerifyModal}
+          onCancelVerify={handleCancelVerify}
+        />
+      )}
     </div>
   );
 }
