@@ -3,7 +3,7 @@ import CircleSpinner from "../../components/CircleSpinner";
 import {
   collect,
   cancelVerify,
-  getCompanies,
+  getCompanies
 } from "./../../api/business-loan-api";
 //
 import { useGlobalState, useLocale } from "./../../hooks";
@@ -30,7 +30,7 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
-                    _getCompanies(result)
+                    _getCompanies(result);
                     break;
                   case "no_client":
                     // check is mobile
@@ -64,7 +64,7 @@ export default function VerifyBankIdModal(props) {
                 if (userCanceled) {
                   setError({
                     type: "user_cancel",
-                    message: t("VERIFY_USER_CANCEL"),
+                    message: t("VERIFY_USER_CANCEL")
                   });
                   if (props.onClose)
                     setTimeout(() => {
@@ -73,12 +73,12 @@ export default function VerifyBankIdModal(props) {
                 } else if (expired) {
                   setError({
                     type: "",
-                    message: t("VERIFY_EXPIRED"),
+                    message: t("VERIFY_EXPIRED")
                   });
                 } else
                   setError({
                     type: "",
-                    message: t("VERIFY_ERROR"),
+                    message: t("VERIFY_ERROR")
                   });
               }
             }
@@ -90,7 +90,7 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("INTERNAL_SERVER_ERROR"),
+              message: t("INTERNAL_SERVER_ERROR")
             });
           }
         })
@@ -100,7 +100,7 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("BAD_REQUEST"),
+              message: t("BAD_REQUEST")
             });
           }
         })
@@ -110,7 +110,7 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("UN_AUTHORIZED"),
+              message: t("UN_AUTHORIZED")
             });
           }
         })
@@ -120,7 +120,7 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("UNKNOWN_ERROR"),
+              message: t("UNKNOWN_ERROR")
             });
           }
         })
@@ -130,7 +130,7 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("ON_REQUEST_ERROR"),
+              message: t("ON_REQUEST_ERROR")
             });
           }
         })
@@ -142,69 +142,71 @@ export default function VerifyBankIdModal(props) {
     };
   }, []);
   function _getCompanies(completedResult) {
-     let pId = props.personalNumber 
-      if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-      // const access_token = process.env.REACT_APP_TOEKN
-      //   ? process.env.REACT_APP_TOEKN
-      //   : token;
+    let pId = props.personalNumber;
+    if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
+    // const access_token = process.env.REACT_APP_TOEKN
+    //   ? process.env.REACT_APP_TOEKN
+    //   : token;
     const pNumber = pId.replace("-", "");
     getCompanies()
       .onOk(result => {
         if (!didCancel) {
-           props.onClose(true,result,completedResult);
+          if (Array.isArray(result))
+            props.onClose(true, result, completedResult);
+          else props.onClose(false, []);
         }
       })
       .onServerError(result => {
         if (!didCancel) {
-           props.onClose(false,{
+          props.onClose(false, {
             sender: "companies",
             type: "serverError",
-            message: t("NEEDS_ERROR_500"),
+            message: t("NEEDS_ERROR_500")
           });
         }
       })
       .onBadRequest(result => {
         if (!didCancel) {
-          props.onClose(false,{
-          sender: "companies",
-          type: "Bad Request",
-          message: t("NEEDS_ERROR_400"),
-        });
+          props.onClose(false, {
+            sender: "companies",
+            type: "Bad Request",
+            message: t("NEEDS_ERROR_400")
+          });
         }
       })
       .unAuthorized(result => {
         if (!didCancel) {
-        props.onClose(false,{
-           sender: "companies",
+          props.onClose(false, {
+            sender: "companies",
             type: "unAuthorized",
-            message: t("NEEDS_ERROR_401"),
+            message: t("NEEDS_ERROR_401")
           });
         }
       })
       .notFound(result => {
         if (!didCancel) {
-        props.onClose(false,{
-          sender: "companies",
+          props.onClose(false, {
+            sender: "companies",
             type: "notFound",
-            message: t("NEEDS_ERROR_404"),
+            message: t("NEEDS_ERROR_404")
           });
         }
       })
       .unKnownError(result => {
         if (!didCancel) {
-        props.onClose(false,{
-          sender: "companies",
+          props.onClose(false, {
+            sender: "companies",
             type: "unKnownError",
-            message: t("NEEDS_ERROR_UNKNOWN"),
+            message: t("NEEDS_ERROR_UNKNOWN")
           });
         }
       })
       .onRequestError(result => {
         if (!didCancel) {
-         props.onClose(false,{
+          props.onClose(false, {
             sender: "companies",
             type: "requestError",
-            message: t("NEEDS_ERROR_REQUEST_ERROR"),
+            message: t("NEEDS_ERROR_REQUEST_ERROR")
           });
         }
       })

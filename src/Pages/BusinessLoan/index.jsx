@@ -6,7 +6,7 @@ import {
   useGlobalState,
   useLocale,
   useCookie,
-  useNumberRegex,
+  useNumberRegex
 } from "./../../hooks";
 import "./styles.scss";
 import {
@@ -14,7 +14,7 @@ import {
   cancelVerify,
   getCompanies,
   submitLoan,
-  getNeedsList,
+  getNeedsList
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "./VerifyBankIdModal";
 //
@@ -112,7 +112,7 @@ export default function BusinessLoan(props) {
         ? _phoneNumber
         : "",
     email: _email && _email.length > 0 && validateEmail(_email) ? _email : "",
-    terms: false,
+    terms: false
   };
   if (_loanReasons && _loanReasons.length > 0) {
     try {
@@ -174,7 +174,7 @@ export default function BusinessLoan(props) {
   const [otherReasonIsValid, toggleOtherReasonValidation] = useState(true);
   const [
     otherReasonValidationMessage,
-    setOtherReasonValidationMessage,
+    setOtherReasonValidationMessage
   ] = useState();
   const [personalNumber, setPersonalNumber] = useRegexedString(
     formInitValues.personalNumber
@@ -184,7 +184,7 @@ export default function BusinessLoan(props) {
   );
   const [
     personalNumberValidationMessage,
-    setPersonalNumberValidationMessage,
+    setPersonalNumberValidationMessage
   ] = useState();
   const [companies, setCompanies] = useState();
   const [selectedCompany, setCompany] = useState();
@@ -195,7 +195,7 @@ export default function BusinessLoan(props) {
   const [phoneNumberIsValid, togglePhoneNumberValidation] = useState(true);
   const [
     phoneNumberValidationMessage,
-    setPhoneNumberValidationMessage,
+    setPhoneNumberValidationMessage
   ] = useState();
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
@@ -210,8 +210,8 @@ export default function BusinessLoan(props) {
   const [bankIdResult, setBankIdResult] = useState();
 
   useEffect(() => {
-     _loadNeeds();
-    
+    _loadNeeds();
+
     return () => {
       didCancel = true;
     };
@@ -275,7 +275,7 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "serverError",
-            message: t("NEEDS_ERROR_500"),
+            message: t("NEEDS_ERROR_500")
           });
         }
       })
@@ -286,7 +286,7 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "Bad Request",
-            message: t("NEEDS_ERROR_400"),
+            message: t("NEEDS_ERROR_400")
           });
         }
       })
@@ -297,7 +297,7 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "unAuthorized",
-            message: t("NEEDS_ERROR_401"),
+            message: t("NEEDS_ERROR_401")
           });
         }
       })
@@ -308,7 +308,7 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "notFound",
-            message: t("NEEDS_ERROR_404"),
+            message: t("NEEDS_ERROR_404")
           });
         }
       })
@@ -319,7 +319,7 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "unKnownError",
-            message: t("NEEDS_ERROR_UNKNOWN"),
+            message: t("NEEDS_ERROR_UNKNOWN")
           });
         }
       })
@@ -330,7 +330,7 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "requestError",
-            message: t("NEEDS_ERROR_REQUEST_ERROR"),
+            message: t("NEEDS_ERROR_REQUEST_ERROR")
           });
         }
       })
@@ -658,7 +658,7 @@ export default function BusinessLoan(props) {
       if (!verifyingSpinner) {
         if (!personalNumber) {
           handlePersonalNumberChanged({
-            target: { value: personalNumber ? personalNumber : "" },
+            target: { value: personalNumber ? personalNumber : "" }
           });
         } else {
           toggleVerifyingSpinner(true);
@@ -679,8 +679,8 @@ export default function BusinessLoan(props) {
                   type: "ADD_NOTIFY",
                   value: {
                     type: "error",
-                    message: "Server Error",
-                  },
+                    message: "Server Error"
+                  }
                 });
               }
             })
@@ -691,8 +691,8 @@ export default function BusinessLoan(props) {
                   type: "ADD_NOTIFY",
                   value: {
                     type: "error",
-                    message: "Bad Request",
-                  },
+                    message: "Bad Request"
+                  }
                 });
               }
             })
@@ -703,8 +703,8 @@ export default function BusinessLoan(props) {
                   type: "ADD_NOTIFY",
                   value: {
                     type: "error",
-                    message: "Un Authorized",
-                  },
+                    message: "Un Authorized"
+                  }
                 });
               }
             })
@@ -715,8 +715,8 @@ export default function BusinessLoan(props) {
                   type: "ADD_NOTIFY",
                   value: {
                     type: "error",
-                    message: "Unknown Error",
-                  },
+                    message: "Unknown Error"
+                  }
                 });
               }
             })
@@ -727,8 +727,8 @@ export default function BusinessLoan(props) {
                   type: "ADD_NOTIFY",
                   value: {
                     type: "error",
-                    message: result ? result : "",
-                  },
+                    message: result ? result : ""
+                  }
                 });
               }
             })
@@ -740,174 +740,151 @@ export default function BusinessLoan(props) {
   );
   function handleSubmitClicked() {
     if (!submitSpinner) {
-    if (
-      !personalNumber ||
-      personalNumber.length < 9 ||
-      (loanReasonOtherVisiblity &&
-        (!loanReasonOther || loanReasonOther.length === 0)) ||
-      phoneNumber.length === 0 ||
-      email.length === 0 ||
-      !terms ||
-      (companies && companies.length > 0 && !selectedCompany)
-    ) {
-      handlePersonalNumberChanged({
-        target: { value: personalNumber ? personalNumber : "" },
-      });
-      handlePhoneNumberChanged({
-        target: { value: phoneNumber ? phoneNumber : "" },
-      });
-      handleEmailChanged({
-        target: { value: email ? email : "" },
-      });
-      if (loanReasonOtherVisiblity) {
-        handleOtherReasonChanged({
-          target: { value: loanReasonOther ? loanReasonOther : "" },
+      if (
+        !personalNumber ||
+        personalNumber.length < 9 ||
+        (loanReasonOtherVisiblity &&
+          (!loanReasonOther || loanReasonOther.length === 0)) ||
+        phoneNumber.length === 0 ||
+        email.length === 0 ||
+        !terms ||
+        (companies && companies.length > 0 && !selectedCompany)
+      ) {
+        handlePersonalNumberChanged({
+          target: { value: personalNumber ? personalNumber : "" }
         });
-      }
-      toggleTermValidaiton(!form["terms"]);
-      if (!selectedCompany) toggleCompanyValidation(false);
-    } else {
-      if (!companyIsValid) toggleCompanyValidation(true);
-      toggleSubmitSpinner(true);
-
-      let needs = [];
-      for (let i = 0; i < loanReasons.length; i++) {
-        const l = loanReasons[i];
-        if (l.selected === true) {
-          needs.push(l.API_Name);
+        handlePhoneNumberChanged({
+          target: { value: phoneNumber ? phoneNumber : "" }
+        });
+        handleEmailChanged({
+          target: { value: email ? email : "" }
+        });
+        if (loanReasonOtherVisiblity) {
+          handleOtherReasonChanged({
+            target: { value: loanReasonOther ? loanReasonOther : "" }
+          });
         }
-      }
-      // let pID = personalNumber;
-      // if (!pID.includes("-")) {
-      //   pID = pID.slice(0, pID.length - 4) + "-" + pID.slice(pID.length - 4);
-      // }
-      let pId = personalNumber.replace("-", "");
-      if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-      
-      const obj = {
-        orgNumber: selectedCompany ? selectedCompany.companyId : "",
-        personalNumber: pId,
-        amount: parseInt(loanAmount),
-        amourtizationPeriod: parseInt(loanPeriod),
-        need: needs,
-        needDescription: loanReasonOther,
-        email: email,
-        phoneNumber: phoneNumber,
-        referralId,
-        utm_source,
-        utm_medium,
-        utm_campaign,
-        ad_gd,
-        bankid:bankIdResult
-      };
-      // const access_token = process.env.REACT_APP_TOEKN
-      //   ? process.env.REACT_APP_TOEKN
-      //   : token;
-      submitLoan()
-        .onOk(result => {
-          if (!didCancel) {
-            if (result.errors) {
+        toggleTermValidaiton(!form["terms"]);
+        if (!selectedCompany) toggleCompanyValidation(false);
+      } else {
+        if (!companyIsValid) toggleCompanyValidation(true);
+        toggleSubmitSpinner(true);
+
+        let needs = [];
+        for (let i = 0; i < loanReasons.length; i++) {
+          const l = loanReasons[i];
+          if (l.selected === true) {
+            needs.push(l.API_Name);
+          }
+        }
+        // let pID = personalNumber;
+        // if (!pID.includes("-")) {
+        //   pID = pID.slice(0, pID.length - 4) + "-" + pID.slice(pID.length - 4);
+        // }
+        let pId = personalNumber.replace("-", "");
+        if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
+
+        const obj = {
+          orgNumber: selectedCompany ? selectedCompany.companyId : "",
+          personalNumber: pId,
+          amount: parseInt(loanAmount),
+          amourtizationPeriod: parseInt(loanPeriod),
+          need: needs,
+          needDescription: loanReasonOther,
+          email: email,
+          phoneNumber: phoneNumber,
+          referralId,
+          utm_source,
+          utm_medium,
+          utm_campaign,
+          ad_gd,
+          bankid: bankIdResult
+        };
+        // const access_token = process.env.REACT_APP_TOEKN
+        //   ? process.env.REACT_APP_TOEKN
+        //   : token;
+        submitLoan()
+          .onOk(result => {
+            if (!didCancel) {
+              if (result.errors) {
+                dispatch({
+                  type: "ADD_NOTIFY",
+                  value: {
+                    type: "error",
+                    message: t("ERROR_HAS_OCCURRED")
+                  }
+                });
+              } else {
+                resetForm();
+                changeTab(2);
+              }
+            }
+          })
+          .onServerError(result => {
+            if (!didCancel) {
+              toggleSubmitSpinner(false);
               dispatch({
                 type: "ADD_NOTIFY",
                 value: {
                   type: "error",
-                  message: t("ERROR_HAS_OCCURRED"),
-                },
-              });  
-            } else{
-              resetForm();
-              changeTab(2);
+                  message: t("INTERNAL_SERVER_ERROR")
+                }
+              });
             }
-          }
-        })
-        .onServerError(result => {
-          if (!didCancel) {
-            toggleSubmitSpinner(false);
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message: t("INTERNAL_SERVER_ERROR"),
-              },
-            });
-          }
-        })
-        .onBadRequest(result => {
-          if (!didCancel) {
-            toggleSubmitSpinner(false);
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message:t("BAD_REQUEST"),
-              },
-            });
-          }
-        })
-        .unAuthorized(result => {
-          if (!didCancel) {
-            toggleSubmitSpinner(false);
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message: t("UN_AUTHORIZED")
-              },
-            });
-          }
-        })
-        .unKnownError(result => {
-          if (!didCancel) {
-            toggleSubmitSpinner(false);
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message:t("UNKNOWN_ERROR"),
-              },
-            });
-          }
-        })
-        .onRequestError(result => {
-          if (!didCancel) {
-            toggleSubmitSpinner(false);
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message: result ? result : t("ON_REQUEST_ERROR"),
-              },
-            });
-          }
-        })
-        .call(obj);
-    }
+          })
+          .onBadRequest(result => {
+            if (!didCancel) {
+              toggleSubmitSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: t("BAD_REQUEST")
+                }
+              });
+            }
+          })
+          .unAuthorized(result => {
+            if (!didCancel) {
+              toggleSubmitSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: t("UN_AUTHORIZED")
+                }
+              });
+            }
+          })
+          .unKnownError(result => {
+            if (!didCancel) {
+              toggleSubmitSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: t("UNKNOWN_ERROR")
+                }
+              });
+            }
+          })
+          .onRequestError(result => {
+            if (!didCancel) {
+              toggleSubmitSpinner(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: result ? result : t("ON_REQUEST_ERROR")
+                }
+              });
+            }
+          })
+          .call(obj);
+      }
     }
   }
-  function submitErrorMode() {
-    if (personalNumber) {
-      let pId = personalNumber.replace("-", "");
-      if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-      const obj = {
-        personalNumber: pId,
-      };
-      // const access_token = process.env.REACT_APP_TOEKN
-      //   ? process.env.REACT_APP_TOEKN
-      //   : token;
-      submitLoan()
-        .onOk(result => {
-          if (!didCancel) {
-            resetForm();
-          }
-        })
-        .onServerError(result => {})
-        .onBadRequest(result => {})
-        .unAuthorized(result => {})
-        .unKnownError(result => {})
-        .onRequestError(result => {})
-        .call(obj);
-    }
-  }
+
   function resetForm() {
     _setLoanAmount();
     _setLoanPeriod();
@@ -918,24 +895,28 @@ export default function BusinessLoan(props) {
   function backtoLoan() {
     window.location.reload();
   }
-  function handleCloseVerifyModal(isSuccess,result,bIdResult) {
+  function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
     if (isSuccess) {
       if (result && result.length > 0) {
         dispatch({
-        type: "TOGGLE_B_L_MORE_INFO",
-        value: true,
-      });
-        setBankIdResult(bIdResult)
+          type: "TOGGLE_B_L_MORE_INFO",
+          value: true
+        });
+        setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
         toggleMainSpinner(false);
-        changeTab(2);
-        submitErrorMode();
+        changeTab(3);
+        setError({
+          sender: "companies",
+          type: "loadData",
+          message: t("COMPANIES_IN_VALID_DATA")
+        });
       }
-    }else if(isSuccess===false){
-       changeTab(3);
-       setError(result);
+    } else if (isSuccess === false) {
+      changeTab(3);
+      setError(result);
     }
   }
   function handleCancelVerify() {
@@ -944,8 +925,8 @@ export default function BusinessLoan(props) {
       type: "ADD_NOTIFY",
       value: {
         type: "warning",
-        message: t("CANCEL_VERIFY"),
-      },
+        message: t("CANCEL_VERIFY")
+      }
     });
     cancelVerify()
       .onOk(result => {})
@@ -970,11 +951,6 @@ export default function BusinessLoan(props) {
         }
       })
       .call(startResult.orderRef);
-  }
-  function handleSuccessCollect(result) {
-    if (result) {
-      toggleVerifyModal(false);
-    }
   }
   return (
     <div className="bl">
@@ -1182,10 +1158,11 @@ export default function BusinessLoan(props) {
                       <div className="options">
                         {companies.map(c => (
                           <div
-                          key={c.companyId}
+                            key={c.companyId}
                             className={
                               "companyWidget " +
-                              (selectedCompany && selectedCompany.companyId === c.companyId
+                              (selectedCompany &&
+                              selectedCompany.companyId === c.companyId
                                 ? "--active"
                                 : "")
                             }
@@ -1198,11 +1175,12 @@ export default function BusinessLoan(props) {
                             <span className="companyWidget__orgNumber">
                               {c.companyId}
                             </span>
-                            {selectedCompany && selectedCompany.companyId === c.companyId && (
-                              <div className="companyWidget__active">
-                                <span className="icon-checkmark" />
-                              </div>
-                            )}
+                            {selectedCompany &&
+                              selectedCompany.companyId === c.companyId && (
+                                <div className="companyWidget__active">
+                                  <span className="icon-checkmark" />
+                                </div>
+                              )}
                           </div>
                         ))}
                       </div>
