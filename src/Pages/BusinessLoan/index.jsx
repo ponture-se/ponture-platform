@@ -336,115 +336,6 @@ export default function BusinessLoan(props) {
       })
       .call(currentLang);
   }
-  // function initCompanies(er, rs) {
-  //   if (!er || er === "false") {
-  //     dispatch({
-  //       type: "TOGGLE_B_L_MORE_INFO",
-  //       value: true,
-  //     });
-  //     taggleIsErrorBankId(false);
-  //     let pId = personalNumber ? personalNumber : "";
-  //     if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-  //     const access_token = process.env.REACT_APP_TOEKN
-  //       ? process.env.REACT_APP_TOEKN
-  //       : token;
-  //     _getCompanies(access_token, rs, pId);
-  //   } else {
-  //     toggleMainSpinner(false);
-  //     changeTab(3);
-  //     setError({
-  //       sender: "bankId",
-  //       type: "falseError",
-  //       message: "",
-  //     });
-  //     submitErrorMode();
-  //     //submmit(personalNumber)
-  //   }
-  // }
-  // function _getCompanies(access_token, relaystate, pNumber) {
-  //   const pId = pNumber.replace("-", "");
-  //   getCompanies()
-  //     .onOk(result => {
-  //       if (!didCancel) {
-  //         if (result && result.length > 0) {
-  //           setCompanies(result);
-  //           toggleMainSpinner(false);
-  //           // toggleVerifyingSpinner(false);
-  //         } else {
-  //           toggleMainSpinner(false);
-  //           changeTab(2);
-  //           submitErrorMode();
-  //         }
-  //       }
-  //     })
-  //     .onServerError(result => {
-  //       if (!didCancel) {
-  //         toggleMainSpinner(false);
-  //         changeTab(3);
-  //         setError({
-  //           sender: "companies",
-  //           type: "serverError",
-  //           message: t("NEEDS_ERROR_500"),
-  //         });
-  //       }
-  //     })
-  //     .onBadRequest(result => {
-  //       if (!didCancel) {
-  //         toggleMainSpinner(false);
-  //         changeTab(3);
-  //         setError({
-  //           sender: "companies",
-  //           type: "Bad Request",
-  //           message: t("NEEDS_ERROR_400"),
-  //         });
-  //       }
-  //     })
-  //     .unAuthorized(result => {
-  //       if (!didCancel) {
-  //         toggleMainSpinner(false);
-  //         changeTab(3);
-  //         setError({
-  //           sender: "companies",
-  //           type: "unAuthorized",
-  //           message: t("NEEDS_ERROR_401"),
-  //         });
-  //       }
-  //     })
-  //     .notFound(result => {
-  //       if (!didCancel) {
-  //         toggleMainSpinner(false);
-  //         changeTab(3);
-  //         setError({
-  //           sender: "companies",
-  //           type: "notFound",
-  //           message: t("NEEDS_ERROR_404"),
-  //         });
-  //       }
-  //     })
-  //     .unKnownError(result => {
-  //       if (!didCancel) {
-  //         toggleMainSpinner(false);
-  //         changeTab(3);
-  //         setError({
-  //           sender: "companies",
-  //           type: "unKnownError",
-  //           message: t("NEEDS_ERROR_UNKNOWN"),
-  //         });
-  //       }
-  //     })
-  //     .onRequestError(result => {
-  //       if (!didCancel) {
-  //         toggleMainSpinner(false);
-  //         changeTab(3);
-  //         setError({
-  //           sender: "companies",
-  //           type: "requestError",
-  //           message: t("NEEDS_ERROR_REQUEST_ERROR"),
-  //         });
-  //       }
-  //     })
-  //     .call(access_token, relaystate, pId);
-  // }
   const handleLoanAmount = useCallback(
     val => {
       setLoanAmount(val);
@@ -745,7 +636,7 @@ export default function BusinessLoan(props) {
         personalNumber.length < 9 ||
         (loanReasonOtherVisiblity &&
           (!loanReasonOther || loanReasonOther.length === 0)) ||
-        phoneNumber.length === 0 ||
+        phoneNumber.length < 9 ||
         email.length === 0 ||
         !terms ||
         (companies && companies.length > 0 && !selectedCompany)
@@ -1192,7 +1083,7 @@ export default function BusinessLoan(props) {
                     </div>
                   )}
                 </div>
-                {b_loan_moreInfo_visibility && (
+                {!b_loan_moreInfo_visibility && (
                   <div className="bl__contactInfo">
                     <div className="bl__contactInfo__header">
                       <div className="bl__contactInfo__circleIcon">

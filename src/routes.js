@@ -1,6 +1,5 @@
 // import withResolver from '../hoc/withResolver'
 import BusinessLoan from './Pages/BusinessLoan'
-import BankIdVerify from './Pages/B_LoanBankId'
 
 // const Home = withResolver(HomeComponent)
 
