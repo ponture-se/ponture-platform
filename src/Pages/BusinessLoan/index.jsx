@@ -1083,7 +1083,7 @@ export default function BusinessLoan(props) {
                     </div>
                   )}
                 </div>
-                {!b_loan_moreInfo_visibility && (
+                {b_loan_moreInfo_visibility && (
                   <div className="bl__contactInfo">
                     <div className="bl__contactInfo__header">
                       <div className="bl__contactInfo__circleIcon">

@@ -10,7 +10,7 @@ const routes = [
   //   isPublic: true
   // },
   {
-    path: '',
+    path: '/app/loan',
     component: BusinessLoan,
     isPublic: true
   }
