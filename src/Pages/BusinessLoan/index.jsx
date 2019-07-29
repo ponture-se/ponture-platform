@@ -552,78 +552,81 @@ export default function BusinessLoan(props) {
             target: { value: personalNumber ? personalNumber : "" }
           });
         } else {
-          toggleVerifyingSpinner(true);
-          let pId = personalNumber.replace("-", "");
-          if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-          startBankId()
-            .onOk(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                setStartResult(result);
-                toggleVerifyModal(true);
-              }
-            })
-            .onServerError(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Server Error"
-                  }
-                });
-              }
-            })
-            .onBadRequest(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Bad Request"
-                  }
-                });
-              }
-            })
-            .unAuthorized(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Un Authorized"
-                  }
-                });
-              }
-            })
-            .unKnownError(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Unknown Error"
-                  }
-                });
-              }
-            })
-            .onRequestError(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: result ? result : ""
-                  }
-                });
-              }
-            })
-            .call(pId);
+          if (personalNumberIsValid) {
+            toggleVerifyingSpinner(true);
+            let pId = personalNumber.replace("-", "");
+            if (pId.length === 10 || pId.length === 11)
+              pId = "19" + pId;
+            startBankId()
+              .onOk(result => {
+                if (!didCancel) {
+                  toggleVerifyingSpinner(false);
+                  setStartResult(result);
+                  toggleVerifyModal(true);
+                }
+              })
+              .onServerError(result => {
+                if (!didCancel) {
+                  toggleVerifyingSpinner(false);
+                  dispatch({
+                    type: "ADD_NOTIFY",
+                    value: {
+                      type: "error",
+                      message: "Server Error"
+                    }
+                  });
+                }
+              })
+              .onBadRequest(result => {
+                if (!didCancel) {
+                  toggleVerifyingSpinner(false);
+                  dispatch({
+                    type: "ADD_NOTIFY",
+                    value: {
+                      type: "error",
+                      message: "Bad Request"
+                    }
+                  });
+                }
+              })
+              .unAuthorized(result => {
+                if (!didCancel) {
+                  toggleVerifyingSpinner(false);
+                  dispatch({
+                    type: "ADD_NOTIFY",
+                    value: {
+                      type: "error",
+                      message: "Un Authorized"
+                    }
+                  });
+                }
+              })
+              .unKnownError(result => {
+                if (!didCancel) {
+                  toggleVerifyingSpinner(false);
+                  dispatch({
+                    type: "ADD_NOTIFY",
+                    value: {
+                      type: "error",
+                      message: "Unknown Error"
+                    }
+                  });
+                }
+              })
+              .onRequestError(result => {
+                if (!didCancel) {
+                  toggleVerifyingSpinner(false);
+                  dispatch({
+                    type: "ADD_NOTIFY",
+                    value: {
+                      type: "error",
+                      message: result ? result : ""
+                    }
+                  });
+                }
+              })
+              .call(pId);
+          }
         }
       }
     },
