@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
-// import 'bootstrap/dist/css/bootstrap.css'
 
 import StateProvider from "./hooks/useGlobalState/stateProvider";
 import { LocaleProvider } from "./hooks/useLocale/localeContext";
 import { useTheme, useLocale, useLayout } from "./hooks";
 import "./styles/app.scss";
 import Notifies from "./components/Notifies";
-
 import BusinessLoan from "./Pages/BusinessLoan";
 
 const App = () => {
@@ -22,14 +20,14 @@ const App = () => {
   return (
     <StateProvider>
       <LocaleProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/app">
           <Switch>
             <Route
               key="appLoan"
-              path="/app/loan"
+              path="/loan"
               render={props => <BusinessLoan {...props} />}
             />
-            <Redirect from="/" to="/app/loan" exact />
+            <Redirect from="/" to="/loan" exact />
           </Switch>
         </BrowserRouter>
       </LocaleProvider>

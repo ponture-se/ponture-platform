@@ -2,10 +2,10 @@
   "name": "ponture-platform",
   "version": "0.1.0",
   "private": true,
+  "homepage": "https://app-lpanel.herokuapp.com/app",
   "dependencies": {
     "animate.css": "^3.7.0",
     "axios": "^0.19.0",
-    "bootstrap": "^4.3.1",
     "draft-js": "^0.10.5",
     "draftjs-to-html": "^0.8.4",
     "html-to-draftjs": "^1.4.0",
