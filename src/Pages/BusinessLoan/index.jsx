@@ -150,7 +150,9 @@ export default function BusinessLoan(props) {
         const l = formInitValues.loanReasons[i];
         if (l.API_Name === "other") {
           if (l.selected === true) {
-            return formInitValues.loanReasonOtherDesc;
+            return formInitValues.loanReasonOtherDesc
+              ? formInitValues.loanReasonOtherDesc
+              : "";
           } else {
             return "";
           }
@@ -555,8 +557,7 @@ export default function BusinessLoan(props) {
           if (personalNumberIsValid) {
             toggleVerifyingSpinner(true);
             let pId = personalNumber.replace("-", "");
-            if (pId.length === 10 || pId.length === 11)
-              pId = "19" + pId;
+            if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
             startBankId()
               .onOk(result => {
                 if (!didCancel) {
@@ -846,10 +847,17 @@ export default function BusinessLoan(props) {
       })
       .call(startResult.orderRef);
   }
+  function handleLogoClicked() {
+    window.open("https://www.ponture.com", "_blank");
+  }
   return (
     <div className="bl">
       <div className="bl__header">
-        <div className="bl__logo">
+        <div
+          className="bl__logo"
+          onClick={handleLogoClicked}
+          style={{ cursor: "pointer" }}
+        >
           <img src={require("./../../assets/logo-c.png")} alt="logo" />
         </div>
       </div>
