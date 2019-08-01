@@ -20,7 +20,7 @@ const App = () => {
   return (
     <StateProvider>
       <LocaleProvider>
-        <BrowserRouter>
+        <BrowserRouter basename="/app">
           <Switch>
             <Route
               key="appLoan"
