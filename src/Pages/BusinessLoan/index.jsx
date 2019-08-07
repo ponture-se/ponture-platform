@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback, useMemo } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import InputRange from "react-input-range";
 import "react-input-range/lib/css/index.css";
 //
@@ -12,7 +12,6 @@ import {
 } from "./../../utils";
 import CircleSpinner from "./../../components/CircleSpinner";
 import {
-  usePersonalNumber,
   useGlobalState,
   useLocale,
   useCookie,
@@ -172,7 +171,7 @@ export default function BusinessLoan(props) {
     setOtherReasonValidationMessage
   ] = useState();
   const [personalNumber, setPersonalNumber] = useState(
-    formInitValues.personalNumber
+    formInitValues.personalNumber ? formInitValues.personalNumber : ""
   );
   const [personalNumberIsValid, togglePersonalNumberValidation] = useState(
     true
@@ -196,7 +195,7 @@ export default function BusinessLoan(props) {
   const [emailIsValid, toggleEmailValidation] = useState(true);
   const [emailValidationMessage, setEmailValidationMessage] = useState();
   const [terms, toggleTermsChecked] = useState(false);
-  const [termValidation, toggleTermValidaiton] = useState(false);
+  const [termValidation, toggleTermValidation] = useState(false);
   const [form, setForm] = useState(formInitValues);
   const [verifyingSpinner, toggleVerifyingSpinner] = useState(false);
   const [submitSpinner, toggleSubmitSpinner] = useState(false);
@@ -483,9 +482,9 @@ export default function BusinessLoan(props) {
       } else {
         togglePersonalNumberValidation(true);
         _setPersonalNumber(e.target.value);
-        setPersonalNumber(e.target.value);
       }
     }
+    setPersonalNumber(e.target.value);
   }
   function handlePersonalNumberKeyPressed(e) {
     const key = e.which || e.key;
@@ -502,12 +501,6 @@ export default function BusinessLoan(props) {
           setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
         } else togglePhoneNumberValidation(true);
       }
-      //  else {
-      //   if (!isPhoneNumber(e.target.value)) {
-      //     togglePhoneNumberValidation(false);
-      //     setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
-      //   } else togglePhoneNumberValidation(true);
-      // }
       setPhoneNumber(e.target.value);
       _setPhoneNumber(e.target.value);
     },
@@ -538,15 +531,18 @@ export default function BusinessLoan(props) {
         const newForm = { ...f, terms: chk };
         return newForm;
       });
-      toggleTermValidaiton(!chk);
+      toggleTermValidation(!chk);
     },
     [terms]
   );
   const handleSelectCompany = useCallback(
     c => {
       setCompany(c);
+      if (!companyIsValid) {
+        toggleCompanyValidation(true);
+      }
     },
-    [selectedCompany]
+    [selectedCompany, companyIsValid]
   );
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
@@ -645,34 +641,43 @@ export default function BusinessLoan(props) {
   }
   function handleSubmitClicked() {
     if (!submitSpinner) {
-      if (
-        !personalNumber ||
-        personalNumber.length < 9 ||
-        (loanReasonOtherVisiblity &&
-          (!loanReasonOther || loanReasonOther.length === 0)) ||
-        phoneNumber.length < 9 ||
-        email.length === 0 ||
-        !terms ||
-        (companies && companies.length > 0 && !selectedCompany)
-      ) {
+      let isValid = true;
+      if (!personalNumber || personalNumber.length < 9) {
+        isValid = false;
         handlePersonalNumberChanged({
           target: { value: personalNumber ? personalNumber : "" }
         });
+      }
+      if (
+        loanReasonOtherVisiblity &&
+        (!loanReasonOther || loanReasonOther.length === 0)
+      ) {
+        isValid = false;
+        handleOtherReasonChanged({
+          target: { value: loanReasonOther ? loanReasonOther : "" }
+        });
+      }
+      if (!phoneNumber || phoneNumber.length < 9) {
+        isValid = false;
         handlePhoneNumberChanged({
           target: { value: phoneNumber ? phoneNumber : "" }
         });
+      }
+      if (!email || email.length === 0 || !validateEmail(email)) {
+        isValid = false;
         handleEmailChanged({
           target: { value: email ? email : "" }
         });
-        if (loanReasonOtherVisiblity) {
-          handleOtherReasonChanged({
-            target: { value: loanReasonOther ? loanReasonOther : "" }
-          });
-        }
-        toggleTermValidaiton(!form["terms"]);
+      }
+      if (companies && companies.length > 0 && !selectedCompany) {
+        isValid = false;
         if (!selectedCompany) toggleCompanyValidation(false);
-      } else {
-        if (!companyIsValid) toggleCompanyValidation(true);
+      }
+      if (!terms) {
+        isValid = false;
+        toggleTermValidation(!form["terms"]);
+      }
+      if (isValid) {
         toggleSubmitSpinner(true);
 
         let needs = [];
@@ -918,7 +923,6 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
-                          draggableTrack={true}
                           formatLabel={value => `${value} kr`}
                           step={loanAmountStep}
                           track="slider"
