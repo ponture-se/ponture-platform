@@ -1,4 +1,4 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 const pattern = /^(((\+)|[0-9]*)[0-9])*$/;
 export default function useNumberRegex(defaultValue) {
   const [str, _setStr] = useState(defaultValue);

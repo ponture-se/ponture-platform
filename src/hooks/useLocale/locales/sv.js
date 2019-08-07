@@ -44,6 +44,8 @@ export default {
   BL_SUCCESS_FALSE_BOTTOM_MESSAGE:
     "För att hantera ditt ärende sparar vi dina data, information, och uppgifter du lämnar hos oss eller vi samlar från andra system i vårt säkert system och delas med våra finansiella partners enligt våra integretetpolicy och Finansinspektionens reglar.",
   BL_SUCCESS_MORE_LOAN: "begära mer lån",
+  NEEDS_RESULT_ERROR:
+    "Fel vid att hämta data. För att fortsätta uppdatera webbläsaren",
   NEEDS_ERROR_500:
     "Ledsen, något gick fel i slutet av init. Vi försöker nu lösa problemet. Under tiden kan du försöka igen",
   NEEDS_ERROR_404:

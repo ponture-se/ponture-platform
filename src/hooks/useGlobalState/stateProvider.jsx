@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { StateProvider } from "./index";
 const Provider = props => {
   // const [notifiIfo] = useNotification();
@@ -13,7 +13,7 @@ const Provider = props => {
     isAuthenticated:
       token !== undefined && token !== null && token.length > 0 ? true : false,
     b_loan_moreInfo_visibility: false,
-    notifies: [],
+    notifies: []
   };
 
   const reducer = (state, action) => {
@@ -22,14 +22,14 @@ const Provider = props => {
         //   storageManager.removeItem("token");
         const logout = {
           ...state,
-          isAuthenticated: false,
+          isAuthenticated: false
         };
         return logout;
       case "TOGGLE_B_L_MORE_INFO":
         //   storageManager.removeItem("token");
         const moreInfo = {
           ...state,
-          b_loan_moreInfo_visibility: action.value,
+          b_loan_moreInfo_visibility: action.value
         };
         return moreInfo;
       case "ADD_NOTIFY":
@@ -39,7 +39,7 @@ const Provider = props => {
         items_n.unshift(newItem);
         return {
           ...state,
-          notifies: items_n,
+          notifies: items_n
         };
       case "REMOVE_NOTIFY":
         const items = state.notifies.filter(
@@ -47,7 +47,7 @@ const Provider = props => {
         );
         return {
           ...state,
-          notifies: items,
+          notifies: items
         };
       default:
         return state;

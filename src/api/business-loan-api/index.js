@@ -1,24 +1,13 @@
-const axios = require('axios')
+const axios = require("axios");
 
-const config = process.env
-const baseUrl = config.REACT_APP_BUSINESS_LOAN_BASE_URL
-const needsListUrl = baseUrl + config.REACT_APP_BUSINESS_LOAN_NEEDS_LIST
-const startUrl =
-  config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW +
-  config.REACT_APP_BUSINESS_SILENT_START
-const collectUrl =
-  config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW +
-  config.REACT_APP_BUSINESS_SILENT_COLLECT
-const cancelUrl =
-  config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW +
-  config.REACT_APP_BUSINESS_SILENT_CANCEL
-const companiesUrl =
-  config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW +
-  config.REACT_APP_BUSINESS_SILENT_GET_COMPANIES
-  const submitUrl =
-  config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW +
-  config.REACT_APP_BUSINESS_SILENT_SUBMIT
-
+const config = process.env;
+const baseUrl = config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW;
+const needsListUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_NEEDS_LIST;
+const startUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_START;
+const collectUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_COLLECT;
+const cancelUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_CANCEL;
+const companiesUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_GET_COMPANIES;
+const submitUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_SUBMIT;
 
 function setAuthorizationToken(token) {
   if (token) {
@@ -26,957 +15,808 @@ function setAuthorizationToken(token) {
   } else {
     delete axios.defaults.headers.common["Authorization"];
   }
-}  
-export function getToken () {
-  let _onOkCallBack
-  function _onOk (result) {
-    if (_onOkCallBack) {
-      _onOkCallBack(result)
-    }
-  }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
-    if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
-    }
-  }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
-    if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
-    }
-  }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
-    if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
-    }
-  }
-  let _notFoundCallBack
-  function _notFound (result) {
-    if (_notFoundCallBack) {
-      _notFoundCallBack(result)
-    }
-  }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
-    if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
-    }
-  }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
-    if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
-    }
-  }
-
-  const _call = async () => {
-    try {
-      // const url =
-      //    'https://test.salesforce.com/services/oauth2/token'
-      //   //'https://crmdev-ponture-crmdev.cs84.force.com/services/oauth2/token'
-
-      // let formData = new FormData()
-      // formData.append('grant_type', 'password')
-      // formData.append(
-      //   'client_id',
-      //   '3MVG96mGXeuuwTZgBI_DSQZsUSfr_l2y2KTzMuV7RBWYGqMf3gVjVjU_jKumhbFQx7qLZ2TVa7rDr0ATVXRZJ'
-      // )
-      // formData.append(
-      //   'client_secret',
-      //   '87C7F37D3430525C138A6E424BCE6D61187273CB69F00067E7DF2299326D812C'
-      // )
-      // formData.append('username', 'hamed-3eph@force.com.crmdev')
-      // formData.append('password', 'ponZXC123!')
-
-      // var rawResponse = await fetch(url, {
-      //   method: 'POST',
-      //   // mode: 'no-cors',
-      //   // type:"cors",
-      //   // crossOrigin: true,
-      //   // headers: {
-      //   //   // 'content-type': 'multipart/form-data;',
-      //   //    Accept: 'application/json',
-      //   //   'Access-Control-Allow-Origin': '*'
-      //   // },
-      //   body: formData
-      // })
-      // const status = rawResponse.status
-      // const result = await rawResponse.json()
-      const status = 200
-      const result = {
-        access_token:
-          '00D5E000000DGic!ARkAQH0IOQBT0xV76.LoX6rwiCT69IyswwZgJNE6EW.3MCZ1UBYSXMzP7gq4ztYdt8tXDuXdP96hBeLY07tkIQxfb3IgOIk7',
-        instance_url: 'https://dev-sb-ponture--crmdev.my.salesforce.com',
-        id:
-          'https://test.salesforce.com/id/00D5E000000DGicUAG/0051t000002PsClAAK',
-        token_type: 'Bearer',
-        issued_at: '1561097784827',
-        signature: 'q+5O1fPwYZx/Lw1mc/Df6CpJNubH2CDlpPu+fgQAETI='
-      }
-
-      switch (status) {
-        case 200:
-          _onOk(result)
-          break
-        case 400:
-          _onBadRequest()
-          break
-        case 401:
-          _unAuthorized()
-          break
-        case 404:
-          _notFound()
-          break
-        case 500:
-          _onServerError()
-          break
-        default:
-          _unKnownError()
-          break
-      }
-    } catch (error) {
-      _onRequestError(error)
-    }
-  }
-
-  return {
-    call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
-    },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
-    },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
-    },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
-    },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
-    },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
-    },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
-    }
-  }
 }
 
-export function verifyPersonalNumber () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function verifyPersonalNumber() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
   const _call = async personalNumber => {
     try {
       const url =
-        'https://crmdev-ponture-crmdev.cs84.force.com/oauth/services/apexrest/verify?pId=' +
-        personalNumber
+        "https://crmdev-ponture-crmdev.cs84.force.com/oauth/services/apexrest/verify?pId=" +
+        personalNumber;
       var rawResponse = await fetch(url, {
-        method: 'GET',
+        method: "GET",
         crossOrigin: true,
         headers: {
-          Accept: 'application/json',
-          'Access-Control-Allow-Origin': '*'
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*"
         }
-      })
-      const status = rawResponse.status
-      const result = await rawResponse.json()
+      });
+      const status = rawResponse.status;
+      const result = await rawResponse.json();
       switch (status) {
         case 200:
-          _onOk(result)
-          break
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest()
-          break
+          _onBadRequest();
+          break;
         case 401:
-          _unAuthorized()
-          break
+          _unAuthorized();
+          break;
         case 404:
-          _notFound()
-          break
+          _notFound();
+          break;
         case 500:
-          _onServerError(result)
-          break
+          _onServerError(result);
+          break;
         default:
-          _unKnownError()
-          break
+          _unKnownError();
+          break;
       }
     } catch (error) {
-      _onRequestError(error.message)
+      _onRequestError(error.message);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }
 
-export function startBankId () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function startBankId() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
   const _call = async personalNumber => {
     try {
-      const url = startUrl
+      const url = startUrl;
       var rawResponse = await axios({
-        method: 'POST',
+        method: "POST",
         url: url,
         headers: {
-          Accept: 'application/json'
+          Accept: "application/json"
         },
         data: {
           personalNumber: personalNumber
         }
-      })
-      const status = rawResponse.status
-      const result = rawResponse.data
+      });
+      const status = rawResponse.status;
+      const result = rawResponse.data;
       switch (status) {
         case 200:
-          setAuthorizationToken(result.access_token)
-          _onOk(result)
-          break
+          setAuthorizationToken(result.access_token);
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest()
-          break
+          _onBadRequest();
+          break;
         case 401:
-          _unAuthorized()
-          break
+          _unAuthorized();
+          break;
         case 404:
-          _notFound()
-          break
+          _notFound();
+          break;
         case 500:
-          _onServerError(result)
-          break
+          _onServerError(result);
+          break;
         default:
-          _unKnownError()
-          break
+          _unKnownError();
+          break;
       }
     } catch (error) {
-      _onRequestError(error.message)
+      _onRequestError(error.message);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }
-export function collect () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function collect() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
   const _call = async () => {
     try {
-      const url = collectUrl 
+      const url = collectUrl;
       var rawResponse = await axios({
         url: url,
-        method: 'GET',
+        method: "GET",
         timeout: 300000,
         headers: {
-          Accept: 'application/json'
+          Accept: "application/json"
         }
-      })
-      const status = rawResponse.status
-      const result = await rawResponse.data
+      });
+      const status = rawResponse.status;
+      const result = await rawResponse.data;
       switch (status) {
         case 200:
-          _onOk(result)
-          break
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest()
-          break
+          _onBadRequest();
+          break;
         case 401:
-          _unAuthorized()
-          break
+          _unAuthorized();
+          break;
         case 404:
-          _notFound()
-          break
+          _notFound();
+          break;
         case 500:
-          _onServerError(result)
-          break
+          _onServerError(result);
+          break;
         default:
-          _unKnownError()
-          break
+          _unKnownError();
+          break;
       }
     } catch (error) {
-      _onRequestError(error.message)
+      _onRequestError(error.message);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }
-export function cancelVerify () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function cancelVerify() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
   const _call = async () => {
     try {
-      const url = cancelUrl
+      const url = cancelUrl;
       var rawResponse = await axios({
         url: url,
-        method: 'POST',
+        method: "POST",
         headers: {
-          Accept: 'application/json',
+          Accept: "application/json"
         },
         data: {}
-      })
-      const status = rawResponse.status
-      const result = await rawResponse.data
+      });
+      const status = rawResponse.status;
+      const result = await rawResponse.data;
       switch (status) {
         case 200:
-          _onOk(result)
-          break
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest()
-          break
+          _onBadRequest();
+          break;
         case 401:
-          _unAuthorized()
-          break
+          _unAuthorized();
+          break;
         case 404:
-          _notFound()
-          break
+          _notFound();
+          break;
         case 500:
-          _onServerError(result)
-          break
+          _onServerError(result);
+          break;
         default:
-          _unKnownError()
-          break
+          _unKnownError();
+          break;
       }
     } catch (error) {
-      _onRequestError(error.message)
+      _onRequestError(error.message);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }
 
-export function getNeedsList () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function getNeedsList() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
-  const _call = async (lang = 'sv') => {
+  const _call = async (lang = "sv") => {
     try {
-      const url = needsListUrl + '?lang=' + lang
+      const url = needsListUrl + "?lang=" + lang;
       var rawResponse = await fetch(url, {
-        method: 'GET'
-      })
+        method: "GET"
+      });
 
-      const status = rawResponse.status
-      const result = await rawResponse.json()
-      // const status = 500
-      // const result = ''
+      const status = rawResponse.status;
+      const result = await rawResponse.json();
 
       switch (status) {
         case 200:
-          _onOk(result)
-          break
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest(result)
-          break
+          _onBadRequest(result);
+          break;
         case 401:
-          _unAuthorized(result)
-          break
+          _unAuthorized(result);
+          break;
         case 404:
-          _notFound(result)
-          break
+          _notFound(result);
+          break;
         case 500:
-          _onServerError(result)
-          break
+          _onServerError(result);
+          break;
         default:
-          _unKnownError(result)
-          break
+          _unKnownError(result);
+          break;
       }
     } catch (error) {
-      _onRequestError(error)
+      _onRequestError(error);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }
-export function getCompanies () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function getCompanies() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
-  const _call = async (personalNumber) => {
+  const _call = async personalNumber => {
     try {
-      const url = companiesUrl + '?personalNumber=' + personalNumber
+      const url = companiesUrl + "?personalNumber=" + personalNumber;
       var rawResponse = await axios({
         url: url,
-        method: 'GET',
-        headers: {
-        }
-      })
+        method: "GET",
+        headers: {}
+      });
 
-      const status = rawResponse.status
-      const result = await rawResponse.data
+      const status = rawResponse.status;
+      const result = await rawResponse.data;
       switch (status) {
         case 200:
-          _onOk(result)
-          break
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest()
-          break
+          _onBadRequest();
+          break;
         case 401:
-          _unAuthorized()
-          break
+          _unAuthorized();
+          break;
         case 404:
-          _notFound()
-          break
+          _notFound();
+          break;
         case 500:
-          _onServerError()
-          break
+          _onServerError();
+          break;
         default:
-          _unKnownError()
-          break
+          _unKnownError();
+          break;
       }
     } catch (error) {
-      _onRequestError(error)
+      _onRequestError(error);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }
-export function submitLoan () {
-  let _onOkCallBack
-  function _onOk (result) {
+export function submitLoan() {
+  let _onOkCallBack;
+  function _onOk(result) {
     if (_onOkCallBack) {
-      _onOkCallBack(result)
+      _onOkCallBack(result);
     }
   }
-  let _onServerErrorCallBack
-  function _onServerError (result) {
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
     if (_onServerErrorCallBack) {
-      _onServerErrorCallBack(result)
+      _onServerErrorCallBack(result);
     }
   }
-  let _onBadRequestCallBack
-  function _onBadRequest (result) {
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
     if (_onBadRequestCallBack) {
-      _onBadRequestCallBack(result)
+      _onBadRequestCallBack(result);
     }
   }
-  let _unAuthorizedCallBack
-  function _unAuthorized (result) {
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
     if (_unAuthorizedCallBack) {
-      _unAuthorizedCallBack(result)
+      _unAuthorizedCallBack(result);
     }
   }
-  let _notFoundCallBack
-  function _notFound (result) {
+  let _notFoundCallBack;
+  function _notFound(result) {
     if (_notFoundCallBack) {
-      _notFoundCallBack(result)
+      _notFoundCallBack(result);
     }
   }
-  let _onRequestErrorCallBack
-  function _onRequestError (result) {
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
     if (_onRequestErrorCallBack) {
-      _onRequestErrorCallBack(result)
+      _onRequestErrorCallBack(result);
     }
   }
-  let _unKnownErrorCallBack
-  function _unKnownError (result) {
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
-      _unKnownErrorCallBack(result)
+      _unKnownErrorCallBack(result);
     }
   }
 
-  const _call = async (loan) => {
+  const _call = async loan => {
     try {
-      const url =submitUrl
+      const url = submitUrl;
       var rawResponse = await axios({
-        url:url,
-        method: 'POST',
+        url: url,
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json"
         },
         data: loan
-      })
+      });
 
-      const status = rawResponse.status
-      const result = rawResponse.data
+      const status = rawResponse.status;
+      const result = rawResponse.data;
 
       switch (status) {
         case 200:
         case 201:
-          _onOk(result)
-          break
+          _onOk(result);
+          break;
         case 400:
-          _onBadRequest()
-          break
+          _onBadRequest();
+          break;
         case 401:
-          _unAuthorized()
-          break
+          _unAuthorized();
+          break;
         case 404:
-          _notFound()
-          break
+          _notFound();
+          break;
         case 500:
-          _onServerError(result)
-          break
+          _onServerError(result);
+          break;
         default:
-          _unKnownError()
-          break
+          _unKnownError();
+          break;
       }
     } catch (error) {
-      _onRequestError(error.message)
+      _onRequestError(error.message);
     }
-  }
+  };
 
   return {
     call: _call,
-    onOk: function (callback) {
-      _onOkCallBack = callback
-      return this
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
     },
-    onServerError: function (callback) {
-      _onServerErrorCallBack = callback
-      return this
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
     },
-    onBadRequest: function (callback) {
-      _onBadRequestCallBack = callback
-      return this
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
     },
-    notFound: function (callback) {
-      _notFoundCallBack = callback
-      return this
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
     },
-    unAuthorized: function (callback) {
-      _unAuthorizedCallBack = callback
-      return this
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
     },
-    onRequestError: function (callback) {
-      _onRequestErrorCallBack = callback
-      return this
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
     },
-    unKnownError: function (callback) {
-      _unKnownErrorCallBack = callback
-      return this
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
     }
-  }
+  };
 }

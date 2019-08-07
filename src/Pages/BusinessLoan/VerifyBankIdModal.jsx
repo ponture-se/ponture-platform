@@ -1,22 +1,16 @@
 import React, { useState, useEffect } from "react";
 import CircleSpinner from "../../components/CircleSpinner";
-import {
-  collect,
-  cancelVerify,
-  getCompanies
-} from "./../../api/business-loan-api";
+import { collect, getCompanies } from "./../../api/business-loan-api";
 //
-import { useGlobalState, useLocale } from "./../../hooks";
+import { useLocale } from "./../../hooks";
 //
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
-  const [{}, dispatch] = useGlobalState();
-  const { t, currentLang } = useLocale();
+  const { t } = useLocale();
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [status, setStatus] = useState(t("RFA1"));
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
-  const [successResult, setSuccessResult] = useState();
 
   useEffect(() => {
     let didCancel = false;

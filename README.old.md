@@ -1,2 +1,0 @@
-# ponture-platform
-ponture platform
