@@ -1,33 +1,24 @@
-import { useState } from 'react'
+import { useState } from "react";
+import Cookies from "js-cookie";
 
-const setCookie = (name, value, options) => {
-  const expires = new Date(Date.now() + options.days * 864e5).toUTCString()
-  document.cookie =
-    name +
-    '=' +
-    encodeURIComponent(value) +
-    '; expires=' +
-    expires +
-    '; path=' +
-    options.path
-}
+const setCookie = (name, value, days = 7) => {
+  if (!value || value.length === 0) Cookies.remove(name);
+  else Cookies.set(name, value, { expires: days });
+};
 
 const getCookie = name => {
-  return document.cookie.split('; ').reduce((r, v) => {
-    const parts = v.split('=')
-    return parts[0] === name ? decodeURIComponent(parts[1]) : r
-  }, '')
-}
+  return Cookies.get(name);
+};
 
-export default function (key, initialValue) {
+export default function(key, initialValue) {
   const [item, setItem] = useState(() => {
-    return getCookie(key) || initialValue
-  })
+    return getCookie(key) || initialValue;
+  });
 
-  const updateItem = (value, options = { days: 7, path: '/' }) => {
-    setItem(value)
-    setCookie(key, value, options)
-  }
+  const updateItem = value => {
+    setItem(value);
+    setCookie(key, value);
+  };
 
-  return [item, updateItem]
+  return [item, updateItem];
 }

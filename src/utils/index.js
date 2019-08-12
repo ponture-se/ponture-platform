@@ -1,3 +1,4 @@
+const axios = require("axios");
 export function getParameterByName(name, url) {
   if (!url) url = window.location.href;
   name = name.replace(/[\[\]]/g, "\\$&");
@@ -30,4 +31,9 @@ export function isPersonalNumber(pId) {
 export function isPhoneNumber(phone) {
   const p = /^(((\+)|[0-9]*)[0-9]){9,13}$/;
   return p.test(phone);
+}
+
+export function setAuthorizationToken(token) {
+  if (token) axios.defaults.headers.common["Authorization"] = `Bearer ${token}`;
+  else delete axios.defaults.headers.common["Authorization"];
 }

@@ -25,7 +25,6 @@ import {
   getNeedsList
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "./VerifyBankIdModal";
-import ErrorBoundary from "../../components/ErrorBoundary";
 //
 const loanAmountMax = 10000000;
 const loanAmountMin = 10000;
@@ -333,17 +332,17 @@ export default function BusinessLoan(props) {
           });
         }
       })
-      .onRequestError(result => {
-        if (!didCancel) {
-          toggleMainSpinner(false);
-          changeTab(3);
-          setError({
-            sender: "needs",
-            type: "requestError",
-            message: t("NEEDS_ERROR_REQUEST_ERROR")
-          });
-        }
-      })
+      // .onRequestError(result => {
+      //   if (!didCancel) {
+      //     toggleMainSpinner(false);
+      //     changeTab(3);
+      //     setError({
+      //       sender: "needs",
+      //       type: "requestError",
+      //       message: t("NEEDS_ERROR_REQUEST_ERROR")
+      //     });
+      //   }
+      // })
       .call(currentLang);
   }
   const handleLoanAmount = useCallback(
@@ -623,18 +622,18 @@ export default function BusinessLoan(props) {
                 });
               }
             })
-            .onRequestError(result => {
-              if (!didCancel) {
-                toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: result ? result : ""
-                  }
-                });
-              }
-            })
+            // .onRequestError(result => {
+            //   if (!didCancel) {
+            //     toggleVerifyingSpinner(false);
+            //     dispatch({
+            //       type: "ADD_NOTIFY",
+            //       value: {
+            //         type: "error",
+            //         message: result ? result : ""
+            //       }
+            //     });
+            //   }
+            // })
             .call(pId);
         }
       }
@@ -786,18 +785,18 @@ export default function BusinessLoan(props) {
               });
             }
           })
-          .onRequestError(result => {
-            if (!didCancel) {
-              toggleSubmitSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: result ? result : t("ON_REQUEST_ERROR")
-                }
-              });
-            }
-          })
+          // .onRequestError(result => {
+          //   if (!didCancel) {
+          //     toggleSubmitSpinner(false);
+          //     dispatch({
+          //       type: "ADD_NOTIFY",
+          //       value: {
+          //         type: "error",
+          //         message: result ? result : t("ON_REQUEST_ERROR")
+          //       }
+          //     });
+          //   }
+          // })
           .call(obj);
       }
     }
@@ -811,7 +810,8 @@ export default function BusinessLoan(props) {
     _setPersonalNumber();
   }
   function backtoLoan() {
-    window.location.reload();
+    window.location.href = window.location.href.split("?")[0];
+    // window.location.reload();
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
@@ -861,10 +861,6 @@ export default function BusinessLoan(props) {
         }
       })
       .unKnownError(result => {
-        if (!didCancel) {
-        }
-      })
-      .onRequestError(result => {
         if (!didCancel) {
         }
       })

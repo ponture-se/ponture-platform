@@ -8,10 +8,8 @@ const Provider = props => {
   //   }, 2000);
   // }, false);
 
-  const token = false;
   const initialState = {
-    isAuthenticated:
-      token !== undefined && token !== null && token.length > 0 ? true : false,
+    isAuthenticated: false,
     b_loan_moreInfo_visibility: false,
     notifies: []
   };
@@ -19,14 +17,12 @@ const Provider = props => {
   const reducer = (state, action) => {
     switch (action.type) {
       case "LOGOUT":
-        //   storageManager.removeItem("token");
         const logout = {
           ...state,
           isAuthenticated: false
         };
         return logout;
       case "TOGGLE_B_L_MORE_INFO":
-        //   storageManager.removeItem("token");
         const moreInfo = {
           ...state,
           b_loan_moreInfo_visibility: action.value
