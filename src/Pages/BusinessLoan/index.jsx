@@ -25,6 +25,7 @@ import {
   getNeedsList
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "./VerifyBankIdModal";
+import ErrorBoundary from "../../components/ErrorBoundary";
 //
 const loanAmountMax = 10000000;
 const loanAmountMin = 10000;
@@ -691,6 +692,7 @@ export default function BusinessLoan(props) {
         if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
         let obj = {
           orgNumber: selectedCompany ? selectedCompany.companyId : "",
+          orgName: selectedCompany ? selectedCompany.companyName : "",
           personalNumber: pId,
           amount: parseInt(loanAmount),
           amourtizationPeriod: parseInt(loanPeriod),
