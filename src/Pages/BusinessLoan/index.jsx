@@ -212,7 +212,7 @@ export default function BusinessLoan(props) {
 
   useEffect(() => {
     setLoanAmountDisplay(
-      loanAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1,")
+      loanAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ")
     );
   }, [loanAmount]);
   function _loadNeeds(callBack) {
@@ -944,7 +944,9 @@ export default function BusinessLoan(props) {
                         {t("BL_LOAN_PERIOD")}
                       </label>
                       <span className="bl__input__label bl__input__sliderLabel loanAmountValue">
-                        {loanPeriod + " " + t("MONTH")}
+                        {loanPeriod +
+                          " " +
+                          (loanPeriod == 1 ? t("MONTH") : t("MONTHS"))}
                       </span>
                     </div>
                     <div className="bl__rangeElement">
@@ -956,7 +958,10 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
-                          formatLabel={value => `${value} ${t("MONTH")}`}
+                          formatLabel={value =>
+                            `${value} 
+                            ${loanPeriod == 1 ? t("MON") : t("MON")}`
+                          }
                           step={loanPeriodStep}
                           maxValue={loanPeriodMax}
                           minValue={loanPeriodMin}
@@ -975,6 +980,7 @@ export default function BusinessLoan(props) {
                   <div className="bl__input animated fadeIn">
                     <label className="bl__input__label">
                       {t("BL_REASON_LOAN")}
+                      <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
                     <div className="options">
                       {loanReasons &&
@@ -1033,6 +1039,7 @@ export default function BusinessLoan(props) {
                   >
                     <label className="bl__input__label">
                       {t("BL_PERSONAL_NUMBER")}
+                      <span>{t("BL_PERSONAL_NUMBER_INFO")}</span>
                     </label>
                     <div className="bl__input__element">
                       <div className="element-group">
@@ -1072,8 +1079,7 @@ export default function BusinessLoan(props) {
                   {companies && companies.length > 0 && (
                     <div className="bl__input animated fadeIn">
                       <label className="bl__input__label">
-                        {t("BL_COMPANY_NAME")}&nbsp;
-                        {t("BL_ORGANIZATION_NAME")}
+                        {t("BL_COMPANY")}
                       </label>
                       <div className="options">
                         {companies.map(c => (

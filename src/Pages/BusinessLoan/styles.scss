@@ -671,6 +671,15 @@
 select {
   @include variable(direction, direction, ltr);
 }
+.bl__input__label {
+  display: flex;
+  flex-direction: column;
+  span{
+    font-size: 12.5px;
+    padding-top: 3px;
+    color: gray
+  }
+}
 .userInputs {
   display: flex;
   .bl__input {
@@ -818,34 +827,33 @@ select {
 }
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
-.modal {
+  .modal {
     width: 95%;
     margin: 0 2.5%;
-   }
+  }
 }
 @media (min-width: 576px) {
- .modal {
+  .modal {
     width: 500px;
-   }
+  }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
- .modal {
+  .modal {
     width: 500px;
-   }
+  }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-   .modal {
+  .modal {
     width: 500px;
-   }
+  }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
-  
 }
 
 .bankId__centerBox {
