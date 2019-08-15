@@ -644,9 +644,6 @@
       line-height: 2;
       padding-bottom: 20px;
       text-align: justify;
-      a {
-        padding: 0 5px;
-      }
       @include variable(direction, direction, ltr);
     }
     hr {
@@ -674,10 +671,10 @@ select {
 .bl__input__label {
   display: flex;
   flex-direction: column;
-  span{
+  span {
     font-size: 12.5px;
     padding-top: 3px;
-    color: gray
+    color: gray;
   }
 }
 .userInputs {

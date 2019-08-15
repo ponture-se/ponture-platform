@@ -42,10 +42,11 @@ export default {
   BL_VERIFY_PID_BTN: "Identifiera med BankID",
   BL_TERMS_IS_REQUIRED:
     "Godkännande av våra villkor är obligatorisk för att ansöka.",
-  BL_SUCCESS_TOP_MESSAGE: `Tack för din ansökan. Vi startar automatiskt att hitta låne offerter för dig. Du får ett autamiskt epostmedellande från oss om din ansökan. Gärna kika din e-post inkrog. Om du vill följa upp eller har fågor och funderingar om din ansökan gärna konakta våra finanskonsulter via kontakt oss förmulärt (link to Kontakt Oss page on ponture.com)`,
+  BL_SUCCESS_TOP_MESSAGE: `Tack för din ansökan! Vi kommer nu att påbörja processen med att hitta låneofferter till er. Du kommer få ett epostmeddelande från oss om din ansökan, vänligen titta i din inkorg. Har du frågor eller funderingar gällande din ansökan kontakta gärna våra finanskonsulter på denna epostadress:`,
+  BL_SUCCESS_CENTER_MSG: "eller ring oss på",
   SUBMIT_WITH_ERROR_TITLE: "Kan inte fortsätta",
   BL_SUCCESS_BOTTOM_MESSAGE:
-    "För att hantera ditt ärende sparar vi dina data,information, och uppgifter du lämnar hos oss eller vi samlar från andra system i vårt säkert system och delas med våra finansiella partners enligt våra integretetpolicy och Finansinspektionens reglar.",
+    "För att hantera ditt ärende sparar vi din information, data och de uppgifter du lämnar till oss och kan komma att delas med våra finansiella partners enligt vår integritetspolicy och Finansinspektionens regler.",
   BL_SUCCESS_FALSE_TOP_MESSAGE:
     "Tack för ditt intresse för att ansöka om lån hos oss. Tyvärr kunde du inte verifiera dig genom ditt BankID. Vi spara din låneansökan och våra finanskonsulter kommer att kontakta dig inom kort. Om du vill följa upp eller har fågor och funderingar om din ansökan gärna konakta våra finanskonsulter via kontakt oss förmulärt",
   BL_SUCCESS_FALSE_BOTTOM_MESSAGE:
