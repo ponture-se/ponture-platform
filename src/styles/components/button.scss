@@ -21,6 +21,7 @@
   &.--large {
     min-height: 50px;
     padding: 0 20px !important;
+    font-size: 18px;
   }
   &.--light {
     @include variable(my-btn-light-bg, -webkit-background-color, lightgray);

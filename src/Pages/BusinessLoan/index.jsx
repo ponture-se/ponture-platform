@@ -27,7 +27,7 @@ import {
 import VerifyBankIdModal from "./VerifyBankIdModal";
 //
 const loanAmountMax = 10000000;
-const loanAmountMin = 10000;
+const loanAmountMin = 100000;
 const loanPeriodStep = 1;
 const loanPeriodMax = 60;
 const loanPeriodMin = 1;
@@ -117,7 +117,6 @@ export default function BusinessLoan(props) {
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [tab, changeTab] = useState(1);
   const [verifyModal, toggleVerifyModal] = useState();
-  const [isErrorBankId, taggleIsErrorBankId] = useState(false);
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
     formInitValues.loanAmount
@@ -810,7 +809,8 @@ export default function BusinessLoan(props) {
     _setPersonalNumber();
   }
   function backtoLoan() {
-    window.location.href = window.location.href.split("?")[0];
+    // window.location.href = window.location.href.split("?")[0];
+    window.location.href = "https://www.ponture.com/";
     // window.location.reload();
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
@@ -1219,7 +1219,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <div className="bl__actions">
                       <button
-                        className="btn --success"
+                        className="btn --warning --large"
                         onClick={handleSubmitClicked}
                       >
                         {submitSpinner && (
@@ -1232,58 +1232,36 @@ export default function BusinessLoan(props) {
                 )}
               </>
             )}
-            {tab === 2 &&
-              (!isErrorBankId ? (
-                <div className="bl__successBox animated fadeIn faster">
-                  <div className="bl__successBox__top">
-                    <div className="submitIcon">
-                      <i className="icon-checkmark" />
-                    </div>
-                    <h4 className="text">{t("SUBMITTED")}!</h4>
+            {tab === 2 && (
+              <div className="bl__successBox animated fadeIn faster">
+                <div className="bl__successBox__top">
+                  <div className="submitIcon">
+                    <i className="icon-checkmark" />
                   </div>
-                  <hr />
-                  <div className="longDesc">
-                    {t("BL_SUCCESS_TOP_MESSAGE")}
-                    <br />
-                    <br />
-                    <a href="mailto:contact@ponture.com">contact@ponture.com</a>
-                    <span>&nbsp;{t("BL_SUCCESS_CENTER_MSG")}&nbsp;</span>
-                    {t("TELEPHONE")}: 010 129 29 20
-                    <br />
-                    <br />
-                    {t("BL_SUCCESS_BOTTOM_MESSAGE")}
-                  </div>
-                  <div className="bl__successBox__actions">
-                    <button className="btn --light" onClick={backtoLoan}>
-                      {t("BL_SUCCESS_MORE_LOAN")}
-                    </button>
-                  </div>
+                  <h4 className="text">{t("SUBMITTED")}!</h4>
                 </div>
-              ) : (
-                <div className="bl__successBox animated fadeIn">
-                  <div className="bl__successBox__top">
-                    <div className="submitIcon">
-                      <i className="icon-checkmark" />
-                    </div>
-                    <h4 className="text">{t("SUBMIT_WITH_ERROR_TITLE")}</h4>
-                  </div>
-                  <hr />
-                  <div className="longDesc">
-                    {t("BL_SUCCESS_FALSE_TOP_MESSAGE")}
-                    <br />
-                    <a href="mailto:contact@ponture.com">contact@ponture.com</a>
-                    <br />
-                    {t("TELEPHONE")}: 010 129 29 20
-                    <br />
-                    {t("BL_SUCCESS_FALSE_BOTTOM_MESSAGE")}
-                  </div>
-                  <div className="bl__successBox__actions">
-                    <button className="btn --light" onClick={backtoLoan}>
-                      {t("APPLY_AGAIN")}
-                    </button>
-                  </div>
+                <hr />
+                <div className="longDesc">
+                  {t("BL_SUCCESS_TOP_MESSAGE")}
+                  <br />
+                  <br />
+                  <a href="mailto:contact@ponture.com">contact@ponture.com</a>
+                  <span>&nbsp;{t("BL_SUCCESS_CENTER_MSG")}&nbsp;</span>
+                  {t("TELEPHONE")}: 010 129 29 20
+                  <br />
+                  <br />
+                  {t("BL_SUCCESS_BOTTOM_MESSAGE")}
                 </div>
-              ))}
+                <div className="bl__successBox__actions">
+                  <button
+                    className="btn --warning --large"
+                    onClick={backtoLoan}
+                  >
+                    {t("BL_SUCCESS_MORE_LOAN")}
+                  </button>
+                </div>
+              </div>
+            )}
             {tab === 3 && (
               <div className="bl__successBox animated fadeIn">
                 <div className="bl__successBox__top">

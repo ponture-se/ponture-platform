@@ -19,7 +19,7 @@ const CircleSpinner = props => {
     <div
       style={{
         borderColor: props.bgColor || "#f3f3f3",
-        borderTopColor: props.color || "rgb(66, 204, 173)",
+        borderTopColor: props.color || "transparent",
       }}
       className={classNames}
       onClick={handleClick}

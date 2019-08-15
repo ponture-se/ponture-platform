@@ -593,10 +593,14 @@
   }
   &__actions {
     @include variable(bl-actions-border, border-top, 0.5px solid lightgray);
-    padding: 6% 0;
+    // padding: 6% 0;
+    height: 120px;
+    align-items: center;
     display: flex;
     @include variable(flex-direction, flex-direction, row);
-    justify-content: flex-end;
+    button {
+      width: 100%;
+    }
   }
   &__successBox {
     padding: 3% 6%;
@@ -681,11 +685,14 @@ select {
   display: flex;
   .bl__input {
     width: 100%;
-    margin: 0 10px;
+    margin: 0 0px;
+    &:nth-child(even) {
+      @include variable(input-even-margin, margin, 0 10px);
+    }
   }
 }
 .termChk {
-  margin: 20px 10px;
+  margin: 20px 0;
   .validation-messsage {
     margin-top: 10px;
   }

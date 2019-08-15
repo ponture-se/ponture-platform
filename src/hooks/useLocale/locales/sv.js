@@ -22,8 +22,8 @@ export default {
   BL_PERSONAL_NUMBER: "Personnummer",
   BL_PERSONAL_NUMBER_INFO:
     "Ange ditt svenska personnummer så att vi kan hitta ditt företag",
-  BL_COMPANY: "Välj företag",
-  BL_CONTACT_BOX_TITLE: "kontaktuppgifter:",
+  BL_COMPANY: "Välj ditt företag",
+  BL_CONTACT_BOX_TITLE: "Kontaktuppgifter:",
   BL_PHONE_NUMBER: "Telefon",
   BL_EMAIL: "E-post",
   BL_TERMS: "Härmed godkänner jag användarvillkoren.",
@@ -51,7 +51,7 @@ export default {
     "Tack för ditt intresse för att ansöka om lån hos oss. Tyvärr kunde du inte verifiera dig genom ditt BankID. Vi spara din låneansökan och våra finanskonsulter kommer att kontakta dig inom kort. Om du vill följa upp eller har fågor och funderingar om din ansökan gärna konakta våra finanskonsulter via kontakt oss förmulärt",
   BL_SUCCESS_FALSE_BOTTOM_MESSAGE:
     "För att hantera ditt ärende sparar vi dina data, information, och uppgifter du lämnar hos oss eller vi samlar från andra system i vårt säkert system och delas med våra finansiella partners enligt våra integretetpolicy och Finansinspektionens reglar.",
-  BL_SUCCESS_MORE_LOAN: "Tillbaka till ponture.com",
+  BL_SUCCESS_MORE_LOAN: "till Ponture.com",
   NEEDS_RESULT_ERROR:
     "Fel vid att hämta data. För att fortsätta uppdatera webbläsaren",
   NEEDS_ERROR_500:
@@ -80,16 +80,17 @@ export default {
     "Förfrågan misslyckades på grund av ett oväntat villkor som uppstod. Under tiden kan du försöka igen",
   BL_VERIFY_MODAL_TITLE: "Verifiera med BankId",
   BL_VERIFY_MODAL_INFO:
-    "För att fortsätta, kommer BankId att omdirigera dig,e-postadress, språk preferens och profilbild med ponture.com",
+    "För att fortsätta behöver du verifiera dig med ditt BankID",
   BL_VERIFY_MODAL_LOADING: "Anslut till bankId...",
   BL_VERIFY_MODAL_CANCEL_BTN: "Avbryt verifiering",
   RFA1: "Starta BankID-appen",
   CANCEL_VERIFY: "Du avbokade verifieringen",
-  VERIFYIED_SUCCESS: "Du bekräftade bankans framgångsrikt.",
+  VERIFYIED_SUCCESS: "Tack för din BankID verifiering!",
   VERIFY_STARTED_COMPUTER:
     "Söker efter BankID, det kan ta en liten stund… Om det har gått några sekunder och inget BankID har hittats har du sannolikt inget BankID som går att använda för den aktuella inloggningen/underskriften i den här datorn. Om du har ett BankIDkort, sätt in det i kortläsaren. Om du inte har något BankID kan du hämta ett hos din internetbank. Om du har ett BankID på en annan enhet kan du starta din BankID-app där",
   VERIFY_NO_CLIENT: "Det verkar ingen klient",
-  VERIFY_USER_CANCEL: "Åtgärden avbruten.",
+  VERIFY_USER_CANCEL:
+    "Vi kunde tyvärr inte verifiera dig. Vänligen försök igen eller kontakta oss.",
   VERIFY_EXPIRED:
     "BankID-appen svarar inte. Kontrollera att den är startad och att du har internetanslutning. Om du inte har något giltigt BankID kan du hämta ett hos din Bank. Försök sedan igen.",
   VERIFY_ERROR: "fel har uppstått",

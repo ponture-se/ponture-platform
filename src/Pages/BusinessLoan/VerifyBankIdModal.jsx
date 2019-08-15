@@ -226,7 +226,11 @@ export default function VerifyBankIdModal(props) {
             <span className="description">{t("BL_VERIFY_MODAL_INFO")}</span>
             {mainSpinner ? (
               <div className="spinner">
-                <CircleSpinner show={true} size="large" />
+                <CircleSpinner
+                  show={true}
+                  size="large"
+                  bgColor="rgb(66, 204, 173)"
+                />
                 <span>{status}</span>
               </div>
             ) : success ? (
@@ -247,12 +251,12 @@ export default function VerifyBankIdModal(props) {
           </div>
           <div className="bankId__centerBox__footer">
             {!error && (
-              <button className="btn --light" onClick={handleCancelVerify}>
+              <button className="btn --light --large" onClick={handleCancelVerify}>
                 {t("BL_VERIFY_MODAL_CANCEL_BTN")}
               </button>
             )}
             {error && error.type !== "user_cancel" && (
-              <button className="btn --light" onClick={handleCloseModal}>
+              <button className="btn --light --large" onClick={handleCloseModal}>
                 {t("CLOSE")}
               </button>
             )}
