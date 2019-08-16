@@ -672,6 +672,9 @@
 select {
   @include variable(direction, direction, ltr);
 }
+.input-range__label--value {
+  display: none;
+}
 .bl__input__label {
   display: flex;
   flex-direction: column;
