@@ -545,6 +545,9 @@ export default function BusinessLoan(props) {
   );
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
+      window.analytics.track("BankID Verification", {
+        title: "Loan Wizard"
+      });
       let isValid = true;
       if (loanReasonOtherVisiblity) {
         if (!loanReasonOther || loanReasonOther.length === 0) {
@@ -640,6 +643,9 @@ export default function BusinessLoan(props) {
   }
   function handleSubmitClicked() {
     if (!submitSpinner) {
+      window.analytics.track("Submit", {
+        title: "Loan Wizard Submit"
+      });
       let isValid = true;
       if (!personalNumber || personalNumber.length < 9) {
         isValid = false;
