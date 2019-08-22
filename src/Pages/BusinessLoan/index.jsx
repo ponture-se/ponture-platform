@@ -24,7 +24,7 @@ import {
   submitLoan,
   getNeedsList
 } from "./../../api/business-loan-api";
-import VerifyBankIdModal from "./VerifyBankIdModal";
+import VerifyBankIdModal from "components/VerifyBankIdModal";
 //
 const loanAmountMax = 10000000;
 const loanAmountMin = 100000;
@@ -251,11 +251,21 @@ export default function BusinessLoan(props) {
                   }
                 }
               }
-              if (!result || result.length === 0 || !selected) {
+              if (!selected) {
+                let isDefault = false;
                 for (let i = 0; i < result.length; i++) {
-                  if (result[i].API_Name === "general_liquidity") {
+                  if (result[i].isDefault) {
+                    isDefault = true;
                     result[i].selected = true;
                     break;
+                  }
+                }
+                if (!isDefault) {
+                  for (let i = 0; i < result.length; i++) {
+                    if (result[i].API_Name === "general_liquidity") {
+                      result[i].selected = true;
+                      break;
+                    }
                   }
                 }
               }
@@ -436,19 +446,22 @@ export default function BusinessLoan(props) {
         }
         return item;
       });
-      let notSelected = true;
-      for (let i = 0; i < loanReasons.length; i++) {
-        const element = loanReasons[i];
-        if (element.selected === true) {
-          notSelected = false;
-          break;
-        }
-      }
-      if (notSelected) {
+      const selected = loanReasons.find(l => l.selected);
+      if (!selected) {
+        let isDefault = false;
         for (let i = 0; i < rList.length; i++) {
-          if (rList[i].API_Name === "general_liquidity") {
+          if (rList[i].isDefault) {
+            isDefault = true;
             rList[i].selected = true;
             break;
+          }
+        }
+        if (!isDefault) {
+          for (let i = 0; i < rList.length; i++) {
+            if (rList[i].API_Name === "general_liquidity") {
+              rList[i].selected = true;
+              break;
+            }
           }
         }
       }

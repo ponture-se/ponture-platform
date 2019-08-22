@@ -12,6 +12,11 @@ export default {
   ERROR_OCCURRED: "Fel har uppstått",
   LOADING_TEXT: "Vänligen vänta en stund...",
   TELEPHONE: "Telefon",
+  ////////////////////////////////
+  LOGIN_TITLE: "Logga in på kundportalen",
+  LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
+  LOGIN_PERSONAL_NUMBER: "Personnummer",
+  LOGIN_BTN_NAME: "Login",
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
   BL_LOAN_PERIOD: "Önskad låneperiod",

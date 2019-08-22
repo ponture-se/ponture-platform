@@ -1,13 +1,25 @@
+const $color1 = "white";
+const $color2 = "whitesmoke";
+const $color3 = "lightgray";
+const $mainColor = "rgb(66, 204, 173)";
+
 export default {
   "body-background": "whitesmoke",
   header: "75px",
   "header-bg": "white",
   "header-box-shadow": "0 0 3px lightgray",
+
+  "login-header-bg": $color1,
+  "login-header-height": "75px",
+  "login-header-box-shadow": "0 0 3px " + $color3,
+  "login-box-shadow": "0 0 1px " + $color3,
+  "login-box-bg": $color1,
+
   "bl-mainform-bg": "white",
   "bl-mainform-box-shadow": "0 0 3px lightgray",
-  "bl-mainform-header-borderBottom": "1px solid whitesmoke",
+  "bl-mainform-header-borderBottom": `1px solid ${$color2}`,
   "bl-mainform-header-fontSize": "23px",
-  "bl-mainform-header-circle-bg": "rgb(66, 204, 173)",
+  "bl-mainform-header-circle-bg": $mainColor,
   "bl-mainform-header-circle-fontSize": "25px",
   "bl-mainform-header-circle-color": "white",
   "bl-actions-border": "0.5px solid lightgray",
@@ -15,8 +27,8 @@ export default {
   "input-range-active-bg": "rgb(66, 204, 173)",
   "input-range-bg": "rgb(66, 204, 173)",
 
-  "my-input-border": "1px solid lightgray",
-  "my-input-focus-color": "rgb(66, 204, 173)",
+  "input-border-color": $color3,
+  "input-outline-color": $mainColor,
 
   "my-btn-success-bg": "rgb(66, 204, 173)",
   "my-btn-success-hover-bg": "rgb(51, 183, 153)",

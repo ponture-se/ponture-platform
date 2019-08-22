@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from "react";
-import CircleSpinner from "../../components/CircleSpinner";
-import { collect, getCompanies } from "./../../api/business-loan-api";
-//
-import { useLocale } from "./../../hooks";
+import CircleSpinner from "./../CircleSpinner";
+import { collect, getCompanies } from "api/business-loan-api";
+import { useLocale } from "hooks";
+import "./styles.scss";
 //
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
@@ -251,12 +251,18 @@ export default function VerifyBankIdModal(props) {
           </div>
           <div className="bankId__centerBox__footer">
             {!error && (
-              <button className="btn --light --large" onClick={handleCancelVerify}>
+              <button
+                className="btn --light --large"
+                onClick={handleCancelVerify}
+              >
                 {t("BL_VERIFY_MODAL_CANCEL_BTN")}
               </button>
             )}
             {error && error.type !== "user_cancel" && (
-              <button className="btn --light --large" onClick={handleCloseModal}>
+              <button
+                className="btn --light --large"
+                onClick={handleCloseModal}
+              >
                 {t("CLOSE")}
               </button>
             )}
