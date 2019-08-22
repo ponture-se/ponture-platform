@@ -645,7 +645,6 @@ export function submitLoan() {
   const _call = loan => {
     const url = submitUrl;
     const token = Cookies.get("@pontrue-wizard/token");
-    console.log(loan);
     axios({
       method: "post",
       url: url,
