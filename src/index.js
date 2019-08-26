@@ -5,7 +5,7 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import * as serviceWorker from "./serviceWorker";
 
 ReactDOM.render(
-  <ErrorBoundary render={() => <div className="error">Un problemita...</div>}>
+  <ErrorBoundary render={() => <div className="error">Error in Component</div>}>
     <App />
   </ErrorBoundary>,
   document.getElementById("root")

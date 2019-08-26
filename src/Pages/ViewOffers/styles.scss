@@ -1,0 +1,94 @@
+@import "./../../styles/mixins.scss";
+.myApps {
+  display: flex;
+  flex-direction: column;
+}
+.myOfferItem {
+  background: white;
+  box-shadow: 0 0 2px lightgray;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  &__header {
+    margin: 0px 40px;
+    display: flex;
+    border-bottom: 1px solid lightgray;
+    align-items: center;
+    height: 70px;
+    img {
+      width: 150px;
+    }
+    span {
+      font-size: 14px;
+      font-family: OpenSanceBold;
+    }
+  }
+  &__title {
+    font-size: 20px;
+    font-family: OpenSanceBold;
+    margin-bottom: 10px;
+  }
+
+  &__body {
+    flex: 1;
+    padding: 10px 40px 0 40px;
+    display: flex;
+    flex-direction: column;
+    &__header {
+      font-family: OpenSanceBold;
+      font-size: 15px;
+      display: flex;
+      margin-bottom: 30px;
+      span {
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+      }
+      div {
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        font-family: OpenSanceBold;
+        text-decoration: none;
+        @include variable(app-item-footer-link-color, color, blue);
+        span {
+          text-decoration: underline;
+          font-size: 13px;
+        }
+        i {
+          margin-top: 3px;
+        }
+      }
+    }
+  }
+  &__bodyRow {
+    flex: 1;
+    display: flex;
+    font-size: 13px;
+    flex-grow: 0;
+    padding: 10px 0;
+    span:first-child {
+      width: 230px;
+      font-family: OpenSanceBold;
+      font-size: 16px;
+    }
+    span:last-child {
+      flex: 1;
+    }
+  }
+  &__footer {
+    background: whitesmoke;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    button {
+      width: 150px;
+      margin-right: 10px;
+      span {
+        font-size: 10px;
+        margin: 0 5px;
+      }
+    }
+  }
+}

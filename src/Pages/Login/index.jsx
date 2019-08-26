@@ -118,6 +118,7 @@ const Login = props => {
 
   function handleCloseVerifyModal(e) {
     toggleVerifyModal(false);
+    props.history.push("/myApplications");
   }
   function handleCancelVerify() {}
 

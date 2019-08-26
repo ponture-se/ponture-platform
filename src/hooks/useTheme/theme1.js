@@ -1,19 +1,32 @@
 const $color1 = "white";
 const $color2 = "whitesmoke";
 const $color3 = "lightgray";
+const $color4 = "rgb(35, 65, 141)"; // blue
 const $mainColor = "rgb(66, 204, 173)";
 
 export default {
-  "body-background": "whitesmoke",
+  "body-background": "rgb(235, 235, 238)",
   header: "75px",
   "header-bg": "white",
   "header-box-shadow": "0 0 3px lightgray",
-
+  "main-spinner-bg": $mainColor,
+  "page-loading-bg": $mainColor,
   "login-header-bg": $color1,
   "login-header-height": "75px",
   "login-header-box-shadow": "0 0 3px " + $color3,
   "login-box-shadow": "0 0 1px " + $color3,
   "login-box-bg": $color1,
+
+  "main-header-height": "100px",
+  "main-header-width": "992px",
+  "main-header-bg": $color1,
+  "main-header-box-shadow": "0 0 3px " + $color3,
+  "main-header-signout-icon-color": $color4,
+  "main-header-link-color": $color4,
+  "main-header-link-hover-color": "rgba(35, 65, 141, 0.6)",
+  "main-header-link-active-color": $color4,
+  "main-content-width": "992px",
+  "app-item-footer-link-color": $color4,
 
   "bl-mainform-bg": "white",
   "bl-mainform-box-shadow": "0 0 3px lightgray",

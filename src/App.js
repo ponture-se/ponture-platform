@@ -5,10 +5,13 @@ import { LocaleProvider } from "./hooks/useLocale/localeContext";
 import { useTheme } from "./hooks";
 import "./styles/app.scss";
 import Notifies from "./components/Notifies";
+import PrivateRoute from "hoc/PrivateRoute";
+import withResolver from "hoc/withResolver";
 //
 const BusinessLoan = lazy(() => import("./Pages/BusinessLoan"));
 const Login = lazy(() => import("./Pages/Login"));
-
+const MainPage = lazy(() => import("./Pages/MainPage"));
+const Main = withResolver(MainPage);
 //
 const App = () => {
   useTheme("theme1");
@@ -27,6 +30,11 @@ const App = () => {
                 key="appLoan"
                 path="/loan"
                 render={props => <BusinessLoan {...props} />}
+              />
+              <PrivateRoute
+                key="mainPage"
+                path="/"
+                render={props => <Main {...props} />}
               />
               <Redirect from="/" to="/loan" exact />
             </Switch>

@@ -1,0 +1,10 @@
+@import "./../../styles/mixins.scss";
+//
+.mainPage {
+  @include variable(main-header-height, margin-top, 100px);
+  padding-top: 30px;
+  &__content {
+    @include variable(main-content-width, max-width, 992px);
+    margin: auto;
+  }
+}

@@ -1,0 +1,123 @@
+@import "./../../../styles/mixins.scss";
+
+.mainHeader {
+  display: flex;
+  flex-direction: column;
+  padding-top: 20px;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  width: 100%;
+  @include variable(main-header-height, height, 100px);
+  @include variable(main-header-bg, background, white);
+  @include variable(main-header-box-shadow, box-shadow, 0 0 3px lightgray);
+  &__top {
+    display: flex;
+    flex: 1;
+    align-items: flex-start;
+    margin: auto;
+    @include variable(main-header-width, max-width, 992px);
+    width: 100%;
+  }
+  &__img {
+    flex: 1;
+    img {
+      width: 120px;
+    }
+  }
+  &__userInfo {
+    font-size: 12px;
+    padding: 0 20px;
+  }
+  &__signout {
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    transition-duration: 0.2s;
+    &:hover {
+      transition-duration: 0.2s;
+      transform: scale(1.09);
+    }
+    span {
+      font-family: OpenSanceBold;
+      font-size: 13px;
+      padding: 0 5px;
+    }
+    i {
+      @include variable(main-header-signout-icon-color, color, blue);
+    }
+  }
+  &__bottom {
+    margin: auto;
+    display: flex;
+    justify-content: space-between;
+    @include variable(main-header-width, width, 992px);
+    .tabItem {
+      font-size: 13px;
+      cursor: pointer;
+      display: flex;
+      justify-content: center;
+      margin: 0 20px;
+      .navLink {
+        position: relative;
+        height: 30px;
+        text-decoration: none;
+        & span {
+          padding-bottom: 12px;
+          @include variable(main-header-link-color, color, blue);
+          &::before {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: auto;
+            height: 4px;
+            opacity: 0;
+            transition-duration: 0.2s;
+            width: 0;
+            @include variable(
+              main-header-link-hover-color,
+              background,
+              darkblue
+            );
+          }
+          &:hover::before {
+            width: 100%;
+            opacity: 1;
+            transition-duration: 0.2s;
+          }
+        }
+        &.active span {
+          position: relative;
+          font-family: OpenSanceBold;
+          //   font-size: 14.5px;
+          &::after {
+            content: "";
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            width: 100%;
+            margin: auto;
+            height: 4px;
+            @include variable(
+              main-header-link-active-color,
+              background,
+              darkblue
+            );
+          }
+        }
+      }
+      &:first-child {
+        margin-left: 0;
+      }
+      &:last-child {
+        margin-right: 0;
+      }
+    }
+  }
+}

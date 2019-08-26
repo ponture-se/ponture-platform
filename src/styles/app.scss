@@ -279,8 +279,8 @@ div::-moz-scrollbar-thumb:hover {
     left: -200px;
     width: 200px;
     height: 4px;
-    background-color: rgb(56, 132, 255);
     animation: loading 2s linear infinite;
+    @include variable(main-spinner-bg, background-color, blue);
   }
 }
 @keyframes loading {
@@ -303,6 +303,28 @@ div::-moz-scrollbar-thumb:hover {
   to {
     left: 100%;
   }
+}
+
+.page-loading {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.page-empty-list {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+.page-list-error {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
 }
 
 .thumbnail-video {
