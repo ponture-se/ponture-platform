@@ -37,6 +37,8 @@ export default {
   "bl-mainform-header-circle-color": "white",
   "bl-actions-border": "0.5px solid lightgray",
 
+  "notfound-404-color": $mainColor,
+
   "input-range-active-bg": "rgb(66, 204, 173)",
   "input-range-bg": "rgb(66, 204, 173)",
 

@@ -19,7 +19,6 @@
   }
   .loginBox {
     padding: 0px 20px 30px 20px;
-    width: 450px;
     margin: auto;
     display: flex;
     flex-direction: column;
@@ -35,7 +34,6 @@
       & span:first-child {
         font-size: 25px;
       }
-
     }
     &__body {
       &__info {
@@ -54,5 +52,38 @@
       margin-top: 50px;
       align-self: flex-end;
     }
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+  .loginBox {
+    width: auto;
+  }
+}
+@media (min-width: 576px) {
+  .loginBox {
+    width: 450px;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .loginBox {
+    width: 450px;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .loginBox {
+    width: 450px;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .loginBox {
+    width: 450px;
   }
 }

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { useLocale } from "hooks";
+import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
 import Item from "./item";
 import SquareSpinner from "components/SquareSpinner";
@@ -13,6 +13,7 @@ import { getMyApplications } from "api/main-api";
 // } from "services/redux/application/newApps/actions";
 //
 const MyApplications = props => {
+  const [{ verifyInfo, userInfo }] = useGlobalState();
   const { t } = useLocale();
   const [viewAppModalVisibility, toggleViewApp] = useState();
   const [selectedApp, setApp] = useState();
@@ -21,69 +22,100 @@ const MyApplications = props => {
   const [error, setError] = useState();
   useEffect(() => {
     let didCancel = false;
-    getMyApplications()
-      .onOk(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setData(result);
-        }
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("INTERNAL_SERVER_ERROR"),
-            message: t("INTERNAL_SERVER_ERROR_MSG")
-          });
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("BAD_REQUEST"),
-            message: t("BAD_REQUEST_MSG")
-          });
-        }
-      })
-      .unAuthorized(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("UNKNOWN_ERROR"),
-            message: t("UNKNOWN_ERROR_MSG")
-          });
-        }
-      })
-      .notFound(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("NOT_FOUND"),
-            message: t("NOT_FOUND_MSG")
-          });
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("UNKNOWN_ERROR"),
-            message: t("UNKNOWN_ERROR_MSG")
-          });
-        }
-      })
-      .onRequestError(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("ON_REQUEST_ERROR"),
-            message: t("ON_REQUEST_ERROR_MSG")
-          });
-        }
-      })
-      .call();
-
+    if (!userInfo) {
+      toggleLoading(false);
+      // setError({
+      //   title: "", 
+      //   message: ""
+      // });
+    } else
+      getMyApplications()
+        .onOk(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setData([
+              {
+                opportunityID: "0064E00000DRDxmQAH",
+                opportunityNumber: "LO0000000073",
+                Name: "CFA International AB",
+                opportunityStage: "Not Funded/ Closed lost",
+                createdAt: "2019-08-18 17:25:26",
+                RecordType: "Business Loan",
+                amortizationPeriod: 12.0,
+                amount: 3500000.0,
+                orgNumber: "330299-1234",
+                closeDate: "2019-08-18 17:25:26",
+                CompanyRegistrationDate: "2014-12-22",
+                need: [
+                  {
+                    apiName: "general_liquidity",
+                    title: "Generell likviditet"
+                  }
+                ],
+                lastAvailableRevenue: 6000,
+                creditSafeScore: 2,
+                bankVerified: true,
+                activeCompany: true,
+                companyVerified: true
+              }
+            ]);
+          }
+        })
+        .onServerError(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setError({
+              title: t("INTERNAL_SERVER_ERROR"),
+              message: t("INTERNAL_SERVER_ERROR_MSG")
+            });
+          }
+        })
+        .onBadRequest(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setError({
+              title: t("BAD_REQUEST"),
+              message: t("BAD_REQUEST_MSG")
+            });
+          }
+        })
+        .unAuthorized(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setError({
+              title: t("UN_AUTHORIZED"),
+              message: t("UN_AUTHORIZED_MSG")
+            });
+          }
+        })
+        .notFound(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setError({
+              title: t("NOT_FOUND"),
+              message: t("NOT_FOUND_MSG")
+            });
+          }
+        })
+        .unKnownError(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setError({
+              title: t("UNKNOWN_ERROR"),
+              message: t("UNKNOWN_ERROR_MSG")
+            });
+          }
+        })
+        .onRequestError(result => {
+          if (!didCancel) {
+            toggleLoading(false);
+            setError({
+              title: t("ON_REQUEST_ERROR"),
+              message: t("ON_REQUEST_ERROR_MSG")
+            });
+          }
+        })
+        .call(userInfo.personalNumber);
     return () => {
       didCancel = true;
     };
@@ -114,7 +146,7 @@ const MyApplications = props => {
       ) : (
         data.map(app => (
           <Item
-            // key={app.opportunityID}
+            key={app.opportunityID}
             item={app}
             onViewOffersClicked={handleViewOffers}
           />

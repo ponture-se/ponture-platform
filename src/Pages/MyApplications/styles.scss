@@ -10,33 +10,62 @@
   display: flex;
   flex-direction: column;
   &__header {
-    height: 80px;
+    min-height: 80px;
     display: flex;
     background: whitesmoke;
     align-items: center;
     padding: 0 40px;
-    & > .icon {
-      margin-right: 20px;
-      background: rgb(0, 255, 106);
-      color: white;
-      width: 35px;
-      height: 35px;
-      border-radius: 100%;
+    .left {
       display: flex;
       align-items: center;
-      justify-content: center;
-    }
-    .info {
       flex: 1;
-      display: flex;
-      flex-direction: column;
-      font-size: 13px;
-      & span:first-child {
-        font-size: 20px;
-        font-weight: OpenSanceBold;
+      & > .icon {
+        color: white;
+        width: 35px;
+        height: 35px;
+        border-radius: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        &.appReceivedIcon {
+          background: brown;
+        }
+        &.appReviewIcon {
+          background: orange;
+        }
+        &.approvedIcon {
+          background: green;
+        }
+        &.submittedIcon {
+          background: yellow;
+        }
+        &.offerReceivedIcon {
+          background: blue;
+        }
+        &.offerAcceptedIcon {
+          background: pink;
+        }
+        &.fundedClosedWonIcon {
+          background: gray;
+        }
+        &.notFoundedClosedLostIcon {
+          background: lightcoral;
+        }
       }
-      & span:last-child {
-        color: gray;
+      .info {
+        margin: 0 20px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        font-size: 13px;
+        & span:first-child {
+          font-size: 20px;
+          font-family: OpenSanceBold;
+        }
+        & span:last-child {
+          color: gray;
+        }
       }
     }
     a {
@@ -46,7 +75,7 @@
       align-items: center;
       span {
         text-decoration: underline;
-        font-weight: OpenSanceBold;
+        font-family: OpenSanceBold;
       }
       .icon {
         margin: 0 8px;
@@ -75,9 +104,19 @@
       padding-bottom: 10px;
       margin-bottom: 20px;
       font-size: 17px;
-      font-weight: OpenSanceBold;
+      font-family: OpenSanceBold;
       span:last-child {
         font-size: 23px;
+      }
+    }
+  }
+  &__footer {
+    border-top: 0.5px solid lightgray;
+    padding: 20px 40px 10px 40px;
+    button {
+      span {
+        padding: 0 4px;
+        font-size: 11px;
       }
     }
   }
@@ -90,5 +129,43 @@
       font-family: OpenSanceBold;
       width: 250px;
     }
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+  .application__header {
+    flex-direction: row;
+    padding: 0 10px;
+  }
+}
+@media (min-width: 576px) {
+  .application__header {
+    flex-direction: row;
+    padding: 0 40px;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .application__header {
+    flex-direction: row;
+    padding: 0 40px;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .application__header {
+    flex-direction: row;
+    padding: 0 40px;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .application__header {
+    flex-direction: row;
+    padding: 0 40px;
   }
 }

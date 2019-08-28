@@ -15,15 +15,13 @@ const MainPage = props => {
         <Suspense fallback={<div />}>
           <Switch>
             <PrivateRoute
-              exact
               key="myApplications"
-              path="/myApplications"
+              path="/app/panel/myApplications"
               render={props => <MyApplications {...props} />}
             />
             <PrivateRoute
-              exact
               key="viewOffers"
-              path="/viewOffers/:id"
+              path="/app/panel/viewOffers/:id"
               render={props => <ViewOffers {...props} />}
             />
           </Switch>

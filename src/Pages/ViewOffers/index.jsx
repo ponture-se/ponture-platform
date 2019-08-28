@@ -13,13 +13,37 @@ const MyApplications = props => {
   const [loading, toggleLoading] = useState(true);
   const [data, setData] = useState();
   const [error, setError] = useState();
+
   useEffect(() => {
     let didCancel = false;
+    const id = props.match.params.id;
     getOffers()
       .onOk(result => {
         if (!didCancel) {
           toggleLoading(false);
-          setData(result);
+          setData([
+            {
+              Id: "a074E000004RLS4QAO",
+              partnerName: "Qred",
+              Name: "Qred Product Master",
+              CreatedDate: "2019-08-21T12:22:51.000+0000",
+              LastModifiedDate: "2019-08-21T16:03:54.000+0000",
+              Supplier_Partner_Opportunity: "a084E000004dFJMQA2",
+              Active: false,
+              Amount: 10004,
+              Cost: 4,
+              Interest_Rate: 4,
+              Monthly_Repayment_Amount: 4,
+              Other_Guarantees_Needed: true,
+              Personal_Guarantee_Needed: true,
+              Repayment_Period: 4,
+              Residual_Value: false,
+              Start_Fee: 4,
+              Total_Repayment_Amount: 4,
+              Product_Master: "a0G4E00000CLTUGUA5",
+              Offer_Number: "LP-0000000017"
+            }
+          ]);
         }
       })
       .onServerError(result => {
@@ -76,7 +100,7 @@ const MyApplications = props => {
           });
         }
       })
-      .call();
+      .call(id);
 
     return () => {
       didCancel = true;

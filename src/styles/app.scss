@@ -28,6 +28,10 @@ body {
   font-family: OpenSance;
   overflow-x: hidden;
   @include variable(body-background, background, whitesmoke);
+  // direction: rtl;
+  // text-align: right;
+  // @include variable(direction, direction, ltr);
+  // @include variable(text-align, text-align, left);
 }
 *,
 html,
@@ -213,9 +217,6 @@ div::-moz-scrollbar-thumb:hover {
 }
 
 .rosolverError {
-  background: white;
-  width: 500px;
-  height: 300px;
   margin: auto;
   position: absolute;
   left: 50%;
@@ -226,7 +227,6 @@ div::-moz-scrollbar-thumb:hover {
   align-items: center;
   justify-content: center;
   border-radius: 4px;
-  box-shadow: 0 0 5px lightgray;
   .icon {
     font-size: 60px;
   }

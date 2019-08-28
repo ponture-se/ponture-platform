@@ -7,7 +7,7 @@ export default class ErrorBoundary extends React.Component {
       PropTypes.node,
       PropTypes.arrayOf(PropTypes.node)
     ]).isRequired,
-    render: PropTypes.func.isRequired
+    render: PropTypes.func
   };
 
   state = {

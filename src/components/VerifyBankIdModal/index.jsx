@@ -24,7 +24,8 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
-                    _getCompanies(result);
+                    if (!props.isLogin) _getCompanies(result);
+                    else if (props.onSuccess) props.onSuccess(result);
                     break;
                   case "no_client":
                     // check is mobile

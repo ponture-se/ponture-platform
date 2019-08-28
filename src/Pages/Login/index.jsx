@@ -11,7 +11,7 @@ const Login = props => {
   let didCancel = false;
   const { t } = useLocale();
   const [{}, dispatch] = useGlobalState();
-  const [personalNumber, setPersonalNumber] = useState();
+  const [personalNumber, setPersonalNumber] = useState("");
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
   const [verifyModal, toggleVerifyModal] = useState();
@@ -116,16 +116,22 @@ const Login = props => {
     }
   }
 
-  function handleCloseVerifyModal(e) {
+  function handleSuccessVerify(result) {
     toggleVerifyModal(false);
-    props.history.push("/myApplications");
+    dispatch({
+      type: "VERIFY_BANK_ID_SUCCESS",
+      payload: result
+    });
+    props.history.push("/app/panel/myApplications");
   }
-  function handleCancelVerify() {}
+  function handleCancelVerify() {
+    toggleVerifyModal(false);
+  }
 
   return (
     <div className="loginContainer">
       <div className="loginHeader">
-        <img src={require("./../../assets/logo-c.png")} alt="" />
+        <img src={require("assets/logo-c.png")} alt="" />
       </div>
       <div className="loginBox animated fadeIn">
         <div className="loginBox__header">
@@ -183,9 +189,11 @@ const Login = props => {
       </div>
       {verifyModal && (
         <VerifyBankIdModal
+          isLogin
           startResult={startResult}
           personalNumber={personalNumber}
-          onClose={handleCloseVerifyModal}
+          onSuccess={handleSuccessVerify}
+          onClose={handleCancelVerify}
           onCancelVerify={handleCancelVerify}
         />
       )}

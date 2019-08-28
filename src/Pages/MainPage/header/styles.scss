@@ -3,12 +3,11 @@
 .mainHeader {
   display: flex;
   flex-direction: column;
-  padding-top: 20px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  z-index: 100;
+  z-index: 10;
   width: 100%;
   @include variable(main-header-height, height, 100px);
   @include variable(main-header-bg, background, white);
@@ -119,5 +118,38 @@
         margin-right: 0;
       }
     }
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+  .mainHeader {
+    padding: 20px 10px 0 10px;
+  }
+}
+@media (min-width: 576px) {
+  .mainHeader {
+    padding: 20px 0 0 0;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .mainHeader {
+    padding: 20px 0 0 0;
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .mainHeader {
+    padding: 20px 0 0 0;
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .mainHeader {
+    padding: 20px 0 0 0;
   }
 }

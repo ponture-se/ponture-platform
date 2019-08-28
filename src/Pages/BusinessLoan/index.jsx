@@ -556,6 +556,7 @@ export default function BusinessLoan(props) {
     },
     [selectedCompany, companyIsValid]
   );
+  
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       // window.analytics.track("BankID Verification", {

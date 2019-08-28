@@ -1,9 +1,10 @@
 import React, { useState, useCallback } from "react";
 import { NavLink } from "react-router-dom";
 import "./styles.scss";
-import { useLocale } from "hooks";
+import { useGlobalState, useLocale } from "hooks";
 
 const Header = props => {
+  const [{ userInfo }] = useGlobalState();
   const { t } = useLocale();
   function handleSignout() {
     props.logoutUser();
@@ -15,7 +16,7 @@ const Header = props => {
           <img src={require("assets/logo-c.png")} alt="logo" />
         </div>
         <div className="mainHeader__userInfo">
-          {props.userInfo && props.userInfo.name}
+          {userInfo && userInfo.firstName + " " + userInfo.lastName}
         </div>
         <div className="mainHeader__signout" onClick={handleSignout}>
           <span>{t("SIGN_OUT")}</span>
@@ -25,7 +26,7 @@ const Header = props => {
       <div className="mainHeader__bottom">
         <div className="tabItem">
           <NavLink
-            to={`/myApplications`}
+            to={`/app/panel/myApplications`}
             className="navLink"
             activeClassName="active"
           >

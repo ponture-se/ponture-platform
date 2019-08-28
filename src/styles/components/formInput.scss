@@ -138,11 +138,9 @@
   }
   &__footer {
     display: flex;
-    @include variable(flex-direction, flex-direction, row);
     &__left {
       flex: 1;
       .elementInfo {
-        @include variable(text-align, text-align, left);
         display: block;
         font-size: 11px;
         margin-top: 5px;

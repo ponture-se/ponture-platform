@@ -24,12 +24,44 @@ export default {
   ON_REQUEST_ERROR: "Request Error",
   ON_REQUEST_ERROR_MSG: "Request Error",
   UN_AUTHORIZED: "User authentication failed. Try again",
-  CANCEL:"Cancel",
+  CANCEL: "Cancel",
+  REJECT: "Reject",
+  VIEW_OFFERS: "Visa Erbjunanden",
+  BUSINESS_LOAN: "Företagslån",
+  APP_STATUS_RECEIVED_TITLE: "Mottagen!",
+  APP_STATUS_REVIEW_TITLE: "Recension!",
+  APP_STATUS_APPROVED_TITLE: "Godkänd!",
+  APP_STATUS_SUBMITTED_TITLE: "Lämnats",
+  APP_STATUS_OFFER_RECEIVED_TITLE: "Erbjudet mottaget!",
+  APP_STATUS_ACCEPTED_TITLE: "Accepterad!",
+  APP_STATUS_FUNDED_CLOSED_WON_TITLE: "Vann",
+  APP_STATUS_NOT_FOUNDED_CLOSED_LOST_TITLE: "Förlorat",
+  APP_STATUS_RECEIVED_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_REVIEW_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_APPROVED_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_SUBMITTED_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_OFFER_RECEIVED_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_ACCEPTED_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_FUNDED_CLOSED_WON_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_NOT_FOUNDED_CLOSED_LOST_DESC:
+    "Din ansökan har godkänts av en eller flera lånegivare.",
+  MONTH_S: "month(s)",
+  ARE_YOU_SURE: "Are you sure?",
+  NO: "No",
+  YES_DO_IT: "Yes, Do It!",
+
   ////////////////////////////////
   LOGIN_TITLE: "Logga in på kundportalen",
   LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
   LOGIN_PERSONAL_NUMBER: "Personnummer",
-  LOGIN_BTN_NAME: "Login",
+  LOGIN_BTN_NAME: "Verify BankID",
   HEADER_TABS_FIRST: "My Applications",
   MY_APPS_LOADING_TEXT: "Loading my applications...",
   MY_APPS_EMPTY_LIST_TITLE: "Empty List!",
@@ -38,6 +70,23 @@ export default {
   OFFERS_EMPTY_LIST_TITLE: "Empty List!",
   OFFERS_EMPTY_LIST_MSG: "You haven't any offers for this application",
   ACCEPT_OFFER: "Accept Offer",
+  APP_NEEDS: "Anledning till lån:",
+  APP_COMPANY_NAME: "Företag:",
+  APP_AMORTIZATION_PERIOD: "Låneperiod:",
+  APP_CLOSE_DATE: "Ansökningsdatum:",
+  APP_CREDIT_SAFE: "Kreditpoäng:",
+  APP_CANCEL_ALERT_INFO: "Canceling application will be removed from list.",
+  APP_CANCELED_SUCCESS: "The application was canceled successfully",
+  APP_OFFERS_REJECT_ALERT_INFO: "This offer will be removed from the offers",
+  OFFER_REJECT_SUCCESS: "Offer was rejected successfully.",
+  APP_OFFERS_ACCEPT_ALERT_INFO:
+    "Choosing this offer as accepted for the application",
+  OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
+  OFFER_OFFER: "Erbjudande:",
+  OFFER_AMOUNT_APPROVED: "Godkänt bellop:",
+  OFFER_BUSINESS: "Företag:",
+  OFFER_LOAN_PERIOD: "Låneperiod:",
+  OFFER_INTEREST: "Ränta:",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
