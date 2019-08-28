@@ -156,7 +156,7 @@ export default function VerifyBankIdModal(props) {
           props.onClose(false, {
             sender: "companies",
             type: "serverError",
-            message: t("NEEDS_ERROR_500")
+            message: t("COMPANIES_ERROR_500")
           });
         }
       })
@@ -165,7 +165,7 @@ export default function VerifyBankIdModal(props) {
           props.onClose(false, {
             sender: "companies",
             type: "Bad Request",
-            message: t("NEEDS_ERROR_400")
+            message: t("COMPANIES_ERROR_400")
           });
         }
       })
@@ -174,7 +174,7 @@ export default function VerifyBankIdModal(props) {
           props.onClose(false, {
             sender: "companies",
             type: "unAuthorized",
-            message: t("NEEDS_ERROR_401")
+            message: t("COMPANIES_ERROR_401")
           });
         }
       })
@@ -183,7 +183,7 @@ export default function VerifyBankIdModal(props) {
           props.onClose(false, {
             sender: "companies",
             type: "notFound",
-            message: t("NEEDS_ERROR_404")
+            message: t("COMPANIES_ERROR_404")
           });
         }
       })
@@ -192,7 +192,7 @@ export default function VerifyBankIdModal(props) {
           props.onClose(false, {
             sender: "companies",
             type: "unKnownError",
-            message: t("NEEDS_ERROR_UNKNOWN")
+            message: t("COMPANIES_ERROR_UNKNOWN")
           });
         }
       })
@@ -201,7 +201,7 @@ export default function VerifyBankIdModal(props) {
           props.onClose(false, {
             sender: "companies",
             type: "requestError",
-            message: t("NEEDS_ERROR_REQUEST_ERROR")
+            message: t("COMPANIES_ERROR_REQUEST_ERROR")
           });
         }
       })

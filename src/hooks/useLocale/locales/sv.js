@@ -177,5 +177,5 @@ export default {
   ON_REQUEST_ERROR: "Begärningsfel",
   UNKNOWN_ERROR: "Okänt fel",
   ERROR_HAS_OCCURRED: "Fel har uppstått",
-  COMPANIES_IN_VALID_DATA: "Fel vid lastning av företag"
+  COMPANIES_IN_VALID_DATA: "Du har inga företag att fortsätta"
 };

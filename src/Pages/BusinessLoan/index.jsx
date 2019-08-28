@@ -556,7 +556,7 @@ export default function BusinessLoan(props) {
     },
     [selectedCompany, companyIsValid]
   );
-  
+
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       // window.analytics.track("BankID Verification", {
@@ -844,17 +844,31 @@ export default function BusinessLoan(props) {
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
-        toggleMainSpinner(false);
-        changeTab(3);
-        setError({
-          sender: "companies",
-          type: "loadData",
-          message: t("COMPANIES_IN_VALID_DATA")
+        // toggleMainSpinner(false);
+        // changeTab(3);
+        // setError({
+        //   sender: "companies",
+        //   type: "loadData",
+        //   message: t("COMPANIES_IN_VALID_DATA")
+        // });
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "error",
+            message: t("COMPANIES_IN_VALID_DATA")
+          }
         });
       }
     } else if (isSuccess === false) {
-      changeTab(3);
-      setError(result);
+      // changeTab(3);
+      // setError(result);
+      dispatch({
+        type: "ADD_NOTIFY",
+        value: {
+          type: "error",
+          message: result.message
+        }
+      });
     }
   }
   function handleCancelVerify() {
