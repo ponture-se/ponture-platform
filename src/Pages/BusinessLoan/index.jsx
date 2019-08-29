@@ -593,63 +593,39 @@ export default function BusinessLoan(props) {
             .onServerError(result => {
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Server Error"
-                  }
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
                 });
               }
             })
             .onBadRequest(result => {
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Bad Request"
-                  }
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
                 });
               }
             })
             .unAuthorized(result => {
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Un Authorized"
-                  }
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
                 });
               }
             })
             .unKnownError(result => {
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: "Unknown Error"
-                  }
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
                 });
               }
             })
-            // .onRequestError(result => {
-            //   if (!didCancel) {
-            //     toggleVerifyingSpinner(false);
-            //     dispatch({
-            //       type: "ADD_NOTIFY",
-            //       value: {
-            //         type: "error",
-            //         message: result ? result : ""
-            //       }
-            //     });
-            //   }
-            // })
             .call(pId);
         }
       }
@@ -743,12 +719,9 @@ export default function BusinessLoan(props) {
           .onOk(result => {
             if (!didCancel) {
               if (result.errors) {
-                dispatch({
-                  type: "ADD_NOTIFY",
-                  value: {
-                    type: "error",
-                    message: t("ERROR_HAS_OCCURRED")
-                  }
+                changeTab(3);
+                setError({
+                  sender: "submitLoan"
                 });
               } else {
                 resetForm();
@@ -759,63 +732,39 @@ export default function BusinessLoan(props) {
           .onServerError(result => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: t("INTERNAL_SERVER_ERROR")
-                }
+              changeTab(3);
+              setError({
+                sender: "submitLoan"
               });
             }
           })
           .onBadRequest(result => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: t("BAD_REQUEST")
-                }
+              changeTab(3);
+              setError({
+                sender: "submitLoan"
               });
             }
           })
           .unAuthorized(result => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: t("UN_AUTHORIZED")
-                }
+              changeTab(3);
+              setError({
+                sender: "submitLoan"
               });
             }
           })
           .unKnownError(result => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "error",
-                  message: t("UNKNOWN_ERROR")
-                }
+              changeTab(3);
+              setError({
+                sender: "submitLoan"
               });
             }
           })
-          // .onRequestError(result => {
-          //   if (!didCancel) {
-          //     toggleSubmitSpinner(false);
-          //     dispatch({
-          //       type: "ADD_NOTIFY",
-          //       value: {
-          //         type: "error",
-          //         message: result ? result : t("ON_REQUEST_ERROR")
-          //       }
-          //     });
-          //   }
-          // })
           .call(obj);
       }
     }
@@ -829,9 +778,10 @@ export default function BusinessLoan(props) {
     _setPersonalNumber();
   }
   function backtoLoan() {
-    // window.location.href = window.location.href.split("?")[0];
     window.location.href = "https://www.ponture.com/";
-    // window.location.reload();
+  }
+  function refreshPage() {
+    window.location.href = window.location.href.split("?")[0];
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
@@ -844,30 +794,18 @@ export default function BusinessLoan(props) {
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
-        // toggleMainSpinner(false);
-        // changeTab(3);
-        // setError({
-        //   sender: "companies",
-        //   type: "loadData",
-        //   message: t("COMPANIES_IN_VALID_DATA")
-        // });
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("COMPANIES_IN_VALID_DATA")
-          }
+        toggleMainSpinner(false);
+        changeTab(3);
+        setError({
+          sender: "companies",
+          type: "loadData",
+          message: t("COMPANIES_IN_VALID_DATA")
         });
       }
     } else if (isSuccess === false) {
-      // changeTab(3);
-      // setError(result);
-      dispatch({
-        type: "ADD_NOTIFY",
-        value: {
-          type: "error",
-          message: result.message
-        }
+      changeTab(3);
+      setError({
+        sender: "submitLoan"
       });
     }
   }
@@ -1306,10 +1244,45 @@ export default function BusinessLoan(props) {
                 </div>
                 <hr />
                 <div className="longDesc">
-                  {error ? error.message : t("ERROR")}
+                  {error ? (
+                    error.sender === "companies" ? (
+                      <div className="companiesEmpty">
+                        <div>{t("COMPANIES_EMPTY_MSG1")}</div>
+                        <div style={{ fontSize: 13 }}>
+                          {t("COMPANIES_EMPTY_MSG2")}
+                        </div>
+                        <div className="phone">
+                          <span>{t("VAR_TELEPHONE")}</span>
+                          <span>&nbsp;010 129 29 20</span>
+                        </div>
+                        <div className="email">
+                          <span>{t("EPOST")}:</span>
+                          <a href="mailto:contact@ponture.com">
+                            &nbsp;contact@ponture.com
+                          </a>
+                        </div>
+                      </div>
+                    ) : (
+                      <div className="companiesEmpty allErrorMsg">
+                        <div>{t("ERROR_MSG1")}</div>
+                        <div style={{ fontSize: 13 }}>{t("ERROR_MSG2")}</div>
+                        <div className="phone">
+                          <span>{t("TELEPHONE")}</span>
+                          <span>&nbsp;010 129 29 20</span>
+                        </div>
+                        <div className="email">
+                          <span>{t("EPOST")}:</span>
+                          <a href="mailto:contact@ponture.com">
+                            &nbsp;contact@ponture.com
+                          </a>
+                        </div>
+                        <div>{t("ERROR_MSG3")}</div>
+                      </div>
+                    )
+                  ) : null}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn btn-light" onClick={backtoLoan}>
+                  <button className="btn btn-light" onClick={refreshPage}>
                     {t("REFRESH")}
                   </button>
                 </div>

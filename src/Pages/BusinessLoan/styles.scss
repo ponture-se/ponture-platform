@@ -652,6 +652,23 @@
       padding-bottom: 20px;
       text-align: justify;
       @include variable(direction, direction, ltr);
+      .companiesEmpty {
+        .phone {
+          margin: 10px 0;
+          span:first-child {
+          }
+        }
+
+        span {
+          font-size: 13px;
+          padding-top: 10px !important;
+        }
+      }
+      .allErrorMsg {
+        div:last-child {
+          font-family: OpenSanceBold;
+        }
+      }
     }
     hr {
       background: transparent;

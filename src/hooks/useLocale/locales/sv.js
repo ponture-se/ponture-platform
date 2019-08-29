@@ -7,9 +7,10 @@ export default {
   MONTHS: "månader",
   ERROR: "Fel",
   EMAIL: "Emai.",
+  EPOST: "Epost",
   REFRESH: "Uppfriskande",
   APPLY_AGAIN: "Ansök igen",
-  ERROR_OCCURRED: "Fel har uppstått",
+  ERROR_OCCURRED: "Hoppsan, något blev fel!",
   LOADING_TEXT: "Vänligen vänta en stund...",
   TELEPHONE: "Telefon",
   SIGN_OUT: "Sign Out",
@@ -56,7 +57,10 @@ export default {
   ARE_YOU_SURE: "Are you sure?",
   NO: "No",
   YES_DO_IT: "Yes, Do It!",
-
+  ERROR_MSG1: "Vi arbetar med att försöka lösa detta så fort som möjligt!",
+  ERROR_MSG2:
+    "Under tiden, prova gärna en gång till eller kontakta oss direkt så hjälper vi er vidare!",
+  ERROR_MSG3: "Tack så mycket för ert tålamod!",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in på kundportalen",
   LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
@@ -111,7 +115,7 @@ export default {
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",
   PERSONAL_NUMBER_IS_REQUIRED: "Personligt nummer krävs",
   PERSONAL_NUMBER_IN_CORRECT:
-    "Ange ditt korrekta personnummer exampel : 19806101 1234)",
+    "Ange ditt korrekta personnummer exampel : 19806101-1234)",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
@@ -177,5 +181,8 @@ export default {
   ON_REQUEST_ERROR: "Begärningsfel",
   UNKNOWN_ERROR: "Okänt fel",
   ERROR_HAS_OCCURRED: "Fel har uppstått",
-  COMPANIES_IN_VALID_DATA: "Du har inga företag att fortsätta"
+  COMPANIES_IN_VALID_DATA: "Du har inga företag att fortsätta",
+  COMPANIES_EMPTY_MSG1: `Tyvärr kunde vi inte hitta något aktivt Svenskt företag som är kopplat till dig.`,
+  COMPANIES_EMPTY_MSG2: `Om du äger eller driver ett aktivt företag i Sverige oroa dig inte. Kontakta oss direkt så att vi kan hjälpa dig`,
+  VAR_TELEPHONE: "Vår telefonnummer:"
 };
