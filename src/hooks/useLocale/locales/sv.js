@@ -173,7 +173,8 @@ export default {
     "Vi kunde tyvärr inte verifiera dig. Vänligen försök igen eller kontakta oss.",
   VERIFY_EXPIRED:
     "BankID-appen svarar inte. Kontrollera att den är startad och att du har internetanslutning. Om du inte har något giltigt BankID kan du hämta ett hos din Bank. Försök sedan igen.",
-  VERIFY_ERROR: "fel har uppstått",
+  VERIFY_ERROR:
+    "Vi kunde tyvärr inte verifiera dig. Vänligen försök igen eller kontakta oss.",
 
   INTERNAL_SERVER_ERROR: "Internt serverfel",
   BAD_REQUEST: "Dålig förfrågan",
