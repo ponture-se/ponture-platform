@@ -115,7 +115,7 @@ export default function BusinessLoan(props) {
   }
 
   const [mainSpinner, toggleMainSpinner] = useState(true);
-  const [tab, changeTab] = useState(1);
+  const [tab, changeTab] = useState(3);
   const [verifyModal, toggleVerifyModal] = useState();
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
@@ -198,7 +198,7 @@ export default function BusinessLoan(props) {
   const [form, setForm] = useState(formInitValues);
   const [verifyingSpinner, toggleVerifyingSpinner] = useState(false);
   const [submitSpinner, toggleSubmitSpinner] = useState(false);
-  const [error, setError] = useState();
+  const [error, setError] = useState({});
   const [startResult, setStartResult] = useState();
   const [bankIdResult, setBankIdResult] = useState();
 
@@ -1271,7 +1271,7 @@ export default function BusinessLoan(props) {
                   ) : null}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn btn-light" onClick={refreshPage}>
+                  <button className="btn --warning" onClick={refreshPage}>
                     {t("REFRESH")}
                   </button>
                 </div>

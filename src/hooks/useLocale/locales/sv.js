@@ -8,7 +8,7 @@ export default {
   ERROR: "Fel",
   EMAIL: "Emai.",
   EPOST: "Epost",
-  REFRESH: "Uppfriskande",
+  REFRESH: "Försök igen",
   APPLY_AGAIN: "Ansök igen",
   ERROR_OCCURRED: "Hoppsan, något blev fel!",
   LOADING_TEXT: "Vänligen vänta en stund...",
