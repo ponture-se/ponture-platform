@@ -800,13 +800,6 @@ export default function BusinessLoan(props) {
   }
   function handleCancelVerify() {
     toggleVerifyModal(false);
-    dispatch({
-      type: "ADD_NOTIFY",
-      value: {
-        type: "warning",
-        message: t("CANCEL_VERIFY")
-      }
-    });
     cancelVerify()
       .onOk(result => {})
       .onServerError(result => {
