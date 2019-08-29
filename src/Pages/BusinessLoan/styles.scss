@@ -711,6 +711,9 @@ select {
     margin: 0 0px;
     &:nth-child(even) {
       @include variable(input-even-margin, margin, 0 10px);
+      @media (max-width: 576px) {
+        margin: 0;
+      }
     }
   }
 }

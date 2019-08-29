@@ -341,17 +341,6 @@ export default function BusinessLoan(props) {
           });
         }
       })
-      // .onRequestError(result => {
-      //   if (!didCancel) {
-      //     toggleMainSpinner(false);
-      //     changeTab(3);
-      //     setError({
-      //       sender: "needs",
-      //       type: "requestError",
-      //       message: t("NEEDS_ERROR_REQUEST_ERROR")
-      //     });
-      //   }
-      // })
       .call(currentLang);
   }
   const handleLoanAmount = useCallback(
@@ -1090,7 +1079,7 @@ export default function BusinessLoan(props) {
                     </div>
                   )}
                 </div>
-                {b_loan_moreInfo_visibility && (
+                {!b_loan_moreInfo_visibility && (
                   <div className="bl__contactInfo">
                     <div className="bl__contactInfo__header">
                       <div className="bl__contactInfo__circleIcon">
