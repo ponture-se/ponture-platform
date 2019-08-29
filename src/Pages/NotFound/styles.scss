@@ -9,13 +9,24 @@
     font-size: 100px;
     @include variable(notfound-404-color, color, orange);
   }
-  .title{
+  .title {
     font-size: 35px;
     margin: 20px 0;
     text-align: center;
   }
-  .info{
+  .info {
     padding: 0 10px;
     text-align: center;
+
+    .email,
+    .phone {
+      margin: 5px 0;
+    }
+    .phone {
+      margin-top: 20px;
+    }
+    div:last-child {
+      font-family: OpenSanceBold;
+    }
   }
 }
