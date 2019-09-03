@@ -115,7 +115,7 @@ export default function BusinessLoan(props) {
   }
 
   const [mainSpinner, toggleMainSpinner] = useState(true);
-  const [tab, changeTab] = useState(3);
+  const [tab, changeTab] = useState(1);
   const [verifyModal, toggleVerifyModal] = useState();
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
@@ -198,7 +198,7 @@ export default function BusinessLoan(props) {
   const [form, setForm] = useState(formInitValues);
   const [verifyingSpinner, toggleVerifyingSpinner] = useState(false);
   const [submitSpinner, toggleSubmitSpinner] = useState(false);
-  const [error, setError] = useState({});
+  const [error, setError] = useState();
   const [startResult, setStartResult] = useState();
   const [bankIdResult, setBankIdResult] = useState();
 
@@ -276,6 +276,11 @@ export default function BusinessLoan(props) {
               callBack();
             } else toggleMainSpinner(false);
           } else {
+            // window.analytics.track("Failure", {
+            //   category: "Loan Application",
+            //   label: "/app/loan/wizard",
+            //   value: 0
+            // });
             toggleMainSpinner(false);
             changeTab(3);
             setError({
@@ -548,9 +553,6 @@ export default function BusinessLoan(props) {
 
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
-      // window.analytics.track("BankID Verification", {
-      //   title: "Loan Wizard"
-      // });
       let isValid = true;
       if (loanReasonOtherVisiblity) {
         if (!loanReasonOther || loanReasonOther.length === 0) {
@@ -574,6 +576,11 @@ export default function BusinessLoan(props) {
           startBankId()
             .onOk(result => {
               if (!didCancel) {
+                // window.analytics.track("BankID Verification", {
+                //   category: "Loan Application",
+                //   label: "/app/loan/bankid popup",
+                //   value: 0
+                // });
                 toggleVerifyingSpinner(false);
                 setStartResult(result);
                 toggleVerifyModal(true);
@@ -622,9 +629,6 @@ export default function BusinessLoan(props) {
   }
   function handleSubmitClicked() {
     if (!submitSpinner) {
-      // window.analytics.track("Submit", {
-      //   title: "Loan Wizard Submit"
-      // });
       let isValid = true;
       if (!personalNumber || personalNumber.length < 9) {
         isValid = false;
@@ -708,12 +712,22 @@ export default function BusinessLoan(props) {
           .onOk(result => {
             if (!didCancel) {
               if (result.errors) {
+                // window.analytics.track("Failure", {
+                //   category: "Loan Application",
+                //   label: "/app/loan/wizard",
+                //   value: 0
+                // });
                 changeTab(3);
                 setError({
                   sender: "submitLoan"
                 });
               } else {
                 resetForm();
+                // window.analytics.track("Submit", {
+                //   category: "Loan Application",
+                //   label: "/app/loan/wizard",
+                //   value: loanAmount
+                // });
                 changeTab(2);
               }
             }
@@ -783,6 +797,11 @@ export default function BusinessLoan(props) {
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
+        // window.analytics.track("Failure", {
+        //   category: "Loan Application",
+        //   label: "/app/loan/wizard",
+        //   value: 0
+        // });
         toggleMainSpinner(false);
         changeTab(3);
         setError({
@@ -800,6 +819,11 @@ export default function BusinessLoan(props) {
   }
   function handleCancelVerify() {
     toggleVerifyModal(false);
+    // window.analytics.track("BankID Failed", {
+    //   category: "Loan Application",
+    //   label: "/app/loan/bankid popup",
+    //   value: 0
+    // });
     cancelVerify()
       .onOk(result => {})
       .onServerError(result => {
@@ -1072,7 +1096,7 @@ export default function BusinessLoan(props) {
                     </div>
                   )}
                 </div>
-                {!b_loan_moreInfo_visibility && (
+                {b_loan_moreInfo_visibility && (
                   <div className="bl__contactInfo">
                     <div className="bl__contactInfo__header">
                       <div className="bl__contactInfo__circleIcon">

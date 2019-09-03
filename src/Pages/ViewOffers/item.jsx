@@ -7,7 +7,7 @@ import { toggleAlert } from "components/Alert";
 const Item = props => {
   const [{}, dispatch] = useGlobalState();
   const { t } = useLocale();
-  const { item } = props;
+  const { app, offer } = props;
 
   function handleAcceptOfferClicked() {
     toggleAlert({
@@ -18,7 +18,7 @@ const Item = props => {
       isAjaxCall: true,
       func: acceptOffer,
       data: {
-        offerId: item.offer_id
+        offerId: offer.Id
       },
       onCancel: () => {},
       onSuccess: result => {
@@ -29,6 +29,7 @@ const Item = props => {
             message: t("OFFER_ACCEPTED_SUCCESS")
           }
         });
+        if (props.onAcceptSuccess) props.onAcceptSuccess();
       },
       onServerError: error => {
         dispatch({
@@ -49,13 +50,6 @@ const Item = props => {
         });
       },
       unAuthorized: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "warning",
-            message: t("UN_AUTHORIZED")
-          }
-        });
       },
       notFound: error => {
         dispatch({
@@ -77,7 +71,6 @@ const Item = props => {
       }
     });
   }
-
   function handleRejectClicked() {
     toggleAlert({
       title: t("ARE_YOU_SURE"),
@@ -87,7 +80,7 @@ const Item = props => {
       isAjaxCall: true,
       func: rejectOffer,
       data: {
-        offerId: item.offer_id
+        offerId: offer.Id
       },
       onCancel: () => {},
       onSuccess: result => {
@@ -98,6 +91,7 @@ const Item = props => {
             message: t("OFFER_REJECT_SUCCESS")
           }
         });
+        if (props.onRejectSuccess) props.onRejectSuccess();
       },
       onServerError: error => {
         dispatch({
@@ -118,13 +112,6 @@ const Item = props => {
         });
       },
       unAuthorized: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "warning",
-            message: t("UN_AUTHORIZED")
-          }
-        });
       },
       notFound: error => {
         dispatch({
@@ -146,45 +133,72 @@ const Item = props => {
       }
     });
   }
+  function handleViewOffer() {
+    if (props.onViewOffersClicked) props.onViewOffersClicked(offer);
+  }
 
   return (
     <div className="myOfferItem animated fadeIn">
       <div className="myOfferItem__header">
-        <img src={require("assets/signicat-logo-black.png")} />
-        <span className="myOfferItem__title">{item.partnerName}</span>
+        <div className="top">
+          <span>{app.RecordType}</span>
+          <span>{offer.partnerName}</span>
+        </div>
+        <div className="bottom">
+          <span>{app.Name}</span>
+          <span>&nbsp;({app.orgNumber})</span>
+        </div>
       </div>
       <div className="myOfferItem__body">
         <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_OFFER")}</span>
-          <span>Value</span>
+          <span>{t("Product Name")}</span>
+          <span>{offer.Name}</span>
         </div>
         <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_AMOUNT_APPROVED")}</span>
-          <span>{separateNumberByChar(item.amount)} Kr</span>
+          <span>{t("Amount")}</span>
+          <span>{separateNumberByChar(offer.Amount)} Kr</span>
         </div>
         <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_BUSINESS")}</span>
-          <span>Value</span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_LOAN_PERIOD")}</span>
+          <span>{t("Repayment Period")}</span>
           <span>
-            {item.Repayment_Period} {t("MONTH_S")}
+            {offer.Repayment_Period} {t("MONTH_S")}
           </span>
         </div>
         <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_INTEREST")}</span>
-          <span>Value</span>
+          <span>{t("Interest Rate")}</span>
+          <span>{offer.Interest_Rate} %</span>
+        </div>
+        <div className="myOfferItem__bodyRow">
+          <span>{t("Total Repayment Amount")}</span>
+          <span>{separateNumberByChar(offer.Total_Repayment_Amount)} kr</span>
+        </div>
+        <div className="myOfferItem__bodyRow">
+          <span>{t("OFFER_GUARANTEE_NEEDED")}</span>
+          <span>{offer.Other_Guarantees_Type}</span>
         </div>
       </div>
       <div className="myOfferItem__footer">
-        <button className="btn --success" onClick={handleAcceptOfferClicked}>
-          {t("ACCEPT_OFFER")}
-        </button>
-        <button className="btn --light" onClick={handleRejectClicked}>
-          <span className="icon-cross" />
-          {t("REJECT")}
-        </button>
+        <div className="myOfferItem__footer__left">
+          {offer.spoStage && offer.spoStage.toLowerCase() === "offer issued" && (
+            <>
+              <button
+                className="btn --success"
+                onClick={handleAcceptOfferClicked}
+              >
+                {t("ACCEPT_OFFER")}
+              </button>
+              <button className="btn --light" onClick={handleRejectClicked}>
+                <span className="icon-cross" />
+                {t("REJECT")}
+              </button>
+            </>
+          )}
+        </div>
+        <div className="myOfferItem__footer__right">
+          <button className="btn --light" onClick={handleViewOffer}>
+            {t("VIEW_DETAIL")}
+          </button>
+        </div>
       </div>
     </div>
   );

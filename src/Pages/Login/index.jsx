@@ -54,6 +54,7 @@ const Login = props => {
     e.preventDefault();
     if (!error || !error.personalNumber || !error.personalNumber.isError) {
       toggleLoading(true);
+      
       let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       startBankId()
@@ -166,6 +167,7 @@ const Login = props => {
                 onBlur={handleChangedPersonalNumber}
                 autoFocus
                 maxLength="13"
+                autoComplete="true"
               />
             </div>
             <div className="formInput__footer">

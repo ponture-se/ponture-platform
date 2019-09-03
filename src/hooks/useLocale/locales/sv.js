@@ -13,7 +13,7 @@ export default {
   ERROR_OCCURRED: "Hoppsan, något blev fel!",
   LOADING_TEXT: "Vänligen vänta en stund...",
   TELEPHONE: "Telefon",
-  SIGN_OUT: "Sign Out",
+  SIGN_OUT: "Logga ut",
   INTERNAL_SERVER_ERROR: "Internal Server Error!",
   INTERNAL_SERVER_ERROR_MSG: "Internal Server Error!",
   BAD_REQUEST: "Bad Request",
@@ -30,29 +30,16 @@ export default {
   VIEW_OFFERS: "Visa Erbjunanden",
   BUSINESS_LOAN: "Företagslån",
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
-  APP_STATUS_REVIEW_TITLE: "Recension!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
-  APP_STATUS_SUBMITTED_TITLE: "Lämnats",
-  APP_STATUS_OFFER_RECEIVED_TITLE: "Erbjudet mottaget!",
-  APP_STATUS_ACCEPTED_TITLE: "Accepterad!",
-  APP_STATUS_FUNDED_CLOSED_WON_TITLE: "Vann",
-  APP_STATUS_NOT_FOUNDED_CLOSED_LOST_TITLE: "Förlorat",
-  APP_STATUS_RECEIVED_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
-  APP_STATUS_REVIEW_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_REJECTED_TITLE: "Avslagen!",
+  APP_STATUS_CLOSED_TITLE: "Avslutat!",
+
+  APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:
     "Din ansökan har godkänts av en eller flera lånegivare.",
-  APP_STATUS_SUBMITTED_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
-  APP_STATUS_OFFER_RECEIVED_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
-  APP_STATUS_ACCEPTED_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
-  APP_STATUS_FUNDED_CLOSED_WON_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
-  APP_STATUS_NOT_FOUNDED_CLOSED_LOST_DESC:
-    "Din ansökan har godkänts av en eller flera lånegivare.",
+  APP_STATUS_REJECTED_DESC: "Din ansökan godkändes inte pga bla bla bla.",
+  APP_STATUS_CLOSED_DESC: "",
+
   MONTH_S: "month(s)",
   ARE_YOU_SURE: "Are you sure?",
   NO: "No",
@@ -61,18 +48,20 @@ export default {
   ERROR_MSG2:
     "Under tiden, prova gärna en gång till eller kontakta oss direkt så hjälper vi er vidare!",
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
+  VIEW_DETAIL: "Visa detalj",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in på kundportalen",
   LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
   LOGIN_PERSONAL_NUMBER: "Personnummer",
-  LOGIN_BTN_NAME: "Verify BankID",
-  HEADER_TABS_FIRST: "My Applications",
-  MY_APPS_LOADING_TEXT: "Loading my applications...",
-  MY_APPS_EMPTY_LIST_TITLE: "Empty List!",
-  MY_APPS_EMPTY_LIST_MSG: "You aren't applied any applications so far",
-  OFFERS_LOADING_TEXT: "Loading Offers...",
-  OFFERS_EMPTY_LIST_TITLE: "Empty List!",
-  OFFERS_EMPTY_LIST_MSG: "You haven't any offers for this application",
+  LOGIN_BTN_NAME: "Identifiera med BankID",
+  HEADER_TABS_FIRST: "Mina Applikationer",
+  MY_APPS_LOADING_TEXT: "Laddar mina applikationer...",
+  MY_APPS_EMPTY_LIST_TITLE: "Tom lista!",
+  MY_APPS_EMPTY_LIST_MSG: "Du har inte använt några applikationer hittills",
+  OFFERS_HEADER_BACK: "Tillbaka till mina applikationer",
+  OFFERS_LOADING_TEXT: "Laddar erbjudanden...",
+  OFFERS_EMPTY_LIST_TITLE: "Tom lista!",
+  OFFERS_EMPTY_LIST_MSG: "Inga erbjudanden. Kom tillbaka igen om några timmar.",
   ACCEPT_OFFER: "Accept Offer",
   APP_NEEDS: "Anledning till lån:",
   APP_COMPANY_NAME: "Företag:",
@@ -86,11 +75,12 @@ export default {
   APP_OFFERS_ACCEPT_ALERT_INFO:
     "Choosing this offer as accepted for the application",
   OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
-  OFFER_OFFER: "Erbjudande:",
-  OFFER_AMOUNT_APPROVED: "Godkänt bellop:",
-  OFFER_BUSINESS: "Företag:",
-  OFFER_LOAN_PERIOD: "Låneperiod:",
-  OFFER_INTEREST: "Ränta:",
+  OFFER_LOAN_AMOUNT: "Godkänt belopp",
+  OFFER_LOAN_PERIOD: "Låneperiod",
+  OFFER_MONTHLY_FEE: "Månadskostnad",
+  OFFER_MONTHLY_REPAYMENT: "Återbetalning per månad",
+  OFFER_TOTAL_MONTHLY_PAYMENT: "Totalt att betala per månad",
+  OFFER_GUARANTEE_NEEDED: "Säkerhet krävs",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
@@ -178,7 +168,7 @@ export default {
 
   INTERNAL_SERVER_ERROR: "Internt serverfel",
   BAD_REQUEST: "Dålig förfrågan",
-  UN_AUTHORIZED: "Obehörig",
+  UN_AUTHORIZED: "Användarautentisering misslyckades. Försök igen",
   ON_REQUEST_ERROR: "Begärningsfel",
   UNKNOWN_ERROR: "Okänt fel",
   ERROR_HAS_OCCURRED: "Fel har uppstått",

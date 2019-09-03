@@ -29,28 +29,16 @@
         justify-content: center;
 
         &.appReceivedIcon {
-          background: brown;
-        }
-        &.appReviewIcon {
-          background: orange;
+          background: rgb(221, 169, 13);
         }
         &.approvedIcon {
-          background: green;
+          background: rgb(9, 172, 102);
         }
-        &.submittedIcon {
-          background: yellow;
+        &.rejectedIcon {
+          background: rgb(227, 126, 18);
         }
-        &.offerReceivedIcon {
-          background: blue;
-        }
-        &.offerAcceptedIcon {
-          background: pink;
-        }
-        &.fundedClosedWonIcon {
+        &.closedIcon {
           background: gray;
-        }
-        &.notFoundedClosedLostIcon {
-          background: lightcoral;
         }
       }
       .info {
@@ -125,9 +113,8 @@
     display: flex;
     font-size: 13px;
     padding: 8px 0;
-    & span:first-child {
+    span:first-child {
       font-family: OpenSanceBold;
-      width: 250px;
     }
   }
 }
@@ -138,11 +125,29 @@
     flex-direction: row;
     padding: 0 10px;
   }
+  .application__bodyRow {
+    flex-direction: column;
+    span:first-child {
+      width: auto;
+    }
+  }
+  .linkTitle {
+    display: none;
+  }
 }
 @media (min-width: 576px) {
   .application__header {
     flex-direction: row;
     padding: 0 40px;
+  }
+  .application__bodyRow {
+    flex-direction: column;
+    span:first-child {
+      width: auto;
+    }
+  }
+  .linkTitle {
+    display: block;
   }
 }
 
@@ -152,6 +157,16 @@
     flex-direction: row;
     padding: 0 40px;
   }
+  .application__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
+  .linkTitle {
+    display: block;
+  }
 }
 
 // Large devices (desktops, 992px and up)
@@ -160,6 +175,16 @@
     flex-direction: row;
     padding: 0 40px;
   }
+  .application__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
+  .linkTitle {
+    display: block;
+  }
 }
 
 // Extra large devices (large desktops, 1200px and up)
@@ -167,5 +192,15 @@
   .application__header {
     flex-direction: row;
     padding: 0 40px;
+  }
+  .application__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
+  .linkTitle {
+    display: block;
   }
 }

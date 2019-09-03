@@ -1,13 +1,17 @@
 import React, { useState, useCallback } from "react";
+import Cookies from "js-cookie";
 import { NavLink } from "react-router-dom";
 import "./styles.scss";
 import { useGlobalState, useLocale } from "hooks";
 
 const Header = props => {
-  const [{ userInfo }] = useGlobalState();
+  const [{ userInfo }, dispatch] = useGlobalState();
   const { t } = useLocale();
   function handleSignout() {
-    props.logoutUser();
+    Cookies.remove("@ponture-customer-portal/token");
+    dispatch({
+      type: "LOGOUT"
+    });
   }
   return (
     <div className="mainHeader">

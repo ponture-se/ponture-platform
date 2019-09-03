@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 import { withRouter, Redirect } from "react-router-dom";
 import { customerLogin } from "api/main-api";
 import { useGlobalState, useLocale } from "hooks";
@@ -8,17 +9,15 @@ const widthResolver = WrappedComponent => {
   return withRouter(props => {
     const [{ verifyInfo, userInfo }, dispatch] = useGlobalState();
     const { t } = useLocale();
-    const [loading, toggleLoading] = useState(userInfo ? false : true);
+    const token = Cookies.get("@ponture-customer-portal/token");
+    const [loading, toggleLoading] = useState(token && userInfo ? false : true);
     const [error, setError] = useState();
 
     function refresh() {
       window.location.reload();
     }
-    function handleLoginClicked() {
-      props.history.replace("/app/login");
-    }
     useEffect(() => {
-      if (verifyInfo && !userInfo) {
+      if (!token || !userInfo) {
         const obj = {
           id: verifyInfo.id,
           errors: verifyInfo.error,
@@ -29,7 +28,6 @@ const widthResolver = WrappedComponent => {
           LookupPersonAddressStatus: verifyInfo.LookupPersonAddressStatus,
           status: verifyInfo.status
         };
-
         customerLogin()
           .onOk(result => {
             dispatch({
@@ -49,13 +47,6 @@ const widthResolver = WrappedComponent => {
             setError({
               title: t("BAD_REQUEST"),
               msg: t("BAD_REQUEST_MSG")
-            });
-            toggleLoading(false);
-          })
-          .unAuthorized(result => {
-            setError({
-              title: t("UN_AUTHORIZED"),
-              msg: t("UN_AUTHORIZED_MSG")
             });
             toggleLoading(false);
           })
@@ -83,7 +74,6 @@ const widthResolver = WrappedComponent => {
           .call(obj);
       }
     }, []);
-
     return !verifyInfo ? (
       <Redirect
         to={{

@@ -1,49 +1,37 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { useLocale } from "hooks";
 import "./styles.scss";
 import Item from "./item";
+import OfferModal from "./OfferModal";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getOffers } from "api/main-api";
 //
-const MyApplications = props => {
-  const { t } = useLocale();
-  const [viewAppModalVisibility, toggleViewApp] = useState();
-  const [selectedApp, setApp] = useState();
+const AllOffers = props => {
+  let didCancel = false;
+  const { t, direction } = useLocale();
+  const [viewOfferModal, toggleViewOffer] = useState();
+  const [selectedOffer, setOffer] = useState();
   const [loading, toggleLoading] = useState(true);
-  const [data, setData] = useState();
+  const [offers, setOffers] = useState();
+  const [app, setApp] = useState();
   const [error, setError] = useState();
 
   useEffect(() => {
-    let didCancel = false;
+    _getOffers();
+    return () => {
+      didCancel = true;
+    };
+  }, []);
+  function _getOffers() {
     const id = props.match.params.id;
     getOffers()
       .onOk(result => {
         if (!didCancel) {
           toggleLoading(false);
-          setData([
-            {
-              Id: "a074E000004RLS4QAO",
-              partnerName: "Qred",
-              Name: "Qred Product Master",
-              CreatedDate: "2019-08-21T12:22:51.000+0000",
-              LastModifiedDate: "2019-08-21T16:03:54.000+0000",
-              Supplier_Partner_Opportunity: "a084E000004dFJMQA2",
-              Active: false,
-              Amount: 10004,
-              Cost: 4,
-              Interest_Rate: 4,
-              Monthly_Repayment_Amount: 4,
-              Other_Guarantees_Needed: true,
-              Personal_Guarantee_Needed: true,
-              Repayment_Period: 4,
-              Residual_Value: false,
-              Start_Fee: 4,
-              Total_Repayment_Amount: 4,
-              Product_Master: "a0G4E00000CLTUGUA5",
-              Offer_Number: "LP-0000000017"
-            }
-          ]);
+          setApp(result.opportunityDetail);
+          setOffers(result.offers);
         }
       })
       .onServerError(result => {
@@ -66,11 +54,6 @@ const MyApplications = props => {
       })
       .unAuthorized(result => {
         if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("UNKNOWN_ERROR"),
-            message: t("UNKNOWN_ERROR_MSG")
-          });
         }
       })
       .notFound(result => {
@@ -101,17 +84,24 @@ const MyApplications = props => {
         }
       })
       .call(id);
-
-    return () => {
-      didCancel = true;
-    };
-  }, []);
-  function handleViewOffers(app) {
-    setApp(app);
-    toggleViewApp(true);
+  }
+  function handleViewOffer(offer) {
+    setOffer(offer);
+    toggleViewOffer(true);
+  }
+  function handleCloseViewOffer() {
+    toggleViewOffer(false);
+  }
+  function handleSuccessAccept() {
+    toggleLoading(true);
+    _getOffers();
+  }
+  function handleRejectSuccess() {
+    toggleLoading(true);
+    _getOffers();
   }
   return (
-    <div className="myApps">
+    <div className="appOffers">
       {loading ? (
         <div className="page-loading">
           <SquareSpinner />
@@ -123,23 +113,65 @@ const MyApplications = props => {
           <h2>{error && error.title}</h2>
           <span>{error && error.message}</span>
         </div>
-      ) : !data || data.length === 0 ? (
-        <div className="page-empty-list animated fadeIn">
-          <Empty />
-          <h2>{t("OFFERS_EMPTY_LIST_TITLE")}</h2>
-          <span>{t("OFFERS_EMPTY_LIST_MSG")}</span>
-        </div>
+      ) : !offers || offers.length === 0 ? (
+        <>
+          <div className="appOffers__header">
+            <Link to={"/app/panel/myApplications"}>
+              <div className="icon">
+                <i
+                  className={
+                    direction === "ltr"
+                      ? "icon-arrow-left2"
+                      : "icon-arrow-right2"
+                  }
+                />
+              </div>
+              <span>{t("OFFERS_HEADER_BACK")}</span>
+            </Link>
+          </div>
+          <div className="page-empty-list animated fadeIn">
+            <Empty />
+            <h2>{t("OFFERS_EMPTY_LIST_TITLE")}</h2>
+            <span>{t("OFFERS_EMPTY_LIST_MSG")}</span>
+          </div>
+        </>
       ) : (
-        data.map(app => (
-          <Item
-            // key={app.opportunityID}
-            item={app}
-            onViewOffersClicked={handleViewOffers}
-          />
-        ))
+        <>
+          <div className="appOffers__header">
+            <Link to={"/app/panel/myApplications"}>
+              <div className="icon">
+                <i
+                  className={
+                    direction === "ltr"
+                      ? "icon-arrow-left2"
+                      : "icon-arrow-right2"
+                  }
+                />
+              </div>
+              <span className="linkTitle">{t("OFFERS_HEADER_BACK")}</span>
+            </Link>
+          </div>
+          {offers.map(offer => (
+            <Item
+              key={offer.Id}
+              app={app}
+              offer={offer}
+              onViewOffersClicked={handleViewOffer}
+              onAcceptSuccess={handleSuccessAccept}
+              onRejectSuccess={handleRejectSuccess}
+            />
+          ))}
+        </>
+      )}
+      {viewOfferModal && (
+        <OfferModal
+          offer={selectedOffer}
+          app={app}
+          onClose={handleCloseViewOffer}
+        />
       )}
     </div>
   );
 };
 
-export default MyApplications;
+export default AllOffers;

@@ -1,26 +1,65 @@
 @import "./../../styles/mixins.scss";
-.myApps {
+.appOffers {
   display: flex;
   flex-direction: column;
+  &__header {
+    a {
+      display: flex;
+      text-decoration: none;
+      color: rgb(35, 65, 141);
+      align-items: center;
+      span {
+        text-decoration: underline;
+        font-family: OpenSanceBold;
+      }
+      .icon {
+        margin: 0 8px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        font-size: 13px;
+        background: rgb(35, 65, 141);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
 }
 .myOfferItem {
   background: white;
   box-shadow: 0 0 2px lightgray;
-  margin-bottom: 20px;
+  margin-top: 20px;
   display: flex;
   flex-direction: column;
   &__header {
     margin: 0px 40px;
     display: flex;
     border-bottom: 1px solid lightgray;
-    align-items: center;
-    height: 70px;
-    img {
-      width: 150px;
+    height: 80px;
+    justify-content: center;
+    flex-direction: column;
+    .top {
+      display: flex;
+      align-items: center;
+      span:first-child {
+        font-size: 22px;
+        flex: 1;
+        font-family: OpenSanceBold;
+      }
+      span:last-child {
+        font-size: 25px;
+        font-family: OpenSanceBold;
+        color: gray;
+      }
     }
-    span {
-      font-size: 14px;
-      font-family: OpenSanceBold;
+    .bottom {
+      display: flex;
+      align-items: center;
+      span {
+        font-size: 13px;
+      }
     }
   }
   &__title {
@@ -68,9 +107,9 @@
     flex-grow: 0;
     padding: 10px 0;
     span:first-child {
-      width: 230px;
       font-family: OpenSanceBold;
-      font-size: 16px;
+      font-size: 14px;
+      width: 300px;
     }
     span:last-child {
       flex: 1;
@@ -82,6 +121,11 @@
     display: flex;
     align-items: center;
     padding: 0 40px;
+    &__left {
+      display: flex;
+      align-items: center;
+      flex: 1;
+    }
     button {
       width: 150px;
       margin-right: 10px;
@@ -90,5 +134,66 @@
         margin: 0 5px;
       }
     }
+  }
+}
+
+.offerDetail {
+  &__header {
+    height: 80px;
+    border-bottom: 0.5px solid lightgray;
+    display: flex;
+    padding: 0 20px;
+    align-items: center;
+    .left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      .title {
+        font-size: 22px;
+        font-family: OpenSanceBold;
+      }
+      .offerNumber {
+        font-size: 13px;
+        margin-top: 5px;
+      }
+    }
+    .right {
+      width: 50px;
+      text-align: center;
+      cursor: pointer;
+      .closeIcon {
+        font-size: 13px;
+        color: gray;
+        transition-duration: 0.2s;
+        &:hover {
+          color: black;
+          transition-duration: 0.2s;
+        }
+      }
+    }
+  }
+  &__body {
+    padding: 20px;
+    .row {
+      flex: 1;
+      display: flex;
+      font-size: 13px;
+      flex-grow: 0;
+      padding: 10px 0;
+      span:first-child {
+        font-family: OpenSanceBold;
+        font-size: 14px;
+        width: 300px;
+      }
+      span:last-child {
+        flex: 1;
+      }
+    }
+  }
+  &__footer {
+    padding: 20px;
+    border-top: 0.5px solid lightgray;
+    display: flex;
+    justify-content: flex-end;
   }
 }
