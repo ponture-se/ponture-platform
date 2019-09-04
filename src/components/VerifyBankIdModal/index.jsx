@@ -24,8 +24,14 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
-                    if (!props.isLogin) _getCompanies(result);
-                    else if (props.onSuccess) props.onSuccess(result);
+                    if (!props.isLogin) {
+                      window.analytics.track("BankID Verified", {
+                        category: "Loan Application",
+                        label: "/app/loan/ bankid popup",
+                        value: 0
+                      });
+                      _getCompanies(result);
+                    } else if (props.onSuccess) props.onSuccess(result);
                     break;
                   case "no_client":
                     // check is mobile
@@ -39,6 +45,12 @@ export default function VerifyBankIdModal(props) {
                     break;
                 }
               } else {
+                if (!props.isLogin)
+                  window.analytics.track("BankID Failed", {
+                    category: "Loan Application",
+                    label: "/app/loan/ bankid popup",
+                    value: 0
+                  });
                 clearInterval(fetchInterval);
                 toggleMainSpinner(false);
                 // check for example user_cancel
@@ -64,7 +76,7 @@ export default function VerifyBankIdModal(props) {
                   if (props.onClose)
                     setTimeout(() => {
                       props.onClose();
-                    }, 2000);
+                    }, 1000);
                 } else if (expired) {
                   setError({
                     type: "",

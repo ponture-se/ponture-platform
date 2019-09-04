@@ -66,6 +66,11 @@ export function getNeedsList() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
+        window.analytics.track("Failure", {
+          category: "Loan Application",
+          label: "/app/loan/wizard",
+          value: 0
+        });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -189,6 +194,11 @@ export function startBankId() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
+        window.analytics.track("Failure", {
+          category: "Loan Application",
+          label: "/app/loan/wizard",
+          value: 0
+        });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -481,7 +491,6 @@ export function cancelVerify() {
     }
   };
 }
-
 export function getCompanies() {
   let _onOkCallBack;
   function _onOk(result) {
@@ -526,7 +535,7 @@ export function getCompanies() {
     }
   }
 
-  const _call = async personalNumber => {
+  const _call = personalNumber => {
     const url = companiesUrl + "?personalNumber=" + personalNumber;
     const token = Cookies.get("@pontrue-wizard/token");
     axios
@@ -539,6 +548,11 @@ export function getCompanies() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
+        window.analytics.track("Failure", {
+          category: "Loan Application",
+          label: "/app/loan/wizard",
+          value: 0
+        });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -658,6 +672,11 @@ export function submitLoan() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
+        window.analytics.track("Failure", {
+          category: "Loan Application",
+          label: "/app/loan/wizard",
+          value: 0
+        });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
