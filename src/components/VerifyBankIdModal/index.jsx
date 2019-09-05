@@ -4,6 +4,9 @@ import { collect, getCompanies } from "api/business-loan-api";
 import { useLocale } from "hooks";
 import "./styles.scss";
 //
+const enabledAnalytic =
+  process.env.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
+//
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
   const { t } = useLocale();
@@ -25,11 +28,12 @@ export default function VerifyBankIdModal(props) {
                     toggleMainSpinner(false);
                     setSuccess(true);
                     if (!props.isLogin) {
-                      window.analytics.track("BankID Verified", {
-                        category: "Loan Application",
-                        label: "/app/loan/ bankid popup",
-                        value: 0
-                      });
+                      if (enabledAnalytic)
+                        window.analytics.track("BankID Verified", {
+                          category: "Loan Application",
+                          label: "/app/loan/ bankid popup",
+                          value: 0
+                        });
                       _getCompanies(result);
                     } else if (props.onSuccess) props.onSuccess(result);
                     break;
@@ -46,11 +50,12 @@ export default function VerifyBankIdModal(props) {
                 }
               } else {
                 if (!props.isLogin)
-                  window.analytics.track("BankID Failed", {
-                    category: "Loan Application",
-                    label: "/app/loan/ bankid popup",
-                    value: 0
-                  });
+                  if (enabledAnalytic)
+                    window.analytics.track("BankID Failed", {
+                      category: "Loan Application",
+                      label: "/app/loan/ bankid popup",
+                      value: 0
+                    });
                 clearInterval(fetchInterval);
                 toggleMainSpinner(false);
                 // check for example user_cancel

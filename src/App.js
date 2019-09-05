@@ -6,7 +6,7 @@ import { useTheme } from "./hooks";
 import "./styles/app.scss";
 import { Alert } from "./components/Alert";
 import Notifies from "./components/Notifies";
-import PrivateRoute from "hoc/PrivateRoute";
+// import PrivateRoute from "hoc/PrivateRoute";
 import withResolver from "hoc/withResolver";
 //
 const BusinessLoan = lazy(() => import("./Pages/BusinessLoan"));
@@ -23,21 +23,21 @@ const App = () => {
         <BrowserRouter>
           <Suspense fallback={<div />}>
             <Switch>
-              <Route
+              {/* <Route
                 key="appLoan"
                 path="/app/login"
                 render={props => <Login {...props} />}
-              />
+              /> */}
               <Route
                 key="appLoan"
                 path="/app/loan"
                 render={props => <BusinessLoan {...props} />}
               />
-              <PrivateRoute
+              {/* <PrivateRoute
                 key="mainPage"
                 path="/app/panel"
                 render={props => <Main {...props} />}
-              />
+              /> */}
               <Redirect exact from="/app" to="/app/loan" />
               <Route component={NotFound} />
             </Switch>
