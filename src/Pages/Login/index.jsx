@@ -4,7 +4,8 @@ import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import { isBankId } from "utils";
-import { startBankId } from "./../../api/business-loan-api";
+import batchStates from "utils/batchStates";
+import { startBankId, cancelVerify } from "./../../api/business-loan-api";
 import "./styles.scss";
 
 const Login = props => {
@@ -54,15 +55,17 @@ const Login = props => {
     e.preventDefault();
     if (!error || !error.personalNumber || !error.personalNumber.isError) {
       toggleLoading(true);
-      
+
       let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       startBankId()
         .onOk(result => {
           if (!didCancel) {
-            toggleLoading(false);
-            setStartResult(result);
-            toggleVerifyModal(true);
+            batchStates(() => {
+              toggleLoading(false);
+              setStartResult(result);
+              toggleVerifyModal(true);
+            });
           }
         })
         .onServerError(result => {
@@ -127,6 +130,9 @@ const Login = props => {
   }
   function handleCancelVerify() {
     toggleVerifyModal(false);
+    cancelVerify()
+      .onOk(result => {})
+      .call(startResult ? startResult.orderRef : null);
   }
 
   return (
