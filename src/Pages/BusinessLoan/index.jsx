@@ -32,6 +32,8 @@ const loanPeriodStep = 1;
 const loanPeriodMax = 60;
 const loanPeriodMin = 1;
 
+const enabledAnalytic =
+  process.env.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
 // =====================================================================
 
 export default function BusinessLoan(props) {
@@ -276,11 +278,12 @@ export default function BusinessLoan(props) {
               callBack();
             } else toggleMainSpinner(false);
           } else {
-            // window.analytics.track("Failure", {
-            //   category: "Loan Application",
-            //   label: "/app/loan/wizard",
-            //   value: 0
-            // });
+            if (enabledAnalytic)
+              window.analytics.track("Failure", {
+                category: "Loan Application",
+                label: "/app/loan/ wizard",
+                value: 0
+              });
             toggleMainSpinner(false);
             changeTab(3);
             setError({
@@ -576,11 +579,12 @@ export default function BusinessLoan(props) {
           startBankId()
             .onOk(result => {
               if (!didCancel) {
-                // window.analytics.track("BankID Verification", {
-                //   category: "Loan Application",
-                //   label: "/app/loan/bankid popup",
-                //   value: 0
-                // });
+                if (enabledAnalytic)
+                  window.analytics.track("BankID Verification", {
+                    category: "Loan Application",
+                    label: "/app/loan/ bankid popup",
+                    value: 0
+                  });
                 toggleVerifyingSpinner(false);
                 setStartResult(result);
                 toggleVerifyModal(true);
@@ -712,22 +716,24 @@ export default function BusinessLoan(props) {
           .onOk(result => {
             if (!didCancel) {
               if (result.errors) {
-                // window.analytics.track("Failure", {
-                //   category: "Loan Application",
-                //   label: "/app/loan/wizard",
-                //   value: 0
-                // });
+                if (enabledAnalytic)
+                  window.analytics.track("Failure", {
+                    category: "Loan Application",
+                    label: "/app/loan/ wizard",
+                    value: 0
+                  });
                 changeTab(3);
                 setError({
                   sender: "submitLoan"
                 });
               } else {
                 resetForm();
-                // window.analytics.track("Submit", {
-                //   category: "Loan Application",
-                //   label: "/app/loan/wizard",
-                //   value: loanAmount
-                // });
+                if (enabledAnalytic)
+                  window.analytics.track("Submit", {
+                    category: "Loan Application",
+                    label: "/app/loan/ wizard",
+                    value: loanAmount
+                  });
                 changeTab(2);
               }
             }
@@ -797,11 +803,12 @@ export default function BusinessLoan(props) {
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
-        // window.analytics.track("Failure", {
-        //   category: "Loan Application",
-        //   label: "/app/loan/wizard",
-        //   value: 0
-        // });
+        if (enabledAnalytic)
+          window.analytics.track("Failure", {
+            category: "Loan Application",
+            label: "/app/loan/ wizard",
+            value: 0
+          });
         toggleMainSpinner(false);
         changeTab(3);
         setError({
@@ -819,11 +826,12 @@ export default function BusinessLoan(props) {
   }
   function handleCancelVerify() {
     toggleVerifyModal(false);
-    // window.analytics.track("BankID Failed", {
-    //   category: "Loan Application",
-    //   label: "/app/loan/bankid popup",
-    //   value: 0
-    // });
+    if (enabledAnalytic)
+      window.analytics.track("BankID Failed", {
+        category: "Loan Application",
+        label: "/app/loan/ bankid popup",
+        value: 0
+      });
     cancelVerify()
       .onOk(result => {})
       .onServerError(result => {
@@ -1211,7 +1219,7 @@ export default function BusinessLoan(props) {
               </>
             )}
             {tab === 2 && (
-              <div className="bl__successBox animated fadeIn faster">
+              <div className="bl__successBox animated fadeIn">
                 <div className="bl__successBox__top">
                   <div className="submitIcon">
                     <i className="icon-checkmark" />
