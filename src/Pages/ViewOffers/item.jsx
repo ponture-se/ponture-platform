@@ -187,7 +187,7 @@ const Item = props => {
               >
                 {t("ACCEPT_OFFER")}
               </button>
-              <button className="btn --light" onClick={handleRejectClicked}>
+              <button className="btn --warning" onClick={handleRejectClicked}>
                 <span className="icon-cross" />
                 {t("REJECT")}
               </button>

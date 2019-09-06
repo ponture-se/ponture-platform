@@ -4,6 +4,7 @@ import { withRouter, Redirect } from "react-router-dom";
 import { customerLogin } from "api/main-api";
 import { useGlobalState, useLocale } from "hooks";
 import { Wrong } from "components/Commons/ErrorsComponent";
+import NotFoundUser from "Pages/NotFoundUser";
 //
 const widthResolver = WrappedComponent => {
   return withRouter(props => {
@@ -52,8 +53,7 @@ const widthResolver = WrappedComponent => {
           })
           .notFound(result => {
             setError({
-              title: t("NOT_FOUND"),
-              msg: t("NOT_FOUND_MSG")
+              type: "notFound"
             });
             toggleLoading(false);
           })
@@ -87,14 +87,18 @@ const widthResolver = WrappedComponent => {
         Loading ...
       </div>
     ) : error ? (
-      <div className="rosolverError animated fadeIn">
-        <Wrong />
-        <span className="title">{error.title}</span>
-        <span className="info">{error.msg}</span>
-        <button className="btn --primary" onClick={refresh}>
-          Refresh
-        </button>
-      </div>
+      error.type === "notFound" ? (
+        <NotFoundUser />
+      ) : (
+        <div className="rosolverError animated fadeIn">
+          <Wrong />
+          <span className="title">{error.title}</span>
+          <span className="info">{error.msg}</span>
+          <button className="btn --primary" onClick={refresh}>
+            Refresh
+          </button>
+        </div>
+      )
     ) : (
       <WrappedComponent {...props} />
     );
