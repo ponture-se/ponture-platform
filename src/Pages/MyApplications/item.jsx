@@ -163,7 +163,10 @@ const Item = props => {
       <div className="application__body">
         <div className="application__body__header">
           <span>{t("BUSINESS_LOAN")}</span>
-          <span>{separateNumberByChar(item.amount)} Kr</span>
+          <span className="loanAmount">
+            <span>{t("MY_APPS_ITEM_HEADER_TITLE")}</span>
+            <span>{separateNumberByChar(item.amount)} Kr</span>
+          </span>
         </div>
         <div className="application__bodyRow">
           <span>{t("APP_COMPANY_NAME")}</span>

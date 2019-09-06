@@ -63,6 +63,7 @@ export default {
   OFFERS_EMPTY_LIST_TITLE: "Tom lista!",
   OFFERS_EMPTY_LIST_MSG: "Inga erbjudanden. Kom tillbaka igen om några timmar.",
   ACCEPT_OFFER: "Acceptera Erbjudandet",
+  MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
   APP_NEEDS: "Dina anledningar till lån",
   APP_COMPANY_NAME: "Företag:",
   APP_AMORTIZATION_PERIOD: "Önskad låneperiod",
