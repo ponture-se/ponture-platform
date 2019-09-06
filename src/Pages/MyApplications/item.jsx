@@ -188,8 +188,12 @@ const Item = props => {
         <div className="application__bodyRow">
           <span>{t("APP_AMORTIZATION_PERIOD")}</span>
           <span>
-            {item.amortizationPeriod &&
-              item.amortizationPeriod + " " + t("MONTH_S")}
+            {item.amortizationPeriod && item.amortizationPeriod + " "}
+            {item.amortizationPeriod
+              ? parseInt(item.amortizationPeriod) >= 1
+                ? t("MONTHS")
+                : t("MONTH")
+              : null}
           </span>
         </div>
         <div className="application__bodyRow">
