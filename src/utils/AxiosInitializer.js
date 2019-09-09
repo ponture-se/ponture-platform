@@ -1,4 +1,5 @@
 import React from "react";
+import Cookies from "js-cookie";
 import axios from "axios";
 import { useGlobalState, useLocale } from "hooks";
 //
@@ -27,6 +28,7 @@ export default function AxiosInitializer({ children }) {
             url !== cancelUrl &&
             url !== companiesUrl
           ) {
+            Cookies.remove("@ponture-customer-portal/token");
             dispatch({
               type: "ADD_NOTIFY",
               value: {

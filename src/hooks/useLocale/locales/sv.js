@@ -24,7 +24,6 @@ export default {
   NOT_FOUND_MSG: "Not Found",
   ON_REQUEST_ERROR: "Request Error",
   ON_REQUEST_ERROR_MSG: "Request Error",
-  UN_AUTHORIZED: "User authentication failed. Try again",
   CANCEL: "Avbryt",
   REJECT: "Tacka Nej",
   VIEW_OFFERS: "Visa Erbjudanden",

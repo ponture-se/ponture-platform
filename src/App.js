@@ -20,8 +20,8 @@ const App = () => {
   useTheme("theme1");
   return (
     <StateProvider>
-      <AxiosInitializer>
-        <LocaleProvider lang={"sv"}>
+      <LocaleProvider lang={"sv"}>
+        <AxiosInitializer>
           <BrowserRouter>
             <Suspense fallback={<div />}>
               <Switch>
@@ -46,10 +46,10 @@ const App = () => {
               </Switch>
             </Suspense>
           </BrowserRouter>
-        </LocaleProvider>
-        <Notifies />
-        <Alert />
-      </AxiosInitializer>
+          <Notifies />
+          <Alert />
+        </AxiosInitializer>
+      </LocaleProvider>
     </StateProvider>
   );
 };

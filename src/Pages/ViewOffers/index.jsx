@@ -101,7 +101,7 @@ const AllOffers = props => {
           if (result) {
             let off = offers.filter(item => item.id !== offer.id);
             off.push(result);
-            setOffer(off);
+            setOffers(off);
           }
         }
       })
@@ -171,13 +171,11 @@ const AllOffers = props => {
             message: t("OFFER_REJECT_SUCCESS")
           }
         });
-        debugger;
         if (result) {
           let off = offers.filter(item => item.id !== offer.id);
           off.push(result);
-          setOffer(off);
+          setOffers(off);
         }
-        // if (props.onRejectSuccess) props.onRejectSuccess();
       },
       onServerError: error => {
         dispatch({
