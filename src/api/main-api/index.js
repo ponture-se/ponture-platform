@@ -661,7 +661,7 @@ export function acceptOffer() {
     }
   }
 
-  const _call = ({ offerId }) => {
+  const _call = offerId => {
     const url = acceptOfferUrl + "?offerId=" + offerId;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios({

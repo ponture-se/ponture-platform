@@ -32,7 +32,7 @@ const Alert = props => {
         f.onOk(result => {
           toggleSpinner(false);
           if (info.onSuccess) {
-            info.onSuccess();
+            info.onSuccess(result);
           }
           _toggleAlert(prev => !prev);
         });

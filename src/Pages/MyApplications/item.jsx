@@ -11,7 +11,7 @@ const Item = props => {
   const { t, direction } = useLocale();
   const { item } = props;
   const stage = item.opportunityStage.toLowerCase();
-
+  const lostReason = item.lostReason ? item.lostReason.toLowerCase() : "";
   function handleCancelClicked() {
     toggleAlert({
       title: t("ARE_YOU_SURE"),
@@ -122,10 +122,14 @@ const Item = props => {
                   stage === "offer received" ||
                   stage === "offer accepted"
                 ? t("APP_STATUS_APPROVED_TITLE")
-                : stage === "not funded/ closed lost"
+                : stage === "not funded/ closed lost" &&
+                  lostReason === "canceled by customer"
+                ? t("APP_STATUS_REJECTED_BY_USER_TITLE")
+                : stage === "not funded/ closed lost" &&
+                  lostReason !== "canceled by customer"
                 ? t("APP_STATUS_REJECTED_TITLE")
                 : stage === "funded/closed won"
-                ? t("APP_STATUS_CLOSED_TITLE")
+                ? t("APP_STATUS_WON_TITLE")
                 : ""}
             </span>
             <span>
@@ -136,7 +140,11 @@ const Item = props => {
                   stage === "offer received" ||
                   stage === "offer accepted"
                 ? t("APP_STATUS_APPROVED_DESC")
-                : stage === "not funded/ closed lost"
+                : stage === "not funded/ closed lost" &&
+                  lostReason === "canceled by customer"
+                ? t("APP_STATUS_REJECTED_BY_USER_DESC")
+                : stage === "not funded/ closed lost" &&
+                  lostReason !== "canceled by customer"
                 ? t("APP_STATUS_REJECTED_DESC")
                 : stage === "funded/closed won"
                 ? t("APP_STATUS_CLOSED_DESC")

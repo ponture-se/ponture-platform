@@ -1,15 +1,17 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
-import { useLocale } from "hooks";
+import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
 import Item from "./item";
 import OfferModal from "./OfferModal";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
-import { getOffers } from "api/main-api";
+import { getOffers, rejectOffer, acceptOffer } from "api/main-api";
+import { toggleAlert } from "components/Alert";
 //
 const AllOffers = props => {
   let didCancel = false;
+  const [{}, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
   const [viewOfferModal, toggleViewOffer] = useState();
   const [selectedOffer, setOffer] = useState();
@@ -92,13 +94,129 @@ const AllOffers = props => {
   function handleCloseViewOffer() {
     toggleViewOffer(false);
   }
-  function handleSuccessAccept() {
-    toggleLoading(true);
-    _getOffers();
+  function handleAcceptClicked(offer) {
+    acceptOffer()
+      .onOk(result => {
+        if (!didCancel) {
+          if (result) {
+            let off = offers.filter(item => item.id !== offer.id);
+            off.push(result);
+            setOffer(off);
+          }
+        }
+      })
+      .onServerError(result => {
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: t("INTERNAL_SERVER_ERROR")
+            }
+          });
+        }
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: t("BAD_REQUEST")
+            }
+          });
+        }
+      })
+      .notFound(result => {
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: t("NOT_FOUND")
+            }
+          });
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: t("UNKNOWN_ERROR")
+            }
+          });
+        }
+      })
+      .call(offer.Id);
   }
-  function handleRejectSuccess() {
-    toggleLoading(true);
-    _getOffers();
+  function handleRejectClicked(offer) {
+    toggleAlert({
+      title: t("APP_OFFERS_REJECT_ALERT_INFO"),
+      // description: t("APP_OFFERS_REJECT_ALER T_INFO"),
+      cancelBtnText: t("NO"),
+      okBtnText: t("YES_DO_IT"),
+      isAjaxCall: true,
+      func: rejectOffer,
+      data: {
+        offerId: offer.Id
+      },
+      onCancel: () => {},
+      onSuccess: result => {
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "success",
+            message: t("OFFER_REJECT_SUCCESS")
+          }
+        });
+        debugger;
+        if (result) {
+          let off = offers.filter(item => item.id !== offer.id);
+          off.push(result);
+          setOffer(off);
+        }
+        // if (props.onRejectSuccess) props.onRejectSuccess();
+      },
+      onServerError: error => {
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "error",
+            message: t("INTERNAL_SERVER_ERROR")
+          }
+        });
+      },
+      onBadRequest: error => {
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "error",
+            message: t("BAD_REQUEST")
+          }
+        });
+      },
+      unAuthorized: error => {},
+      notFound: error => {
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "error",
+            message: t("NOT_FOUND")
+          }
+        });
+      },
+      unKnownError: error => {
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "error",
+            message: t("UNKNOWN_ERROR")
+          }
+        });
+      }
+    });
   }
   return (
     <div className="appOffers">
@@ -157,8 +275,8 @@ const AllOffers = props => {
               app={app}
               offer={offer}
               onViewOffersClicked={handleViewOffer}
-              onAcceptSuccess={handleSuccessAccept}
-              onRejectSuccess={handleRejectSuccess}
+              onAcceptClicked={handleAcceptClicked}
+              onRejectClicked={handleRejectClicked}
             />
           ))}
         </>
