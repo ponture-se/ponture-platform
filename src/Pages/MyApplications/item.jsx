@@ -14,8 +14,7 @@ const Item = props => {
   const lostReason = item.lostReason ? item.lostReason.toLowerCase() : "";
   function handleCancelClicked() {
     toggleAlert({
-      title: t("ARE_YOU_SURE"),
-      description: t("APP_CANCEL_ALERT_INFO"),
+      title: t("APP_CANCEL_ALERT_INFO"),
       cancelBtnText: t("NO"),
       okBtnText: t("YES_DO_IT"),
       isAjaxCall: true,

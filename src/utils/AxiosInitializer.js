@@ -28,6 +28,7 @@ export default function AxiosInitializer({ children }) {
             url !== cancelUrl &&
             url !== companiesUrl
           ) {
+            sessionStorage.removeItem("@ponture-customer-bankid");
             Cookies.remove("@ponture-customer-portal/token");
             dispatch({
               type: "ADD_NOTIFY",

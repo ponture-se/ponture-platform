@@ -8,6 +8,7 @@ const Header = props => {
   const [{ userInfo }, dispatch] = useGlobalState();
   const { t } = useLocale();
   function handleSignout() {
+    sessionStorage.removeItem("@ponture-customer-bankid");
     Cookies.remove("@ponture-customer-portal/token");
     dispatch({
       type: "LOGOUT"

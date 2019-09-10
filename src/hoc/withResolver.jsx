@@ -84,7 +84,7 @@ const widthResolver = WrappedComponent => {
     ) : loading ? (
       <div className="loaderBox">
         <div className="loader" />
-        Loading ...
+        {t("MAIN_SPINNER_LOADING_TEXT")}
       </div>
     ) : error ? (
       error.type === "notFound" ? (
@@ -94,9 +94,6 @@ const widthResolver = WrappedComponent => {
           <Wrong />
           <span className="title">{error.title}</span>
           <span className="info">{error.msg}</span>
-          <button className="btn --primary" onClick={refresh}>
-            Refresh
-          </button>
         </div>
       )
     ) : (

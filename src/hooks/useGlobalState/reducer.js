@@ -1,9 +1,13 @@
-const USER_VERIFY_INFO = "@user/VERIFY_BANK_ID_INFO";
 //
+let bankIdInfo = null;
+try {
+  bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
+} catch (error) {}
+
 export const initialState = {
-  isAuthenticated: false,
+  isAuthenticated: bankIdInfo ? true : false,
   b_loan_moreInfo_visibility: false,
-  verifyInfo: null,
+  verifyInfo: bankIdInfo,
   userInfo: null,
   notifies: []
 };

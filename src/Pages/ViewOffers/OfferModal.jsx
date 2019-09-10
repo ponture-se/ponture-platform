@@ -59,7 +59,8 @@ const IssueOffer = props => {
             <span>{offer.Other_Guarantees_Type}</span>
           </div>
           <div className="extra">
-            <span>{"Lorem ipsum can not anything in future"}</span>
+            <span>{"lllllllllllllllllllllll"}</span>
+            {/* <span>{offer.Extra_Offer_Description}</span> */}
           </div>
         </div>
       </div>

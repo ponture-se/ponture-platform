@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 //
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
@@ -126,6 +127,7 @@ const Login = props => {
       type: "VERIFY_BANK_ID_SUCCESS",
       payload: result
     });
+    sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
     props.history.push("/app/panel/myApplications");
   }
   function handleCancelVerify() {
