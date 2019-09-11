@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
 import Item from "./item";
-import OfferModal from "./OfferModal";
+// import OfferModal from "./OfferModal";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getOffers, rejectOffer, acceptOffer } from "api/main-api";
@@ -279,13 +279,13 @@ const AllOffers = props => {
           ))}
         </>
       )}
-      {viewOfferModal && (
+      {/* {viewOfferModal && (
         <OfferModal
           offer={selectedOffer}
           app={app}
           onClose={handleCloseViewOffer}
         />
-      )}
+      )} */}
     </div>
   );
 };

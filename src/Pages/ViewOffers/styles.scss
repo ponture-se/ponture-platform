@@ -186,3 +186,36 @@
     justify-content: flex-end;
   }
 }
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+ .myOfferItem__bodyRow{
+   flex-direction: column
+ }
+}
+@media (min-width: 576px) {
+  .myOfferItem__bodyRow{
+   flex-direction: row
+ }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+.myOfferItem__bodyRow{
+   flex-direction: row
+ }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+.myOfferItem__bodyRow{
+   flex-direction: row
+ }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+ .myOfferItem__bodyRow{
+   flex-direction: row
+ }
+}

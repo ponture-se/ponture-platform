@@ -17,8 +17,8 @@
     flex: 1;
     align-items: flex-start;
     margin: auto;
-    @include variable(main-header-width, max-width, 992px);
     width: 100%;
+    @include variable(main-header-width, max-width, 992px);
   }
   &__img {
     flex: 1;
@@ -52,7 +52,8 @@
     margin: auto;
     display: flex;
     justify-content: space-between;
-    @include variable(main-header-width, width, 992px);
+    @include variable(main-header-width, max-width, 992px);
+    width: 100%;
     .tabItem {
       font-size: 13px;
       cursor: pointer;

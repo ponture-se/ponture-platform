@@ -31,6 +31,39 @@ const Item = props => {
             {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
           </span>
         </div>
+        {offer.outline &&
+          offer.outline.length > 0 &&
+          offer.outline.map(c => (
+            <div className="myOfferItem__bodyRow">
+              <span>{c.label}</span>
+              {c.type.toLowerCase() === "currency" ? (
+                <span>
+                  {c.isShared
+                    ? separateNumberByChar(offer[c.apiName])
+                    : offer.detail
+                    ? separateNumberByChar(offer.detail[c.apiName]) +
+                      (c.type.toLowerCase() === "currency" &&
+                        " " + c.unit + " ")
+                    : ""}
+                </span>
+              ) : (
+                <span>
+                  {c.isShared
+                    ? offer[c.apiName]
+                    : offer.detail
+                    ? offer.detail[c.apiName]
+                    : ""}
+                </span>
+              )}
+            </div>
+          ))}
+        {/* <div className="myOfferItem__bodyRow">
+          <span>{t("OFFER_TITLE")}</span>
+          <span>
+            {t("OFFER_TITLE_VALUE")}{" "}
+            {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
+          </span>
+        </div>
         <div className="myOfferItem__bodyRow">
           <span>{t("OFFER_AMOUNT")}</span>
           <span>{separateNumberByChar(offer.Amount)} Kr</span>
@@ -52,6 +85,7 @@ const Item = props => {
           <span>{t("OFFER_INTEREST_RATE")}</span>
           <span>{offer.Interest_Rate} %</span>
         </div>
+    */}
       </div>
       <div className="myOfferItem__footer">
         <div className="myOfferItem__footer__left">
@@ -82,11 +116,11 @@ const Item = props => {
             </button>
           )}
         </div>
-        <div className="myOfferItem__footer__right">
+        {/* <div className="myOfferItem__footer__right">
           <button className="btn --light" onClick={handleViewOffer}>
             {t("VIEW_DETAIL")}
           </button>
-        </div>
+        </div> */}
       </div>
     </div>
   );
