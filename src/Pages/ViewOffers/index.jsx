@@ -100,62 +100,14 @@ const AllOffers = props => {
   function handleCloseViewOffer() {
     toggleViewOffer(false);
   }
-  function handleAcceptClicked(offer) {
-    acceptOffer()
-      .onOk(result => {
-        if (!didCancel) {
-          if (result) {
-            let off = offers.filter(item => item.Id !== offer.Id);
-            off.push(result);
-            setOffers(off);
-          }
-        }
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: t("INTERNAL_SERVER_ERROR")
-            }
-          });
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: t("BAD_REQUEST")
-            }
-          });
-        }
-      })
-      .notFound(result => {
-        if (!didCancel) {
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: t("NOT_FOUND")
-            }
-          });
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: t("UNKNOWN_ERROR")
-            }
-          });
-        }
-      })
-      .call(offer.Id);
+  function handleSuccessAccept(result) {
+    if (result) {
+      let off = offers.map(item => {
+        if (item.Id === result.Id) item = result;
+        return item;
+      });
+      setOffers(off);
+    }
   }
   function handleRejectClicked(offer) {
     toggleAlert({
@@ -178,8 +130,10 @@ const AllOffers = props => {
           }
         });
         if (result) {
-          let off = offers.filter(item => item.Id !== offer.Id);
-          off.push(result);
+          let off = offers.map(item => {
+            if (item.Id === offer.Id) item = result;
+            return item;
+          });
           setOffers(off);
         }
       },
@@ -279,7 +233,7 @@ const AllOffers = props => {
               app={app}
               offer={offer}
               onViewOffersClicked={handleViewOffer}
-              onAcceptClicked={handleAcceptClicked}
+              onSuccessAccept={handleSuccessAccept}
               onRejectClicked={handleRejectClicked}
             />
           ))}

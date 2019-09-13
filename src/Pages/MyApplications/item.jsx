@@ -146,7 +146,7 @@ const Item = props => {
                   lostReason !== "canceled by customer"
                 ? t("APP_STATUS_REJECTED_DESC")
                 : stage === "funded/closed won"
-                ? t("APP_STATUS_CLOSED_DESC")
+                ? t("APP_STATUS_WON_DESC")
                 : ""}
             </span>
           </div>

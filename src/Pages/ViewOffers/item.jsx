@@ -1,15 +1,79 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import separateNumberByChar from "utils/separateNumberByChar";
-
+import { acceptOffer } from "api/main-api";
+import CircleSpinner from "components/CircleSpinner";
 //
 const Item = props => {
+  let didCancel = false;
   const [{}, dispatch] = useGlobalState();
   const { t } = useLocale();
   const { app, offer } = props;
+  const [acceptSpinner, toggleAcceptSpinner] = useState();
 
+  useEffect(() => {
+    return () => {
+      didCancel = true;
+    };
+  }, []);
   function handleAcceptOfferClicked() {
-    if (props.onAcceptClicked) props.onAcceptClicked(offer);
+    if (!acceptSpinner) {
+      toggleAcceptSpinner(true);
+      acceptOffer()
+        .onOk(result => {
+          if (!didCancel) {
+            toggleAcceptSpinner(false);
+            if (props.onSuccessAccept) {
+              props.onSuccessAccept(result);
+            }
+          }
+        })
+        .onServerError(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("INTERNAL_SERVER_ERROR")
+              }
+            });
+          }
+        })
+        .onBadRequest(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("BAD_REQUEST")
+              }
+            });
+          }
+        })
+        .notFound(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("NOT_FOUND")
+              }
+            });
+          }
+        })
+        .unKnownError(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("UNKNOWN_ERROR")
+              }
+            });
+          }
+        })
+        .call(offer.Id);
+    }
   }
   function handleRejectClicked() {
     if (props.onRejectClicked) props.onRejectClicked(offer);
@@ -68,7 +132,11 @@ const Item = props => {
                 className="btn --success"
                 onClick={handleAcceptOfferClicked}
               >
-                {t("ACCEPT_OFFER")}
+                {acceptSpinner ? (
+                  <CircleSpinner show={true} />
+                ) : (
+                  t("ACCEPT_OFFER")
+                )}
               </button>
               <button className="btn --warning" onClick={handleRejectClicked}>
                 {t("REJECT")}
