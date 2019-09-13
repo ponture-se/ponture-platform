@@ -34,7 +34,6 @@
   display: flex;
   flex-direction: column;
   &__header {
-    margin: 0px 40px;
     display: flex;
     border-bottom: 1px solid lightgray;
     height: 80px;
@@ -50,7 +49,6 @@
 
   &__body {
     flex: 1;
-    padding: 10px 40px 0 40px;
     display: flex;
     flex-direction: column;
     &__header {
@@ -89,7 +87,6 @@
     span:first-child {
       font-family: OpenSanceBold;
       font-size: 14px;
-      width: 300px;
     }
     span:last-child {
       flex: 1;
@@ -100,7 +97,6 @@
     height: 60px;
     display: flex;
     align-items: center;
-    padding: 0 40px;
     .icon-checkmark {
       font-size: 15px;
     }
@@ -113,7 +109,7 @@
       flex: 1;
     }
     button {
-      min-width: 150px;
+      // min-width: 150px;
       margin-right: 10px;
       span {
         font-size: 10px;
@@ -189,33 +185,108 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
- .myOfferItem__bodyRow{
-   flex-direction: column
- }
+  .myOfferItem {
+    &__header {
+      margin: 0px 20px;
+    }
+    &__body {
+      padding: 10px 20px 0 20px;
+    }
+    &__footer {
+      padding: 0 20px;
+    }
+  }
+  .myOfferItem__bodyRow {
+    flex-direction: column;
+    span:first-child {
+      width: auto;
+    }
+  }
 }
 @media (min-width: 576px) {
-  .myOfferItem__bodyRow{
-   flex-direction: row
- }
+  .myOfferItem {
+    &__header {
+      margin: 0px 40px;
+    }
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
+  .myOfferItem__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
-.myOfferItem__bodyRow{
-   flex-direction: row
- }
+  .myOfferItem {
+    &__header {
+      margin: 0px 40px;
+    }
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
+  .myOfferItem__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
-.myOfferItem__bodyRow{
-   flex-direction: row
- }
+  .myOfferItem {
+    &__header {
+      margin: 0px 40px;
+    }
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
+  .myOfferItem__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
- .myOfferItem__bodyRow{
-   flex-direction: row
- }
+  .myOfferItem {
+    &__header {
+      margin: 0px 40px;
+    }
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
+
+  .myOfferItem__bodyRow {
+    flex-direction: row;
+    span:first-child {
+      width: 250px;
+      flex-shrink: 0;
+    }
+  }
 }

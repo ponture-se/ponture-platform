@@ -32,8 +32,14 @@ const AllOffers = props => {
       .onOk(result => {
         if (!didCancel) {
           toggleLoading(false);
-          setApp(result.opportunityDetail);
-          setOffers(result.offers);
+          if (result) {
+            setApp(result.opportunityDetail);
+            setOffers(result.offers);
+          } else
+            setError({
+              title: t("INTERNAL_SERVER_ERROR"),
+              message: t("INTERNAL_SERVER_ERROR_MSG")
+            });
         }
       })
       .onServerError(result => {
@@ -99,7 +105,7 @@ const AllOffers = props => {
       .onOk(result => {
         if (!didCancel) {
           if (result) {
-            let off = offers.filter(item => item.id !== offer.id);
+            let off = offers.filter(item => item.Id !== offer.Id);
             off.push(result);
             setOffers(off);
           }
@@ -172,7 +178,7 @@ const AllOffers = props => {
           }
         });
         if (result) {
-          let off = offers.filter(item => item.id !== offer.id);
+          let off = offers.filter(item => item.Id !== offer.Id);
           off.push(result);
           setOffers(off);
         }
@@ -264,7 +270,7 @@ const AllOffers = props => {
                   }
                 />
               </div>
-              <span className="linkTitle">{t("OFFERS_HEADER_BACK")}</span>
+              <span>{t("OFFERS_HEADER_BACK")}</span>
             </Link>
           </div>
           {offers.map(offer => (

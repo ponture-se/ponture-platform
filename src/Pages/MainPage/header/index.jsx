@@ -20,6 +20,9 @@ const Header = props => {
         <div className="mainHeader__img">
           <img src={require("assets/logo-c.png")} alt="logo" />
         </div>
+        <div className="mainHeader__title">
+          {t("HEADER_TITLE")}
+        </div>
         <div className="mainHeader__userInfo">
           {userInfo && userInfo.firstName + " " + userInfo.lastName}
         </div>

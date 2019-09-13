@@ -39,53 +39,26 @@ const Item = props => {
               {c.type.toLowerCase() === "currency" ? (
                 <span>
                   {c.isShared
-                    ? separateNumberByChar(offer[c.apiName])
+                    ? separateNumberByChar(offer[c.apiName]) +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
                     : offer.detail
                     ? separateNumberByChar(offer.detail[c.apiName]) +
-                      (c.type.toLowerCase() === "currency" &&
-                        " " + c.unit + " ")
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
                     : ""}
                 </span>
               ) : (
                 <span>
                   {c.isShared
-                    ? offer[c.apiName]
+                    ? offer[c.apiName] +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
                     : offer.detail
-                    ? offer.detail[c.apiName]
+                    ? offer.detail[c.apiName] +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
                     : ""}
                 </span>
               )}
             </div>
           ))}
-        {/* <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_TITLE")}</span>
-          <span>
-            {t("OFFER_TITLE_VALUE")}{" "}
-            {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
-          </span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_AMOUNT")}</span>
-          <span>{separateNumberByChar(offer.Amount)} Kr</span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_COMPANY")}</span>
-          <span>
-            {app.Name} ({app.orgNumber})
-          </span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_AMORTIZATION_PERIOD")}</span>
-          <span>
-            {app.amortizationPeriod}{" "}
-            {app.amortizationPeriod >= 1 ? t("MONTH") : t("MONTH_S")}
-          </span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_INTEREST_RATE")}</span>
-          <span>{offer.Interest_Rate} %</span>
-        </div>
-    */}
       </div>
       <div className="myOfferItem__footer">
         <div className="myOfferItem__footer__left">
@@ -98,7 +71,6 @@ const Item = props => {
                 {t("ACCEPT_OFFER")}
               </button>
               <button className="btn --warning" onClick={handleRejectClicked}>
-                <span className="icon-cross" />
                 {t("REJECT")}
               </button>
             </>

@@ -37,7 +37,7 @@ export default {
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:
-    "Din asökan är godkänd.Budgivning från finansiella partnes har startat.",
+    "Din asökan är godkänd. Budgivning från finansiella partners har startat.",
   APP_STATUS_REJECTED_BY_USER_DESC: "Du avbröt din ansökan.",
   APP_STATUS_REJECTED_DESC: "Din ansökan är inte godkänd!",
   APP_STATUS_WON_DESC: "Din ansökan är avslutad!",
@@ -56,6 +56,7 @@ export default {
   LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
   LOGIN_PERSONAL_NUMBER: "Personnummer",
   LOGIN_BTN_NAME: "Identifiera med BankID",
+  HEADER_TITLE: "Mina Sidor",
   HEADER_TABS_FIRST: "Mina Ansökningar",
   MY_APPS_LOADING_TEXT: "Laddar mina applikationer...",
   MY_APPS_EMPTY_LIST_TITLE: "Tom lista!",
