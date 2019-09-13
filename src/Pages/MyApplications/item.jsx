@@ -156,7 +156,12 @@ const Item = props => {
           stage === "offer received" ||
           stage === "offer accepted") && (
           <Link to={"/app/panel/viewOffers/" + item.opportunityID}>
-            <span className="linkTitle">{t("VIEW_OFFERS")}</span>
+            <span className="linkTitle">
+              {t("VIEW_OFFERS")}{" "}
+              {item.activeOffersCount || item.activeOffersCount === 0
+                ? "(" + item.activeOffersCount + ")"
+                : ""}
+            </span>
             <div className="icon">
               <i
                 className={
