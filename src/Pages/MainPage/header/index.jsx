@@ -17,18 +17,20 @@ const Header = props => {
   return (
     <div className="mainHeader">
       <div className="mainHeader__top">
-        <div className="mainHeader__img">
-          <img src={require("assets/logo-c.png")} alt="logo" />
+        <div className="left">
+          <div className="mainHeader__img">
+            <img src={require("assets/logo-c.png")} alt="logo" />
+          </div>
+          <div className="mainHeader__title">{t("HEADER_TITLE")}</div>
         </div>
-        <div className="mainHeader__title">
-          {t("HEADER_TITLE")}
-        </div>
-        <div className="mainHeader__userInfo">
-          {userInfo && userInfo.firstName + " " + userInfo.lastName}
-        </div>
-        <div className="mainHeader__signout" onClick={handleSignout}>
-          <span>{t("SIGN_OUT")}</span>
-          <i className="icon-sign-out" />
+        <div className="right">
+          <div className="mainHeader__userInfo">
+            {userInfo && userInfo.firstName + " " + userInfo.lastName}
+          </div>
+          <div className="mainHeader__signout" onClick={handleSignout}>
+            <span>{t("SIGN_OUT")}</span>
+            <i className="icon-sign-out" />
+          </div>
         </div>
       </div>
       <div className="mainHeader__bottom">

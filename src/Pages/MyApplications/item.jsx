@@ -112,6 +112,8 @@ const Item = props => {
               }
             />
           </div>
+        </div>
+        <div className="right">
           <div className="info">
             <span>
               {stage === "app received" || stage === "app review"
@@ -150,27 +152,30 @@ const Item = props => {
                 : ""}
             </span>
           </div>
+
+          {(stage === "approved" ||
+            stage === "submitted" ||
+            stage === "offer received" ||
+            stage === "offer accepted") && (
+            <Link to={"/app/panel/viewOffers/" + item.opportunityID}>
+              <span className="linkTitle">
+                {t("VIEW_OFFERS")}{" "}
+                {item.activeOffersCount || item.activeOffersCount === 0
+                  ? "(" + item.activeOffersCount + ")"
+                  : ""}
+              </span>
+              <div className="icon">
+                <i
+                  className={
+                    direction === "ltr"
+                      ? "icon-arrow-right2"
+                      : "icon-arrow-left2"
+                  }
+                />
+              </div>
+            </Link>
+          )}
         </div>
-        {(stage === "approved" ||
-          stage === "submitted" ||
-          stage === "offer received" ||
-          stage === "offer accepted") && (
-          <Link to={"/app/panel/viewOffers/" + item.opportunityID}>
-            <span className="linkTitle">
-              {t("VIEW_OFFERS")}{" "}
-              {item.activeOffersCount || item.activeOffersCount === 0
-                ? "(" + item.activeOffersCount + ")"
-                : ""}
-            </span>
-            <div className="icon">
-              <i
-                className={
-                  direction === "ltr" ? "icon-arrow-right2" : "icon-arrow-left2"
-                }
-              />
-            </div>
-          </Link>
-        )}
       </div>
       <div className="application__body">
         <div className="application__body__header">

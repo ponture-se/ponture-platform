@@ -14,11 +14,9 @@
     display: flex;
     background: whitesmoke;
     align-items: center;
-    padding: 0 40px;
     .left {
       display: flex;
       align-items: center;
-      flex: 1;
       & > .icon {
         color: white;
         width: 35px;
@@ -41,8 +39,12 @@
           background: rgb(12, 3, 87);
         }
       }
+    }
+    .right {
+      padding: 0 10px;
+      display: flex;
+      flex: 1;
       .info {
-        margin: 0 20px;
         flex: 1;
         display: flex;
         flex-direction: column;
@@ -55,34 +57,33 @@
           color: gray;
         }
       }
-    }
-    a {
-      display: flex;
-      text-decoration: none;
-      color: rgb(35, 65, 141);
-      align-items: center;
-      span {
-        text-decoration: underline;
-        font-family: OpenSanceBold;
-      }
-      .icon {
-        margin: 0 8px;
-        width: 20px;
-        height: 20px;
-        border-radius: 50%;
-        font-size: 13px;
-        background: rgb(35, 65, 141);
-        color: white;
+      a {
         display: flex;
+        text-decoration: none;
+        color: rgb(35, 65, 141);
         align-items: center;
-        justify-content: center;
+        span {
+          text-decoration: underline;
+          font-family: OpenSanceBold;
+        }
+        .icon {
+          margin: 0 8px;
+          width: 20px;
+          height: 20px;
+          border-radius: 50%;
+          font-size: 13px;
+          background: rgb(35, 65, 141);
+          color: white;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
       }
     }
   }
 
   &__body {
     flex: 1;
-    padding: 20px 40px 10px 40px;
     display: flex;
     flex-direction: column;
     &__header {
@@ -103,8 +104,10 @@
     }
   }
   &__footer {
+    display: flex;
+    align-items: center;
+    height: 60px;
     border-top: 0.5px solid lightgray;
-    padding: 20px 40px 10px 40px;
     button {
       span {
         padding: 0 4px;
@@ -125,9 +128,20 @@
 
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
+  .application {
+    &__body {
+      padding: 10px 20px 0 20px;
+    }
+    &__footer {
+      padding: 0 20px;
+    }
+  }
   .application__header {
     flex-direction: row;
-    padding: 0 10px;
+    padding: 10px;
+    .right {
+      flex-direction: column;
+    }
   }
   .application__bodyRow {
     flex-direction: column;
@@ -136,16 +150,27 @@
     }
   }
   .linkTitle {
-    display: none;
+    // display: none;
   }
   .loanAmount {
     flex-direction: column;
   }
 }
 @media (min-width: 576px) {
+  .application {
+    &__body {
+      padding: 10px 20px 0 20px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
   .application__header {
     flex-direction: row;
     padding: 0 40px;
+    .right {
+      flex-direction: row;
+    }
   }
   .application__bodyRow {
     flex-direction: column;
@@ -163,15 +188,29 @@
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
+  .application {
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
   .application__header {
     flex-direction: row;
     padding: 0 40px;
+    .right {
+      flex-direction: row;
+    }
   }
   .application__bodyRow {
     flex-direction: row;
     span:first-child {
       width: 250px;
       flex-shrink: 0;
+      .right {
+        flex-direction: column;
+      }
     }
   }
   .linkTitle {
@@ -181,9 +220,20 @@
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
+  .application {
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
   .application__header {
     flex-direction: row;
     padding: 0 40px;
+    .right {
+      flex-direction: row;
+    }
   }
   .application__bodyRow {
     flex-direction: row;
@@ -199,9 +249,20 @@
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
+  .application {
+    &__body {
+      padding: 10px 40px 0 40px;
+    }
+    &__footer {
+      padding: 0 40px;
+    }
+  }
   .application__header {
     flex-direction: row;
     padding: 0 40px;
+    .right {
+      flex-direction: row;
+    }
   }
   .application__bodyRow {
     flex-direction: row;
