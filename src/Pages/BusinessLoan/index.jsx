@@ -938,7 +938,9 @@ export default function BusinessLoan(props) {
                         {t("BL_LOAN_PERIOD")}
                       </label>
                       <span className="bl__input__label bl__input__sliderLabel loanAmountValue">
-                        {loanPeriod +
+                        {(loanPeriod === loanPeriodMax
+                          ? "+" + loanPeriod
+                          : loanPeriod) +
                           " " +
                           (loanPeriod == 1 ? t("MONTH") : t("MONTHS"))}
                       </span>
@@ -952,10 +954,12 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
-                          formatLabel={value =>
-                            `${value} 
-                            ${loanPeriod == 1 ? t("MON") : t("MON")}`
-                          }
+                          formatLabel={value => {
+                            return `${
+                              value === loanPeriodMax ? "+" + value : value
+                            } 
+                            ${t("MON")}`;
+                          }}
                           step={loanPeriodStep}
                           maxValue={loanPeriodMax}
                           minValue={loanPeriodMin}
