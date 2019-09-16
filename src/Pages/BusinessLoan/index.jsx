@@ -125,7 +125,7 @@ export default function BusinessLoan(props) {
   }
 
   const [mainSpinner, toggleMainSpinner] = useState(true);
-  const [tab, changeTab] = useState(1);
+  const [tab, changeTab] = useState(2);
   const [verifyModal, toggleVerifyModal] = useState();
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
@@ -1240,15 +1240,31 @@ export default function BusinessLoan(props) {
                 </div>
                 <hr />
                 <div className="longDesc">
-                  {t("BL_SUCCESS_TOP_MESSAGE")}
+                  {t("BL_SUCCESS_TEXT_1")}
                   <br />
+                  {t("BL_SUCCESS_TEXT_2")}
+                  <br />
+                  <br />
+                  {t("BL_SUCCESS_TEXT_3")}
+                  <div className="btnMyApps">
+                    <button className="btn --light">
+                      {t("MY_APPLICATIONS")}
+                    </button>
+                  </div>
+                  <br />
+                  {t("BL_SUCCESS_TEXT_4")}
                   <br />
                   <a href="mailto:contact@ponture.com">contact@ponture.com</a>
                   <span>&nbsp;{t("BL_SUCCESS_CENTER_MSG")}&nbsp;</span>
                   {t("TELEPHONE")}: 010 129 29 20
                   <br />
                   <br />
-                  {t("BL_SUCCESS_BOTTOM_MESSAGE")}
+                  <div>
+                    {t("BL_SUCCESS_BOTTOM_MESSAGE")}
+                    <a href=" https://www.ponture.com/eula/">
+                      {t("SUCCESS_LINK_TERMS")}
+                    </a>
+                  </div>
                 </div>
                 <div className="bl__successBox__actions">
                   <button

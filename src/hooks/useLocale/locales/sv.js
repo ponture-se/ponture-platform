@@ -122,7 +122,13 @@ export default {
   BL_VERIFY_PID_BTN: "Identifiera med BankID",
   BL_TERMS_IS_REQUIRED:
     "Godkännande av våra villkor är obligatorisk för att ansöka.",
-  BL_SUCCESS_TOP_MESSAGE: `Tack för din ansökan! Vi kommer nu att påbörja processen med att hitta låneofferter till er. Du kommer få ett epostmeddelande från oss om din ansökan, vänligen titta i din inkorg. Har du frågor eller funderingar gällande din ansökan kontakta gärna våra finanskonsulter på denna epostadress:`,
+  BL_SUCCESS_TEXT_1: `Tack för din ansökan!`,
+  BL_SUCCESS_TEXT_2: `Vi kommer nu att påbörja processen med att hitta låneofferter till er. Du kommer att få epostmeddelanden från oss om din ansökan, vänligen titta i din inkorg.`,
+  BL_SUCCESS_TEXT_3: `Fortsätt till Mina Sidor för att se din ansökan och låneerbjudanden`,
+  BL_SUCCESS_TEXT_4:
+    "Har du frågor eller funderingar gällande din ansökan kontakta gärna våra finanskonsulter på denna epostadress:",
+  MY_APPLICATIONS: "Mina Sidor",
+  SUCCESS_LINK_TERMS: "Läs mer om Ponture:s användarvillkor...",
   BL_SUCCESS_CENTER_MSG: "eller ring oss på",
   SUBMIT_WITH_ERROR_TITLE: "Kan inte fortsätta",
   BL_SUCCESS_BOTTOM_MESSAGE:
