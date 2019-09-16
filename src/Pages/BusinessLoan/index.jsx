@@ -125,7 +125,7 @@ export default function BusinessLoan(props) {
   }
 
   const [mainSpinner, toggleMainSpinner] = useState(true);
-  const [tab, changeTab] = useState(2);
+  const [tab, changeTab] = useState(1);
   const [verifyModal, toggleVerifyModal] = useState();
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
