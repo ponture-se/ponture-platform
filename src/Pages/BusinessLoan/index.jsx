@@ -800,6 +800,9 @@ export default function BusinessLoan(props) {
   function refreshPage() {
     window.location.href = window.location.href.split("?")[0];
   }
+  function openMyApps() {
+    window.location.href = "https://www.ponture.com/app/panel";
+  }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
     if (isSuccess) {
@@ -1247,7 +1250,7 @@ export default function BusinessLoan(props) {
                   <br />
                   {t("BL_SUCCESS_TEXT_3")}
                   <div className="btnMyApps">
-                    <button className="btn --light">
+                    <button className="btn --light" onClick={openMyApps}>
                       {t("MY_APPLICATIONS")}
                     </button>
                   </div>
