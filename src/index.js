@@ -6,6 +6,9 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 if (process.env.REACT_APP_ENABLE_ANALYTICS === "true") {
   document.write(
+    `<script src="//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js"></script>`
+  );
+  document.write(
     `<script>
       (function(h, o, t, j, a, r) {
         h.hj =

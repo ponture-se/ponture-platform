@@ -18,6 +18,7 @@ const Login = props => {
   const [error, setError] = useState();
   const [verifyModal, toggleVerifyModal] = useState();
   const [startResult, setStartResult] = useState();
+  const [terms, toggleTerms] = useState(true);
 
   useEffect(() => {
     return () => {
@@ -136,7 +137,9 @@ const Login = props => {
       .onOk(result => {})
       .call(startResult ? startResult.orderRef : null);
   }
-
+  function handleTermChanged(e) {
+    toggleTerms(e.target.checked);
+  }
   return (
     <div className="loginContainer">
       <div className="loginHeader">
@@ -189,9 +192,30 @@ const Login = props => {
               </div>
             </div>
           </div>
+          <div className="termChk">
+            <label className="customCheckbox">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={terms}
+                onChange={handleTermChanged}
+              />
+              <span className="checkmark" />
+              <span className="customCheckbox__text">
+                {t("LOGIN_TERMS_TEXT")}{" "}
+                <a
+                  href="https://www.ponture.com/eula"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("LOGIN_TERMS_LINK")}
+                </a>
+              </span>
+            </label>
+          </div>
           <button
             className="btn --success"
-            disabled={!personalNumber || personalNumber.length === 0}
+            disabled={!terms || !personalNumber || personalNumber.length === 0}
           >
             {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}
           </button>

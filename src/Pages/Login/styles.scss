@@ -35,6 +35,11 @@
         font-size: 25px;
       }
     }
+    .termChk {
+      margin-top: 20px;
+      a {
+      }
+    }
     &__body {
       &__info {
         color: gray;
@@ -64,27 +69,27 @@
 }
 @media (min-width: 576px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }

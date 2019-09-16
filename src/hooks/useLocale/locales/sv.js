@@ -56,6 +56,8 @@ export default {
   LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
   LOGIN_PERSONAL_NUMBER: "Personnummer",
   LOGIN_BTN_NAME: "Identifiera med BankID",
+  LOGIN_TERMS_TEXT: "Jag godkänner Ponture:s användarvillkoren",
+  LOGIN_TERMS_LINK: "Läs Ponture:s användarvillkor...",
   HEADER_TITLE: "Mina Sidor",
   HEADER_TABS_FIRST: "Mina Ansökningar",
   MY_APPS_LOADING_TEXT: "Laddar mina applikationer...",

@@ -1,3 +1,7 @@
+*[disabled] {
+  cursor: no-drop;
+  opacity: 0.5 !important;
+}
 .btn {
   font-family: "OpenSance";
   border-radius: 3px;
@@ -10,6 +14,10 @@
   justify-content: center;
   padding: 0 15px !important;
   min-height: 40px;
+  &[disabled] {
+    cursor: no-drop;
+    opacity: 0.7 !important;
+  }
   &.--small {
     min-height: 35px;
     padding: 0 10px !important;
