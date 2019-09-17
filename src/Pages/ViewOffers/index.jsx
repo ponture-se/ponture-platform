@@ -205,10 +205,13 @@ const AllOffers = props => {
               <span>{t("OFFERS_HEADER_BACK")}</span>
             </Link>
           </div>
-          <div className="page-empty-list animated fadeIn">
+          <div className="page-empty-list offersEmpty animated fadeIn">
             <Empty />
             <h2>{t("OFFERS_EMPTY_LIST_TITLE")}</h2>
-            <span>{t("OFFERS_EMPTY_LIST_MSG")}</span>
+            <span className="msg1">{t("OFFERS_EMPTY_LIST_MSG1")}</span>
+            <span className="msg2">{t("OFFERS_EMPTY_LIST_MSG2")}</span>
+            <span className="msg3">{t("OFFERS_EMPTY_LIST_MSG3")}</span>
+            <span className="msg4">{t("OFFERS_EMPTY_LIST_MSG4")}</span>
           </div>
         </>
       ) : (
