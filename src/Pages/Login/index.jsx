@@ -150,7 +150,16 @@ const Login = props => {
           <span>{t("LOGIN_TITLE")}</span>
         </div>
         <form onSubmit={handleLoginClicked}>
-          <div className="loginBox__body__info">{t("LOGIN_INFO")}</div>
+          <div className="loginBox__body__info">
+            <span className="firstText">{t("LOGIN_TITLE1")}</span>
+            <ul>
+              <li>{t("LOGIN_INFO_ITEM1")}</li>
+              <li>{t("LOGIN_INFO_ITEM2")}</li>
+              <li>{t("LOGIN_INFO_ITEM3")}</li>
+            </ul>
+            <span className="secText">{t("LOGIN_TITLE2")}</span>
+            <span className="thirdText">{t("LOGIN_TITLE3")}</span>
+          </div>
           <div
             className={
               "formInput " +

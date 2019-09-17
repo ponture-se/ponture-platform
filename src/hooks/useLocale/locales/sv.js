@@ -53,7 +53,14 @@ export default {
   VIEW_DETAIL: "Visa detalj",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in på kundportalen",
-  LOGIN_INFO: "Du kan bara logga in med ditt personliga nummer via Bankid",
+  LOGIN_TITLE1: "Vi använder BankID för att skydda din information.",
+  LOGIN_TITLE2: "Du blir automatisk inloggad.",
+  LOGIN_TITLE3:
+    "Behöver du hjälp med inloggning eller har andra frågor om Mina Sidor,  chatta med oss här på höger sida!",
+  LOGIN_INFO_ITEM1: "Ange ditt personnummer nedan",
+  LOGIN_INFO_ITEM2: "Klicka på ”Identifiera med BankID",
+  LOGIN_INFO_ITEM3:
+    "Öppna din BankID app på din dator eller mobil och ange din BankID kod",
   LOGIN_PERSONAL_NUMBER: "Personnummer",
   LOGIN_BTN_NAME: "Identifiera med BankID",
   LOGIN_TERMS_TEXT: "Jag godkänner Ponture:s användarvillkoren",
