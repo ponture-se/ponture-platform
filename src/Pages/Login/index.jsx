@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from "react";
+import Cookies from "js-cookie";
 //
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import { isBankId } from "utils";
-import { startBankId } from "./../../api/business-loan-api";
+import batchStates from "utils/batchStates";
+import { startBankId, cancelVerify } from "./../../api/business-loan-api";
 import "./styles.scss";
 
 const Login = props => {
@@ -16,6 +18,7 @@ const Login = props => {
   const [error, setError] = useState();
   const [verifyModal, toggleVerifyModal] = useState();
   const [startResult, setStartResult] = useState();
+  const [terms, toggleTerms] = useState(true);
 
   useEffect(() => {
     return () => {
@@ -54,14 +57,17 @@ const Login = props => {
     e.preventDefault();
     if (!error || !error.personalNumber || !error.personalNumber.isError) {
       toggleLoading(true);
+
       let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       startBankId()
         .onOk(result => {
           if (!didCancel) {
-            toggleLoading(false);
-            setStartResult(result);
-            toggleVerifyModal(true);
+            batchStates(() => {
+              toggleLoading(false);
+              setStartResult(result);
+              toggleVerifyModal(true);
+            });
           }
         })
         .onServerError(result => {
@@ -122,12 +128,18 @@ const Login = props => {
       type: "VERIFY_BANK_ID_SUCCESS",
       payload: result
     });
+    sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
     props.history.push("/app/panel/myApplications");
   }
   function handleCancelVerify() {
     toggleVerifyModal(false);
+    cancelVerify()
+      .onOk(result => {})
+      .call(startResult ? startResult.orderRef : null);
   }
-
+  function handleTermChanged(e) {
+    toggleTerms(e.target.checked);
+  }
   return (
     <div className="loginContainer">
       <div className="loginHeader">
@@ -138,7 +150,16 @@ const Login = props => {
           <span>{t("LOGIN_TITLE")}</span>
         </div>
         <form onSubmit={handleLoginClicked}>
-          <div className="loginBox__body__info">{t("LOGIN_INFO")}</div>
+          <div className="loginBox__body__info">
+            <span className="firstText">{t("LOGIN_TITLE1")}</span>
+            <ul>
+              <li>{t("LOGIN_INFO_ITEM1")}</li>
+              <li>{t("LOGIN_INFO_ITEM2")}</li>
+              <li>{t("LOGIN_INFO_ITEM3")}</li>
+            </ul>
+            <span className="secText">{t("LOGIN_TITLE2")}</span>
+            <span className="thirdText">{t("LOGIN_TITLE3")}</span>
+          </div>
           <div
             className={
               "formInput " +
@@ -166,6 +187,7 @@ const Login = props => {
                 onBlur={handleChangedPersonalNumber}
                 autoFocus
                 maxLength="13"
+                autoComplete="true"
               />
             </div>
             <div className="formInput__footer">
@@ -179,9 +201,30 @@ const Login = props => {
               </div>
             </div>
           </div>
+          <div className="termChk">
+            <label className="customCheckbox">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={terms}
+                onChange={handleTermChanged}
+              />
+              <span className="checkmark" />
+              <span className="customCheckbox__text">
+                {t("LOGIN_TERMS_TEXT")}{" "}
+                <a
+                  href="https://www.ponture.com/eula"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("LOGIN_TERMS_LINK")}
+                </a>
+              </span>
+            </label>
+          </div>
           <button
             className="btn --success"
-            disabled={!personalNumber || personalNumber.length === 0}
+            disabled={!terms || !personalNumber || personalNumber.length === 0}
           >
             {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}
           </button>

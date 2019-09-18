@@ -24,7 +24,6 @@
     border-radius: 0.3rem;
     background: white;
     outline: 0;
-    width: 500px;
     display: flex;
     flex-direction: column;
     padding: 20px;
@@ -58,6 +57,54 @@
     justify-content: flex-end;
     button:last-child {
       margin: 0 5px;
+    }
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+  .alert {
+    &__content {
+      width: auto;
+      margin: 0 10px;
+    }
+  }
+}
+@media (min-width: 576px) {
+  .alert {
+    &__content {
+      width: 500px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .alert {
+    &__content {
+      width: 500px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .alert {
+    &__content {
+      width: 500px;
+      margin: 0 auto;
+    }
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .alert {
+    &__content {
+      width: 500px;
+      margin: 0 auto;
     }
   }
 }

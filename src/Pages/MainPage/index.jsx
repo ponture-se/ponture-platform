@@ -1,11 +1,12 @@
 import React, { Suspense, lazy } from "react";
 import { Switch } from "react-router-dom";
 import PrivateRoute from "hoc/PrivateRoute";
+import retry from "utils/retryLazyLoad";
 //
 import "./styles.scss";
 import Header from "./header";
-const MyApplications = lazy(() => import("../MyApplications")); //
-const ViewOffers = lazy(() => import("../ViewOffers")); //
+const MyApplications = lazy(() => retry(() => import("../MyApplications")));
+const ViewOffers = lazy(() => retry(() => import("../ViewOffers")));
 
 const MainPage = props => {
   return (

@@ -26,7 +26,7 @@
     @include variable(login-box-bg, background, white);
     &__header {
       border-bottom: 0.5px solid lightgray;
-      min-height: 100px;
+      min-height: 80px;
       display: flex;
       justify-content: center;
       flex-direction: column;
@@ -35,10 +35,18 @@
         font-size: 25px;
       }
     }
+    .termChk {
+      margin-top: 20px;
+    }
     &__body {
       &__info {
         color: gray;
         font-size: 13px;
+        display: flex;
+        flex-direction: column;
+        .secText{
+          padding-bottom: 10px;
+        }
       }
     }
     form {
@@ -58,32 +66,33 @@
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .loginBox {
-    width: auto;
+    width: 96%;
+    margin: 0 2%;
   }
 }
 @media (min-width: 576px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }
 
 // Medium devices (tablets, 768px and up)
 @media (min-width: 768px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }
 
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
   .loginBox {
-    width: 450px;
+    width: 460px;
   }
 }

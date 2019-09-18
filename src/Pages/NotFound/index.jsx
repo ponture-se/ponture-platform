@@ -7,7 +7,7 @@ const MyApplications = props => {
   const { t } = useLocale();
 
   return (
-    <div className="notFound">
+    <div className="notFound animated fadeIn">
       <span className="t404">404</span>
       <span className="title">{t("ERROR_OCCURRED")}</span>
       <span className="info">

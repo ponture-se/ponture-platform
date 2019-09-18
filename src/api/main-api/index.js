@@ -8,6 +8,7 @@ const myAppsUrl = baseUrl + config.REACT_APP_MY_APPS;
 const cancelAppUrl = baseUrl + config.REACT_APP_CANCEL_APP;
 const offersUrl = baseUrl + config.REACT_APP_REQUEST_OFFERS;
 const rejectOfferUrl = baseUrl + config.REACT_APP_REJECT_OFFER;
+const acceptOfferUrl = baseUrl + config.REACT_APP_ACCEPT_OFFER;
 
 export function customerLogin() {
   let _onOkCallBack;
@@ -660,8 +661,8 @@ export function acceptOffer() {
     }
   }
 
-  const _call = ({ offerId }) => {
-    const url = rejectOfferUrl + "?offerId=" + offerId;
+  const _call = offerId => {
+    const url = acceptOfferUrl + "?offerId=" + offerId;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios({
       method: "put",

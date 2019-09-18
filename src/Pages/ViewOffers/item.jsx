@@ -1,190 +1,166 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import separateNumberByChar from "utils/separateNumberByChar";
-import { rejectOffer, acceptOffer } from "api/main-api";
-import { toggleAlert } from "components/Alert";
+import { acceptOffer } from "api/main-api";
+import CircleSpinner from "components/CircleSpinner";
 //
 const Item = props => {
+  let didCancel = false;
   const [{}, dispatch] = useGlobalState();
   const { t } = useLocale();
-  const { item } = props;
+  const { app, offer } = props;
+  const [acceptSpinner, toggleAcceptSpinner] = useState();
 
+  useEffect(() => {
+    return () => {
+      didCancel = true;
+    };
+  }, []);
   function handleAcceptOfferClicked() {
-    toggleAlert({
-      title: t("ARE_YOU_SURE"),
-      description: t("APP_OFFERS_ACCEPT_ALERT_INFO"),
-      cancelBtnText: t("NO"),
-      okBtnText: t("YES_DO_IT"),
-      isAjaxCall: true,
-      func: acceptOffer,
-      data: {
-        offerId: item.offer_id
-      },
-      onCancel: () => {},
-      onSuccess: result => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "success",
-            message: t("OFFER_ACCEPTED_SUCCESS")
+    if (!acceptSpinner) {
+      toggleAcceptSpinner(true);
+      acceptOffer()
+        .onOk(result => {
+          if (!didCancel) {
+            toggleAcceptSpinner(false);
+            if (props.onSuccessAccept) {
+              props.onSuccessAccept(result);
+            }
           }
-        });
-      },
-      onServerError: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("INTERNAL_SERVER_ERROR")
+        })
+        .onServerError(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("INTERNAL_SERVER_ERROR")
+              }
+            });
           }
-        });
-      },
-      onBadRequest: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("BAD_REQUEST")
+        })
+        .onBadRequest(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("BAD_REQUEST")
+              }
+            });
           }
-        });
-      },
-      unAuthorized: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "warning",
-            message: t("UN_AUTHORIZED")
+        })
+        .notFound(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("NOT_FOUND")
+              }
+            });
           }
-        });
-      },
-      notFound: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("NOT_FOUND")
+        })
+        .unKnownError(result => {
+          if (!didCancel) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: t("UNKNOWN_ERROR")
+              }
+            });
           }
-        });
-      },
-      unKnownError: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("UNKNOWN_ERROR")
-          }
-        });
-      }
-    });
+        })
+        .call(offer.Id);
+    }
   }
-
   function handleRejectClicked() {
-    toggleAlert({
-      title: t("ARE_YOU_SURE"),
-      description: t("APP_OFFERS_REJECT_ALERT_INFO"),
-      cancelBtnText: t("NO"),
-      okBtnText: t("YES_DO_IT"),
-      isAjaxCall: true,
-      func: rejectOffer,
-      data: {
-        offerId: item.offer_id
-      },
-      onCancel: () => {},
-      onSuccess: result => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "success",
-            message: t("OFFER_REJECT_SUCCESS")
-          }
-        });
-      },
-      onServerError: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("INTERNAL_SERVER_ERROR")
-          }
-        });
-      },
-      onBadRequest: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("BAD_REQUEST")
-          }
-        });
-      },
-      unAuthorized: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "warning",
-            message: t("UN_AUTHORIZED")
-          }
-        });
-      },
-      notFound: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("NOT_FOUND")
-          }
-        });
-      },
-      unKnownError: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("UNKNOWN_ERROR")
-          }
-        });
-      }
-    });
+    if (props.onRejectClicked) props.onRejectClicked(offer);
+  }
+  function handleViewOffer() {
+    if (props.onViewOffersClicked) props.onViewOffersClicked(offer);
   }
 
   return (
     <div className="myOfferItem animated fadeIn">
       <div className="myOfferItem__header">
-        <img src={require("assets/signicat-logo-black.png")} />
-        <span className="myOfferItem__title">{item.partnerName}</span>
+        <span>{offer.partnerName}</span>
       </div>
       <div className="myOfferItem__body">
         <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_OFFER")}</span>
-          <span>Value</span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_AMOUNT_APPROVED")}</span>
-          <span>{separateNumberByChar(item.amount)} Kr</span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_BUSINESS")}</span>
-          <span>Value</span>
-        </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_LOAN_PERIOD")}</span>
+          <span>{t("OFFER_TITLE")}</span>
           <span>
-            {item.Repayment_Period} {t("MONTH_S")}
+            {t("OFFER_TITLE_VALUE")}{" "}
+            {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
           </span>
         </div>
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_INTEREST")}</span>
-          <span>Value</span>
-        </div>
+        {offer.outline &&
+          offer.outline.length > 0 &&
+          offer.outline.map(c => (
+            <div className="myOfferItem__bodyRow">
+              <span>{c.label}</span>
+              {c.type.toLowerCase() === "currency" ? (
+                <span>
+                  {c.isShared
+                    ? separateNumberByChar(offer[c.apiName]) +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
+                    : offer.detail
+                    ? separateNumberByChar(offer.detail[c.apiName]) +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
+                    : ""}
+                </span>
+              ) : (
+                <span>
+                  {c.isShared
+                    ? offer[c.apiName] +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
+                    : offer.detail
+                    ? offer.detail[c.apiName] +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
+                    : ""}
+                </span>
+              )}
+            </div>
+          ))}
       </div>
       <div className="myOfferItem__footer">
-        <button className="btn --success" onClick={handleAcceptOfferClicked}>
-          {t("ACCEPT_OFFER")}
-        </button>
-        <button className="btn --light" onClick={handleRejectClicked}>
-          <span className="icon-cross" />
-          {t("REJECT")}
-        </button>
+        <div className="myOfferItem__footer__left">
+          {offer.Stage && offer.Stage.toLowerCase() === "offer issued" && (
+            <>
+              <button
+                className="btn --success"
+                onClick={handleAcceptOfferClicked}
+              >
+                {acceptSpinner ? (
+                  <CircleSpinner show={true} />
+                ) : (
+                  t("ACCEPT_OFFER")
+                )}
+              </button>
+              <button className="btn --warning" onClick={handleRejectClicked}>
+                {t("REJECT")}
+              </button>
+            </>
+          )}
+          {offer.Stage && offer.Stage.toLowerCase() === "offer accepted" && (
+            <button className="btn --success">
+              <span className="icon-checkmark"></span>
+              {t("OFFER_ACCEPTED")}
+            </button>
+          )}
+          {offer.Stage && offer.Stage.toLowerCase() === "offer lost" && (
+            <button className="btn --warning">
+              <span className="icon-cross"></span>
+              {t("OFFER_REJECTED")}
+            </button>
+          )}
+        </div>
+        {/* <div className="myOfferItem__footer__right">
+          <button className="btn --light" onClick={handleViewOffer}>
+            {t("VIEW_DETAIL")}
+          </button>
+        </div> */}
       </div>
     </div>
   );
