@@ -32,18 +32,17 @@ const App = () => {
                   path="/app/login"
                   render={props => <Login {...props} />}
                 />
-                {/* <Route
+                <Route
                   key="appLoan"
                   path="/app/loan"
                   render={props => <BusinessLoan {...props} />}
-                /> */}
+                />
                 <PrivateRoute
                   key="mainPage"
                   path="/app/panel"
                   render={props => <Main {...props} />}
                 />
-                <Redirect exact from="/app" to="/app/login" />
-                {/* <Redirect exact from="/app" to="/app/loan" /> */}
+                <Redirect exact from="/app" to="/app/loan" />
                 <Route component={NotFound} />
               </Switch>
             </Suspense>

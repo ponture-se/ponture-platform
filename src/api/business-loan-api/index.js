@@ -197,14 +197,12 @@ export function startBankId() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        debugger
-        if (enabledAnalytic){
+        if (enabledAnalytic)
           window.analytics.track("Failure", {
             category: "Loan Application",
             label: "/app/loan/wizard",
             value: 0
           });
-        }
         if (error.response) {
           const status = error.response.status;
           switch (status) {
