@@ -26,11 +26,19 @@ import {
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 //
-const loanAmountMax = 10000000;
-const loanAmountMin = 100000;
+const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
+  ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
+  : 10000000;
+const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
+  ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MIN)
+  : 100000;
 const loanPeriodStep = 1;
-const loanPeriodMax = 60;
-const loanPeriodMin = 1;
+const loanPeriodMax = process.env.REACT_APP_LOAN_PERIOD_MAX
+  ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MAX)
+  : 36;
+const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
+  ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
+  : 1;
 
 const enabledAnalytic =
   process.env.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
@@ -792,6 +800,9 @@ export default function BusinessLoan(props) {
   function refreshPage() {
     window.location.href = window.location.href.split("?")[0];
   }
+  function openMyApps() {
+    window.location.href = "https://www.ponture.com/app/panel";
+  }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
     if (isSuccess) {
@@ -930,7 +941,9 @@ export default function BusinessLoan(props) {
                         {t("BL_LOAN_PERIOD")}
                       </label>
                       <span className="bl__input__label bl__input__sliderLabel loanAmountValue">
-                        {loanPeriod +
+                        {(loanPeriod === loanPeriodMax
+                          ? "+" + loanPeriod
+                          : loanPeriod) +
                           " " +
                           (loanPeriod == 1 ? t("MONTH") : t("MONTHS"))}
                       </span>
@@ -944,10 +957,12 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
-                          formatLabel={value =>
-                            `${value} 
-                            ${loanPeriod == 1 ? t("MON") : t("MON")}`
-                          }
+                          formatLabel={value => {
+                            return `${
+                              value === loanPeriodMax ? "+" + value : value
+                            } 
+                            ${t("MON")}`;
+                          }}
                           step={loanPeriodStep}
                           maxValue={loanPeriodMax}
                           minValue={loanPeriodMin}
@@ -1228,15 +1243,31 @@ export default function BusinessLoan(props) {
                 </div>
                 <hr />
                 <div className="longDesc">
-                  {t("BL_SUCCESS_TOP_MESSAGE")}
+                  {t("BL_SUCCESS_TEXT_1")}
                   <br />
+                  {t("BL_SUCCESS_TEXT_2")}
+                  <br />
+                  <br />
+                  {t("BL_SUCCESS_TEXT_3")}
+                  <div className="btnMyApps">
+                    <button className="btn --light" onClick={openMyApps}>
+                      {t("MY_APPLICATIONS")}
+                    </button>
+                  </div>
+                  <br />
+                  {t("BL_SUCCESS_TEXT_4")}
                   <br />
                   <a href="mailto:contact@ponture.com">contact@ponture.com</a>
                   <span>&nbsp;{t("BL_SUCCESS_CENTER_MSG")}&nbsp;</span>
                   {t("TELEPHONE")}: 010 129 29 20
                   <br />
                   <br />
-                  {t("BL_SUCCESS_BOTTOM_MESSAGE")}
+                  <div>
+                    {t("BL_SUCCESS_BOTTOM_MESSAGE")}
+                    <a href=" https://www.ponture.com/eula/">
+                      {t("SUCCESS_LINK_TERMS")}
+                    </a>
+                  </div>
                 </div>
                 <div className="bl__successBox__actions">
                   <button
