@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useCallback } from "react";
 import InputRange from "react-input-range";
+import Cookies from "js-cookie";
 import "react-input-range/lib/css/index.css";
 //
 import {
@@ -587,6 +588,9 @@ export default function BusinessLoan(props) {
           startBankId()
             .onOk(result => {
               if (!didCancel) {
+                // save result in session storage to use in customer portal
+                Cookies.set("@ponture-customer-portal/token", result);
+
                 if (enabledAnalytic)
                   window.analytics.track("BankID Verification", {
                     category: "Loan Application",
@@ -784,6 +788,15 @@ export default function BusinessLoan(props) {
           type: "TOGGLE_B_L_MORE_INFO",
           value: true
         });
+        // save bank id result to us ein customer
+        dispatch({
+          type: "VERIFY_BANK_ID_SUCCESS",
+          payload: bIdResult
+        });
+        sessionStorage.setItem(
+          "@ponture-customer-bankid",
+          JSON.stringify(bIdResult)
+        );
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
