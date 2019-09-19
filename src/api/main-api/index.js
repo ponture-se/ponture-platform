@@ -128,7 +128,6 @@ export function customerLogin() {
     }
   };
 }
-
 export function getMyApplications() {
   let _onOkCallBack;
   function _onOk(result) {
@@ -372,7 +371,6 @@ export function getOffers() {
     }
   };
 }
-
 export function cancelApplication() {
   let _onOkCallBack;
   function _onOk(result) {

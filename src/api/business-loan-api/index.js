@@ -2,7 +2,7 @@ import Cookies from "js-cookie";
 const axios = require("axios");
 
 const config = process.env;
-const baseUrl = config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW;
+const baseUrl = config.REACT_APP_BASE_URL;
 const needsListUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_NEEDS_LIST;
 const startUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_START;
 const collectUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_COLLECT;

@@ -4,11 +4,12 @@ import axios from "axios";
 import { useGlobalState, useLocale } from "hooks";
 //
 const config = process.env;
-const baseUrl = config.REACT_APP_BUSINESS_LOAN_BASE_URL_NEW;
+const baseUrl = config.REACT_APP_BASE_URL;
 const submitUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_SUBMIT;
 const collectUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_COLLECT;
 const cancelUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_CANCEL;
 const companiesUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_GET_COMPANIES;
+
 export default function AxiosInitializer({ children }) {
   const { t } = useLocale();
   const [{}, dispatch] = useGlobalState();
