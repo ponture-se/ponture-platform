@@ -774,7 +774,7 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href.split("?")[0];
   }
   function openMyApps() {
-    window.location.href = "https://www.ponture.com/app/panel/myApplications";
+    props.history.push("/app/panel/myApplications");
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
