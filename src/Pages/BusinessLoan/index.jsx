@@ -125,7 +125,7 @@ export default function BusinessLoan(props) {
   }
 
   const [mainSpinner, toggleMainSpinner] = useState(true);
-  const [tab, changeTab] = useState(1);
+  const [tab, changeTab] = useState(2);
   const [verifyModal, toggleVerifyModal] = useState();
   const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
   const [loanAmountDisplay, setLoanAmountDisplay] = useState(
@@ -1222,11 +1222,6 @@ export default function BusinessLoan(props) {
                   <br />
                   <br />
                   {t("BL_SUCCESS_TEXT_3")}
-                  <div className="btnMyApps">
-                    <button className="btn --light" onClick={openMyApps}>
-                      {t("MY_APPLICATIONS")}
-                    </button>
-                  </div>
                   <br />
                   {t("BL_SUCCESS_TEXT_4")}
                   <br />
@@ -1245,9 +1240,9 @@ export default function BusinessLoan(props) {
                 <div className="bl__successBox__actions">
                   <button
                     className="btn --warning --large"
-                    onClick={backtoLoan}
+                    onClick={openMyApps}
                   >
-                    {t("BL_SUCCESS_MORE_LOAN")}
+                    {t("MY_APPLICATIONS")}
                   </button>
                 </div>
               </div>
