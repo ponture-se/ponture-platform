@@ -683,28 +683,7 @@ export function submitLoan() {
             label: "/app/loan/wizard",
             value: 0
           });
-        if (error.response) {
-          const status = error.response.status;
-          switch (status) {
-            case 400:
-              _onBadRequest();
-              break;
-            case 401:
-              _unAuthorized();
-              break;
-            case 404:
-              _notFound();
-              break;
-            case 500:
-              _onServerError();
-              break;
-            default:
-              _unKnownError();
-              break;
-          }
-        } else {
-          _unKnownError();
-        }
+        _unKnownError();
       });
   };
 

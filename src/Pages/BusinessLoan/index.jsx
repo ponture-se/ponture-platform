@@ -746,33 +746,6 @@ export default function BusinessLoan(props) {
               }
             }
           })
-          .onServerError(result => {
-            if (!didCancel) {
-              toggleSubmitSpinner(false);
-              changeTab(3);
-              setError({
-                sender: "submitLoan"
-              });
-            }
-          })
-          .onBadRequest(result => {
-            if (!didCancel) {
-              toggleSubmitSpinner(false);
-              changeTab(3);
-              setError({
-                sender: "submitLoan"
-              });
-            }
-          })
-          .unAuthorized(result => {
-            if (!didCancel) {
-              toggleSubmitSpinner(false);
-              changeTab(3);
-              setError({
-                sender: "submitLoan"
-              });
-            }
-          })
           .unKnownError(result => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
@@ -1324,7 +1297,23 @@ export default function BusinessLoan(props) {
                         <div>{t("ERROR_MSG3")}</div>
                       </div>
                     )
-                  ) : null}
+                  ) : (
+                    <div className="companiesEmpty allErrorMsg">
+                      <div>{t("ERROR_MSG1")}</div>
+                      <div style={{ fontSize: 13 }}>{t("ERROR_MSG2")}</div>
+                      <div className="phone">
+                        <span>{t("TELEPHONE")}</span>
+                        <span>&nbsp;010 129 29 20</span>
+                      </div>
+                      <div className="email">
+                        <span>{t("EPOST")}:</span>
+                        <a href="mailto:contact@ponture.com">
+                          &nbsp;contact@ponture.com
+                        </a>
+                      </div>
+                      <div>{t("ERROR_MSG3")}</div>
+                    </div>
+                  )}
                 </div>
                 <div className="bl__successBox__actions">
                   <button className="btn --warning" onClick={refreshPage}>
