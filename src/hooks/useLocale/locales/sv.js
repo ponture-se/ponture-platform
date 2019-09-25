@@ -52,7 +52,7 @@ export default {
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
   VIEW_DETAIL: "Visa detalj",
   ////////////////////////////////
-  LOGIN_TITLE: "Logga in på kundportalen",
+  LOGIN_TITLE: "Logga in till Mina Sidor",
   LOGIN_TITLE1: "Vi använder BankID för att skydda din information.",
   LOGIN_TITLE2: "Du blir automatisk inloggad.",
   LOGIN_TITLE3:
