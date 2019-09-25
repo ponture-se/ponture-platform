@@ -9,13 +9,12 @@ import Notifies from "./components/Notifies";
 import PrivateRoute from "hoc/PrivateRoute";
 import withResolver from "hoc/withResolver";
 import AxiosInitializer from "utils/AxiosInitializer";
-import retry from "utils/retryLazyLoad";
 
 //
-const BusinessLoan = lazy(() => retry(() => import("./Pages/BusinessLoan")));
-const Login = lazy(() => retry(() => import("./Pages/Login")));
-const MainPage = lazy(() => retry(() => import("./Pages/MainPage")));
-const NotFound = lazy(() => retry(() => import("./Pages/NotFound")));
+import BusinessLoan from "./Pages/BusinessLoan";
+import Login from "./Pages/Login";
+import MainPage from "./Pages/MainPage";
+import NotFound from "./Pages/NotFound";
 const Main = withResolver(MainPage);
 //
 const App = () => {
