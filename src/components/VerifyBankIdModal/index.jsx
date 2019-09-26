@@ -27,6 +27,17 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
+                    if (enabledAnalytic) {
+                      window.analytics.identify(
+                        result.userInfo.personalNumber,
+                        {
+                          name: result.userInfo.name,
+                          email: result.userInfo.email,
+                          plan: result.userInfo.plan,
+                          logins: result.userInfo.logins
+                        }
+                      );
+                    }
                     if (!props.isLogin) {
                       if (enabledAnalytic)
                         window.analytics.track("BankID Verified", {
@@ -35,7 +46,16 @@ export default function VerifyBankIdModal(props) {
                           value: 0
                         });
                       _getCompanies(result);
-                    } else if (props.onSuccess) props.onSuccess(result);
+                    } else {
+                      if (enabledAnalytic)
+                        window.analytics.track("BankID Verified", {
+                          category: "Customer Portal",
+                          label: "Customer Portal login bankid popup",
+                          value: 0
+                        });
+
+                      if (props.onSuccess) props.onSuccess(result);
+                    }
                     break;
                   case "no_client":
                     // check is mobile
@@ -49,13 +69,21 @@ export default function VerifyBankIdModal(props) {
                     break;
                 }
               } else {
-                if (!props.isLogin)
+                if (!props.isLogin) {
                   if (enabledAnalytic)
                     window.analytics.track("BankID Failed", {
                       category: "Loan Application",
                       label: "/app/loan/ bankid popup",
                       value: 0
                     });
+                } else {
+                  if (enabledAnalytic)
+                    window.analytics.track("BankID Failed", {
+                      category: "Customer Portal",
+                      label: "Customer Portal login bankid popup",
+                      value: 0
+                    });
+                }
                 clearInterval(fetchInterval);
                 toggleMainSpinner(false);
                 // check for example user_cancel

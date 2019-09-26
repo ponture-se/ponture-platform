@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 //
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import { isBankId } from "utils";
+import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
-import { startBankId, cancelVerify } from "./../../api/business-loan-api";
+import { startBankId, cancelVerify } from "api/business-loan-api";
 import "./styles.scss";
 
 const Login = props => {
@@ -63,6 +63,12 @@ const Login = props => {
       startBankId()
         .onOk(result => {
           if (!didCancel) {
+            track(
+              "BankID Verification",
+              "Customer Portal",
+              "Customer Portal login bankid popup",
+              0
+            );
             batchStates(() => {
               toggleLoading(false);
               setStartResult(result);
@@ -132,6 +138,12 @@ const Login = props => {
     props.history.push("/app/panel/myApplications");
   }
   function handleCancelVerify() {
+    track(
+      "BankID Failed",
+      "Customer Portal",
+      "Customer Portal login bankid popup",
+      0
+    );
     toggleVerifyModal(false);
     cancelVerify()
       .onOk(result => {})

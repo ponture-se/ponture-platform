@@ -26,6 +26,7 @@ import {
   getNeedsList
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
+import track from "utils/trackAnalytic";
 //
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
@@ -287,12 +288,7 @@ export default function BusinessLoan(props) {
               callBack();
             } else toggleMainSpinner(false);
           } else {
-            if (enabledAnalytic)
-              window.analytics.track("Failure", {
-                category: "Loan Application",
-                label: "/app/loan/ wizard",
-                value: 0
-              });
+            track("Failure", "Loan Application", "/app/loan/ wizard", 0);
             toggleMainSpinner(false);
             changeTab(3);
             setError({

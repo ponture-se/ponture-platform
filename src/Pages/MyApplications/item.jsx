@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGlobalState, useLocale } from "hooks";
 import separateNumberByChar from "utils/separateNumberByChar";
+import track from "utils/trackAnalytic";
 import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
 //
@@ -24,6 +25,7 @@ const Item = props => {
       },
       onCancel: () => {},
       onSuccess: result => {
+        track("Cancel Offer", "Customer Portal", "Customer Portal", 0);
         if (props.onCancelSuccess) props.onCancelSuccess();
 
         dispatch({

@@ -3,11 +3,15 @@ import "react-app-polyfill/stable";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
+import loadScript from "utils/loadScript";
 import * as serviceWorker from "./serviceWorker";
 if (process.env.REACT_APP_ENABLE_ANALYTICS === "true") {
-  document.write(
-    `<script src="//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js"></script>`
-  );
+  loadScript("//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js", () => {
+    if (document.tidioChatLang) document.tidioChatLang = "en";
+  });
+  // document.write(
+  //   `<script src="//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js"></script>`
+  // );
   document.write(
     `<script>
       (function(h, o, t, j, a, r) {

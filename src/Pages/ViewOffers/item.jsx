@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import separateNumberByChar from "utils/separateNumberByChar";
+import track from "utils/trackAnalytic";
 import { acceptOffer } from "api/main-api";
 import CircleSpinner from "components/CircleSpinner";
 //
@@ -21,6 +22,7 @@ const Item = props => {
       toggleAcceptSpinner(true);
       acceptOffer()
         .onOk(result => {
+          track("Accept Offer", "Customer Portal", "Customer Portal", 0);
           if (!didCancel) {
             toggleAcceptSpinner(false);
             if (props.onSuccessAccept) {

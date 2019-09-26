@@ -6,8 +6,9 @@ import Item from "./item";
 // import OfferModal from "./OfferModal";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
-import { getOffers, rejectOffer, acceptOffer } from "api/main-api";
+import { getOffers, rejectOffer } from "api/main-api";
 import { toggleAlert } from "components/Alert";
+import track from "utils/trackAnalytic";
 //
 const AllOffers = props => {
   let didCancel = false;
@@ -122,6 +123,7 @@ const AllOffers = props => {
       },
       onCancel: () => {},
       onSuccess: result => {
+        track("Reject Offer", "Customer Portal", "Customer Portal", 0);
         dispatch({
           type: "ADD_NOTIFY",
           value: {

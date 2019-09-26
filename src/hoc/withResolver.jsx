@@ -5,6 +5,8 @@ import { customerLogin } from "api/main-api";
 import { useGlobalState, useLocale } from "hooks";
 import { Wrong } from "components/Commons/ErrorsComponent";
 import NotFoundUser from "Pages/NotFoundUser";
+const enabledAnalytic =
+  process.env.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
 //
 const widthResolver = WrappedComponent => {
   return withRouter(props => {
@@ -31,6 +33,14 @@ const widthResolver = WrappedComponent => {
         };
         customerLogin()
           .onOk(result => {
+            if (enabledAnalytic) {
+              window.analytics.identify(verifyInfo.userInfo.personalNumber, {
+                name: verifyInfo.userInfo.name,
+                email: verifyInfo.userInfo.email,
+                plan: verifyInfo.userInfo.plan,
+                logins: verifyInfo.userInfo.logins
+              });
+            }
             dispatch({
               type: "SET_USER_INFO",
               payload: result
