@@ -102,27 +102,19 @@ const Item = props => {
           offer.outline.map(c => (
             <div className="myOfferItem__bodyRow">
               <span>{c.label}</span>
-              {c.type.toLowerCase() === "currency" ? (
-                <span>
-                  {c.isShared
-                    ? separateNumberByChar(offer[c.apiName]) +
-                      (c.customerUnit ? " " + c.customerUnit + " " : "")
-                    : offer.detail
-                    ? separateNumberByChar(offer.detail[c.apiName]) +
-                      (c.customerUnit ? " " + c.customerUnit + " " : "")
-                    : ""}
-                </span>
-              ) : (
-                <span>
-                  {c.isShared
+              <span>
+                {c.isShared
+                  ? offer[c.apiName]
                     ? offer[c.apiName] +
                       (c.customerUnit ? " " + c.customerUnit + " " : "")
-                    : offer.detail
+                    : ""
+                  : offer.detail
+                  ? offer.detail[c.apiName]
                     ? offer.detail[c.apiName] +
                       (c.customerUnit ? " " + c.customerUnit + " " : "")
-                    : ""}
-                </span>
-              )}
+                    : ""
+                  : ""}
+              </span>
             </div>
           ))}
       </div>
