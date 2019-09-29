@@ -42,8 +42,6 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
 
-const enabledAnalytic =
-  process.env.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
 // =====================================================================
 
 export default function BusinessLoan(props) {
@@ -586,8 +584,7 @@ export default function BusinessLoan(props) {
               if (!didCancel) {
                 // save result in session storage to use in customer portal
                 Cookies.set("@ponture-customer-portal/token", result);
-
-                if (enabledAnalytic)
+                if (window.analytics)
                   window.analytics.track("BankID Verification", {
                     category: "Loan Application",
                     label: "/app/loan/ bankid popup",
@@ -724,7 +721,7 @@ export default function BusinessLoan(props) {
           .onOk(result => {
             if (!didCancel) {
               if (result.errors) {
-                if (enabledAnalytic)
+                if (window.analytics)
                   window.analytics.track("Failure", {
                     category: "Loan Application",
                     label: "/app/loan/ wizard",
@@ -736,7 +733,7 @@ export default function BusinessLoan(props) {
                 });
               } else {
                 resetForm();
-                if (enabledAnalytic)
+                if (window.analytics)
                   window.analytics.track("Submit", {
                     category: "Loan Application",
                     label: "/app/loan/ wizard",
@@ -796,7 +793,7 @@ export default function BusinessLoan(props) {
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
-        if (enabledAnalytic)
+        if (window.analytics)
           window.analytics.track("Failure", {
             category: "Loan Application",
             label: "/app/loan/ wizard",
@@ -819,7 +816,7 @@ export default function BusinessLoan(props) {
   }
   function handleCancelVerify() {
     toggleVerifyModal(false);
-    if (enabledAnalytic)
+    if (window.analytics)
       window.analytics.track("BankID Failed", {
         category: "Loan Application",
         label: "/app/loan/ bankid popup",

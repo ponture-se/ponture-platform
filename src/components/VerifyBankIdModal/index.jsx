@@ -3,9 +3,7 @@ import CircleSpinner from "./../CircleSpinner";
 import { collect, getCompanies } from "api/business-loan-api";
 import { useLocale } from "hooks";
 import "./styles.scss";
-//
-const enabledAnalytic =
-  process.env.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
+
 //
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
@@ -27,7 +25,7 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
-                    if (enabledAnalytic) {
+                    if (window.analytics) {
                       window.analytics.identify(
                         result.userInfo.personalNumber,
                         {
@@ -39,7 +37,7 @@ export default function VerifyBankIdModal(props) {
                       );
                     }
                     if (!props.isLogin) {
-                      if (enabledAnalytic)
+                      if (window.analytics)
                         window.analytics.track("BankID Verified", {
                           category: "Loan Application",
                           label: "/app/loan/ bankid popup",
@@ -47,7 +45,7 @@ export default function VerifyBankIdModal(props) {
                         });
                       _getCompanies(result);
                     } else {
-                      if (enabledAnalytic)
+                      if (window.analytics)
                         window.analytics.track("BankID Verified", {
                           category: "Customer Portal",
                           label: "Customer Portal login bankid popup",
@@ -70,14 +68,14 @@ export default function VerifyBankIdModal(props) {
                 }
               } else {
                 if (!props.isLogin) {
-                  if (enabledAnalytic)
+                  if (window.analytics)
                     window.analytics.track("BankID Failed", {
                       category: "Loan Application",
                       label: "/app/loan/ bankid popup",
                       value: 0
                     });
                 } else {
-                  if (enabledAnalytic)
+                  if (window.analytics)
                     window.analytics.track("BankID Failed", {
                       category: "Customer Portal",
                       label: "Customer Portal login bankid popup",

@@ -9,8 +9,6 @@ const collectUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_COLLECT;
 const cancelUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_CANCEL;
 const companiesUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_GET_COMPANIES;
 const submitUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_SUBMIT;
-const enabledAnalytic =
-  config.REACT_APP_ENABLE_ANALYTICS === "true" ? true : false;
 
 export function getNeedsList() {
   let _onOkCallBack;
@@ -68,7 +66,7 @@ export function getNeedsList() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (enabledAnalytic)
+        if (window.analytics)
           window.analytics.track("Failure", {
             category: "Loan Application",
             label: "/app/loan/wizard",
@@ -197,7 +195,7 @@ export function startBankId() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (enabledAnalytic)
+        if (window.analytics)
           window.analytics.track("Failure", {
             category: "Loan Application",
             label: "/app/loan/wizard",
@@ -552,7 +550,7 @@ export function getCompanies() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (enabledAnalytic)
+        if (window.analytics)
           window.analytics.track("Failure", {
             category: "Loan Application",
             label: "/app/loan/wizard",
@@ -677,7 +675,7 @@ export function submitLoan() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (enabledAnalytic)
+        if (window.analytics)
           window.analytics.track("Failure", {
             category: "Loan Application",
             label: "/app/loan/wizard",
