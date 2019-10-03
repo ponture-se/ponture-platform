@@ -303,6 +303,14 @@ export default function VerifyBankIdModal(props) {
             ) : null}
           </div>
           <div className="bankId__centerBox__footer">
+            {isMobile && (
+              <button
+                className="btn --success --large"
+                onClick={handleBankIDClicked}
+              >
+                {t("OPEN_BANK_ID")}
+              </button>
+            )}
             {!error && (
               <button
                 className="btn --light --large"
@@ -317,15 +325,6 @@ export default function VerifyBankIdModal(props) {
                 onClick={handleCloseModal}
               >
                 {t("CLOSE")}
-              </button>
-            )}
-            {isMobile && (
-              <button
-                className="btn --success --large"
-                onClick={handleBankIDClicked}
-                style={{ margin: "0 5px" }}
-              >
-                {t("OPEN_BANK_ID")}
               </button>
             )}
           </div>

@@ -24,10 +24,20 @@
     width: 95%;
     margin: 0 2.5%;
   }
+  .bankId__centerBox {
+    &__footer {
+      flex-direction: column;
+    }
+  }
 }
 @media (min-width: 576px) {
   .modal {
     width: 500px;
+  }
+  .bankId__centerBox {
+    &__footer {
+      flex-direction: column;
+    }
   }
 }
 
@@ -36,6 +46,11 @@
   .modal {
     width: 500px;
   }
+  .bankId__centerBox {
+    &__footer {
+      flex-direction: row;
+    }
+  }
 }
 
 // Large devices (desktops, 992px and up)
@@ -43,10 +58,20 @@
   .modal {
     width: 500px;
   }
+  .bankId__centerBox {
+    &__footer {
+      flex-direction: row;
+    }
+  }
 }
 
 // Extra large devices (large desktops, 1200px and up)
 @media (min-width: 1200px) {
+  .bankId__centerBox {
+    &__footer {
+      flex-direction: row;
+    }
+  }
 }
 
 .bankId__centerBox {
@@ -142,8 +167,10 @@
   }
   &__footer {
     display: flex;
-    align-items: center;
-    flex-direction: row-reverse;
+    justify-content: flex-end;
     padding: 10px 0;
+    button {
+      margin-top: 5px;
+    }
   }
 }
