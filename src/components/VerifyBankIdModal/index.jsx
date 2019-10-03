@@ -2,8 +2,9 @@ import React, { useState, useEffect } from "react";
 import CircleSpinner from "./../CircleSpinner";
 import { collect, getCompanies } from "api/business-loan-api";
 import { useLocale } from "hooks";
+import isMobileDevice from "utils/isMobileDevice";
 import "./styles.scss";
-
+const isMobile = isMobileDevice();
 //
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
@@ -258,6 +259,14 @@ export default function VerifyBankIdModal(props) {
       props.onClose();
     }
   }
+  function handleBankIDClicked() {
+    window.open(
+      `
+    bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null 
+    `,
+      "_blank"
+    );
+  }
   return (
     <div className="modal-back animated fadeIn">
       <div className="modal">
@@ -308,6 +317,15 @@ export default function VerifyBankIdModal(props) {
                 onClick={handleCloseModal}
               >
                 {t("CLOSE")}
+              </button>
+            )}
+            {isMobile && (
+              <button
+                className="btn --success --large"
+                onClick={handleBankIDClicked}
+                style={{ margin: "0 5px" }}
+              >
+                {t("OPEN_BANK_ID")}
               </button>
             )}
           </div>

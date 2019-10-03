@@ -51,6 +51,7 @@ export default {
     "Under tiden, prova gärna en gång till eller kontakta oss direkt så hjälper vi er vidare!",
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
   VIEW_DETAIL: "Visa detalj",
+  OPEN_BANK_ID: "Öppna BankId",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in till Mina Sidor",
   LOGIN_TITLE1: "Vi använder BankID för att skydda din information.",
