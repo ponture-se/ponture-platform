@@ -90,33 +90,61 @@ const Item = props => {
         <span>{offer.partnerName}</span>
       </div>
       <div className="myOfferItem__body">
-        <div className="myOfferItem__bodyRow">
-          <span>{t("OFFER_TITLE")}</span>
-          <span>
-            {t("OFFER_TITLE_VALUE")}{" "}
-            {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
-          </span>
+        <div className="left">
+          <div className="myOfferItem__bodyRow">
+            <span>{t("OFFER_TITLE")}</span>
+            <span>
+              {t("OFFER_TITLE_VALUE")}{" "}
+              {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
+            </span>
+          </div>
+          {offer.outline &&
+            offer.outline.length > 0 &&
+            offer.outline.map(c => (
+              <div className="myOfferItem__bodyRow">
+                <span>{c.label}</span>
+                <span>
+                  {c.isShared
+                    ? offer[c.apiName]
+                      ? offer[c.apiName] +
+                        (c.customerUnit ? " " + c.customerUnit + " " : "")
+                      : ""
+                    : offer.detail
+                    ? offer.detail[c.apiName]
+                      ? offer.detail[c.apiName] +
+                        (c.customerUnit ? " " + c.customerUnit + " " : "")
+                      : ""
+                    : ""}
+                </span>
+              </div>
+            ))}
         </div>
-        {offer.outline &&
-          offer.outline.length > 0 &&
-          offer.outline.map(c => (
-            <div className="myOfferItem__bodyRow">
-              <span>{c.label}</span>
-              <span>
-                {c.isShared
-                  ? offer[c.apiName]
-                    ? offer[c.apiName] +
-                      (c.customerUnit ? " " + c.customerUnit + " " : "")
-                    : ""
-                  : offer.detail
-                  ? offer.detail[c.apiName]
-                    ? offer.detail[c.apiName] +
-                      (c.customerUnit ? " " + c.customerUnit + " " : "")
-                    : ""
-                  : ""}
-              </span>
+        {offer.Stage &&
+          offer.Stage.toLowerCase() === "offer accepted" &&
+          offer.partnerContactInfo && (
+            <div className="right">
+              <div className="myOfferItem__bodyRow">
+                <span>{t("EMAIL")}</span>
+                <a href={"mailto:" + offer.partnerContactInfo.email}>
+                  {offer.partnerContactInfo.email}
+                </a>
+              </div>
+              <div className="myOfferItem__bodyRow">
+                <span>{t("TELEPHONE")}</span>
+                <span>{offer.partnerContactInfo.phone}</span>
+              </div>
+              <div className="myOfferItem__bodyRow">
+                <span>{t("WEBSITE")}</span>
+                <a href={offer.partnerContactInfo.website} target="_blank">
+                  {offer.partnerContactInfo.website}
+                </a>
+              </div>
+              <div className="myOfferItem__bodyRow">
+                <span>{t("DESCRIPTION")}</span>
+                <span>{offer.partnerContactInfo.moreDesc}</span>
+              </div>
             </div>
-          ))}
+          )}
       </div>
       <div className="myOfferItem__footer">
         <div className="myOfferItem__footer__left">

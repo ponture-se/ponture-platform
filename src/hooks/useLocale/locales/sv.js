@@ -14,6 +14,8 @@ export default {
   LOADING_TEXT: "Vänligen vänta en stund...",
   MAIN_SPINNER_LOADING_TEXT: "Läser in...",
   TELEPHONE: "Telefon",
+  WEBSITE: "Websida",
+  DESCRIPTION: "Beskrivning",
   SIGN_OUT: "Logga ut",
   INTERNAL_SERVER_ERROR: "Internal Server Error!",
   INTERNAL_SERVER_ERROR_MSG: "Internal Server Error!",
