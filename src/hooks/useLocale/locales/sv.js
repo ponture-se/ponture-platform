@@ -6,7 +6,7 @@ export default {
   MONTH: "månad",
   MONTHS: "månader",
   ERROR: "Fel",
-  EMAIL: "Emai.",
+  EMAIL: "E-post",
   EPOST: "Epost",
   REFRESH: "Försök igen",
   APPLY_AGAIN: "Ansök igen",
