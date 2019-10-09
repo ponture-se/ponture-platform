@@ -123,26 +123,34 @@ const Item = props => {
           offer.Stage.toLowerCase() === "offer accepted" &&
           offer.partnerContactInfo && (
             <div className="right">
-              <div className="myOfferItem__bodyRow">
-                <span>{t("EMAIL")}</span>
-                <a href={"mailto:" + offer.partnerContactInfo.email}>
-                  {offer.partnerContactInfo.email}
-                </a>
-              </div>
-              <div className="myOfferItem__bodyRow">
-                <span>{t("TELEPHONE")}</span>
-                <span>{offer.partnerContactInfo.phone}</span>
-              </div>
-              <div className="myOfferItem__bodyRow">
-                <span>{t("WEBSITE")}</span>
-                <a href={offer.partnerContactInfo.website} target="_blank">
-                  {offer.partnerContactInfo.website}
-                </a>
-              </div>
-              <div className="myOfferItem__bodyRow">
-                <span>{t("DESCRIPTION")}</span>
-                <span>{offer.partnerContactInfo.moreDesc}</span>
-              </div>
+              {offer.partnerContactInfo.email && (
+                <div className="myOfferItem__bodyRow">
+                  <span>{t("EMAIL")}</span>
+                  <a href={"mailto:" + offer.partnerContactInfo.email}>
+                    {offer.partnerContactInfo.email}
+                  </a>
+                </div>
+              )}
+              {offer.partnerContactInfo.phone && (
+                <div className="myOfferItem__bodyRow">
+                  <span>{t("TELEPHONE")}</span>
+                  <span>{offer.partnerContactInfo.phone}</span>
+                </div>
+              )}
+              {offer.partnerContactInfo.website && (
+                <div className="myOfferItem__bodyRow">
+                  <span>{t("WEBSITE")}</span>
+                  <a href={offer.partnerContactInfo.website} target="_blank">
+                    {offer.partnerContactInfo.website}
+                  </a>
+                </div>
+              )}
+              {offer.partnerContactInfo.moreDesc && (
+                <div className="myOfferItem__bodyRow">
+                  <span>{t("DESCRIPTION")}</span>
+                  <span>{offer.partnerContactInfo.moreDesc}</span>
+                </div>
+              )}
             </div>
           )}
       </div>
