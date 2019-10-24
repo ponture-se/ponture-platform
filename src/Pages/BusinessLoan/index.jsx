@@ -793,12 +793,6 @@ export default function BusinessLoan(props) {
         setBankIdResult(bIdResult);
         setCompanies(result);
       } else {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/ wizard",
-            value: 0
-          });
         toggleMainSpinner(false);
         changeTab(3);
         setError({
