@@ -110,6 +110,17 @@ export default {
   OFFER_AMORTIZATION_PERIOD: "Låneperiod",
   OFFER_INTEREST_RATE: "Ränta",
 
+  ///
+  LOGIN_INFO:
+    "Access to the most powerful tool in the entire design and web industry",
+  LOGIN_USERNAME: "Username",
+  LOGIN_USERNAME_INFO: "Try to enter valid username",
+  LOGIN_PASSWORD: "Password",
+  LOGIN_PASSWORD_INFO: "Password must be at least 6 characters",
+  LOGIN_USERNAME_INPUT_PLACEHOLDER: "Enter username",
+  LOGIN_PASSWORD_INPUT_PLACEHOLDER: "Password",
+  LOGIN_BTN_NAME: "Login",
+
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
   BL_LOAN_PERIOD: "Önskad låneperiod",

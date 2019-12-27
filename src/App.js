@@ -9,10 +9,10 @@ import Notifies from "./components/Notifies";
 import PrivateRoute from "hoc/PrivateRoute";
 import withResolver from "hoc/withResolver";
 import AxiosInitializer from "utils/AxiosInitializer";
-
 //
 import BusinessLoan from "./Pages/BusinessLoan";
 import Login from "./Pages/Login";
+import UserPassLogin from "./Pages/UserPassLogin";
 import MainPage from "./Pages/MainPage";
 import NotFound from "./Pages/NotFound";
 const Main = withResolver(MainPage);
@@ -29,6 +29,11 @@ const App = () => {
                 key="appLoan"
                 path="/app/login"
                 render={props => <Login {...props} />}
+              />
+              <Route
+                key="appLoan"
+                path="/app/agentlogin"
+                render={props => <UserPassLogin {...props} />}
               />
               <Route
                 key="appLoan"

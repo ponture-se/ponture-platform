@@ -49,15 +49,19 @@ export default function BusinessLoan(props) {
   const [{ b_loan_moreInfo_visibility }, dispatch] = useGlobalState();
   const { t, appLocale, currentLang } = useLocale();
 
+  //Fill data from Cookies
   const [_loanAmount, _setLoanAmount] = useCookie("_loanAmount");
   const [_loanPeriod, _setLoanPeriod] = useCookie("_loanPeriod");
+
   const [_loanReasons, _setLoanReasons] = useCookie("_loanReasons");
   const [_loanReasonOther, _setLoanReasonOther] = useCookie("_loanReasonOther");
+
   const [_personalNumber, _setPersonalNumber] = useCookie("_personalNumber");
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
   const [_email, _setEmail] = useCookie("_email");
   const [referral_params] = useCookie("affiliate_referral_params"); // extra params
-
+  //Get parameters from URL to use form default selection in form if applicable
+  //Url parameters start with p_
   const p_loanAmount = getParameterByName("amount");
   const __loanAmount = p_loanAmount ? p_loanAmount : _loanAmount;
   const p_loanPeriod = getParameterByName("amourtizationPeriod");
@@ -73,6 +77,7 @@ export default function BusinessLoan(props) {
   const p_email = getParameterByName("email");
   const __email = p_email ? p_email : _email;
 
+  //Initial values
   let formInitValues = {
     loanAmount:
       __loanAmount && __loanAmount.length > 0 && isNumber(__loanAmount)
@@ -109,6 +114,7 @@ export default function BusinessLoan(props) {
       __email && __email.length > 0 && validateEmail(__email) ? __email : "",
     terms: false
   };
+  //generate loanReason initialValue from cookie
   if (_loanReasons && _loanReasons.length > 0) {
     try {
       const a = JSON.parse(_loanReasons);
@@ -124,6 +130,7 @@ export default function BusinessLoan(props) {
     formInitValues["loanReasons"] = undefined;
   }
 
+  //Other state preprations
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [tab, changeTab] = useState(1);
   const [verifyModal, toggleVerifyModal] = useState();
@@ -134,6 +141,10 @@ export default function BusinessLoan(props) {
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(formInitValues.loanPeriod);
   const [loanReasons, setLoanReasons] = useState(formInitValues.loanReasons);
+  const [loanReasonsCategories, setLoanReasonsCategories] = useState(
+    formInitValues.loanReasonsCategories
+  );
+  const [selectedLoanReasonsCat, setSelectedLoanReasonsCat] = useState([]);
   const [loanReasonOther, setLoanReasonOther] = useState(() => {
     if (p_loanReasons) {
       const needs = p_loanReasons.split(",");
@@ -154,7 +165,6 @@ export default function BusinessLoan(props) {
         }
       }
     }
-
     return "";
   });
   const [loanReasonOtherVisiblity, toggleOtherLoanVisibility] = useState(() => {
@@ -212,18 +222,43 @@ export default function BusinessLoan(props) {
   const [startResult, setStartResult] = useState();
   const [bankIdResult, setBankIdResult] = useState();
 
+  //componentDidMount
   useEffect(() => {
-    _loadNeeds();
+    _loadNeeds(() => {
+      //Create reasons' category state from loanReasons
+      const cats = [];
+      loanReasons.forEach(reason => {
+        if (cats.indexOf(reason.category) === -1) {
+          cats.push(reason.category);
+        }
+      });
+      setLoanReasonsCategories(cats);
+      toggleMainSpinner(false);
+    });
     return () => {
       didCancel = true;
     };
   }, []);
 
+  //Conditional componentDidUpdate
   useEffect(() => {
     setLoanAmountDisplay(
       loanAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ")
     );
   }, [loanAmount]);
+
+  //Remove need(s) if their category deselected
+  useEffect(() => {
+    const newLoanReasonsObj = new Object(loanReasons);
+    newLoanReasonsObj.forEach(reason => {
+      if (selectedLoanReasonsCat.indexOf(reason.category) === -1) {
+        reason.selected = false;
+      }
+    });
+    setLoanReasons(newLoanReasonsObj);
+    _setLoanReasons(JSON.stringify(newLoanReasonsObj));
+  }, [selectedLoanReasonsCat]);
+  //Fetch needs from API and load needs
   function _loadNeeds(callBack) {
     getNeedsList()
       .onOk(result => {
@@ -231,6 +266,8 @@ export default function BusinessLoan(props) {
           if (result) {
             if (result.length > 0) {
               let selected = false;
+
+              //If loanReasons come from Url parameters then select that loanReason by default
               if (p_loanReasons && p_loanReasons.length > 0) {
                 const r = p_loanReasons.split(",");
                 for (let i = 0; i < r.length; i++) {
@@ -469,6 +506,19 @@ export default function BusinessLoan(props) {
       _setLoanReasons(JSON.stringify(rList));
     },
     [loanReasons]
+  );
+  const handleReasonCatSelect = useCallback(
+    cat => {
+      const catIndex = selectedLoanReasonsCat.indexOf(cat);
+      const newArr = new Array(selectedLoanReasonsCat);
+      if (catIndex > -1) {
+        newArr.splice(catIndex, 1);
+      } else {
+        newArr.push(cat);
+      }
+      setSelectedLoanReasonsCat(newArr);
+    },
+    [selectedLoanReasonsCat]
   );
   const handleOtherReasonChanged = useCallback(
     e => {
@@ -957,24 +1007,58 @@ export default function BusinessLoan(props) {
                       <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
                     <div className="options">
-                      {loanReasons &&
-                        loanReasons.map(r => (
-                          <div
-                            key={r.API_Name}
-                            className={
-                              "btnReason " + (r.selected ? "--active" : "")
-                            }
-                            onClick={() => handleReasonSelect(r)}
-                          >
-                            <div className="btnReason__title">{r.Label}</div>
-                            {r.selected && (
-                              <div className="btnReason__active">
-                                <span className="icon-checkmark" />
-                              </div>
-                            )}
-                          </div>
-                        ))}
+                      {console.log("lllllll", loanReasonsCategories)}
+                      {loanReasonsCategories.length > 0 &&
+                        loanReasonsCategories.map((cat, idx) => {
+                          const selected =
+                            selectedLoanReasonsCat.indexOf(cat) > -1;
+                          return (
+                            <div
+                              key={idx}
+                              className={
+                                "btnReason " + (selected ? "--active" : "")
+                              }
+                              onClick={() => handleReasonCatSelect(cat)}
+                            >
+                              <div className="btnReason__title">{cat}</div>
+                              {selected && (
+                                <div className="btnReason__active">
+                                  <span className="icon-checkmark" />
+                                </div>
+                              )}
+                            </div>
+                          );
+                        })}
                     </div>
+                    <br />
+                    {selectedLoanReasonsCat.length > 0 && (
+                      <div className="options">
+                        {loanReasons &&
+                          loanReasons.map(
+                            r =>
+                              selectedLoanReasonsCat.indexOf(r.category) >
+                                -1 && (
+                                <div
+                                  key={r.API_Name}
+                                  className={
+                                    "btnReason " +
+                                    (r.selected ? "--active" : "")
+                                  }
+                                  onClick={() => handleReasonSelect(r)}
+                                >
+                                  <div className="btnReason__title">
+                                    {r.Label}
+                                  </div>
+                                  {r.selected && (
+                                    <div className="btnReason__active">
+                                      <span className="icon-checkmark" />
+                                    </div>
+                                  )}
+                                </div>
+                              )
+                          )}
+                      </div>
+                    )}
                   </div>
                   {loanReasonOtherVisiblity && (
                     <div

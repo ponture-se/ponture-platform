@@ -1,0 +1,49 @@
+@import "./../../styles/mixins.scss";
+//
+
+.loginContainer {
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  .loginHeader {
+    width: 100%;
+    @include variable(login-header-height, height, 70px);
+    @include variable(login-header-bg, background, white);
+    @include variable(login-header-box-shadow, box-shadow, 0 0 3px lightgray);
+    img {
+      width: 180px;
+      margin: 20px;
+    }
+  }
+  .loginBox {
+    padding: 0px 20px 40px 20px;
+    width: 450px;
+    min-height: 400px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    @include variable(login-box-shadow, box-shadow, 0 0 1px lightgray);
+    @include variable(login-box-bg, background, white);
+    &__header {
+      border-bottom: 0.5px solid lightgray;
+      min-height: 100px;
+      display: flex;
+      justify-content: center;
+      flex-direction: column;
+      font-size: 13px;
+      & span:first-child {
+        font-size: 25px;
+      }
+    }
+    form {
+      margin-top: 20px;
+    }
+    button {
+      width: 100%;
+      margin-top: 40px;
+      align-self: flex-end;
+    }
+  }
+}
