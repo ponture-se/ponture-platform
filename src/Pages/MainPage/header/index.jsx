@@ -5,13 +5,15 @@ import "./styles.scss";
 import { useGlobalState, useLocale } from "hooks";
 
 const Header = props => {
-  const [{ userInfo }, dispatch] = useGlobalState();
+  const [{ userInfo, currentRole }, dispatch] = useGlobalState();
   const { t } = useLocale();
   function handleSignout() {
     sessionStorage.removeItem("@ponture-customer-bankid");
+    sessionStorage.removeItem("@ponture-agent-info");
     Cookies.remove("@ponture-customer-portal/token");
     dispatch({
-      type: "LOGOUT"
+      type: "LOGOUT",
+      payload: { lastRole: currentRole }
     });
   }
   return (
@@ -25,7 +27,9 @@ const Header = props => {
         </div>
         <div className="right">
           <div className="mainHeader__userInfo">
-            {userInfo && userInfo.firstName + " " + userInfo.lastName}
+            {userInfo && currentRole === "agent"
+              ? userInfo.name
+              : userInfo.firstName + " " + userInfo.lastName}
           </div>
           <div className="mainHeader__signout" onClick={handleSignout}>
             <span>{t("SIGN_OUT")}</span>

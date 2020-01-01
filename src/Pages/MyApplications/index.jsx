@@ -9,12 +9,13 @@ import { getMyApplications } from "api/main-api";
 //
 const MyApplications = props => {
   let didCancel = false;
-  const [{ userInfo }] = useGlobalState();
+  const [{ userInfo, currentRole }, dispatch] = useGlobalState();
   const { t } = useLocale();
   const [selectedApp, setApp] = useState();
   const [loading, toggleLoading] = useState(true);
   const [data, setData] = useState();
   const [error, setError] = useState();
+  //componentDidMount
   useEffect(() => {
     _getMyApplications();
     return () => {
@@ -78,7 +79,11 @@ const MyApplications = props => {
           });
         }
       })
-      .call(userInfo && userInfo.personalNumber);
+      .call(
+        userInfo && currentRole === "agent"
+          ? { currentRole: "agent", id: userInfo.referral_id }
+          : { currentRole: "customer", id: userInfo.personalNumber }
+      );
   }
   function handleSuccessCancel() {
     toggleLoading(true);

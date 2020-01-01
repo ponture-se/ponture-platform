@@ -129,7 +129,6 @@ export default function BusinessLoan(props) {
   } else {
     formInitValues["loanReasons"] = undefined;
   }
-
   //Other state preprations
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [tab, changeTab] = useState(1);
@@ -249,14 +248,17 @@ export default function BusinessLoan(props) {
 
   //Remove need(s) if their category deselected
   useEffect(() => {
-    const newLoanReasonsObj = new Object(loanReasons);
-    newLoanReasonsObj.forEach(reason => {
-      if (selectedLoanReasonsCat.indexOf(reason.category) === -1) {
-        reason.selected = false;
-      }
-    });
-    setLoanReasons(newLoanReasonsObj);
-    _setLoanReasons(JSON.stringify(newLoanReasonsObj));
+    if (selectedLoanReasonsCat && selectedLoanReasonsCat.length) {
+      const newLoanReasonsObj = new Object(loanReasons);
+      debugger;
+      newLoanReasonsObj.forEach(reason => {
+        if (selectedLoanReasonsCat.indexOf(reason.category) === -1) {
+          reason.selected = false;
+        }
+      });
+      setLoanReasons(newLoanReasonsObj);
+      _setLoanReasons(JSON.stringify(newLoanReasonsObj));
+    }
   }, [selectedLoanReasonsCat]);
   //Fetch needs from API and load needs
   function _loadNeeds(callBack) {
@@ -1007,7 +1009,6 @@ export default function BusinessLoan(props) {
                       <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
                     <div className="options">
-                      {console.log("lllllll", loanReasonsCategories)}
                       {loanReasonsCategories.length > 0 &&
                         loanReasonsCategories.map((cat, idx) => {
                           const selected =
@@ -1021,11 +1022,6 @@ export default function BusinessLoan(props) {
                               onClick={() => handleReasonCatSelect(cat)}
                             >
                               <div className="btnReason__title">{cat}</div>
-                              {selected && (
-                                <div className="btnReason__active">
-                                  <span className="icon-checkmark" />
-                                </div>
-                              )}
                             </div>
                           );
                         })}

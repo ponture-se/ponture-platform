@@ -2,7 +2,7 @@ import React from "react";
 import { Route, Redirect } from "react-router-dom";
 import { useGlobalState } from "hooks";
 const PrivateRoute = ({ component: Component, ...rest }) => {
-  const [{ isAuthenticated }, dispatch] = useGlobalState();
+  const [{ isAuthenticated, lastRole }, dispatch] = useGlobalState();
   return isAuthenticated ? (
     <Route {...rest} />
   ) : (
@@ -10,7 +10,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
       render={props => (
         <Redirect
           to={{
-            pathname: "/app/login",
+            pathname: lastRole === "agent" ? "/app/agentlogin" : "/app/login",
             state: { from: props.location }
           }}
         />

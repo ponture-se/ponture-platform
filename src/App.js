@@ -12,7 +12,7 @@ import AxiosInitializer from "utils/AxiosInitializer";
 //
 import BusinessLoan from "./Pages/BusinessLoan";
 import Login from "./Pages/Login";
-import UserPassLogin from "./Pages/UserPassLogin";
+import UserPassLogin from "./Pages/AgentLogin";
 import MainPage from "./Pages/MainPage";
 import NotFound from "./Pages/NotFound";
 const Main = withResolver(MainPage);

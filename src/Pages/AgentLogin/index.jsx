@@ -3,18 +3,18 @@ import React, { useState, useEffect } from "react";
 //
 import { useGlobalState, useLocale } from "hooks";
 import { CircleSpinner } from "components";
+import { agentLogin } from "../../api/main-api";
 import "./styles.scss";
 // import { login } from "services/redux/auth/actions";
 
-const UserPassLogin = props => {
-  const [userName, setUsername] = useState("");
+const AgentLogin = props => {
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   let didCancel = false;
   const { t } = useLocale();
   const [{}, dispatch] = useGlobalState();
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
-  const [startResult, setStartResult] = useState();
 
   function handleUsernameChanged(e) {
     setUsername(e.target.value);
@@ -24,9 +24,87 @@ const UserPassLogin = props => {
   }
   function handleLoginClicked(e) {
     e.preventDefault();
-    if (!props.loading) props.login(userName, password, props);
+    toggleLoading(true);
+    agentLogin()
+      .onOk(info => {
+        if (!didCancel) {
+          toggleLoading(false);
+          sessionStorage.setItem("@ponture-agent-info", JSON.stringify(info));
+          dispatch({
+            type: "SET_USER_INFO",
+            payload: {
+              userInfo: info,
+              currentRole: "agent",
+              isAuthenticated: true
+            }
+          });
+          // dispatch({
+          //   type: "SET_AUTHENTICATION",
+          //   isAuthenticated: true
+          // });
+          props.history.push("/app/panel/myapplications");
+        }
+      })
+      .onServerError(result => {
+        if (!didCancel) {
+          toggleLoading(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Server Error"
+            }
+          });
+        }
+      })
+      .notFound(result => {
+        toggleLoading(false);
+        dispatch({
+          type: "ADD_NOTIFY",
+          value: {
+            type: "error",
+            message: "Agent not found"
+          }
+        });
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+          toggleLoading(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Bad Request"
+            }
+          });
+        }
+      })
+      .unAuthorized(result => {
+        if (!didCancel) {
+          toggleLoading(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Un Authorized"
+            }
+          });
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          toggleLoading(false);
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Unknown Error"
+            }
+          });
+        }
+      })
+      .call(username, password);
   }
-
   return (
     <div className="loginContainer">
       <div className="loginHeader">
@@ -49,7 +127,7 @@ const UserPassLogin = props => {
                 className="element"
                 placeholder={t("LOGIN_USERNAME_INPUT_PLACEHOLDER")}
                 autoFocus
-                value={userName}
+                value={username}
                 onChange={handleUsernameChanged}
               />
             </div>
@@ -84,18 +162,14 @@ const UserPassLogin = props => {
             className="btn --primary"
             disabled={
               !(
-                userName &&
-                userName.length > 0 &&
+                username &&
+                username.length > 0 &&
                 password &&
                 password.length > 6
               )
             }
           >
-            {!props.loading ? (
-              t("LOGIN_BTN_NAME")
-            ) : (
-              <CircleSpinner show={true} />
-            )}
+            {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}
           </button>
         </form>
       </div>
@@ -103,14 +177,4 @@ const UserPassLogin = props => {
   );
 };
 
-function mapStateToProps(state) {
-  return {
-    loading: state.authReducer.loading
-  };
-}
-
-// const mapDispatchToProps = {
-//   login
-// };
-
-export default UserPassLogin;
+export default AgentLogin;
