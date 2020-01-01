@@ -38,10 +38,6 @@ const AgentLogin = props => {
               isAuthenticated: true
             }
           });
-          // dispatch({
-          //   type: "SET_AUTHENTICATION",
-          //   isAuthenticated: true
-          // });
           props.history.push("/app/panel/myapplications");
         }
       })

@@ -2,6 +2,7 @@ import React, { useState, useEffect, useCallback } from "react";
 import InputRange from "react-input-range";
 import Cookies from "js-cookie";
 import "react-input-range/lib/css/index.css";
+import classnames from "classnames";
 //
 import {
   getParameterByName,
@@ -27,6 +28,7 @@ import {
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
+import batchStates from "utils/batchStates";
 //
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
@@ -42,7 +44,7 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
 
-// =====================================================================
+// ====================================================================
 
 export default function BusinessLoan(props) {
   let didCancel = false;
@@ -220,7 +222,10 @@ export default function BusinessLoan(props) {
   const [error, setError] = useState();
   const [startResult, setStartResult] = useState();
   const [bankIdResult, setBankIdResult] = useState();
-
+  const [activeCompanyTypeSelection, setActiveCompanyTypeSelection] = useState(
+    false
+  );
+  const [isNewCompany, setIsNewCompany] = useState(false);
   //componentDidMount
   useEffect(() => {
     _loadNeeds(() => {
@@ -250,7 +255,7 @@ export default function BusinessLoan(props) {
   useEffect(() => {
     if (selectedLoanReasonsCat && selectedLoanReasonsCat.length) {
       const newLoanReasonsObj = new Object(loanReasons);
-      debugger;
+
       newLoanReasonsObj.forEach(reason => {
         if (selectedLoanReasonsCat.indexOf(reason.category) === -1) {
           reason.selected = false;
@@ -517,6 +522,11 @@ export default function BusinessLoan(props) {
         newArr.splice(catIndex, 1);
       } else {
         newArr.push(cat);
+        if (cat === "Purchase of Business") {
+          setActiveCompanyTypeSelection(true);
+        } else {
+          setActiveCompanyTypeSelection(false);
+        }
       }
       setSelectedLoanReasonsCat(newArr);
     },
@@ -891,6 +901,13 @@ export default function BusinessLoan(props) {
   function handleLogoClicked() {
     window.open("https://www.ponture.com", "_blank");
   }
+  function handleCompanyType(status) {
+    batchStates(() => {
+      setIsNewCompany(status);
+      toggleCompanyValidation(true);
+      setCompany("new");
+    });
+  }
   return (
     <div className="bl">
       <div className="bl__header">
@@ -1136,17 +1153,46 @@ export default function BusinessLoan(props) {
                         {t("BL_COMPANY")}
                       </label>
                       <div className="options">
+                        {activeCompanyTypeSelection && (
+                          <div className="newCompanyRadioBox">
+                            <label className="customCheckbox">
+                              <input
+                                type="radio"
+                                name="isNewCompany"
+                                onClick={() => handleCompanyType(true)}
+                              />
+                              <span className="checkmark" />
+                              {t("BL_NEW_COMPANY")}
+                              <span className="customCheckbox__text"></span>
+                            </label>
+                            <label className="customCheckbox">
+                              <input
+                                type="radio"
+                                name="isNewCompany"
+                                defaultChecked
+                                onClick={() => handleCompanyType(false)}
+                              />
+                              <span className="checkmark" />
+                              <span className="customCheckbox__text">
+                                {t("BL_SELECT_COMPANY")}
+                              </span>
+                            </label>
+                          </div>
+                        )}
                         {companies.map(c => (
                           <div
                             key={c.companyId}
-                            className={
-                              "companyWidget " +
-                              (selectedCompany &&
-                              selectedCompany.companyId === c.companyId
+                            className={classnames(
+                              "companyWidget",
+                              selectedCompany &&
+                                selectedCompany.companyId === c.companyId
                                 ? "--active"
-                                : "")
+                                : "",
+                              isNewCompany && "disabled"
+                            )}
+                            onClick={() =>
+                              !isNewCompany && handleSelectCompany(c)
                             }
-                            onClick={() => handleSelectCompany(c)}
                             title={c.companyName}
                           >
                             <div className="companyWidget__cName">

@@ -132,6 +132,8 @@ export default {
   BL_PERSONAL_NUMBER_INFO:
     "Ange ditt svenska personnummer så att vi kan hitta ditt företag",
   BL_COMPANY: "Välj ditt företag",
+  BL_NEW_COMAPNY: "New company",
+  BL_SELECT_COMAPNY: "Select a company",
   BL_CONTACT_BOX_TITLE: "Kontaktuppgifter:",
   BL_PHONE_NUMBER: "Telefon",
   BL_EMAIL: "E-post",

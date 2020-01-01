@@ -495,6 +495,9 @@
   .options {
     display: flex;
     flex-wrap: wrap;
+    transition: all 1s ease-in-out;
+    -webkit-transition-duration: 1s;
+    transition-duration: 1s;
     .btnReason {
       border: 1px solid lightgray;
       color: black;
@@ -572,6 +575,15 @@
         border-width: 2px;
         transition-duration: 0.2s;
       }
+      &.disabled {
+        border: none !important;
+        color: rgb(184, 184, 184);
+        cursor: no-drop;
+        background: rgb(235, 235, 228);
+        &:hover {
+          border-width: none;
+        }
+      }
       &.--active {
         border: 2px solid rgb(66, 204, 173);
       }
@@ -588,6 +600,17 @@
         width: 27px;
         height: 27px;
         border-radius: 100%;
+      }
+    }
+  }
+  & .newCompanyRadioBox {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 22px 10px;
+    & .customCheckbox {
+      &:nth-child(2) {
+        margin-left: 19px;
       }
     }
   }
@@ -640,7 +663,7 @@
         margin-right: 10px;
       }
     }
-    .btnMyApps{
+    .btnMyApps {
       margin-top: 10px;
     }
     .shortInfo {
