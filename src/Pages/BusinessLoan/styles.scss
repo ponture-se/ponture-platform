@@ -329,7 +329,7 @@
     @include variable(bl-mainform-bg, background, white);
     @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
   }
-  &__contactInfo {
+  &__infoBox {
     border-radius: 3px;
     margin-top: 20px;
     padding: 0 6%;

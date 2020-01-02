@@ -43,7 +43,7 @@ const loanPeriodMax = process.env.REACT_APP_LOAN_PERIOD_MAX
 const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
-
+const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
 // ====================================================================
 
 export default function BusinessLoan(props) {
@@ -114,7 +114,8 @@ export default function BusinessLoan(props) {
         : "",
     email:
       __email && __email.length > 0 && validateEmail(__email) ? __email : "",
-    terms: false
+    terms: false,
+    loanReasonsCategories: []
   };
   //generate loanReason initialValue from cookie
   if (_loanReasons && _loanReasons.length > 0) {
@@ -211,6 +212,18 @@ export default function BusinessLoan(props) {
     phoneNumberValidationMessage,
     setPhoneNumberValidationMessage
   ] = useState();
+  const [newOrgPrice, setNewOrgPrice] = useState({
+    realValue: 0,
+    visualValue: ""
+  });
+  const [newOrgPriceIsValid, setNewOrgPriceIsValid] = useState(true);
+  const [
+    newOrgPriceValidationMessage,
+    setNewOrgPriceValidationMessage
+  ] = useState();
+  const [orgName, setOrgName] = useState("");
+  const [orgNameIsValid, setOrgNameIsValid] = useState(true);
+  const [orgNameValidationMessage, setOrgNameValidationMessage] = useState();
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
   const [emailValidationMessage, setEmailValidationMessage] = useState();
@@ -247,7 +260,7 @@ export default function BusinessLoan(props) {
   //Conditional componentDidUpdate
   useEffect(() => {
     setLoanAmountDisplay(
-      loanAmount.toString().replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1 ")
+      loanAmount.toString().replace(numberFormatRegex, "$1 ")
     );
   }, [loanAmount]);
 
@@ -618,7 +631,58 @@ export default function BusinessLoan(props) {
     },
     [selectedCompany, companyIsValid]
   );
+  const handleCompanyType = useCallback(
+    s => {
+      setIsNewCompany(s);
+      toggleCompanyValidation(true);
+      setCompany("new");
+    },
+    [isNewCompany, companyIsValid, selectedCompany]
+  );
 
+  const handleNewOrgPriceChanged = useCallback(
+    e => {
+      const { value } = e.target;
+      let isValid = true,
+        validationMessage = "",
+        _value = value.replace(/\s/g, "");
+      if (_value.length === 0) {
+        isValid = false;
+        validationMessage = t("PRICE_IS_REQUIRED");
+        _value = "";
+        setNewOrgPrice({
+          realValue: 0,
+          visualValue: ""
+        });
+      }
+      if (Number(_value)) {
+        isValid = true;
+        validationMessage = "";
+        setNewOrgPrice({
+          realValue: _value,
+          visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+        });
+      }
+      setNewOrgPriceIsValid(isValid);
+      setNewOrgPriceValidationMessage(validationMessage);
+    },
+    [newOrgPrice, newOrgPriceIsValid, newOrgPriceValidationMessage]
+  );
+  const handleOrgNameChanged = useCallback(
+    e => {
+      const { value } = e.target;
+      let isValid = true,
+        validationMessage = "";
+      if (value.length === 0) {
+        isValid = false;
+        validationMessage = t("BL_ORGNAME_IS_REQUIRED");
+      }
+      setOrgName(value);
+      setOrgNameIsValid(isValid);
+      setOrgNameValidationMessage(validationMessage);
+    },
+    [orgName, orgNameIsValid, orgNameValidationMessage]
+  );
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       let isValid = true;
@@ -901,13 +965,6 @@ export default function BusinessLoan(props) {
   function handleLogoClicked() {
     window.open("https://www.ponture.com", "_blank");
   }
-  function handleCompanyType(status) {
-    batchStates(() => {
-      setIsNewCompany(status);
-      toggleCompanyValidation(true);
-      setCompany("new");
-    });
-  }
   return (
     <div className="bl">
       <div className="bl__header">
@@ -934,6 +991,7 @@ export default function BusinessLoan(props) {
           <div className="bl__form">
             {tab === 1 && (
               <>
+                {/* Start: Apply loan section */}
                 <div className="bl__mainform">
                   <div className="bl__form__header">
                     <div className="bl__form__circleIcon">
@@ -1073,35 +1131,37 @@ export default function BusinessLoan(props) {
                       </div>
                     )}
                   </div>
-                  {loanReasonOtherVisiblity && (
-                    <div
-                      className={
-                        "bl__input animated fadeIn " +
-                        (!otherReasonIsValid ? "--invalid" : "")
-                      }
-                    >
-                      <label className="bl__input__label">
-                        {t("BL_REASON_LOAN_OTHER")}
-                      </label>
-                      <div className="bl__input__element">
-                        <div className="element-group">
-                          <div className="element-group__center">
-                            <input
-                              type="text"
-                              className="my-input"
-                              value={loanReasonOther}
-                              onChange={handleOtherReasonChanged}
-                            />
-                          </div>
+
+                  <div
+                    className={
+                      "bl__input animated fadeIn " +
+                      (loanReasonOtherVisiblity && !otherReasonIsValid
+                        ? "--invalid"
+                        : "")
+                    }
+                  >
+                    <label className="bl__input__label">
+                      {t("BL_REASON_LOAN_OTHER")}
+                    </label>
+                    <div className="bl__input__element">
+                      <div className="element-group">
+                        <div className="element-group__center">
+                          <input
+                            type="text"
+                            className="my-input"
+                            value={loanReasonOther}
+                            onChange={handleOtherReasonChanged}
+                          />
                         </div>
-                        {!otherReasonIsValid && (
-                          <span className="validation-messsage">
-                            {otherReasonValidationMessage}
-                          </span>
-                        )}
                       </div>
+                      {loanReasonOtherVisiblity && !otherReasonIsValid && (
+                        <span className="validation-messsage">
+                          {otherReasonValidationMessage}
+                        </span>
+                      )}
                     </div>
-                  )}
+                  </div>
+
                   <div
                     className={
                       "bl__input animated fadeIn " +
@@ -1147,6 +1207,8 @@ export default function BusinessLoan(props) {
                       )}
                     </button>
                   )}
+
+                  {/* Start: companies list */}
                   {companies && companies.length > 0 && (
                     <div className="bl__input animated fadeIn">
                       <label className="bl__input__label">
@@ -1159,22 +1221,23 @@ export default function BusinessLoan(props) {
                               <input
                                 type="radio"
                                 name="isNewCompany"
-                                onClick={() => handleCompanyType(true)}
-                              />
-                              <span className="checkmark" />
-                              {t("BL_NEW_COMPANY")}
-                              <span className="customCheckbox__text"></span>
-                            </label>
-                            <label className="customCheckbox">
-                              <input
-                                type="radio"
-                                name="isNewCompany"
                                 defaultChecked
                                 onClick={() => handleCompanyType(false)}
                               />
                               <span className="checkmark" />
                               <span className="customCheckbox__text">
                                 {t("BL_SELECT_COMPANY")}
+                              </span>
+                            </label>
+                            <label className="customCheckbox">
+                              <input
+                                type="radio"
+                                name="isNewCompany"
+                                onClick={() => handleCompanyType(true)}
+                              />
+                              <span className="checkmark" />
+                              <span className="customCheckbox__text">
+                                {t("BL_NEW_COMPANY")}
                               </span>
                             </label>
                           </div>
@@ -1217,11 +1280,88 @@ export default function BusinessLoan(props) {
                       )}
                     </div>
                   )}
+                  {/* End: Companies list */}
                 </div>
+                {/* End: apply loan section */}
+
+                {/* Start: new company info section*/}
+                {isNewCompany && (
+                  <div className="bl__infoBox">
+                    <div className="bl__infoBox__header">
+                      <div className="bl__infoBox__circleIcon">
+                        <i className="icon-info" />
+                      </div>
+                      <span>{t("BL_COMPANY_INFO")}</span>
+                    </div>
+                    <div className="userInputs">
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!orgNameIsValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("BL_ORG_NAME")}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="text"
+                                className="my-input"
+                                placeholder=""
+                                value={orgName}
+                                onChange={handleOrgNameChanged}
+                              />
+                            </div>
+                          </div>
+                          {!orgNameIsValid && (
+                            <span className="validation-messsage">
+                              {orgNameValidationMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!newOrgPriceIsValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("PRICE") + " (Kr)"}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="text"
+                                className="my-input"
+                                placeholder="3 000 000"
+                                value={newOrgPrice.visualValue}
+                                onChange={handleNewOrgPriceChanged}
+                              />
+                            </div>
+                          </div>
+                          {!newOrgPriceIsValid && (
+                            <span className="validation-messsage">
+                              {newOrgPriceValidationMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <br />
+                  </div>
+                )}
+                {/* End:  new company info */}
+
+                {/* Start: Contact info section */}
                 {b_loan_moreInfo_visibility && (
-                  <div className="bl__contactInfo">
-                    <div className="bl__contactInfo__header">
-                      <div className="bl__contactInfo__circleIcon">
+                  <div className="bl__infoBox">
+                    <div className="bl__infoBox__header">
+                      <div className="bl__infoBox__circleIcon">
                         <i className="icon-request" />
                       </div>
                       <span>{t("BL_CONTACT_BOX_TITLE")}</span>
@@ -1330,6 +1470,7 @@ export default function BusinessLoan(props) {
                     </div>
                   </div>
                 )}
+                {/* End: company info section */}
               </>
             )}
             {tab === 2 && (

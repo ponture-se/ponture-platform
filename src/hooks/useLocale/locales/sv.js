@@ -31,6 +31,7 @@ export default {
   REJECT: "Tacka Nej",
   VIEW_OFFERS: "Visa Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
+  PRICE: "Köpspris",
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
@@ -139,6 +140,10 @@ export default {
   BL_EMAIL: "E-post",
   BL_TERMS: "Härmed godkänner jag användarvillkoren.",
   BL_TERMS_LINK: "läs våra användarvillkor",
+  BL_ORG_NAME: "Företagsnamn",
+  BL_COMPANY_INFO: "Köpobjekt",
+  BL_NEW_COMPANY: "New company",
+  BL_SELECT_COMPANY: "Select a company",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
@@ -148,8 +153,10 @@ export default {
   PERSONAL_NUMBER_IN_CORRECT:
     "Ange ditt korrekta personnummer exampel : 19806101-1234)",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
+  PRICE_IS_REQUIRED: "price är felaktigt",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
+  BL_ORGNAME_IS_REQUIRED: "Företagsnamn krävs",
   BL_VERIFY_PID_BTN: "Identifiera med BankID",
   BL_TERMS_IS_REQUIRED:
     "Godkännande av våra villkor är obligatorisk för att ansöka.",
