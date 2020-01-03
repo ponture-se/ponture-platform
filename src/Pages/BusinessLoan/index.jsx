@@ -143,9 +143,15 @@ export default function BusinessLoan(props) {
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(formInitValues.loanPeriod);
   const [loanReasons, setLoanReasons] = useState(formInitValues.loanReasons);
+  const [loanReasonsIsValid, setLoanReasonsIsValid] = useState(false);
+  const [
+    loanReasonsValidationMessage,
+    setLoanReasonsValidationMessage
+  ] = useState();
   const [loanReasonsCategories, setLoanReasonsCategories] = useState(
     formInitValues.loanReasonsCategories
   );
+  const [selectedLoanReasons, setSelectedLoanReasons] = useState([]);
   const [selectedLoanReasonsCat, setSelectedLoanReasonsCat] = useState([]);
   const [loanReasonOther, setLoanReasonOther] = useState(() => {
     if (p_loanReasons) {
@@ -411,6 +417,7 @@ export default function BusinessLoan(props) {
       })
       .call(currentLang);
   }
+
   const handleLoanAmount = useCallback(
     val => {
       setLoanAmount(val);
@@ -490,58 +497,65 @@ export default function BusinessLoan(props) {
   );
   const handleReasonSelect = useCallback(
     reason => {
-      const rList = loanReasons.map(item => {
-        if (item.API_Name === reason.API_Name) {
-          item.selected = !item.selected;
-          if (reason.API_Name === "other") {
-            toggleOtherLoanVisibility(item.selected);
-            if (!item.selected) {
-              setLoanReasonOther("");
-              _setLoanReasonOther("");
-            }
-          }
-        }
-        return item;
-      });
-      const selected = loanReasons.find(l => l.selected);
-      if (!selected) {
-        let isDefault = false;
-        for (let i = 0; i < rList.length; i++) {
-          if (rList[i].isDefault) {
-            isDefault = true;
-            rList[i].selected = true;
-            break;
-          }
-        }
-        if (!isDefault) {
-          for (let i = 0; i < rList.length; i++) {
-            if (rList[i].API_Name === "general_liquidity") {
-              rList[i].selected = true;
-              break;
-            }
-          }
+      // debugger;
+      const selectedLoanReasonsArr = Array.from(selectedLoanReasons);
+      const idx = selectedLoanReasonsArr.indexOf(reason.API_Name);
+      const isSelected = !idx > -1;
+
+      if (isSelected) {
+        selectedLoanReasonsArr.push(reason.API_Name);
+      } else {
+        selectedLoanReasonsArr.splice(idx, 1);
+      }
+      if (reason.API_Name === "other") {
+        toggleOtherLoanVisibility(isSelected);
+        if (!isSelected) {
+          setLoanReasonOther("");
+          _setLoanReasonOther("");
         }
       }
-      setLoanReasons(rList);
-      _setLoanReasons(JSON.stringify(rList));
+      // const selected = loanReasons.find(l => l.selected);
+      // if (!selected) {
+      //   // let isDefault = false;
+      //   for (let i = 0; i < rList.length; i++) {
+      //     if (rList[i].isDefault) {
+      //       // isDefault = true;
+      //       rList[i].selected = true;
+      //       break;
+      //     }
+      // }
+      // if (!isDefault) {
+      //   for (let i = 0; i < rList.length; i++) {
+      //     if (rList[i].API_Name === "general_liquidity") {
+      //       rList[i].selected = true;
+      //       break;
+      //     }
+      //   }
+      // }
+      // }
+      console.log(idx, selectedLoanReasonsArr);
+      setSelectedLoanReasons(selectedLoanReasonsArr);
+      // _setLoanReasons(JSON.stringify(rList));
     },
-    [loanReasons]
+    [selectedLoanReasons]
   );
   const handleReasonCatSelect = useCallback(
     cat => {
-      const catIndex = selectedLoanReasonsCat.indexOf(cat);
-      const newArr = new Array(selectedLoanReasonsCat);
-      if (catIndex > -1) {
-        newArr.splice(catIndex, 1);
-      } else {
-        newArr.push(cat);
+      if (cat) {
         if (cat === "Purchase of Business") {
           setActiveCompanyTypeSelection(true);
         } else {
           setActiveCompanyTypeSelection(false);
         }
       }
-      setSelectedLoanReasonsCat(newArr);
+      //If reason category changed then deselect all related reasons to the targeted category
+      if (selectedLoanReasons !== cat) {
+        const _arr = Array.from(loanReasons);
+        _arr.map(item => (item.selected = false));
+        setLoanReasons(_arr);
+        setSelectedLoanReasons([]);
+      }
+      setSelectedLoanReasonsCat(cat);
     },
     [selectedLoanReasonsCat]
   );
@@ -700,6 +714,10 @@ export default function BusinessLoan(props) {
           target: { value: personalNumber ? personalNumber : "" }
         });
       }
+      if (!loanReasonsIsValid) {
+        isValid = false;
+        setLoanReasonsValidationMessage("Select a reason is mandatory.");
+      }
       if (isValid) {
         if (personalNumberIsValid) {
           toggleVerifyingSpinner(true);
@@ -803,13 +821,8 @@ export default function BusinessLoan(props) {
       if (isValid) {
         toggleSubmitSpinner(true);
 
-        let needs = [];
-        for (let i = 0; i < loanReasons.length; i++) {
-          const l = loanReasons[i];
-          if (l.selected === true) {
-            needs.push(l.API_Name);
-          }
-        }
+        let needs = selectedLoanReasons;
+
         let pId = personalNumber.replace("-", "");
         if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
         let obj = {
@@ -1086,8 +1099,7 @@ export default function BusinessLoan(props) {
                     <div className="options">
                       {loanReasonsCategories.length > 0 &&
                         loanReasonsCategories.map((cat, idx) => {
-                          const selected =
-                            selectedLoanReasonsCat.indexOf(cat) > -1;
+                          const selected = cat === selectedLoanReasonsCat;
                           return (
                             <div
                               key={idx}
@@ -1102,32 +1114,34 @@ export default function BusinessLoan(props) {
                         })}
                     </div>
                     <br />
-                    {selectedLoanReasonsCat.length > 0 && (
+                    {selectedLoanReasonsCat && (
                       <div className="options">
                         {loanReasons &&
-                          loanReasons.map(
-                            r =>
-                              selectedLoanReasonsCat.indexOf(r.category) >
-                                -1 && (
+                          loanReasons.map(r => {
+                            if (r.category === selectedLoanReasonsCat) {
+                              const isSelected =
+                                selectedLoanReasons.indexOf(r.API_Name) > -1;
+                              return (
                                 <div
                                   key={r.API_Name}
                                   className={
                                     "btnReason " +
-                                    (r.selected ? "--active" : "")
+                                    (isSelected ? "--active" : "")
                                   }
                                   onClick={() => handleReasonSelect(r)}
                                 >
                                   <div className="btnReason__title">
                                     {r.Label}
                                   </div>
-                                  {r.selected && (
+                                  {isSelected && (
                                     <div className="btnReason__active">
                                       <span className="icon-checkmark" />
                                     </div>
                                   )}
                                 </div>
-                              )
-                          )}
+                              );
+                            }
+                          })}
                       </div>
                     )}
                   </div>
