@@ -29,6 +29,7 @@ import {
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
+import RealEstate from "./RealEstate";
 //
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
@@ -147,7 +148,7 @@ export default function BusinessLoan(props) {
   const [
     loanReasonsValidationMessage,
     setLoanReasonsValidationMessage
-  ] = useState();
+  ] = useState("");
   const [loanReasonsCategories, setLoanReasonsCategories] = useState(
     formInitValues.loanReasonsCategories
   );
@@ -245,6 +246,7 @@ export default function BusinessLoan(props) {
     false
   );
   const [isNewCompany, setIsNewCompany] = useState(false);
+  const [activeRealEstateSection, setActiveRealEstateSection] = useState(false);
   //componentDidMount
   useEffect(() => {
     _loadNeeds(() => {
@@ -497,10 +499,9 @@ export default function BusinessLoan(props) {
   );
   const handleReasonSelect = useCallback(
     reason => {
-      // debugger;
       const selectedLoanReasonsArr = Array.from(selectedLoanReasons);
       const idx = selectedLoanReasonsArr.indexOf(reason.API_Name);
-      const isSelected = !idx > -1;
+      const isSelected = !(idx > -1);
 
       if (isSelected) {
         selectedLoanReasonsArr.push(reason.API_Name);
@@ -533,7 +534,11 @@ export default function BusinessLoan(props) {
       //   }
       // }
       // }
-      console.log(idx, selectedLoanReasonsArr);
+      if (selectedLoanReasonsArr.length === 0) {
+        setLoanReasonsIsValid(false);
+      } else {
+        setLoanReasonsIsValid(true);
+      }
       setSelectedLoanReasons(selectedLoanReasonsArr);
       // _setLoanReasons(JSON.stringify(rList));
     },
@@ -542,10 +547,16 @@ export default function BusinessLoan(props) {
   const handleReasonCatSelect = useCallback(
     cat => {
       if (cat) {
-        if (cat === "Purchase of Business") {
-          setActiveCompanyTypeSelection(true);
-        } else {
-          setActiveCompanyTypeSelection(false);
+        switch (cat) {
+          case "Purchase of Business":
+            setActiveCompanyTypeSelection(true);
+            break;
+          case "Purchase of Real-Estate":
+            setActiveRealEstateSection(true);
+            break;
+          default:
+            setActiveCompanyTypeSelection(false);
+            setActiveRealEstateSection(false);
         }
       }
       //If reason category changed then deselect all related reasons to the targeted category
@@ -716,8 +727,9 @@ export default function BusinessLoan(props) {
       }
       if (!loanReasonsIsValid) {
         isValid = false;
-        setLoanReasonsValidationMessage("Select a reason is mandatory.");
+        setLoanReasonsValidationMessage(t("BL_LOANREASON_IS_REQUIRED"));
       }
+
       if (isValid) {
         if (personalNumberIsValid) {
           toggleVerifyingSpinner(true);
@@ -1144,6 +1156,11 @@ export default function BusinessLoan(props) {
                           })}
                       </div>
                     )}
+                    {!loanReasonsIsValid && (
+                      <span className="validation-messsage">
+                        {loanReasonsValidationMessage}
+                      </span>
+                    )}
                   </div>
 
                   <div
@@ -1371,6 +1388,7 @@ export default function BusinessLoan(props) {
                 )}
                 {/* End:  new company info */}
 
+                {activeRealEstateSection && <RealEstate />}
                 {/* Start: Contact info section */}
                 {b_loan_moreInfo_visibility && (
                   <div className="bl__infoBox">
@@ -1471,6 +1489,7 @@ export default function BusinessLoan(props) {
                         </span>
                       )}
                     </div>
+
                     <div className="bl__actions">
                       <button
                         className="btn --warning --large"
