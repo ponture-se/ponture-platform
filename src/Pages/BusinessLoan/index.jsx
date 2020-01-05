@@ -30,7 +30,8 @@ import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
 import RealEstate from "./RealEstate";
-//
+
+//Get slider setting from react config and fill the initial data
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
   : 10000000;
@@ -49,6 +50,8 @@ const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
 
 export default function BusinessLoan(props) {
   let didCancel = false;
+
+  //Global state and locales(translation)
   const [{ b_loan_moreInfo_visibility }, dispatch] = useGlobalState();
   const { t, appLocale, currentLang } = useLocale();
 
@@ -118,6 +121,7 @@ export default function BusinessLoan(props) {
     terms: false,
     loanReasonsCategories: []
   };
+
   //generate loanReason initialValue from cookie
   if (_loanReasons && _loanReasons.length > 0) {
     try {
@@ -133,27 +137,22 @@ export default function BusinessLoan(props) {
   } else {
     formInitValues["loanReasons"] = undefined;
   }
-  //Other state preprations
-  const [mainSpinner, toggleMainSpinner] = useState(true);
-  const [tab, changeTab] = useState(1);
-  const [verifyModal, toggleVerifyModal] = useState();
-  const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
-  const [loanAmountDisplay, setLoanAmountDisplay] = useState(
-    formInitValues.loanAmount
-  );
-  const [loanAmountStep, setLoanAmountStep] = useState(50000);
-  const [loanPeriod, setLoanPeriod] = useState(formInitValues.loanPeriod);
+  //Loan reason
   const [loanReasons, setLoanReasons] = useState(formInitValues.loanReasons);
   const [loanReasonsIsValid, setLoanReasonsIsValid] = useState(false);
+  const [selectedLoanReasons, setSelectedLoanReasons] = useState([]); //selected loan reason
   const [
     loanReasonsValidationMessage,
     setLoanReasonsValidationMessage
   ] = useState("");
+
+  //Loan reason category
   const [loanReasonsCategories, setLoanReasonsCategories] = useState(
     formInitValues.loanReasonsCategories
   );
-  const [selectedLoanReasons, setSelectedLoanReasons] = useState([]);
   const [selectedLoanReasonsCat, setSelectedLoanReasonsCat] = useState([]);
+
+  //Loan reason other
   const [loanReasonOther, setLoanReasonOther] = useState(() => {
     if (p_loanReasons) {
       const needs = p_loanReasons.split(",");
@@ -176,6 +175,8 @@ export default function BusinessLoan(props) {
     }
     return "";
   });
+
+  //Other loanReasons state initialization
   const [loanReasonOtherVisiblity, toggleOtherLoanVisibility] = useState(() => {
     if (p_loanReasons) {
       const needs = p_loanReasons.split(",");
@@ -193,11 +194,28 @@ export default function BusinessLoan(props) {
     }
     return false;
   });
+
+  //Other Reason input
   const [otherReasonIsValid, toggleOtherReasonValidation] = useState(true);
   const [
     otherReasonValidationMessage,
     setOtherReasonValidationMessage
   ] = useState();
+
+  //Actions state
+  const [mainSpinner, toggleMainSpinner] = useState(true);
+  const [tab, changeTab] = useState(1);
+  const [verifyModal, toggleVerifyModal] = useState();
+
+  //Loan Amount and Period(Inline sliders)
+  const [loanAmount, setLoanAmount] = useState(formInitValues.loanAmount);
+  const [loanAmountDisplay, setLoanAmountDisplay] = useState(
+    formInitValues.loanAmount
+  );
+  const [loanAmountStep, setLoanAmountStep] = useState(50000);
+  const [loanPeriod, setLoanPeriod] = useState(formInitValues.loanPeriod);
+
+  //Personal number field
   const [personalNumber, setPersonalNumber] = useState(
     formInitValues.personalNumber ? formInitValues.personalNumber : ""
   );
@@ -208,9 +226,13 @@ export default function BusinessLoan(props) {
     personalNumberValidationMessage,
     setPersonalNumberValidationMessage
   ] = useState();
+
+  //company selection
   const [companies, setCompanies] = useState();
   const [selectedCompany, setCompany] = useState();
   const [companyIsValid, toggleCompanyValidation] = useState(true);
+
+  //Phone number
   const [phoneNumber, setPhoneNumber] = useNumberRegex(
     formInitValues.phoneNumber
   );
@@ -219,6 +241,8 @@ export default function BusinessLoan(props) {
     phoneNumberValidationMessage,
     setPhoneNumberValidationMessage
   ] = useState();
+
+  //New organization
   const [newOrgPrice, setNewOrgPrice] = useState({
     realValue: 0,
     visualValue: ""
@@ -231,22 +255,39 @@ export default function BusinessLoan(props) {
   const [orgName, setOrgName] = useState("");
   const [orgNameIsValid, setOrgNameIsValid] = useState(true);
   const [orgNameValidationMessage, setOrgNameValidationMessage] = useState();
+
+  //RE = Real Estate
+  const [REPriceIsValid, setREPriceIsValid] = useState(true);
+  const [REPriceValidationMessage, setREPriceValidationMessage] = useState();
+  const [REareaIsValid, setREareaIsValid] = useState(true);
+  const [REarea, setREarea] = useState();
+
+  //email
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
   const [emailValidationMessage, setEmailValidationMessage] = useState();
+
+  //terms
   const [terms, toggleTermsChecked] = useState(false);
   const [termValidation, toggleTermValidation] = useState(false);
+
+  //Form submission
   const [form, setForm] = useState(formInitValues);
   const [verifyingSpinner, toggleVerifyingSpinner] = useState(false);
   const [submitSpinner, toggleSubmitSpinner] = useState(false);
   const [error, setError] = useState();
+
+  //bankId
   const [startResult, setStartResult] = useState();
   const [bankIdResult, setBankIdResult] = useState();
+
+  //Conditional Sections
   const [activeCompanyTypeSelection, setActiveCompanyTypeSelection] = useState(
     false
   );
   const [isNewCompany, setIsNewCompany] = useState(false);
   const [activeRealEstateSection, setActiveRealEstateSection] = useState(false);
+
   //componentDidMount
   useEffect(() => {
     _loadNeeds(() => {
@@ -346,6 +387,7 @@ export default function BusinessLoan(props) {
               }
             }
             setLoanReasons(result);
+            //set cookie
             _setLoanReasons(JSON.stringify(result));
             if (callBack) {
               callBack();
@@ -420,6 +462,9 @@ export default function BusinessLoan(props) {
       .call(currentLang);
   }
 
+  ////////////////////////////////////////////
+  //                Callbacks               //
+  ////////////////////////////////////////////
   const handleLoanAmount = useCallback(
     val => {
       setLoanAmount(val);
@@ -708,6 +753,10 @@ export default function BusinessLoan(props) {
     },
     [orgName, orgNameIsValid, orgNameValidationMessage]
   );
+
+  //////////////////////////////////////////////
+  //                Handlers                  //
+  //////////////////////////////////////////////
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       let isValid = true;
@@ -1388,7 +1437,77 @@ export default function BusinessLoan(props) {
                 )}
                 {/* End:  new company info */}
 
-                {activeRealEstateSection && <RealEstate />}
+                {activeRealEstateSection && (
+                  <div className="bl__infoBox">
+                    <div className="bl__infoBox__header">
+                      <div className="bl__infoBox__circleIcon">
+                        <i className="icon-info" />
+                      </div>
+                      <span>{t("BL_COMPANY_INFO")}</span>
+                    </div>
+                    <div className="userInputs">
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!REPriceIsValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("BL_AREA")}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="text"
+                                className="my-input"
+                                placeholder="Sq Meter"
+                                value={REarea}
+                                onChange={handleREAreaChange}
+                              />
+                            </div>
+                          </div>
+                          {!REareaIsValid && (
+                            <span className="validation-messsage">
+                              {REareaValidationMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!REPriceIsValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("PRICE") + " (Kr)"}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="text"
+                                className="my-input"
+                                placeholder="3 000 000"
+                                value={REPrice.visualValue}
+                                onChange={handleREPriceChanged}
+                              />
+                            </div>
+                          </div>
+                          {!REPriceIsValid && (
+                            <span className="validation-messsage">
+                              {REPriceValidationMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <br />
+                  </div>
+                )}
+
                 {/* Start: Contact info section */}
                 {b_loan_moreInfo_visibility && (
                   <div className="bl__infoBox">

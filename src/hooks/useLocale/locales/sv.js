@@ -145,6 +145,8 @@ export default {
   BL_NEW_COMPANY: "New company",
   BL_SELECT_COMPANY: "Select a company",
   BL_LOANREASON_IS_REQUIRED: "Select a reason is required",
+  BL_REALESTATE_INFO: "Real Estate",
+  BL_METER: "Area(m2)",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
