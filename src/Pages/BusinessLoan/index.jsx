@@ -29,7 +29,6 @@ import {
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
-import RealEstate from "./RealEstate";
 
 //Get slider setting from react config and fill the initial data
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
@@ -257,10 +256,15 @@ export default function BusinessLoan(props) {
   const [orgNameValidationMessage, setOrgNameValidationMessage] = useState();
 
   //RE = Real Estate
+  const [REPrice, setREPrice] = useState({
+    realValue: 0,
+    visualValue: ""
+  });
   const [REPriceIsValid, setREPriceIsValid] = useState(true);
   const [REPriceValidationMessage, setREPriceValidationMessage] = useState();
-  const [REareaIsValid, setREareaIsValid] = useState(true);
   const [REarea, setREarea] = useState();
+  const [REareaIsValid, setREareaIsValid] = useState(true);
+  const [REareaValidationMessage, setREareaValidationMessage] = useState();
 
   //email
   const [email, setEmail] = useState(formInitValues.email);
@@ -462,9 +466,9 @@ export default function BusinessLoan(props) {
       .call(currentLang);
   }
 
-  ////////////////////////////////////////////
-  //                Callbacks               //
-  ////////////////////////////////////////////
+  //
+  /// Callbacks
+  //
   const handleLoanAmount = useCallback(
     val => {
       setLoanAmount(val);
@@ -743,6 +747,7 @@ export default function BusinessLoan(props) {
       const { value } = e.target;
       let isValid = true,
         validationMessage = "";
+
       if (value.length === 0) {
         isValid = false;
         validationMessage = t("BL_ORGNAME_IS_REQUIRED");
@@ -753,10 +758,54 @@ export default function BusinessLoan(props) {
     },
     [orgName, orgNameIsValid, orgNameValidationMessage]
   );
+  const handleREAreaChange = useCallback(
+    e => {
+      const { value } = e.target;
+      let isValid = true,
+        validationMessage = "";
 
-  //////////////////////////////////////////////
-  //                Handlers                  //
-  //////////////////////////////////////////////
+      if (value.length === 0) {
+        isValid = false;
+        validationMessage = t("BL_REALESTATE_AREA_IS_REQUIRED");
+      }
+      setREarea(value);
+      setREareaIsValid(isValid);
+      setREareaValidationMessage(validationMessage);
+    },
+    [REarea, REPriceIsValid, REareaValidationMessage]
+  );
+  const handleREPriceChanged = useCallback(
+    e => {
+      const { value } = e.target;
+      let isValid = true,
+        validationMessage = "",
+        _value = value.replace(/\s/g, "");
+      if (_value.length === 0) {
+        isValid = false;
+        validationMessage = t("PRICE_IS_REQUIRED");
+        _value = "";
+        setREPrice({
+          realValue: 0,
+          visualValue: ""
+        });
+      }
+      if (Number(_value)) {
+        isValid = true;
+        validationMessage = "";
+        setREPrice({
+          realValue: _value,
+          visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+        });
+      }
+      setREPriceIsValid(isValid);
+      setREPriceValidationMessage(validationMessage);
+    },
+    [REPrice, REPriceIsValid, REPriceValidationMessage]
+  );
+
+  //
+  ////// Handlers
+  //
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       let isValid = true;
@@ -1039,6 +1088,8 @@ export default function BusinessLoan(props) {
   function handleLogoClicked() {
     window.open("https://www.ponture.com", "_blank");
   }
+
+  //
   return (
     <div className="bl">
       <div className="bl__header">
@@ -1437,6 +1488,7 @@ export default function BusinessLoan(props) {
                 )}
                 {/* End:  new company info */}
 
+                {/* Start: Real estate section */}
                 {activeRealEstateSection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
@@ -1459,7 +1511,7 @@ export default function BusinessLoan(props) {
                           <div className="element-group">
                             <div className="element-group__center">
                               <input
-                                type="text"
+                                type="number"
                                 className="my-input"
                                 placeholder="Sq Meter"
                                 value={REarea}
@@ -1507,6 +1559,7 @@ export default function BusinessLoan(props) {
                     <br />
                   </div>
                 )}
+                {/* End: Real estate section */}
 
                 {/* Start: Contact info section */}
                 {b_loan_moreInfo_visibility && (
