@@ -121,6 +121,9 @@ export default function BusinessLoan(props) {
     loanReasonsCategories: []
   };
 
+  //Identifications
+  const [userIsVerified, setUserIsVerified] = useState(false);
+
   //generate loanReason initialValue from cookie
   if (_loanReasons && _loanReasons.length > 0) {
     try {
@@ -315,13 +318,11 @@ export default function BusinessLoan(props) {
     setLoanAmountDisplay(
       loanAmount.toString().replace(numberFormatRegex, "$1 ")
     );
-      
   }, [loanAmount]);
 
-
-  useEffect(()=>{
-    console.log("did cancel",didCancel);
-  });
+  // useEffect(()=>{
+  //   console.log("did cancel",didCancel);
+  // });
   //Remove need(s) if their category deselected
   useEffect(() => {
     if (selectedLoanReasonsCat && selectedLoanReasonsCat.length) {
@@ -1093,7 +1094,9 @@ export default function BusinessLoan(props) {
         value: 0
       });
     cancelVerify()
-      .onOk(result => {})
+      .onOk(result => {
+        setUserIsVerified(false);
+      })
       .onServerError(result => {
         if (!didCancel) {
         }
@@ -1111,6 +1114,11 @@ export default function BusinessLoan(props) {
         }
       })
       .call(startResult.orderRef);
+  }
+  function handleSuccessBankId(result) {
+    if (result.progressStatus === "COMPLETE") {
+      setUserIsVerified(true);
+    }
   }
   function handleLogoClicked() {
     window.open("https://www.ponture.com", "_blank");
@@ -1443,7 +1451,7 @@ export default function BusinessLoan(props) {
                 {/* End: apply loan section */}
 
                 {/* Start: new company info section*/}
-                {activeCompanyTypeSelection && (
+                {userIsVerified && activeCompanyTypeSelection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
                       <div className="bl__infoBox__circleIcon">
@@ -1516,7 +1524,7 @@ export default function BusinessLoan(props) {
                 {/* End:  new company info */}
 
                 {/* Start: Real estate section */}
-                {activeRealEstateSection && (
+                {userIsVerified && activeRealEstateSection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
                       <div className="bl__infoBox__circleIcon">
@@ -1824,6 +1832,7 @@ export default function BusinessLoan(props) {
           startResult={startResult}
           personalNumber={personalNumber}
           onClose={handleCloseVerifyModal}
+          onVerified={handleSuccessBankId}
           onCancelVerify={handleCancelVerify}
         />
       )}

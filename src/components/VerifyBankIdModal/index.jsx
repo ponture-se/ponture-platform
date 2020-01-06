@@ -26,6 +26,7 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
+                    if (props.onVerified) props.onVerified(result);
                     if (window.analytics) {
                       window.analytics.identify(
                         result.userInfo.personalNumber,
@@ -52,7 +53,6 @@ export default function VerifyBankIdModal(props) {
                           label: "Customer Portal login bankid popup",
                           value: 0
                         });
-
                       if (props.onSuccess) props.onSuccess(result);
                     }
                     break;
