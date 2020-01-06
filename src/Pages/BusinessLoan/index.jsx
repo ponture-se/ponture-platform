@@ -176,7 +176,7 @@ export default function BusinessLoan(props) {
   });
 
   //Other loanReasons state initialization
-  const [loanReasonOtherVisiblity, toggleOtherLoanVisibility] = useState(() => {
+  const [loanReasonOtherMandatory, toggleOtherLoanMandatory] = useState(() => {
     if (p_loanReasons) {
       const needs = p_loanReasons.split(",");
       if (needs.indexOf("other") > -1) return true;
@@ -315,8 +315,13 @@ export default function BusinessLoan(props) {
     setLoanAmountDisplay(
       loanAmount.toString().replace(numberFormatRegex, "$1 ")
     );
+      
   }, [loanAmount]);
 
+
+  useEffect(()=>{
+    console.log("did cancel",didCancel);
+  });
   //Remove need(s) if their category deselected
   useEffect(() => {
     if (selectedLoanReasonsCat && selectedLoanReasonsCat.length) {
@@ -558,7 +563,7 @@ export default function BusinessLoan(props) {
         selectedLoanReasonsArr.splice(idx, 1);
       }
       if (reason.API_Name === "other") {
-        toggleOtherLoanVisibility(isSelected);
+        toggleOtherLoanMandatory(isSelected);
         if (!isSelected) {
           setLoanReasonOther("");
           _setLoanReasonOther("");
@@ -596,28 +601,50 @@ export default function BusinessLoan(props) {
   const handleReasonCatSelect = useCallback(
     cat => {
       if (cat) {
+        //RES:real estate section,
+        //CTS: company type selection ,
+        //INC: is new company,
+        //ORM: Other reasons mandatory
+        let RES = false,
+          CTS = false,
+          INC = isNewCompany,
+          ORM = loanReasonOtherMandatory;
         switch (cat) {
           case "Purchase of Business":
-            setActiveCompanyTypeSelection(true);
+            CTS = true;
+            ORM = false;
             break;
           case "Purchase of Real-Estate":
-            setActiveRealEstateSection(true);
+            RES = true;
+            ORM = false;
             break;
+
           default:
-            setActiveCompanyTypeSelection(false);
-            setActiveRealEstateSection(false);
         }
+
+        //If reason category changed then deselect all related reasons to the targeted category
+        if (selectedLoanReasonsCat !== cat) {
+          const _arr = Array.from(loanReasons);
+          _arr.map(item => (item.selected = false));
+          INC = false;
+          setLoanReasons(_arr);
+          setSelectedLoanReasons([]);
+        }
+
+        //set states
+        setSelectedLoanReasonsCat(cat);
+        setIsNewCompany(INC);
+        setActiveCompanyTypeSelection(CTS);
+        setActiveRealEstateSection(RES);
+        toggleOtherLoanMandatory(ORM);
       }
-      //If reason category changed then deselect all related reasons to the targeted category
-      if (selectedLoanReasons !== cat) {
-        const _arr = Array.from(loanReasons);
-        _arr.map(item => (item.selected = false));
-        setLoanReasons(_arr);
-        setSelectedLoanReasons([]);
-      }
-      setSelectedLoanReasonsCat(cat);
     },
-    [selectedLoanReasonsCat]
+    [
+      selectedLoanReasonsCat,
+      loanReasons,
+      isNewCompany,
+      loanReasonOtherMandatory
+    ]
   );
   const handleOtherReasonChanged = useCallback(
     e => {
@@ -809,7 +836,7 @@ export default function BusinessLoan(props) {
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       let isValid = true;
-      if (loanReasonOtherVisiblity) {
+      if (loanReasonOtherMandatory) {
         if (!loanReasonOther || loanReasonOther.length === 0) {
           isValid = false;
           handleOtherReasonChanged({
@@ -900,7 +927,7 @@ export default function BusinessLoan(props) {
         });
       }
       if (
-        loanReasonOtherVisiblity &&
+        loanReasonOtherMandatory &&
         (!loanReasonOther || loanReasonOther.length === 0)
       ) {
         isValid = false;
@@ -1266,7 +1293,7 @@ export default function BusinessLoan(props) {
                   <div
                     className={
                       "bl__input animated fadeIn " +
-                      (loanReasonOtherVisiblity && !otherReasonIsValid
+                      (loanReasonOtherMandatory && !otherReasonIsValid
                         ? "--invalid"
                         : "")
                     }
@@ -1285,7 +1312,7 @@ export default function BusinessLoan(props) {
                           />
                         </div>
                       </div>
-                      {loanReasonOtherVisiblity && !otherReasonIsValid && (
+                      {loanReasonOtherMandatory && !otherReasonIsValid && (
                         <span className="validation-messsage">
                           {otherReasonValidationMessage}
                         </span>
@@ -1416,7 +1443,7 @@ export default function BusinessLoan(props) {
                 {/* End: apply loan section */}
 
                 {/* Start: new company info section*/}
-                {isNewCompany && (
+                {activeCompanyTypeSelection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
                       <div className="bl__infoBox__circleIcon">
