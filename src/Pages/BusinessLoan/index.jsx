@@ -65,6 +65,7 @@ export default function BusinessLoan(props) {
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
   const [_email, _setEmail] = useCookie("_email");
   const [referral_params] = useCookie("affiliate_referral_params"); // extra params
+
   //Get parameters from URL to use form default selection in form if applicable
   //Url parameters start with p_
   const p_loanAmount = getParameterByName("amount");
@@ -81,7 +82,7 @@ export default function BusinessLoan(props) {
   const __phoneNumber = p_phoneNumber ? p_phoneNumber : _phoneNumber;
   const p_email = getParameterByName("email");
   const __email = p_email ? p_email : _email;
-
+  const p_userRole = getParameterByName("brokerid");
   //Initial values
   let formInitValues = {
     loanAmount:
@@ -227,6 +228,16 @@ export default function BusinessLoan(props) {
   const [
     personalNumberValidationMessage,
     setPersonalNumberValidationMessage
+  ] = useState();
+
+  //Agent number
+  const [agentNumber, setAgentNumber] = useState(
+    p_userRole ? p_userRole : "customer"
+  );
+  const [agentNumberIsValid, toggleAgentNumberValidation] = useState(true);
+  const [
+    agentNumberValidationMessage,
+    setAgentNumberValidationMessage
   ] = useState();
 
   //company selection
@@ -619,7 +630,6 @@ export default function BusinessLoan(props) {
             RES = true;
             ORM = false;
             break;
-
           default:
         }
 
@@ -675,9 +685,24 @@ export default function BusinessLoan(props) {
     }
     setPersonalNumber(e.target.value);
   }
-  function handlePersonalNumberKeyPressed(e) {
+  function handleAgentNumberChanged(e) {
+    if (e.target.value.length === 0) {
+      toggleAgentNumberValidation(false);
+      setAgentNumberValidationMessage(t("PERSONAL_NUMBER_IS_REQUIRED"));
+    } else {
+      if (!isBankId(e.target.value)) {
+        toggleAgentNumberValidation(false);
+        setAgentNumberValidationMessage(t("PERSONAL_NUMBER_IN_CORRECT"));
+      } else {
+        toggleAgentNumberValidation(true);
+        // _setAgentNumber(e.target.value);
+      }
+    }
+    setAgentNumber(e.target.value);
+  }
+  function handleEnterKeyPressed(e, callback) {
     const key = e.which || e.key;
-    if (key === 13) handleBankIdClicked();
+    if (key === 13 && callback && typeof callback === "function") callback();
   }
   const handlePhoneNumberChanged = useCallback(
     e => {
@@ -1328,38 +1353,80 @@ export default function BusinessLoan(props) {
                     </div>
                   </div>
 
-                  <div
-                    className={
-                      "bl__input animated fadeIn " +
-                      (!personalNumberIsValid ? "--invalid" : "")
-                    }
-                  >
-                    <label className="bl__input__label">
-                      {t("BL_PERSONAL_NUMBER")}
-                      <span>{t("BL_PERSONAL_NUMBER_INFO")}</span>
-                    </label>
-                    <div className="bl__input__element">
-                      <div className="element-group">
-                        <div className="element-group__center">
-                          <input
-                            type="text"
-                            className="my-input"
-                            placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
-                            value={personalNumber}
-                            onChange={handlePersonalNumberChanged}
-                            maxLength="13"
-                            disabled={b_loan_moreInfo_visibility ? true : false}
-                            onKeyDown={handlePersonalNumberKeyPressed}
-                          />
+                  {/* Start: Personal number section */}
+                  {p_userRole === "agent" ? (
+                    <div
+                      className={
+                        "bl__input animated fadeIn " +
+                        (!agentNumber ? "--invalid" : "")
+                      }
+                    >
+                      <label className="bl__input__label">
+                        {t("BL_AGENT_NUMBER")}
+                        <span>{t("BL_AGENT_NUMBER_INFO")}</span>
+                      </label>
+                      <div className="bl__input__element">
+                        <div className="element-group">
+                          <div className="element-group__center">
+                            <input
+                              type="text"
+                              className="my-input"
+                              placeholder={t("BL_AGENT_NUMBER_PLACEHOLDER")}
+                              value={agentNumber}
+                              onChange={handleAgentNumberChanged}
+                              maxLength="13"
+                              disabled={
+                                b_loan_moreInfo_visibility ? true : false
+                              }
+                              onKeyDown={handleEnterKeyPressed}
+                            />
+                            <button>{t("VERIFY")}</button>
+                          </div>
                         </div>
+                        {!agentNumberIsValid && (
+                          <span className="validation-messsage">
+                            {agentNumberValidationMessage}
+                          </span>
+                        )}
                       </div>
-                      {!personalNumberIsValid && (
-                        <span className="validation-messsage">
-                          {personalNumberValidationMessage}
-                        </span>
-                      )}
                     </div>
-                  </div>
+                  ) : (
+                    <div
+                      className={
+                        "bl__input animated fadeIn " +
+                        (!personalNumberIsValid ? "--invalid" : "")
+                      }
+                    >
+                      <label className="bl__input__label">
+                        {t("BL_PERSONAL_NUMBER")}
+                        <span>{t("BL_PERSONAL_NUMBER_INFO")}</span>
+                      </label>
+                      <div className="bl__input__element">
+                        <div className="element-group">
+                          <div className="element-group__center">
+                            <input
+                              type="text"
+                              className="my-input"
+                              placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
+                              value={personalNumber}
+                              onChange={handlePersonalNumberChanged}
+                              maxLength="13"
+                              disabled={
+                                b_loan_moreInfo_visibility ? true : false
+                              }
+                              onKeyDown={handleEnterKeyPressed}
+                            />
+                          </div>
+                        </div>
+                        {!personalNumberIsValid && (
+                          <span className="validation-messsage">
+                            {personalNumberValidationMessage}
+                          </span>
+                        )}
+                      </div>
+                    </div>
+                  )}
+                  {/* End: Personal number section */}
                   {!b_loan_moreInfo_visibility && (
                     <button
                       className="btn --success --large bankIdBtn"

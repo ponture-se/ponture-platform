@@ -37,6 +37,7 @@ export default {
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
   APP_STATUS_REJECTED_TITLE: "Avslagen!",
   APP_STATUS_WON_TITLE: "Avslutat!",
+  VERIFY: "Pröva",
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:
@@ -148,6 +149,8 @@ export default {
   BL_REALESTATE_INFO: "Real Estate",
   BL_AREA: "Area (m2)",
   BL_REALESTATE_AREA_IS_REQUIRED: "Area in required",
+  B_AGENT_NUMBER: "Agentnummer",
+  BL_AGENT_NUMBER_PLACEHOLDER: "Enter your agent number",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
