@@ -470,6 +470,15 @@
             border: none;
             height: 100%;
           }
+          &.--inline {
+            display: inline-flex;
+            width: 100%;
+            & button {
+              border-radius: 0 3px 3px 0;
+              padding: 0 26px !important;
+              font-size: 15px;
+            }
+          }
         }
         &__right {
           display: flex;
@@ -485,6 +494,7 @@
         border: 1px solid red;
       }
     }
+
     .validation-messsage {
       color: red;
       font-size: 12px;

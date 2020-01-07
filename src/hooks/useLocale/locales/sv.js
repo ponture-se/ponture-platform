@@ -149,7 +149,6 @@ export default {
   BL_REALESTATE_INFO: "Real Estate",
   BL_AREA: "Area (m2)",
   BL_REALESTATE_AREA_IS_REQUIRED: "Area in required",
-  B_AGENT_NUMBER: "Agentnummer",
   BL_AGENT_NUMBER_PLACEHOLDER: "Enter your agent number",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",

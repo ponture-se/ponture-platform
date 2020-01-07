@@ -24,7 +24,8 @@ import {
   startBankId,
   cancelVerify,
   submitLoan,
-  getNeedsList
+  getNeedsList,
+  getCompanies
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
@@ -82,7 +83,10 @@ export default function BusinessLoan(props) {
   const __phoneNumber = p_phoneNumber ? p_phoneNumber : _phoneNumber;
   const p_email = getParameterByName("email");
   const __email = p_email ? p_email : _email;
-  const p_userRole = getParameterByName("brokerid");
+  const p_userRole = getParameterByName("brokerid") ? "agent" : "customer";
+  const brokerId =
+    p_userRole === "agent" ? getParameterByName("brokerid") : undefined;
+
   //Initial values
   let formInitValues = {
     loanAmount:
@@ -230,15 +234,8 @@ export default function BusinessLoan(props) {
     setPersonalNumberValidationMessage
   ] = useState();
 
-  //Agent number
-  const [agentNumber, setAgentNumber] = useState(
-    p_userRole ? p_userRole : "customer"
-  );
-  const [agentNumberIsValid, toggleAgentNumberValidation] = useState(true);
-  const [
-    agentNumberValidationMessage,
-    setAgentNumberValidationMessage
-  ] = useState();
+  //Agent states
+  const [lastName, setLastName] = useState("");
 
   //company selection
   const [companies, setCompanies] = useState();
@@ -276,9 +273,9 @@ export default function BusinessLoan(props) {
   });
   const [REPriceIsValid, setREPriceIsValid] = useState(true);
   const [REPriceValidationMessage, setREPriceValidationMessage] = useState();
-  const [REarea, setREarea] = useState();
-  const [REareaIsValid, setREareaIsValid] = useState(true);
-  const [REareaValidationMessage, setREareaValidationMessage] = useState();
+  const [REArea, setREArea] = useState();
+  const [REAreaIsValid, setREAreaIsValid] = useState(true);
+  const [REAreaValidationMessage, setREAreaValidationMessage] = useState();
 
   //email
   const [email, setEmail] = useState(formInitValues.email);
@@ -685,21 +682,21 @@ export default function BusinessLoan(props) {
     }
     setPersonalNumber(e.target.value);
   }
-  function handleAgentNumberChanged(e) {
-    if (e.target.value.length === 0) {
-      toggleAgentNumberValidation(false);
-      setAgentNumberValidationMessage(t("PERSONAL_NUMBER_IS_REQUIRED"));
-    } else {
-      if (!isBankId(e.target.value)) {
-        toggleAgentNumberValidation(false);
-        setAgentNumberValidationMessage(t("PERSONAL_NUMBER_IN_CORRECT"));
-      } else {
-        toggleAgentNumberValidation(true);
-        // _setAgentNumber(e.target.value);
-      }
-    }
-    setAgentNumber(e.target.value);
-  }
+  // function handlepersonalNumberChanged(e) {
+  //   if (e.target.value.length === 0) {
+  //     togglepersonalNumberValidation(false);
+  //     setpersonalNumberValidationMessage(t("PERSONAL_NUMBER_IS_REQUIRED"));
+  //   } else {
+  //     if (!isBankId(e.target.value)) {
+  //       togglepersonalNumberValidation(false);
+  //       setpersonalNumberValidationMessage(t("PERSONAL_NUMBER_IN_CORRECT"));
+  //     } else {
+  //       togglepersonalNumberValidation(true);
+  //       // _setpersonalNumber(e.target.value);
+  //     }
+  //   }
+  //   setpersonalNumber(e.target.value);
+  // }
   function handleEnterKeyPressed(e, callback) {
     const key = e.which || e.key;
     if (key === 13 && callback && typeof callback === "function") callback();
@@ -821,11 +818,11 @@ export default function BusinessLoan(props) {
         isValid = false;
         validationMessage = t("BL_REALESTATE_AREA_IS_REQUIRED");
       }
-      setREarea(value);
-      setREareaIsValid(isValid);
-      setREareaValidationMessage(validationMessage);
+      setREArea(value);
+      setREAreaIsValid(isValid);
+      setREAreaValidationMessage(validationMessage);
     },
-    [REarea, REPriceIsValid, REareaValidationMessage]
+    [REArea, REPriceIsValid, REAreaValidationMessage]
   );
   const handleREPriceChanged = useCallback(
     e => {
@@ -859,6 +856,101 @@ export default function BusinessLoan(props) {
   //
   ////// Handlers
   //
+
+  function getComponiesWithoutBankId(callBack) {
+    if (!verifyingSpinner) {
+      let isValid = true;
+
+      if (loanReasonOtherMandatory) {
+        if (!loanReasonOther || loanReasonOther.length === 0) {
+          isValid = false;
+          handleOtherReasonChanged({
+            target: { value: "" }
+          });
+        }
+      }
+
+      if (!personalNumber) {
+        isValid = false;
+        handlePersonalNumberChanged({
+          target: { value: personalNumber ? personalNumber : "" }
+        });
+      }
+
+      if (!loanReasonsIsValid) {
+        isValid = false;
+        setLoanReasonsValidationMessage(t("BL_LOANREASON_IS_REQUIRED"));
+      }
+
+      if (isValid) {
+        if (personalNumberIsValid) {
+          toggleVerifyingSpinner(true);
+          let pId = personalNumber.replace("-", "");
+          if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
+          getCompanies()
+            .onOk(result => {
+              if (!didCancel) {
+                // const { companies, user_info } = result;
+                const companies = result;
+                // save result in session storage to use in customer portal
+                // Cookies.set("@ponture-customer-portal/token", result);
+                // if (window.analytics)
+                //   window.analytics.track("BankID Verification", {
+                //     category: "Loan Application",
+                //     label: "/app/loan/ bankid popup",
+                //     value: 0
+                //   });
+                // setLastName(user_info.last_name);
+                setLastName("Daniel Lalasa");
+                toggleVerifyingSpinner(false);
+                setStartResult(companies);
+                setCompanies(companies);
+                setUserIsVerified(true);
+                // toggleVerifyModal(true);
+              }
+            })
+            .onServerError(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
+                });
+              }
+            })
+            .onBadRequest(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
+                });
+              }
+            })
+            .unAuthorized(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
+                });
+              }
+            })
+            .unKnownError(result => {
+              if (!didCancel) {
+                toggleVerifyingSpinner(false);
+                changeTab(3);
+                setError({
+                  sender: "verifyBankId"
+                });
+              }
+            })
+            .call(personalNumber);
+        }
+      }
+    }
+  }
+
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
       let isValid = true;
@@ -983,9 +1075,7 @@ export default function BusinessLoan(props) {
       }
       if (isValid) {
         toggleSubmitSpinner(true);
-
         let needs = selectedLoanReasons;
-
         let pId = personalNumber.replace("-", "");
         if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
         let obj = {
@@ -996,10 +1086,83 @@ export default function BusinessLoan(props) {
           amourtizationPeriod: parseInt(loanPeriod),
           need: needs,
           needDescription: loanReasonOther,
+          broker_id: brokerId,
           email: email,
           phoneNumber: phoneNumber,
-          bankid: bankIdResult
+          oppId: "",
+          lastName: lastName ? lastName : ""
         };
+
+        if (p_userRole === "customer") {
+          obj = {
+            ...obj,
+            bankid: bankIdResult
+          };
+        }
+        if (p_userRole === "agent") {
+          obj = {
+            ...obj,
+            broker_id: brokerId
+          };
+        }
+        if (activeCompanyTypeSelection) {
+          if (orgName && orgName.length === 0) {
+            isValid = false;
+            handleOrgNameChanged({
+              target: { value: orgName ? orgName : "" }
+            });
+          }
+          if (newOrgPrice.realValue && newOrgPrice.realValue.length === 0) {
+            isValid = false;
+            handleNewOrgPriceChanged({
+              target: { value: newOrgPrice ? newOrgPrice.realValue : "" }
+            });
+          }
+          obj = {
+            ...obj,
+            acquisition: {
+              object_price: newOrgPrice.realValue,
+              object_industry: "",
+              object_annual_report: "",
+              object_balance_sheet: "",
+              object_income_statement: "",
+              object_valuation_letter: "",
+              account_balance_sheet: "",
+              account_income_statement: "",
+              available_guarantees: "",
+              available_guarantees_description: "",
+              purchaser_profile: "",
+              own_investment_amount: "",
+              own_investment_details: "",
+              additional_files: "",
+              business_plan: "",
+              additional_details: "",
+              purchase_type: "",
+              description: "Description of purchase" //needs change
+            }
+          };
+        }
+        if (activeRealEstateSection) {
+          if (REArea && REArea.length === 0) {
+            isValid = false;
+            handleREAreaChange({
+              target: { value: REArea ? REArea : "" }
+            });
+          }
+          if (REPrice.realValue && REPrice.realValue.length === 0) {
+            isValid = false;
+            handleREPriceChanged({
+              target: { value: REPrice ? REPrice.realValue : "" }
+            });
+          }
+          obj = {
+            ...obj,
+            real_estate: {
+              object_price: REPrice.realValue,
+              object_area: REArea
+            }
+          };
+        }
         try {
           const r = JSON.parse(referral_params);
           if (r.utm_source) {
@@ -1358,34 +1521,63 @@ export default function BusinessLoan(props) {
                     <div
                       className={
                         "bl__input animated fadeIn " +
-                        (!agentNumber ? "--invalid" : "")
+                        (!personalNumber ? "--invalid" : "")
                       }
                     >
                       <label className="bl__input__label">
-                        {t("BL_AGENT_NUMBER")}
-                        <span>{t("BL_AGENT_NUMBER_INFO")}</span>
+                        {t("BL_PERSONAL_NUMBER")}
+                        <span>{t("BL_PERSONAL_NUMBER_INFO")}</span>
                       </label>
                       <div className="bl__input__element">
                         <div className="element-group">
-                          <div className="element-group__center">
+                          <div className="element-group__center --inline">
                             <input
                               type="text"
                               className="my-input"
-                              placeholder={t("BL_AGENT_NUMBER_PLACEHOLDER")}
-                              value={agentNumber}
-                              onChange={handleAgentNumberChanged}
+                              placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
+                              value={personalNumber}
+                              onChange={handlePersonalNumberChanged}
                               maxLength="13"
-                              disabled={
-                                b_loan_moreInfo_visibility ? true : false
+                              disabled={userIsVerified ? true : false}
+                              onKeyDown={e =>
+                                handleEnterKeyPressed(
+                                  getComponiesWithoutBankId,
+                                  e
+                                )
                               }
-                              onKeyDown={handleEnterKeyPressed}
                             />
-                            <button>{t("VERIFY")}</button>
+                            {!userIsVerified && (
+                              <button
+                                className="btn --success --small --right"
+                                onClick={getComponiesWithoutBankId}
+                              >
+                                {verifyingSpinner && (
+                                  <CircleSpinner show={true} size="small" />
+                                )}
+                                {!verifyingSpinner && (
+                                  <span>{t("VERIFY")}</span>
+                                )}
+                              </button>
+                            )}
                           </div>
                         </div>
-                        {!agentNumberIsValid && (
+                        {lastName && (
+                          <span
+                            style={{
+                              display: "block",
+                              marginTop: "10px",
+                              color: "black",
+                              fontSize: "14px",
+                              paddingLeft: "1px"
+                            }}
+                            className="extra-info"
+                          >
+                            <strong>Name: {lastName}</strong>
+                          </span>
+                        )}
+                        {!personalNumberIsValid && (
                           <span className="validation-messsage">
-                            {agentNumberValidationMessage}
+                            {personalNumberValidationMessage}
                           </span>
                         )}
                       </div>
@@ -1414,7 +1606,9 @@ export default function BusinessLoan(props) {
                               disabled={
                                 b_loan_moreInfo_visibility ? true : false
                               }
-                              onKeyDown={handleEnterKeyPressed}
+                              onKeyDown={e =>
+                                handleEnterKeyPressed(handleBankIdClicked, e)
+                              }
                             />
                           </div>
                         </div>
@@ -1427,7 +1621,7 @@ export default function BusinessLoan(props) {
                     </div>
                   )}
                   {/* End: Personal number section */}
-                  {!b_loan_moreInfo_visibility && (
+                  {!b_loan_moreInfo_visibility && p_userRole === "customer" && (
                     <button
                       className="btn --success --large bankIdBtn"
                       onClick={handleBankIdClicked}
@@ -1616,14 +1810,14 @@ export default function BusinessLoan(props) {
                                 type="number"
                                 className="my-input"
                                 placeholder="Sq Meter"
-                                value={REarea}
+                                value={REArea}
                                 onChange={handleREAreaChange}
                               />
                             </div>
                           </div>
-                          {!REareaIsValid && (
+                          {!REAreaIsValid && (
                             <span className="validation-messsage">
-                              {REareaValidationMessage}
+                              {REAreaValidationMessage}
                             </span>
                           )}
                         </div>
@@ -1664,7 +1858,8 @@ export default function BusinessLoan(props) {
                 {/* End: Real estate section */}
 
                 {/* Start: Contact info section */}
-                {b_loan_moreInfo_visibility && (
+                {(b_loan_moreInfo_visibility ||
+                  (p_userRole === "agent" && userIsVerified)) && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
                       <div className="bl__infoBox__circleIcon">
