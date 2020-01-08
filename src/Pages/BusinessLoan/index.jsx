@@ -25,7 +25,8 @@ import {
   cancelVerify,
   submitLoan,
   getNeedsList,
-  getCompanies
+  getCompanies,
+  saveLoan
 } from "./../../api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
@@ -768,24 +769,26 @@ export default function BusinessLoan(props) {
     e => {
       const { value } = e.target;
       let isValid = true,
-        validationMessage = "",
-        _value = value.replace(/\s/g, "");
-      if (_value.length === 0) {
+        validationMessage = "";
+      let _value = "";
+
+      if (!value || value.length === 0 || value === 0) {
         isValid = false;
         validationMessage = t("PRICE_IS_REQUIRED");
-        _value = "";
         setNewOrgPrice({
           realValue: 0,
           visualValue: ""
         });
-      }
-      if (Number(_value)) {
-        isValid = true;
-        validationMessage = "";
-        setNewOrgPrice({
-          realValue: _value,
-          visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
-        });
+      } else {
+        _value = value.replace(/\s/g, "");
+        if (Number(_value)) {
+          isValid = true;
+          validationMessage = "";
+          setNewOrgPrice({
+            realValue: _value,
+            visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+          });
+        }
       }
       setNewOrgPriceIsValid(isValid);
       setNewOrgPriceValidationMessage(validationMessage);
@@ -828,24 +831,26 @@ export default function BusinessLoan(props) {
     e => {
       const { value } = e.target;
       let isValid = true,
-        validationMessage = "",
-        _value = value.replace(/\s/g, "");
-      if (_value.length === 0) {
+        validationMessage = "";
+      let _value = "";
+
+      if (!value || value.length === 0 || value === 0) {
         isValid = false;
         validationMessage = t("PRICE_IS_REQUIRED");
-        _value = "";
         setREPrice({
           realValue: 0,
           visualValue: ""
         });
-      }
-      if (Number(_value)) {
-        isValid = true;
-        validationMessage = "";
-        setREPrice({
-          realValue: _value,
-          visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
-        });
+      } else {
+        _value = value.replace(/\s/g, "");
+        if (Number(_value)) {
+          isValid = true;
+          validationMessage = "";
+          setREPrice({
+            realValue: _value,
+            visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+          });
+        }
       }
       setREPriceIsValid(isValid);
       setREPriceValidationMessage(validationMessage);
@@ -890,8 +895,7 @@ export default function BusinessLoan(props) {
           getCompanies()
             .onOk(result => {
               if (!didCancel) {
-                // const { companies, user_info } = result;
-                const companies = result;
+                const { companies, user_info } = result;
                 // save result in session storage to use in customer portal
                 // Cookies.set("@ponture-customer-portal/token", result);
                 // if (window.analytics)
@@ -901,7 +905,7 @@ export default function BusinessLoan(props) {
                 //     value: 0
                 //   });
                 // setLastName(user_info.last_name);
-                setLastName("Daniel Lalasa");
+                setLastName(user_info.surName);
                 toggleVerifyingSpinner(false);
                 setStartResult(companies);
                 setCompanies(companies);
@@ -1038,6 +1042,7 @@ export default function BusinessLoan(props) {
   function handleSubmitClicked() {
     if (!submitSpinner) {
       let isValid = true;
+      let obj = {};
       if (!personalNumber || personalNumber.length < 9) {
         isValid = false;
         handlePersonalNumberChanged({
@@ -1073,12 +1078,71 @@ export default function BusinessLoan(props) {
         isValid = false;
         toggleTermValidation(!form["terms"]);
       }
+      if (activeCompanyTypeSelection) {
+        if (!orgName || orgName.length === 0) {
+          isValid = false;
+          handleOrgNameChanged({
+            target: { value: orgName ? orgName : "" }
+          });
+        }
+        if (!newOrgPrice.realValue || newOrgPrice.realValue.length === 0) {
+          isValid = false;
+          handleNewOrgPriceChanged({
+            target: { value: newOrgPrice ? newOrgPrice.realValue : 0 }
+          });
+        }
+        obj = {
+          ...obj,
+          acquisition: {
+            object_price: String(newOrgPrice.realValue),
+            object_industry: "",
+            object_annual_report: "",
+            object_balance_sheet: "",
+            object_income_statement: "",
+            object_valuation_letter: "",
+            account_balance_sheet: "",
+            account_income_statement: "",
+            available_guarantees: "",
+            available_guarantees_description: "",
+            purchaser_profile: "",
+            own_investment_amount: "0",
+            own_investment_details: "",
+            additional_files: [],
+            business_plan: [],
+            additional_details: "",
+            purchase_type: "",
+            description: "Description of purchase" //needs change
+          }
+        };
+      }
+      if (activeRealEstateSection) {
+        if (!REArea || REArea.length === 0) {
+          isValid = false;
+          handleREAreaChange({
+            target: { value: REArea ? REArea : "" }
+          });
+        }
+        if (!REPrice.realValue || REPrice.realValue.length === 0) {
+          isValid = false;
+          handleREPriceChanged({
+            target: { value: REPrice ? REPrice.realValue : 0 }
+          });
+        }
+        obj = {
+          ...obj,
+          real_estate: {
+            object_price: REPrice.realValue,
+            object_area: REArea
+          }
+        };
+      }
       if (isValid) {
         toggleSubmitSpinner(true);
         let needs = selectedLoanReasons;
         let pId = personalNumber.replace("-", "");
         if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
-        let obj = {
+        obj = {
+          ...obj,
           orgNumber: selectedCompany ? selectedCompany.companyId : "",
           orgName: selectedCompany ? selectedCompany.companyName : "",
           personalNumber: pId,
@@ -1105,64 +1169,7 @@ export default function BusinessLoan(props) {
             broker_id: brokerId
           };
         }
-        if (activeCompanyTypeSelection) {
-          if (orgName && orgName.length === 0) {
-            isValid = false;
-            handleOrgNameChanged({
-              target: { value: orgName ? orgName : "" }
-            });
-          }
-          if (newOrgPrice.realValue && newOrgPrice.realValue.length === 0) {
-            isValid = false;
-            handleNewOrgPriceChanged({
-              target: { value: newOrgPrice ? newOrgPrice.realValue : "" }
-            });
-          }
-          obj = {
-            ...obj,
-            acquisition: {
-              object_price: newOrgPrice.realValue,
-              object_industry: "",
-              object_annual_report: "",
-              object_balance_sheet: "",
-              object_income_statement: "",
-              object_valuation_letter: "",
-              account_balance_sheet: "",
-              account_income_statement: "",
-              available_guarantees: "",
-              available_guarantees_description: "",
-              purchaser_profile: "",
-              own_investment_amount: "",
-              own_investment_details: "",
-              additional_files: "",
-              business_plan: "",
-              additional_details: "",
-              purchase_type: "",
-              description: "Description of purchase" //needs change
-            }
-          };
-        }
-        if (activeRealEstateSection) {
-          if (REArea && REArea.length === 0) {
-            isValid = false;
-            handleREAreaChange({
-              target: { value: REArea ? REArea : "" }
-            });
-          }
-          if (REPrice.realValue && REPrice.realValue.length === 0) {
-            isValid = false;
-            handleREPriceChanged({
-              target: { value: REPrice ? REPrice.realValue : "" }
-            });
-          }
-          obj = {
-            ...obj,
-            real_estate: {
-              object_price: REPrice.realValue,
-              object_area: REArea
-            }
-          };
-        }
+
         try {
           const r = JSON.parse(referral_params);
           if (r.utm_source) {
@@ -1181,43 +1188,90 @@ export default function BusinessLoan(props) {
             obj["last_referral_date"] = r.last_referral_date;
           }
         } catch (error) {}
-
-        submitLoan()
-          .onOk(result => {
-            if (!didCancel) {
-              if (result.errors) {
-                if (window.analytics)
-                  window.analytics.track("Failure", {
-                    category: "Loan Application",
-                    label: "/app/loan/ wizard",
-                    value: 0
+        if (
+          p_userRole === "agent" ||
+          (p_userRole === "customer" &&
+            (activeCompanyTypeSelection || activeRealEstateSection))
+        ) {
+          saveLoan()
+            .onOk(result => {
+              if (!didCancel) {
+                if (result.errors) {
+                  if (window.analytics)
+                    window.analytics.track("Failure", {
+                      category: "Loan Application",
+                      label: "/app/loan/ wizard",
+                      value: 0
+                    });
+                  changeTab(3);
+                  setError({
+                    sender: "submitLoan"
                   });
+                } else {
+                  resetForm();
+                  if (window.analytics)
+                    window.analytics.track("Submit", {
+                      category: "Loan Application",
+                      label: "/app/loan/ wizard",
+                      value: loanAmount
+                    });
+                  changeTab(2);
+                }
+              }
+            })
+            .unKnownError(result => {
+              if (!didCancel) {
+                toggleSubmitSpinner(false);
                 changeTab(3);
                 setError({
                   sender: "submitLoan"
                 });
-              } else {
-                resetForm();
-                if (window.analytics)
-                  window.analytics.track("Submit", {
-                    category: "Loan Application",
-                    label: "/app/loan/ wizard",
-                    value: loanAmount
-                  });
-                changeTab(2);
               }
-            }
-          })
-          .unKnownError(result => {
-            if (!didCancel) {
-              toggleSubmitSpinner(false);
-              changeTab(3);
-              setError({
-                sender: "submitLoan"
-              });
-            }
-          })
-          .call(obj);
+            })
+            .call(obj);
+        }
+        if (
+          p_userRole === "customer" &&
+          !activeCompanyTypeSelection &&
+          !activeRealEstateSection
+        ) {
+          submitLoan()
+            .onOk(result => {
+              if (!didCancel) {
+                if (result.errors) {
+                  if (window.analytics)
+                    window.analytics.track("Failure", {
+                      category: "Loan Application",
+                      label: "/app/loan/ wizard",
+                      value: 0
+                    });
+                  changeTab(3);
+                  setError({
+                    sender: "submitLoan"
+                  });
+                } else {
+                  resetForm();
+                  if (window.analytics)
+                    window.analytics.track("Submit", {
+                      category: "Loan Application",
+                      label: "/app/loan/ wizard",
+                      value: loanAmount
+                    });
+                  changeTab(2);
+                }
+              }
+            })
+            .unKnownError(result => {
+              if (!didCancel) {
+                toggleSubmitSpinner(false);
+                changeTab(3);
+                setError({
+                  sender: "submitLoan"
+                });
+              }
+            })
+            .call(obj);
+        }
       }
     }
   }
@@ -1238,6 +1292,8 @@ export default function BusinessLoan(props) {
   function openMyApps() {
     props.history.push("/app/panel/myApplications");
   }
+
+  //After bankId
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
     if (isSuccess) {

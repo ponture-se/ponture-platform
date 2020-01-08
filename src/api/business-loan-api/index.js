@@ -9,7 +9,7 @@ const collectUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_COLLECT;
 const cancelUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_CANCEL;
 const companiesUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_GET_COMPANIES;
 const submitUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_SUBMIT;
-
+const saveUrl = baseUrl + config.REACT_APP_SAVE_LOAN;
 export function getNeedsList() {
   let _onOkCallBack;
   function _onOk(result) {
@@ -661,6 +661,109 @@ export function submitLoan() {
 
   const _call = loan => {
     const url = submitUrl;
+    const token = Cookies.get("@pontrue-wizard/token");
+    axios({
+      method: "post",
+      url: url,
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: "application/json"
+      },
+      data: loan
+    })
+      .then(response => {
+        _onOk(response.data ? response.data : undefined);
+      })
+      .catch(error => {
+        if (window.analytics)
+          window.analytics.track("Failure", {
+            category: "Loan Application",
+            label: "/app/loan/wizard",
+            value: 0
+          });
+        _unKnownError();
+      });
+  };
+
+  return {
+    call: _call,
+    onOk: function(callback) {
+      _onOkCallBack = callback;
+      return this;
+    },
+    onServerError: function(callback) {
+      _onServerErrorCallBack = callback;
+      return this;
+    },
+    onBadRequest: function(callback) {
+      _onBadRequestCallBack = callback;
+      return this;
+    },
+    notFound: function(callback) {
+      _notFoundCallBack = callback;
+      return this;
+    },
+    unAuthorized: function(callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
+    },
+    onRequestError: function(callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
+    },
+    unKnownError: function(callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
+    }
+  };
+}
+
+export function saveLoan() {
+  let _onOkCallBack;
+  function _onOk(result) {
+    if (_onOkCallBack) {
+      _onOkCallBack(result);
+    }
+  }
+  let _onServerErrorCallBack;
+  function _onServerError(result) {
+    if (_onServerErrorCallBack) {
+      _onServerErrorCallBack(result);
+    }
+  }
+  let _onBadRequestCallBack;
+  function _onBadRequest(result) {
+    if (_onBadRequestCallBack) {
+      _onBadRequestCallBack(result);
+    }
+  }
+  let _unAuthorizedCallBack;
+  function _unAuthorized(result) {
+    if (_unAuthorizedCallBack) {
+      _unAuthorizedCallBack(result);
+    }
+  }
+  let _notFoundCallBack;
+  function _notFound(result) {
+    if (_notFoundCallBack) {
+      _notFoundCallBack(result);
+    }
+  }
+  let _onRequestErrorCallBack;
+  function _onRequestError(result) {
+    if (_onRequestErrorCallBack) {
+      _onRequestErrorCallBack(result);
+    }
+  }
+  let _unKnownErrorCallBack;
+  function _unKnownError(result) {
+    if (_unKnownErrorCallBack) {
+      _unKnownErrorCallBack(result);
+    }
+  }
+
+  const _call = loan => {
+    const url = saveUrl;
     const token = Cookies.get("@pontrue-wizard/token");
     axios({
       method: "post",
