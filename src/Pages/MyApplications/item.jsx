@@ -188,6 +188,10 @@ const Item = props => {
           </span>
         </div>
         <div className="application__bodyRow">
+          <span>{t("APP_CONTACT_NAME")}</span>
+          <span>{item.contactInfo.name}</span>
+        </div>
+        <div className="application__bodyRow">
           <span>{t("APP_COMPANY_NAME")}</span>
           <span>
             {item.Name}

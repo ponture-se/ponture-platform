@@ -175,7 +175,7 @@ export function getMyApplications() {
 
   const _call = userInfo => {
     const { currentRole, id } = userInfo;
-    const paramName = currentRole === "agent" ? "referral_id" : "customerId";
+    const paramName = currentRole === "agent" ? "broker_id" : "customerId";
     const url = myAppsUrl + `?${paramName}=${id}`;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios

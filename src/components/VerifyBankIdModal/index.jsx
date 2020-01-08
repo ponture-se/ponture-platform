@@ -190,9 +190,8 @@ export default function VerifyBankIdModal(props) {
     getCompanies()
       .onOk(result => {
         if (!didCancel) {
-          const { companies, user_info } = result;
-          if (Array.isArray(companies))
-            props.onClose(true, companies, completedResult);
+          if (Array.isArray(result.companies))
+            props.onClose(true, result, completedResult);
           else props.onClose(false, []);
         }
       })

@@ -32,7 +32,7 @@ import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
 
-//Get slider setting from react config and fill the initial data
+// Get slider setting from react config and fill the initial data
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
   : 10000000;
@@ -47,7 +47,7 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
 const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
-// ====================================================================
+// ===============================================================
 
 export default function BusinessLoan(props) {
   let didCancel = false;
@@ -1131,8 +1131,19 @@ export default function BusinessLoan(props) {
         obj = {
           ...obj,
           real_estate: {
-            object_price: REPrice.realValue,
-            object_area: REArea
+            real_estate_size: REArea,
+            real_estate_price: String(REPrice.realValue),
+            real_estate_type: "",
+            real_estate_usage_category: "",
+            real_estate_taxation_value: "",
+            real_estate_address: "",
+            real_estate_city: "",
+            real_estate_link: "",
+            real_estate_description: "",
+            real_estate_document: "",
+            description: "",
+            additional_details: "",
+            own_investment_amount: ""
           }
         };
       }
@@ -1196,7 +1207,8 @@ export default function BusinessLoan(props) {
           saveLoan()
             .onOk(result => {
               if (!didCancel) {
-                if (result.errors) {
+                debugger;
+                if (result.errors && result.length > 0) {
                   if (window.analytics)
                     window.analytics.track("Failure", {
                       category: "Loan Application",
@@ -1210,7 +1222,7 @@ export default function BusinessLoan(props) {
                 } else {
                   resetForm();
                   if (window.analytics)
-                    window.analytics.track("Submit", {
+                    window.analytics.track("Save", {
                       category: "Loan Application",
                       label: "/app/loan/ wizard",
                       value: loanAmount
@@ -1297,7 +1309,8 @@ export default function BusinessLoan(props) {
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
     if (isSuccess) {
-      if (result && result.length > 0) {
+      const { companies, user_info } = result;
+      if (companies && companies.length > 0) {
         dispatch({
           type: "TOGGLE_B_L_MORE_INFO",
           value: true
@@ -1312,7 +1325,8 @@ export default function BusinessLoan(props) {
           JSON.stringify(bIdResult)
         );
         setBankIdResult(bIdResult);
-        setCompanies(result);
+        setCompanies(companies);
+        setLastName(user_info.surName);
       } else {
         toggleMainSpinner(false);
         changeTab(3);
@@ -1487,7 +1501,7 @@ export default function BusinessLoan(props) {
                       {t("BL_REASON_LOAN")}
                       <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
-                    <div className="options">
+                    <div className="options options__category">
                       {loanReasonsCategories.length > 0 &&
                         loanReasonsCategories.map((cat, idx) => {
                           const selected = cat === selectedLoanReasonsCat;

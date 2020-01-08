@@ -95,6 +95,7 @@ export default {
   APP_CANCEL_ALERT_INFO: "Vill du avbryta den här ansökan?",
   APP_CANCELED_SUCCESS: "The application was canceled successfully",
   APP_OFFERS_REJECT_ALERT_INFO: "Vill du avslå det här erbjudandet?",
+  APP_CONTACT_NAME: "Kontaktnamn",
   OFFER_REJECT_SUCCESS: "Offer was rejected successfully.",
   APP_OFFERS_ACCEPT_ALERT_INFO:
     "Choosing this offer as accepted for the application",

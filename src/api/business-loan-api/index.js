@@ -547,7 +547,7 @@ export function getCompanies() {
         }
       })
       .then(response => {
-        _onOk(response.data ? response.data : undefined);
+        _onOk(response.data ? response.data.data : undefined);
       })
       .catch(error => {
         if (window.analytics)
