@@ -1867,7 +1867,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!REAreaIsValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
