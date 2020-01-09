@@ -539,13 +539,8 @@ export function getCompanies() {
 
   const _call = personalNumber => {
     const url = companiesUrl + "?personalNumber=" + personalNumber;
-    const token = Cookies.get("@pontrue-wizard/token");
     axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
-      })
+      .get(url)
       .then(response => {
         _onOk(response.data ? response.data.data : undefined);
       })
