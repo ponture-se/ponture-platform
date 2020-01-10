@@ -87,7 +87,14 @@ export default function BusinessLoan(props) {
   const p_userRole = getParameterByName("brokerid") ? "agent" : "customer";
   const brokerId =
     p_userRole === "agent" ? getParameterByName("brokerid") : undefined;
-  const REUsageCategoryOpts = ["Bostäder","Kontor","Butiker","Industrier/Verkstäder","Lager/Logistik","Övrigt"];
+  const REUsageCategoryOpts = [
+    "Bostäder",
+    "Kontor",
+    "Butiker",
+    "Industrier/Verkstäder",
+    "Lager/Logistik",
+    "Övrigt"
+  ];
   //Initial values
   let formInitValues = {
     loanAmount:
@@ -124,8 +131,7 @@ export default function BusinessLoan(props) {
     email:
       __email && __email.length > 0 && validateEmail(__email) ? __email : "",
     terms: false,
-    loanReasonsCategories: [],
-    
+    loanReasonsCategories: []
   };
 
   //Identifications
@@ -278,15 +284,50 @@ export default function BusinessLoan(props) {
   const [REArea, setREArea] = useState();
   const [REAreaIsValid, setREAreaIsValid] = useState(true);
   const [REAreaValidationMessage, setREAreaValidationMessage] = useState();
-  const [REType,setREType]=useState({value:"",isValid:false,eMessage:""});
-  const [REUsageCategory,setREUsageCategory]=useState({value:"",isValid:false,eMessage:""});
-  const [RETaxationValue,setRETaxationValue]=useState({value:"",isValid:false,eMessage:""});
-  const [REAddress,setREAddress]=useState({value:"",isValid:false,eMessage:""});
-  const [RECity,setRECity]=useState({value:"",isValid:false,eMessage:""});
-  const [RELink,setRELink]=useState({value:"",isValid:true,eMessage:""});
-  const [REDescription,setREDescription]=useState({value:"",isValid:false,eMessage:""});
-  const [REFile,setREFile]=useState({value:"",isValid:true,eMessage:""});
-  const [selectedREUsageCategoryOpts,setSelectedREUsageCategoryOpts] = useState([]);
+  const [REType, setREType] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [REUsageCategory, setREUsageCategory] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [RETaxationValue, setRETaxationValue] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [REAddress, setREAddress] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [RECity, setRECity] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [RELink, setRELink] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [REDescription, setREDescription] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [REFile, setREFile] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [
+    selectedREUsageCategoryOpts,
+    setSelectedREUsageCategoryOpts
+  ] = useState([]);
   //email
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
@@ -866,31 +907,134 @@ export default function BusinessLoan(props) {
     },
     [REPrice, REPriceIsValid, REPriceValidationMessage]
   );
-  const handleREUsageCategoryOpts = useCallback(e=>{
-   let _newOpts = Array.from(selectedREUsageCategoryOpts);
+  const handleREUsageCategoryOpts = useCallback(
+    e => {
+      let _newOpts = Array.from(selectedREUsageCategoryOpts);
 
-   if(selectedREUsageCategoryOpts.indexOf(e) > -1){
-     _newOpts.splice(_newOpts.indexOf(e),1);
-   }else{
-      _newOpts.push(e);
-   }
+      if (selectedREUsageCategoryOpts.indexOf(e) > -1) {
+        _newOpts.splice(_newOpts.indexOf(e), 1);
+      } else {
+        _newOpts.push(e);
+      }
 
-    setSelectedREUsageCategoryOpts(_newOpts);
-  },[selectedREUsageCategoryOpts]);
-  const handleREFields = useCallback(e=>{
-
-    const {value,name} =  e.target;
-    let isValid = true;
-    let eMessage = "";
-
-    
-
-  },[REUsageCategory,RETaxationValue,REAddress,RECity,RELink,REDescription,REFile]);
+      setSelectedREUsageCategoryOpts(_newOpts);
+    },
+    [selectedREUsageCategoryOpts]
+  );
+  const handleREUsageCategory = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (value && value.length === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setREUsageCategory({
+        isValid: isValid,
+        eMessage: eMessage,
+        value: value
+      });
+    },
+    [REUsageCategory]
+  );
+  const handleRETaxationValue = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.length === 0 || value === 0) {
+        isValid = false;
+        eMessage = t("PRICE_IS_REQUIRED");
+        value = { realValue: 0, visualValue: "" };
+      } else {
+        value = value.replace(/\s/g, "");
+        if (Number(value)) {
+          isValid = true;
+          eMessage = "";
+          value = {
+            realValue: value,
+            visualValue: value && value.replace(numberFormatRegex, "$1 ")
+          };
+        }
+      }
+      setRETaxationValue({
+        isValid: isValid,
+        eMessage: eMessage,
+        value: value
+      });
+    },
+    [RETaxationValue]
+  );
+  const handleREAddress = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.lenght === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setREAddress({ isValid: isValid, eMessage: eMessage, value: value });
+    },
+    [REAddress]
+  );
+  const handleRECity = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.lenght === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setRECity({ isValid: isValid, eMessage: eMessage, value: value });
+    },
+    [RECity]
+  );
+  const handleRELink = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.lenght === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setRELink({ isValid: isValid, eMessage: eMessage, value: value });
+    },
+    [RELink]
+  );
+  const handleREDescription = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.lenght === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setREDescription({ isValid: isValid, eMessage: eMessage, value: value });
+    },
+    [REDescription]
+  );
+  const handleREFile = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.lenght === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setREFile({ isValid: isValid, eMessage: eMessage, value: value });
+    },
+    [REFile]
+  );
 
   //
   ////// Handlers
   //
-
   function getComponiesWithoutBankId(callBack) {
     if (!verifyingSpinner) {
       let isValid = true;
@@ -1920,7 +2064,7 @@ export default function BusinessLoan(props) {
                           )}
                         </div>
                       </div>
-                     <div
+                      <div
                         className={
                           "bl__input animated fadeIn " +
                           (!REPriceIsValid ? "--invalid" : "")
@@ -1962,31 +2106,35 @@ export default function BusinessLoan(props) {
                         </label>
                         <div className="">
                           {/* <div className="element-group"> */}
-                            <div className="element-group__center">
-                              <div className="options">
+                          <div className="element-group__center">
+                            <div className="options">
                               {REUsageCategoryOpts.length > 0 &&
-                                REUsageCategoryOpts.map((opt,idx)=> 
-                                {
-                                  const isSelected = selectedREUsageCategoryOpts.indexOf(opt) > -1;
-                                  return(<div
-                                    key={idx}
-                                    className={
-                                      "btnReason " +
-                                      (isSelected ? "--active" : "")
-                                    }
-                                    onClick={() => handleREUsageCategoryOpts(opt)}
-                                  >
-                                    <div className="btnReason__title">
-                                      {opt}
-                                    </div>
-                                    {isSelected && (
-                                      <div className="btnReason__active">
-                                        <span className="icon-checkmark" />
+                                REUsageCategoryOpts.map((opt, idx) => {
+                                  const isSelected =
+                                    selectedREUsageCategoryOpts.indexOf(opt) >
+                                    -1;
+                                  return (
+                                    <div
+                                      key={idx}
+                                      className={
+                                        "btnReason " +
+                                        (isSelected ? "--active" : "")
+                                      }
+                                      onClick={() =>
+                                        handleREUsageCategoryOpts(opt)
+                                      }
+                                    >
+                                      <div className="btnReason__title">
+                                        {opt}
                                       </div>
-                                    )}
-                                  </div>);
-                                })
-                              }
+                                      {isSelected && (
+                                        <div className="btnReason__active">
+                                          <span className="icon-checkmark" />
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
                             </div>
                             {/* </div> */}
                           </div>
@@ -1997,14 +2145,13 @@ export default function BusinessLoan(props) {
                           )}
                         </div>
                       </div>
-                      
                     </div>
                     <br />
                     <div className="userInputs">
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!RETaxationValue.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -2017,14 +2164,14 @@ export default function BusinessLoan(props) {
                                 type="text"
                                 className="my-input"
                                 placeholder="3 000 000"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={RETaxationValue.value.visualValue}
+                                onChange={handleRETaxationValue}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!RETaxationValue.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {RETaxationValue.eMessage}
                             </span>
                           )}
                         </div>
@@ -2032,7 +2179,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!REAddress.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -2044,14 +2191,14 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={REAddress.value}
+                                onChange={handleREAddress}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!REAddress.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {REAddress.eMessage}
                             </span>
                           )}
                         </div>
@@ -2062,7 +2209,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!RECity.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -2074,14 +2221,14 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={RECity.value}
+                                onChange={handleRECity}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!RECity.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {RECity.eMessage}
                             </span>
                           )}
                         </div>
@@ -2089,10 +2236,13 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!RELink.isValid ? "--invalid" : "")
                         }
                       >
-                        <label className="bl__input__label" style={{fontSize:"12px",lineHeight:"1.84"}}>
+                        <label
+                          className="bl__input__label"
+                          style={{ fontSize: "12px", lineHeight: "1.84" }}
+                        >
                           {t("BL_REALESTATE_LINK")}
                         </label>
                         <div className="bl__input__element">
@@ -2101,49 +2251,55 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="3 000 000"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={RELink.value}
+                                onChange={handleRELink}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!RELink.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {RELink.eMessage}
                             </span>
                           )}
                         </div>
                       </div>
                     </div>
-                    <br/>
+                    <br />
                     <div className="userInputs">
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!REDescription.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
                           {t("BL_REALESTATE_DESCRIPTION")}
                         </label>
                         <div className="bl__input__element">
-                          <div className="element-group">
-                            <div className="element-group__center">
-                              <textarea
-                                className="my-input"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
-                              ></textarea>
-                            </div>
-                          </div>
-                          {!REPriceIsValid && (
+                          {/* <div className="element-group">
+                             <div className="element-group__center"> */}
+                          <textarea
+                            className="my-input"
+                            value={REDescription.value}
+                            onChange={handleREDescription}
+                            style={{
+                              maxWidth: "100%",
+                              minWidth: "100%",
+                              border: "1px solid lightgrey",
+                              minHeight: "100px",
+                              padding:"10px"
+                            }}
+                          ></textarea>
+                          {/* </div>
+                          </div> */}
+                          {!REDescription.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {REDescription.eMessage}
                             </span>
                           )}
                         </div>
                       </div>
-                      <div
+                      {/* <div
                         className={
                           "bl__input animated fadeIn " +
                           (!REPriceIsValid ? "--invalid" : "")
@@ -2170,7 +2326,7 @@ export default function BusinessLoan(props) {
                             </span>
                           )}
                         </div>
-                      </div>
+                      </div> */}
                     </div>
                     {/* <br/>
                     <div className="userInputs">
@@ -2231,12 +2387,12 @@ export default function BusinessLoan(props) {
                         </div>
                       </div>
                     </div> */}
-                    <br/>
+                    <br />
                     <div className="userInputs">
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!REFile ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -2249,14 +2405,14 @@ export default function BusinessLoan(props) {
                                 type="text"
                                 className="my-input"
                                 placeholder="3 000 000"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={REFile.value}
+                                onChange={handleREFile}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!REFile.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {REFile.eMessage}
                             </span>
                           )}
                         </div>
