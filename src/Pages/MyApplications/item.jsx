@@ -8,7 +8,7 @@ import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
 //
 const Item = props => {
-  const [{}, dispatch] = useGlobalState();
+  const [{ currentRole }, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
   const { item } = props;
   const stage = item.opportunityStage.toLowerCase();
@@ -187,10 +187,12 @@ const Item = props => {
             <span>{separateNumberByChar(item.amount)} Kr</span>
           </span>
         </div>
-        <div className="application__bodyRow">
-          <span>{t("APP_CONTACT_NAME")}</span>
-          <span>{item.contactInfo.name}</span>
-        </div>
+        {currentRole === "agent" && (
+          <div className="application__bodyRow">
+            <span>{t("APP_CONTACT_NAME")}</span>
+            <span>{item.contactInfo.name}</span>
+          </div>
+        )}
         <div className="application__bodyRow">
           <span>{t("APP_COMPANY_NAME")}</span>
           <span>
