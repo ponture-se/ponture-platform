@@ -31,6 +31,7 @@ import {
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
+import UploaderApiIncluded from "../../components/UploaderApiIncluded";
 
 // Get slider setting from react config and fill the initial data
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
@@ -95,6 +96,7 @@ export default function BusinessLoan(props) {
     "Lager/Logistik",
     "Övrigt"
   ];
+  const RETypeOpts = ["Fastighet med mark", "Fastighet utan mark"];
   //Initial values
   let formInitValues = {
     loanAmount:
@@ -284,7 +286,7 @@ export default function BusinessLoan(props) {
   const [REArea, setREArea] = useState();
   const [REAreaIsValid, setREAreaIsValid] = useState(true);
   const [REAreaValidationMessage, setREAreaValidationMessage] = useState();
-  const [REType, setREType] = useState({
+  const [selectedREType, setSelectedREType] = useState({
     value: "",
     isValid: true,
     eMessage: ""
@@ -324,10 +326,11 @@ export default function BusinessLoan(props) {
     isValid: true,
     eMessage: ""
   });
-  const [
-    selectedREUsageCategoryOpts,
-    setSelectedREUsageCategoryOpts
-  ] = useState([]);
+  const [selectedREUsageCategory, setSelectedREUsageCategory] = useState({
+    value: [],
+    isValid: true,
+    eMessage: ""
+  });
   //email
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
@@ -907,62 +910,97 @@ export default function BusinessLoan(props) {
     },
     [REPrice, REPriceIsValid, REPriceValidationMessage]
   );
-  const handleREUsageCategoryOpts = useCallback(
-    e => {
-      let _newOpts = Array.from(selectedREUsageCategoryOpts);
 
-      if (selectedREUsageCategoryOpts.indexOf(e) > -1) {
+  const handleREType = useCallback(
+    e => {
+      let _newOpt = "";
+      let isValid = true;
+      let eMessage = "";
+      if (selectedREType !== e) {
+        _newOpt = e;
+      }
+      if (
+        !selectedREType ||
+        (Array.isArray(selectedREType) && selectedREType.length === 0)
+      ) {
+        isValid = false;
+        eMessage = t("REQUIRED_FIELD");
+      }
+      setSelectedREType({
+        value: _newOpt,
+        isValid: isValid,
+        eMessage: eMessage
+      });
+    },
+    [selectedREType]
+  );
+
+  // const handleREUsageCategoryOpts = useCallback(
+  //   e => {
+  //     let _newOpts = Array.from(selectedREUsageCategoryOpts);
+
+  //     if (selectedREUsageCategoryOpts.indexOf(e) > -1) {
+  //       _newOpts.splice(_newOpts.indexOf(e), 1);
+  //     } else {
+  //       _newOpts.push(e);
+  //     }
+
+  //     setSelectedREUsageCategoryOpts(_newOpts);
+  //   },
+  //   [selectedREUsageCategoryOpts]
+  // );
+  const handleREUsageCategory = useCallback(
+    e => {
+      let _newOpts = Array.from(selectedREUsageCategory.value);
+      let eMessage = "";
+      let isValid = true;
+      if (selectedREUsageCategory.value.indexOf(e) > -1) {
         _newOpts.splice(_newOpts.indexOf(e), 1);
       } else {
         _newOpts.push(e);
       }
-
-      setSelectedREUsageCategoryOpts(_newOpts);
-    },
-    [selectedREUsageCategoryOpts]
-  );
-  const handleREUsageCategory = useCallback(
-    e => {
-      let { value, name } = e.target;
-      let isValid = true;
-      let eMessage = "";
-      if (value && value.length === 0) {
+      if(_newOpts.length === 0){
+        eMessage = t("REQUIRED_FIELD");
         isValid = false;
-        eMessage = t("MANDATORY_FIELD");
       }
-      setREUsageCategory({
+      setSelectedREUsageCategory({
         isValid: isValid,
         eMessage: eMessage,
-        value: value
+        value: _newOpts
       });
     },
-    [REUsageCategory]
+    [selectedREUsageCategory]
   );
   const handleRETaxationValue = useCallback(
     e => {
-      let { value, name } = e.target;
-      let isValid = true;
-      let eMessage = "";
+      const { value } = e.target;
+      let isValid = true,
+        validationMessage = "";
+      let _value = "";
+
       if (!value || value.length === 0 || value === 0) {
         isValid = false;
-        eMessage = t("PRICE_IS_REQUIRED");
-        value = { realValue: 0, visualValue: "" };
+        validationMessage = t("PRICE_IS_REQUIRED");
+        setRETaxationValue({
+          isValid: isValid,
+          eMessage: validationMessage,
+          value: { realValue: 0, visualValue: "" }
+        });
       } else {
-        value = value.replace(/\s/g, "");
-        if (Number(value)) {
+        _value = value.replace(/\s/g, "");
+        if (Number(_value)) {
           isValid = true;
-          eMessage = "";
-          value = {
-            realValue: value,
-            visualValue: value && value.replace(numberFormatRegex, "$1 ")
-          };
+          validationMessage = "";
+          setRETaxationValue({
+            isValid: isValid,
+            eMessage: validationMessage,
+            value: {
+              realValue: _value,
+              visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+            }
+          });
         }
       }
-      setRETaxationValue({
-        isValid: isValid,
-        eMessage: eMessage,
-        value: value
-      });
     },
     [RETaxationValue]
   );
@@ -1301,22 +1339,76 @@ export default function BusinessLoan(props) {
             target: { value: REPrice ? REPrice.realValue : 0 }
           });
         }
+        if (!selectedREType.isValid) {
+          isValid = false;
+          handleREType({
+            target: { value: selectedREType.value ? selectedREType.value : "" }
+          });
+        }
+        if (!selectedREUsageCategory.isValid) {
+          isValid = false;
+          handleREUsageCategory({
+            target: {
+              value: selectedREUsageCategory.value.length
+                ? selectedREUsageCategory.value
+                : []
+            }
+          });
+        }
+        if (!RETaxationValue.isValid) {
+          isValid = false;
+          handleRETaxationValue({
+            target: {
+              value: RETaxationValue.value ? RETaxationValue.value : ""
+            }
+          });
+        }
+        if (!REAddress.isValid) {
+          isValid = false;
+          handleREAddress({
+            target: { value: REAddress.value ? REAddress.value : "" }
+          });
+        }
+        if (!RECity.isValid) {
+          isValid = false;
+          handleREAddress({
+            target: { value: RECity.value ? RECity.value : "" }
+          });
+        }
+        if (!RELink.isValid) {
+          isValid = false;
+          handleREAddress({
+            target: { value: RELink.value ? RELink.value : "" }
+          });
+        }
+        if (!REDescription.isValid) {
+          isValid = false;
+          handleREAddress({
+            target: { value: REDescription.value ? REDescription.value : "" }
+          });
+        }
+        if (!REFile.isValid) {
+          isValid = false;
+          handleREAddress({
+            target: { value: REFile.value ? REFile.value : "" }
+          });
+        }
         obj = {
           ...obj,
           real_estate: {
             real_estate_size: REArea,
             real_estate_price: String(REPrice.realValue),
-            real_estate_type: "",
-            real_estate_usage_category: "",
-            real_estate_taxation_value: "",
-            real_estate_address: "",
-            real_estate_city: "",
-            real_estate_link: "",
-            real_estate_description: "",
-            real_estate_document: "",
-            description: "",
-            additional_details: "",
-            own_investment_amount: ""
+            real_estate_type: selectedREType.value,
+            real_estate_usage_category: selectedREUsageCategory.value,
+            real_estate_taxation_value: RETaxationValue.value,
+            real_estate_address: REAddress.value,
+            real_estate_city: RECity.value,
+            real_estate_link: RELink.value,
+            real_estate_description: REDescription.value,
+            real_estate_document: REFile.value
+            // description: "",
+            // additional_details: "",
+            // own_investment_amount: ""
           }
         };
       }
@@ -1673,7 +1765,10 @@ export default function BusinessLoan(props) {
                       {t("BL_REASON_LOAN")}
                       <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
-                    <div className="options options__category">
+                    <div
+                      className="options options__category"
+                      style={{ margin: "auto -8px" }}
+                    >
                       {loanReasonsCategories.length > 0 &&
                         loanReasonsCategories.map((cat, idx) => {
                           const selected = cat === selectedLoanReasonsCat;
@@ -1692,7 +1787,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <br />
                     {selectedLoanReasonsCat && (
-                      <div className="options">
+                      <div className="options" style={{ margin: "auto -8px" }}>
                         {loanReasons &&
                           loanReasons.map(r => {
                             if (r.category === selectedLoanReasonsCat) {
@@ -1883,7 +1978,7 @@ export default function BusinessLoan(props) {
                       <label className="bl__input__label">
                         {t("BL_COMPANY")}
                       </label>
-                      <div className="options">
+                      <div className="options" style={{ margin: "auto -8px" }}>
                         {activeCompanyTypeSelection && (
                           <div className="newCompanyRadioBox">
                             <label className="customCheckbox">
@@ -2039,6 +2134,59 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
+                          (!selectedREType.isValid ? "--invalid" : "")
+                        }
+                      >
+                        <label
+                          className="bl__input__label"
+                          style={{ marginBottom: "0" }}
+                        >
+                          {t("BL_REALESTATE_USAGE_CATEGORY")}
+                        </label>
+                        <div style={{ margin: "auto -8px" }}>
+                          {/* <div className="element-group"> */}
+                          <div className="element-group__center">
+                            <div className="options">
+                              {RETypeOpts.length > 0 &&
+                                RETypeOpts.map((opt, idx) => {
+                                  const isSelected =
+                                    opt === selectedREType.value;
+                                  return (
+                                    <div
+                                      key={idx}
+                                      className={
+                                        "btnReason " +
+                                        (isSelected ? "--active" : "")
+                                      }
+                                      onClick={() => handleREType(opt)}
+                                    >
+                                      <div className="btnReason__title">
+                                        {opt}
+                                      </div>
+                                      {isSelected && (
+                                        <div className="btnReason__active">
+                                          <span className="icon-checkmark" />
+                                        </div>
+                                      )}
+                                    </div>
+                                  );
+                                })}
+                            </div>
+                            {/* </div> */}
+                          </div>
+                          {!selectedREType.isValid && (
+                            <span className="validation-messsage">
+                              {selectedREType.eMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div className="userInputs">
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
                           (!REAreaIsValid ? "--invalid" : "")
                         }
                       >
@@ -2098,20 +2246,23 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!selectedREUsageCategory.isValid ? "--invalid" : "")
                         }
                       >
-                        <label className="bl__input__label">
+                        <label
+                          className="bl__input__label"
+                          style={{ marginBottom: "0" }}
+                        >
                           {t("BL_REALESTATE_USAGE_CATEGORY")}
                         </label>
-                        <div className="">
+                        <div style={{ margin: "auto -8px" }}>
                           {/* <div className="element-group"> */}
                           <div className="element-group__center">
                             <div className="options">
                               {REUsageCategoryOpts.length > 0 &&
                                 REUsageCategoryOpts.map((opt, idx) => {
                                   const isSelected =
-                                    selectedREUsageCategoryOpts.indexOf(opt) >
+                                    selectedREUsageCategory.value.indexOf(opt) >
                                     -1;
                                   return (
                                     <div
@@ -2120,9 +2271,7 @@ export default function BusinessLoan(props) {
                                         "btnReason " +
                                         (isSelected ? "--active" : "")
                                       }
-                                      onClick={() =>
-                                        handleREUsageCategoryOpts(opt)
-                                      }
+                                      onClick={() => handleREUsageCategory(opt)}
                                     >
                                       <div className="btnReason__title">
                                         {opt}
@@ -2138,9 +2287,9 @@ export default function BusinessLoan(props) {
                             </div>
                             {/* </div> */}
                           </div>
-                          {!REPriceIsValid && (
+                          {!selectedREUsageCategory.isValid  && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {selectedREUsageCategory.eMessage }
                             </span>
                           )}
                         </div>
@@ -2287,7 +2436,7 @@ export default function BusinessLoan(props) {
                               minWidth: "100%",
                               border: "1px solid lightgrey",
                               minHeight: "100px",
-                              padding:"10px"
+                              padding: "10px"
                             }}
                           ></textarea>
                           {/* </div>
@@ -2398,26 +2547,26 @@ export default function BusinessLoan(props) {
                         <label className="bl__input__label">
                           {t("BL_REALESTATE_FILE")}
                         </label>
-                        <div className="bl__input__element">
-                          <div className="element-group">
-                            <div className="element-group__center">
-                              <input
-                                type="text"
-                                className="my-input"
-                                placeholder="3 000 000"
-                                value={REFile.value}
-                                onChange={handleREFile}
-                              />
-                            </div>
+                        {/* <div className="bl__input__element"> */}
+                        <div
+                          className="element-group"
+                          style={{ margin: "auto -8px" }}
+                        >
+                          <div className="element-group__center">
+                            <UploaderApiIncluded
+                              name="File"
+                              innerText="File upload"
+                            />
                           </div>
-                          {!REFile.isValid && (
-                            <span className="validation-messsage">
-                              {REFile.eMessage}
-                            </span>
-                          )}
                         </div>
+                        {!REFile.isValid && (
+                          <span className="validation-messsage">
+                            {REFile.eMessage}
+                          </span>
+                        )}
                       </div>
                     </div>
+                    {/* </div> */}
                     <br />
                     <br />
                   </div>

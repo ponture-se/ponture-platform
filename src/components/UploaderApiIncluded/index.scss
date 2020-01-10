@@ -1,0 +1,13 @@
+.ImageUploaderApiIncluded {
+  &.hasImage {
+    & .selectorButton {
+      display: none !important;
+    }
+  }
+  &.hasImage:hover {
+    & .selectorButton {
+      display: flex !important;
+    }
+    background-color: whitesmoke !important;
+  }
+}
