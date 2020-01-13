@@ -759,12 +759,12 @@ export function saveLoan() {
 
   const _call = loan => {
     const url = saveUrl;
-    const token = Cookies.get("@pontrue-wizard/token");
+    // const token = Cookies.get("@pontrue-wizard/token");
     axios({
       method: "post",
       url: url,
       headers: {
-        Authorization: `Bearer ${token}`,
+        // Authorization: `Bearer ${token}`,
         Accept: "application/json"
       },
       data: loan

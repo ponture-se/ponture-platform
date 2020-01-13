@@ -23,8 +23,15 @@ export default class UploaderApiIncluded extends React.Component {
   toBase64 = file =>
     new Promise((resolve, reject) => {
       const reader = new FileReader();
-      reader.readAsDataURL(file);
-      reader.onload = () => resolve(reader.result);
+      reader.readAsBinaryString(file);
+      reader.onload = () =>
+        resolve(
+          (() => {
+            let b64 = btoa(reader.result);
+            b64 = b64.split(" ").join("+");
+            return b64;
+          })()
+        );
       reader.onerror = error => reject(error);
     });
   upload = file => {
@@ -34,7 +41,7 @@ export default class UploaderApiIncluded extends React.Component {
     this.toBase64(_file).then(b64 => {
       newForm.append("title", _file.name);
       newForm.append("fileExtension", _file.type);
-      newForm.append("content", b64);
+      newForm.append("content", encodeURIComponent(b64));
       _callback(newForm);
     });
     const _callback = file => {

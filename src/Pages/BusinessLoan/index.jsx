@@ -1400,15 +1400,15 @@ export default function BusinessLoan(props) {
             real_estate_price: String(REPrice.realValue),
             real_estate_type: selectedREType.value,
             real_estate_usage_category: selectedREUsageCategory.value,
-            real_estate_taxation_value: RETaxationValue.value,
+            real_estate_taxation_value: String(RETaxationValue.value.realValue),
             real_estate_address: REAddress.value,
             real_estate_city: RECity.value,
             real_estate_link: RELink.value,
             real_estate_description: REDescription.value,
-            real_estate_document: REFile.value
-            // description: "",
-            // additional_details: "",
-            // own_investment_amount: ""
+            real_estate_document: REFile.value,
+            description: "",
+            additional_details: "",
+            own_investment_amount: ""
           }
         };
       }
