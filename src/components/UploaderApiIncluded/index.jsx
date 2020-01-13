@@ -37,7 +37,7 @@ export default class UploaderApiIncluded extends React.Component {
   upload = file => {
     this.setState({ uploading: true });
     const _file = file.target.files[0];
-    const newForm = new FormData();
+    // const newForm = new FormData();
     this.toBase64(_file).then(b64 => {
       // newForm.append("title", _file.name);
       // newForm.append("fileExtension", _file.type);

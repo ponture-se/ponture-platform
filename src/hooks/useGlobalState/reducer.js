@@ -12,7 +12,7 @@ try {
 
 try {
   agentReferralId = JSON.parse(sessionStorage.getItem("@ponture-agent-info"))
-    .referral_id;
+    .broker_id;
   if (agentReferralId) currentRole = "agent";
   _isAuthenticated = true;
 } catch (error) {}

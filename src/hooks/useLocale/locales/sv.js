@@ -1,6 +1,7 @@
 export default {
   CLOSE: "Stänga",
   SUBMIT: "Ansök",
+  SUBMIT_2: "Sticka",
   SUBMITTED: "Inskickat",
   MON: "mån",
   MONTH: "månad",
@@ -37,6 +38,7 @@ export default {
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
   APP_STATUS_REJECTED_TITLE: "Avslagen!",
   APP_STATUS_WON_TITLE: "Avslutat!",
+  APP_STATUS_CREATED_TITLE: "Skapad!",
   VERIFY: "Pröva",
   MANDATORY_FIELD: "Obligatoriskt fält",
 
@@ -46,6 +48,7 @@ export default {
   APP_STATUS_REJECTED_BY_USER_DESC: "Du avbröt din ansökan.",
   APP_STATUS_REJECTED_DESC: "Din ansökan är inte godkänd!",
   APP_STATUS_WON_DESC: "Din ansökan är avslutad!",
+  APP_STATUS_CREATED_DESC: "Din ansökan har skapats.",
 
   MONTH_S: "month(s)",
   ARE_YOU_SURE: "Are you sure?",
@@ -57,6 +60,7 @@ export default {
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
   VIEW_DETAIL: "Visa detalj",
   OPEN_BANK_ID: "Öppna BankID-appen",
+  VERIFY_AND_SUBMIT: "Skicka",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in till Mina Sidor",
   LOGIN_TITLE1: "Vi använder BankID för att skydda din information.",

@@ -9,7 +9,7 @@ import { getMyApplications } from "api/main-api";
 //
 const MyApplications = props => {
   let didCancel = false;
-  const [{ userInfo, currentRole }, dispatch] = useGlobalState();
+  const [{ userInfo, currentRole }] = useGlobalState();
   const { t } = useLocale();
   const [selectedApp, setApp] = useState();
   const [loading, toggleLoading] = useState(true);
@@ -81,13 +81,16 @@ const MyApplications = props => {
       })
       .call(
         userInfo && currentRole === "agent"
-          ? { currentRole: "agent", id: userInfo.referral_id }
+          ? { currentRole: "agent", id: userInfo.broker_id }
           : { currentRole: "customer", id: userInfo.personalNumber }
       );
   }
   function handleSuccessCancel() {
     toggleLoading(true);
     _getMyApplications();
+  }
+  function handleBankIdAndSubmit(pNum) {
+    console.log("personal number", pNum);
   }
   return (
     <div className="myApps">
@@ -114,6 +117,7 @@ const MyApplications = props => {
             key={app.opportunityID}
             item={app}
             onCancelSuccess={handleSuccessCancel}
+            onBankId={handleBankIdAndSubmit}
           />
         ))
       )}

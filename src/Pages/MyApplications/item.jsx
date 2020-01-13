@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGlobalState, useLocale } from "hooks";
@@ -11,8 +11,13 @@ const Item = props => {
   const [{ currentRole }, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
   const { item } = props;
+  const parent_onBankId = props.onBankId;
+  const { personalNumber } = item.contactInfo;
   const stage = item.opportunityStage.toLowerCase();
   const lostReason = item.lostReason ? item.lostReason.toLowerCase() : "";
+  //States
+  const [isVerified, setIsVerified] = useState(item.bankVerified);
+  const [isSubmitted, setIsSubmitted] = useState(item.bankVerified);
   function handleCancelClicked() {
     toggleAlert({
       title: t("APP_CANCEL_ALERT_INFO"),
@@ -77,6 +82,7 @@ const Item = props => {
   }
   return (
     <div className="application animated fadeIn">
+      {/* Application header info */}
       <div className="application__header">
         <div className="left">
           <div
@@ -93,6 +99,8 @@ const Item = props => {
                 ? "rejectedIcon"
                 : stage === "funded/closed won"
                 ? "closedIcon"
+                : stage === "created"
+                ? "appCreatedIcon"
                 : "")
             }
           >
@@ -133,6 +141,8 @@ const Item = props => {
                 ? t("APP_STATUS_REJECTED_TITLE")
                 : stage === "funded/closed won"
                 ? t("APP_STATUS_WON_TITLE")
+                : stage === "created"
+                ? t("APP_STATUS_CREATED_TITLE")
                 : ""}
             </span>
             <span>
@@ -151,6 +161,8 @@ const Item = props => {
                 ? t("APP_STATUS_REJECTED_DESC")
                 : stage === "funded/closed won"
                 ? t("APP_STATUS_WON_DESC")
+                : stage === "created"
+                ? t("APP_STATUS_CREATED_DESC")
                 : ""}
             </span>
           </div>
@@ -179,6 +191,8 @@ const Item = props => {
           )}
         </div>
       </div>
+
+      {/* Application body info */}
       <div className="application__body">
         <div className="application__body__header">
           <span>{t("BUSINESS_LOAN")}</span>
@@ -230,12 +244,32 @@ const Item = props => {
           <span>{item.creditSafeScore}</span>
         </div>
       </div>
+
+      {/* Application footer */}
       {stage !== "funded/closed won" && stage !== "not funded/ closed lost" && (
         <div className="application__footer">
           <button className="btn --light" onClick={handleCancelClicked}>
             <span className="icon-cross" />
             {t("CANCEL")}
           </button>
+          {!isSubmitted &&
+            (!isVerified ? (
+              <button
+                className="btn --primary"
+                onClick={() => parent_onBankId(personalNumber)}
+              >
+                <span className="icon-info" style={{ fontSize: "14px" }} />
+                {t("VERIFY")}
+              </button>
+            ) : (
+              <button
+                className="btn --success"
+                onClick={() => parent_onBankId(personalNumber)}
+              >
+                <span className="icon-checkmark" style={{ fontSize: "14px" }} />
+                {t("SUBMIT_2")}
+              </button>
+            ))}
         </div>
       )}
     </div>

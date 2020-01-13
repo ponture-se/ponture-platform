@@ -1408,7 +1408,7 @@ export default function BusinessLoan(props) {
             real_estate_document: REFile.value,
             description: "",
             additional_details: "",
-            own_investment_amount: ""
+            own_investment_amount: "0"
           }
         };
       }
