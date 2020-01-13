@@ -39,10 +39,17 @@ export default class UploaderApiIncluded extends React.Component {
     const _file = file.target.files[0];
     const newForm = new FormData();
     this.toBase64(_file).then(b64 => {
-      newForm.append("title", _file.name);
-      newForm.append("fileExtension", _file.type);
-      newForm.append("content", encodeURIComponent(b64));
-      _callback(newForm);
+      // newForm.append("title", _file.name);
+      // newForm.append("fileExtension", _file.type);
+      // newForm.append("content", encodeURIComponent(b64));
+      // _callback(newForm);
+      _callback(
+        `title=${encodeURIComponent(
+          _file.name
+        )}&fileExtension=${encodeURIComponent(
+          _file.type
+        )}&content=${encodeURIComponent(b64)}`
+      );
     });
     const _callback = file => {
       uploadFile()
@@ -115,7 +122,7 @@ export default class UploaderApiIncluded extends React.Component {
           this.setState({ uploading: false });
           console.log("Bad request", result);
         })
-        .call(newForm);
+        .call(file);
     };
   };
   styleExporter = name => {

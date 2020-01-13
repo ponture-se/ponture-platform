@@ -1,5 +1,4 @@
 import Cookies from "js-cookie";
-
 const axios = require("axios");
 const config = process.env;
 const baseUrl = config.REACT_APP_BASE_URL;
