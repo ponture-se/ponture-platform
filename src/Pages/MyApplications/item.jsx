@@ -6,11 +6,13 @@ import separateNumberByChar from "utils/separateNumberByChar";
 import track from "utils/trackAnalytic";
 import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
+import { CircleSpinner } from "components";
+
 //
 const Item = props => {
   const [{ currentRole }, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
-  const { item } = props;
+  const { item, submit, verify } = props;
   const parent_onBankId = props.onBankId;
   const { personalNumber } = item.contactInfo;
   const stage = item.opportunityStage.toLowerCase();
@@ -18,6 +20,34 @@ const Item = props => {
   //States
   const [isVerified, setIsVerified] = useState(item.bankVerified);
   const [isSubmitted, setIsSubmitted] = useState(item.bankVerified);
+  const [loading, toggleLoading] = useState(false);
+
+  //functions
+  const submitApplication = appData => {
+    if (typeof submit === "function") {
+      if (typeof verify === "function") {
+        toggleLoading(true);
+        //
+        submit(appData, res => {
+          console.log("submit result: ", res);
+          setIsSubmitted(true);
+          toggleLoading(false);
+        });
+      }
+    }
+  };
+  const verifyApplication = pNum => {
+    if (typeof verify === "function") {
+      toggleLoading(true);
+      //
+      verify(pNum, res => {
+        console.log("bankId modal: ", res);
+        setIsVerified(true);
+        toggleLoading(false);
+      });
+    }
+  };
+
   function handleCancelClicked() {
     toggleAlert({
       title: t("APP_CANCEL_ALERT_INFO"),
@@ -256,18 +286,20 @@ const Item = props => {
             (!isVerified ? (
               <button
                 className="btn --primary"
-                onClick={() => parent_onBankId(personalNumber)}
+                onClick={() => verifyApplication(personalNumber)}
+                disabled={loading}
               >
                 <span className="icon-info" style={{ fontSize: "14px" }} />
-                {t("VERIFY")}
+                {loading ? <CircleSpinner show={true} /> : t("VERIFY")}
               </button>
             ) : (
               <button
                 className="btn --success"
-                onClick={() => parent_onBankId(personalNumber)}
+                onClick={() => submitApplication(item)}
+                disabled={loading}
               >
                 <span className="icon-checkmark" style={{ fontSize: "14px" }} />
-                {t("SUBMIT_2")}
+                {loading ? <CircleSpinner show={true} /> : t("SUBMIT_2")}
               </button>
             ))}
         </div>

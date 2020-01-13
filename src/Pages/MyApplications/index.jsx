@@ -5,7 +5,8 @@ import Item from "./item";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getMyApplications } from "api/main-api";
-
+import VerifyBankIdModal from "components/VerifyBankIdModal";
+import { startBankId, cancelVerify } from "api/business-loan-api";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -15,6 +16,9 @@ const MyApplications = props => {
   const [loading, toggleLoading] = useState(true);
   const [data, setData] = useState();
   const [error, setError] = useState();
+  const [verifyModal, toggleVerifyModal] = useState(false);
+  const [startResult, setStartResult] = useState();
+  const [personalNumber, setPersonalNumber] = useState("");
   //componentDidMount
   useEffect(() => {
     _getMyApplications();
@@ -22,6 +26,137 @@ const MyApplications = props => {
       didCancel = true;
     };
   }, []);
+
+  //pNum: personalNumber
+  //BankId function
+  function handleVerifyApplication(pNum) {}
+
+  //After bankId
+  function handleBankIdClicked(pNum, callback) {
+    startBankId()
+      .onOk(result => {
+        if (!didCancel) {
+          setStartResult(result);
+          if (typeof callback === "function") {
+            callback(result);
+          }
+          // save result in session storage to use in customer portal
+          // Cookies.set("@ponture-customer-portal/token", result);
+          // if (window.analytics)
+          //   window.analytics.track("BankID Verification", {
+          //     category: "Loan Application",
+          //     label: "/app/loan/ bankid popup",
+          //     value: 0
+          //   });
+        }
+      })
+      // .onServerError(result => {
+      //   if (!didCancel) {
+      //     setError({
+      //       sender: "verifyBankId"
+      //     });
+      //   }
+      // })
+      // .onBadRequest(result => {
+      //   if (!didCancel) {
+      //     toggleVerifyingSpinner(false);
+      //     changeTab(3);
+      //     setError({
+      //       sender: "verifyBankId"
+      //     });
+      //   }
+      // })
+      // .unAuthorized(result => {
+      //   if (!didCancel) {
+      //     toggleVerifyingSpinner(false);
+      //     changeTab(3);
+      //     setError({
+      //       sender: "verifyBankId"
+      //     });
+      //   }
+      // })
+      // .unKnownError(result => {
+      //   if (!didCancel) {
+      //     toggleVerifyingSpinner(false);
+      //     changeTab(3);
+      //     setError({
+      //       sender: "verifyBankId"
+      //     });
+      //   }
+      // })
+      .call(pNum);
+  }
+  function handleCancelVerify() {
+    // toggleVerifyModal(false);
+    // if (window.analytics)
+    // window.analytics.track("BankID Failed", {
+    //   category: "Loan Application",
+    //   label: "/app/loan/ bankid popup",
+    //   value: 0
+    // });
+    cancelVerify()
+      .onOk(result => {
+        console.log("cancled successful");
+      })
+      .onServerError(result => {
+        if (!didCancel) {
+        }
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+        }
+      })
+      .unAuthorized(result => {
+        if (!didCancel) {
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+        }
+      })
+      .call(startResult.orderRef);
+  }
+  function handleCloseVerifyModal(isSuccess, result, bIdResult) {
+    toggleVerifyModal(false);
+    if (isSuccess) {
+      //   const { companies, user_info } = result;
+      //   if (companies && companies.length > 0) {
+      //     dispatch({
+      //       type: "TOGGLE_B_L_MORE_INFO",
+      //       value: true
+      //     });
+      //     // save bank id result to us ein customer
+      //     dispatch({
+      //       type: "VERIFY_BANK_ID_SUCCESS",
+      //       payload: bIdResult
+      //     });
+      //     sessionStorage.setItem(
+      //       "@ponture-customer-bankid",
+      //       JSON.stringify(bIdResult)
+      //     );
+      //     setBankIdResult(bIdResult);
+      //     setCompanies(companies);
+      //     setLastName(user_info.surName);
+      //   } else {
+      //     toggleMainSpinner(false);
+      //     changeTab(3);
+      //     setError({
+      //       sender: "companies",
+      //       type: "loadData",
+      //       message: t("COMPANIES_IN_VALID_DATA")
+      //     });
+      //   }
+      // } else if (isSuccess === false) {
+      //   changeTab(3);
+      //   setError({
+      //     sender: "submitLoan"
+      //   });
+      // }
+    }
+  }
+  //Submit application function
+  function handleSubmitApplication() {}
+
   function _getMyApplications() {
     getMyApplications()
       .onOk(result => {
@@ -89,9 +224,7 @@ const MyApplications = props => {
     toggleLoading(true);
     _getMyApplications();
   }
-  function handleBankIdAndSubmit(pNum) {
-    console.log("personal number", pNum);
-  }
+
   return (
     <div className="myApps">
       {loading ? (
@@ -112,14 +245,26 @@ const MyApplications = props => {
           <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
         </div>
       ) : (
-        data.map(app => (
-          <Item
-            key={app.opportunityID}
-            item={app}
-            onCancelSuccess={handleSuccessCancel}
-            onBankId={handleBankIdAndSubmit}
-          />
-        ))
+        <>
+          {data.map(app => (
+            <Item
+              key={app.opportunityID}
+              item={app}
+              onCancelSuccess={handleSuccessCancel}
+              verify={handleVerifyApplication}
+              submit={handleSubmitApplication}
+            />
+          ))}
+          {verifyModal && (
+            <VerifyBankIdModal
+              startResult={startResult}
+              personalNumber={personalNumber}
+              onClose={handleCloseVerifyModal}
+              onVerified={handleSuccessBankId}
+              onCancelVerify={handleCancelVerify}
+            />
+          )}
+        </>
       )}
     </div>
   );

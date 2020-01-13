@@ -3,10 +3,10 @@ import React, { useState, useEffect } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
+import { startBankId, cancelVerify } from "api/business-loan-api";
 import { isBankId } from "utils";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
-import { startBankId, cancelVerify } from "api/business-loan-api";
 import "./styles.scss";
 
 const Login = props => {
