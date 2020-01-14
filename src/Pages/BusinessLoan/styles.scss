@@ -491,7 +491,7 @@
     &.--invalid {
       .my-input {
         outline: none;
-        border: 1px solid red;
+        border: 1px solid red !important;
       }
     }
 

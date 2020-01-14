@@ -713,7 +713,7 @@ export function submitLoan() {
   };
 }
 
-export function saveLoan() {
+export function saveLoan(permission) {
   let _onOkCallBack;
   function _onOk(result) {
     if (_onOkCallBack) {
@@ -759,12 +759,14 @@ export function saveLoan() {
 
   const _call = loan => {
     const url = saveUrl;
-    // const token = Cookies.get("@pontrue-wizard/token");
+    const token = Cookies.get("@pontrue-wizard/token");
+    const additionalHeaders =
+      permission === "customer" ? { Authorization: `Bearer ${token}` } : {};
     axios({
       method: "post",
       url: url,
       headers: {
-        // Authorization: `Bearer ${token}`,
+        ...additionalHeaders,
         Accept: "application/json"
       },
       data: loan

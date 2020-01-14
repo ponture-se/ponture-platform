@@ -2,6 +2,7 @@ import React from "react";
 import { uploadFile } from "../../api/main-api/";
 import "./index.scss";
 import classnames from "classnames";
+import axios from "axios";
 export default class UploaderApiIncluded extends React.Component {
   constructor(props) {
     super(props);
@@ -12,33 +13,49 @@ export default class UploaderApiIncluded extends React.Component {
       showFiletypeIcon: true,
       postUrl: ""
     };
-    this.state = {
+    this.initialStates = {
       progress: 0,
       // selectedImgUrl: false, //props.defaultUrl, //? DownloadAsset(props.defaultUrl) : "",
       uploading: false,
-      uploaded: false
+      uploaded: false,
+      uploadedFileName: "",
+      cancelUpload: undefined
+    };
+    this.state = {
+      ...this.initialStates
     };
     this.fileRef = React.createRef();
   }
-  toBase64 = file =>
-    new Promise((resolve, reject) => {
-      const reader = new FileReader();
-      reader.readAsBinaryString(file);
-      reader.onload = () =>
-        resolve(
-          (() => {
-            let b64 = btoa(reader.result);
-            b64 = b64.split(" ").join("+");
-            return b64;
-          })()
-        );
-      reader.onerror = error => reject(error);
-    });
+  // toBase64 = file =>
+  //   new Promise((resolve, reject) => {
+  //     const reader = new FileReader();
+  //     reader.readAsBinaryString(file);
+  //     reader.onload = () =>
+  //       resolve(
+  //         (() => {
+  //           let b64 = btoa(reader.result);
+  //           b64 = b64.split(" ").join("+");
+  //           return b64;
+  //         })()
+  //       );
+  //     reader.onerror = error => reject(error);
+  //   });
+  resetFile = () => {
+    this.setState(
+      {
+        ...this.initialStates
+      },
+      () => {
+        this.fileRef.current.value = "";
+      }
+    );
+  };
   upload = file => {
     this.setState({ uploading: true });
     const _file = file.target.files[0];
     const _this = this;
     const newForm = new FormData();
+
     // this.toBase64(_file).then(b64 => {
     newForm.append("title", _file.name);
     newForm.append("fileExtension", _file.type);
@@ -53,6 +70,7 @@ export default class UploaderApiIncluded extends React.Component {
     // );
     // });
     // const _callback = file => {
+
     uploadFile()
       .onOk(result => {
         // console.log("succes result: ", result);
@@ -65,14 +83,14 @@ export default class UploaderApiIncluded extends React.Component {
         _this.setState(
           {
             uploaded: true, //DownloadAsset(result.data.file.filename)
-            uploading: false
+            uploading: false,
+            uploadedFileName: _file.name
             // selectedImgUrl: "url",
           },
           () => {
             _this.props.onChange(this.props.name, result);
           }
         );
-
         //prog => this.setState({ progress: prog.progress }));
         // if (window.analytics)
         // window.analytics.track("BankID Verification", {
@@ -128,6 +146,23 @@ export default class UploaderApiIncluded extends React.Component {
         _this.setState({ uploading: false });
         console.log("Bad request", result);
       })
+      .onCancel(() => {
+        _this.setState(
+          {
+            ...this.initialStates
+          },
+          () => {
+            this.fileRef.current.value = "";
+          }
+        );
+      })
+      .cancel(func => {
+        if (typeof func === "function") {
+          _this.setState({
+            cancelUpload: func
+          });
+        }
+      })
       .call(newForm, res => {
         _this.setState({ progress: res.progress });
       });
@@ -165,59 +200,70 @@ export default class UploaderApiIncluded extends React.Component {
     }
     return grabbedStyle;
   };
-
   render() {
     const { styleExporter } = this;
+    const { cancelUpload } = this.state;
     return (
-      <div
-        className={classnames(
-          "ImageUploaderApiIncluded",
-          this.state.selectedImgUrl ? "hasImage" : ""
-        )}
-        style={styleExporter("imgWrapperStyle")}
-      >
-        {this.state.selectedImgUrl && (
-          <img
-            src={this.state.selectedImgUrl}
-            alt={`uploader+${this.props.name}`}
-            style={styleExporter("imageStyle")}
+      <div className="IUAI">
+        <div
+          className={classnames(
+            "IUAI__item",
+            this.state.selectedImgUrl ? "hasImage" : ""
+          )}
+          style={styleExporter("imgWrapperStyle")}
+        >
+          {this.state.selectedImgUrl && (
+            <img
+              src={this.state.selectedImgUrl}
+              alt={`uploader+${this.props.name}`}
+              style={styleExporter("imageStyle")}
+            />
+          )}
+          {this.state.uploading ? (
+            <>
+              <span
+                className="icon-cross cancelButton"
+                onClick={cancelUpload}
+              ></span>
+              <span style={{ color: "black", direction: "ltr", zIndex: "1" }}>
+                {this.state.progress} %
+              </span>
+            </>
+          ) : !this.state.uploaded ? (
+            <span
+              className="fileName"
+              style={{ fontSize: "16px", cursor: "pointer" }}
+              onClick={() =>
+                !this.state.uploaded && this.fileRef.current.click()
+              }
+            >
+              {this.props.innerText || "Select File"}
+            </span>
+          ) : (
+            <>
+              <span
+                className="icon-cross cancelButton"
+                onClick={this.resetFile}
+              ></span>
+              <span className="fileName">{this.state.uploadedFileName}</span>
+            </>
+          )}
+          <input
+            type="file"
+            name={this.props.name}
+            style={{ display: "none" }}
+            onChange={this.upload}
+            ref={this.fileRef}
           />
-        )}
-        {this.state.uploading ? (
-          <span style={{ color: "black", direction: "ltr", zIndex: "1" }}>
-            {this.state.progress} %
-          </span>
-        ) : (
+        </div>
+        {/* {this.state.uploaded && (
           <span
-            style={{
-              display: "flex",
-              selfAlign: "center",
-              fontSize: "16px",
-              fontWeight: "bold",
-              color: "dimgray",
-              cursor: "pointer",
-              backgroundColor: this.state.selectedImgUrl
-                ? "rgba(100, 100, 100, 0.8)"
-                : "transparent",
-              padding: "5px",
-              borderRadius: "5px",
-              zIndex: "1"
-            }}
-            className="selectorButton"
+            style={{ marginTop: "20px", fontSize: "13px", color: "black" }}
             onClick={() => this.fileRef.current.click()}
           >
-            {!this.state.uploaded
-              ? this.props.innerText || "Select File"
-              : "Done!"}
+            <strong>Change file</strong>
           </span>
-        )}
-        <input
-          type="file"
-          name={this.props.name}
-          style={{ display: "none" }}
-          onChange={this.upload}
-          ref={this.fileRef}
-        />
+        )} */}
       </div>
     );
   }

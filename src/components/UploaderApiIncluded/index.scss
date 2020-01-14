@@ -1,13 +1,39 @@
-.ImageUploaderApiIncluded {
-  &.hasImage {
-    & .selectorButton {
-      display: none !important;
+.IUAI {
+  display: flex;
+  flex-direction: column;
+  height: auto;
+  &__item {
+    &.hasImage {
+      & .selectorButton {
+        display: none !important;
+      }
     }
-  }
-  &.hasImage:hover {
-    & .selectorButton {
-      display: flex !important;
+    & .cancelButton {
+      display: block;
+      position: absolute;
+      margin: -43px 43px;
+      font-size: 13px;
+      color: gray;
+      cursor: pointer;
+      &:hover {
+        color: black;
+      }
     }
-    background-color: whitesmoke !important;
+    & .fileName {
+      font-size: 14px;
+      width: 100%;
+      overflow: hidden;
+      padding: 5px;
+      text-overflow: ellipsis;
+      text-align: center;
+      max-height: 80px;
+      line-height: 1.4;
+    }
+    &.hasImage:hover {
+      & .selectorButton {
+        display: flex !important;
+      }
+      background-color: whitesmoke !important;
+    }
   }
 }

@@ -40,7 +40,7 @@ export default {
   APP_STATUS_WON_TITLE: "Avslutat!",
   APP_STATUS_CREATED_TITLE: "Skapad!",
   VERIFY: "Pröva",
-  MANDATORY_FIELD: "Obligatoriskt fält",
+  MANDATORY_FIELD: "obligatoriskt fält",
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:

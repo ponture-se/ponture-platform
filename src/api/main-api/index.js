@@ -915,7 +915,20 @@ export function uploadFile() {
       _unKnownErrorCallBack(result);
     }
   }
+  let _onCancelCallBack;
+  function _onCancel(result) {
+    if (_onCancelCallBack) {
+      _onCancelCallBack(result);
+    }
+  }
+  let _cancelCallBack;
+  function _cancel(result) {
+    if (_cancelCallBack) {
+      _cancelCallBack(result);
+    }
+  }
   const _call = (fileData, progress) => {
+    const CancelToken = axios.CancelToken;
     const url = uploadFileUrl;
     axios({
       method: "post",
@@ -943,6 +956,10 @@ export function uploadFile() {
           });
         }
       },
+      cancelToken: new CancelToken(function executor(c) {
+        // An executor function receives a cancel function as a parameter
+        _cancel(c); //passes an executable function to the onCancelUpload method
+      }),
       data: fileData
     })
       .then(response => {
@@ -975,6 +992,9 @@ export function uploadFile() {
               break;
             case 503:
               _onServerError();
+            case "canceled":
+              _onCancel();
+              break;
             default:
               _unKnownError();
               break;
@@ -985,8 +1005,16 @@ export function uploadFile() {
 
   return {
     call: _call,
+    cancel: function(callback) {
+      _cancelCallBack = callback;
+      return this;
+    },
     onOk: function(callback) {
       _onOkCallBack = callback;
+      return this;
+    },
+    onCancel: function(callback) {
+      _onCancelCallBack = callback;
       return this;
     },
     onProgress: function(callback) {

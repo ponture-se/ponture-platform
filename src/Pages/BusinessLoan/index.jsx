@@ -913,18 +913,19 @@ export default function BusinessLoan(props) {
 
   const handleREType = useCallback(
     e => {
+      const { value } = e.target;
       let _newOpt = "";
       let isValid = true;
       let eMessage = "";
-      if (selectedREType !== e) {
-        _newOpt = e;
+      if (selectedREType !== value) {
+        _newOpt = value;
       }
       if (
         !selectedREType ||
         (Array.isArray(selectedREType) && selectedREType.length === 0)
       ) {
         isValid = false;
-        eMessage = t("REQUIRED_FIELD");
+        eMessage = t("MANDATORY_FIELD");
       }
       setSelectedREType({
         value: _newOpt,
@@ -960,7 +961,7 @@ export default function BusinessLoan(props) {
         _newOpts.push(e);
       }
       if (_newOpts.length === 0) {
-        eMessage = t("REQUIRED_FIELD");
+        eMessage = t("MANDATORY_FIELD");
         isValid = false;
       }
       setSelectedREUsageCategory({
@@ -1009,7 +1010,7 @@ export default function BusinessLoan(props) {
       let { value, name } = e.target;
       let isValid = true;
       let eMessage = "";
-      if (!value || value.lenght === 0) {
+      if (!value || value.length === 0) {
         isValid = false;
         eMessage = t("MANDATORY_FIELD");
       }
@@ -1022,7 +1023,7 @@ export default function BusinessLoan(props) {
       let { value, name } = e.target;
       let isValid = true;
       let eMessage = "";
-      if (!value || value.lenght === 0) {
+      if (!value || value.length === 0) {
         isValid = false;
         eMessage = t("MANDATORY_FIELD");
       }
@@ -1035,7 +1036,7 @@ export default function BusinessLoan(props) {
       let { value, name } = e.target;
       let isValid = true;
       let eMessage = "";
-      if (!value || value.lenght === 0) {
+      if (!value || value.length === 0) {
         isValid = false;
         eMessage = t("MANDATORY_FIELD");
       }
@@ -1048,7 +1049,7 @@ export default function BusinessLoan(props) {
       let { value, name } = e.target;
       let isValid = true;
       let eMessage = "";
-      if (!value || value.lenght === 0) {
+      if (!value || value.length === 0) {
         isValid = false;
         eMessage = t("MANDATORY_FIELD");
       }
@@ -1322,6 +1323,8 @@ export default function BusinessLoan(props) {
           }
         };
       }
+
+      //Company acquisition fields
       if (activeRealEstateSection) {
         if (!REArea || REArea.length === 0) {
           isValid = false;
@@ -1335,23 +1338,37 @@ export default function BusinessLoan(props) {
             target: { value: REPrice ? REPrice.realValue : 0 }
           });
         }
-        if (!selectedREType.isValid) {
+        if (!selectedREType.value || selectedREType.value.length === 0) {
+          // debugger;
           isValid = false;
-          handleREType({
-            target: { value: selectedREType.value ? selectedREType.value : "" }
+          setSelectedREType({
+            value: "",
+            isValid: false,
+            eMessage: t("MANDATORY_FIELD")
           });
+          // handleREType({
+          //   target: { value: selectedREType.value ? selectedREType.value : "" }
+          // });
         }
-        if (!selectedREUsageCategory.isValid) {
+        if (
+          !selectedREUsageCategory.value ||
+          selectedREUsageCategory.value.length === 0
+        ) {
           isValid = false;
-          handleREUsageCategory({
-            target: {
-              value: selectedREUsageCategory.value.length
-                ? selectedREUsageCategory.value
-                : []
-            }
+          setSelectedREUsageCategory({
+            value: [],
+            isValid: false,
+            eMessage: t("MANDATORY_FIELD")
           });
+          // handleREUsageCategory({
+          //   target: {
+          //     value: selectedREUsageCategory.value.length
+          //       ? selectedREUsageCategory.value
+          //       : []
+          //   }
+          // });
         }
-        if (!RETaxationValue.isValid) {
+        if (!RETaxationValue.value || RETaxationValue.value.length === 0) {
           isValid = false;
           handleRETaxationValue({
             target: {
@@ -1359,36 +1376,36 @@ export default function BusinessLoan(props) {
             }
           });
         }
-        if (!REAddress.isValid) {
+        if (!REAddress.value || REAddress.value.length === 0) {
           isValid = false;
           handleREAddress({
             target: { value: REAddress.value ? REAddress.value : "" }
           });
         }
-        if (!RECity.isValid) {
+        if (!RECity.value || RECity.value.length === 0) {
           isValid = false;
-          handleREAddress({
+          handleRECity({
             target: { value: RECity.value ? RECity.value : "" }
           });
         }
-        if (!RELink.isValid) {
+        // if (!RELink.value || RELink.value.length === 0) {
+        //   isValid = false;
+        //   handleREAddress({
+        //     target: { value: RELink.value ? RELink.value : "" }
+        //   });
+        // }
+        if (!REDescription.value || REDescription.value.length === 0) {
           isValid = false;
-          handleREAddress({
-            target: { value: RELink.value ? RELink.value : "" }
-          });
-        }
-        if (!REDescription.isValid) {
-          isValid = false;
-          handleREAddress({
+          handleREDescription({
             target: { value: REDescription.value ? REDescription.value : "" }
           });
         }
-        if (!REFile.isValid) {
-          isValid = false;
-          handleREFile({
-            target: { value: REFile.value ? REFile.value : "" }
-          });
-        }
+        // if (!REFile.value || REFile.value.lengt === 0) {
+        //   isValid = false;
+        //   handleREFile({
+        //     target: { value: REFile.value ? REFile.value : "" }
+        //   });
+        // }
         obj = {
           ...obj,
           real_estate: {
@@ -1422,7 +1439,6 @@ export default function BusinessLoan(props) {
           amourtizationPeriod: parseInt(loanPeriod),
           need: needs,
           needDescription: loanReasonOther,
-          broker_id: brokerId,
           email: email,
           phoneNumber: phoneNumber,
           oppId: "",
@@ -1465,7 +1481,7 @@ export default function BusinessLoan(props) {
           (p_userRole === "customer" &&
             (activeCompanyTypeSelection || activeRealEstateSection))
         ) {
-          saveLoan()
+          saveLoan(p_userRole)
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors && result.length > 0) {
@@ -2153,7 +2169,7 @@ export default function BusinessLoan(props) {
                                         "btnReason " +
                                         (isSelected ? "--active" : "")
                                       }
-                                      onClick={() => handleREType(opt)}
+                                      onClick={() => handleREType({target:{value:opt}})}
                                     >
                                       <div className="btnReason__title">
                                         {opt}
@@ -2170,7 +2186,7 @@ export default function BusinessLoan(props) {
                             {/* </div> */}
                           </div>
                           {!selectedREType.isValid && (
-                            <span className="validation-messsage">
+                            <span className="validation-messsage" style={{paddingLeft:"10px"}}>
                               {selectedREType.eMessage}
                             </span>
                           )}
@@ -2283,7 +2299,7 @@ export default function BusinessLoan(props) {
                             {/* </div> */}
                           </div>
                           {!selectedREUsageCategory.isValid && (
-                            <span className="validation-messsage">
+                            <span className="validation-messsage" style={{paddingLeft:"10px"}}>
                               {selectedREUsageCategory.eMessage}
                             </span>
                           )}

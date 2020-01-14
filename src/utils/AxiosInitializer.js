@@ -20,30 +20,34 @@ export default function AxiosInitializer({ children }) {
         return response;
       },
       function(error) {
-        const response = error.response;
-        if (response.status === 401) {
-          const url = response.config.url;
-          if (
-            url !== submitUrl &&
-            url !== collectUrl &&
-            url !== cancelUrl &&
-            url !== companiesUrl
-          ) {
-            sessionStorage.removeItem("@ponture-customer-bankid");
-            sessionStorage.removeItem("@ponture-agent-info");
-            Cookies.remove("@ponture-customer-portal/token");
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message: t("UN_AUTHORIZED")
-              }
-            });
-            dispatch({
-              type: "SET_AUTHENTICATION",
-              payload: false
-            });
+        if (!axios.isCancel(error)) {
+          const response = error.response;
+          if (response.status === 401) {
+            const url = response.config.url;
+            if (
+              url !== submitUrl &&
+              url !== collectUrl &&
+              url !== cancelUrl &&
+              url !== companiesUrl
+            ) {
+              sessionStorage.removeItem("@ponture-customer-bankid");
+              sessionStorage.removeItem("@ponture-agent-info");
+              Cookies.remove("@ponture-customer-portal/token");
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "error",
+                  message: t("UN_AUTHORIZED")
+                }
+              });
+              dispatch({
+                type: "SET_AUTHENTICATION",
+                payload: false
+              });
+            }
           }
+        } else {
+          error = { ...error, response: { status: "canceled" } };
         }
         return Promise.reject(error);
       }
