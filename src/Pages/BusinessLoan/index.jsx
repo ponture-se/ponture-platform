@@ -959,7 +959,7 @@ export default function BusinessLoan(props) {
       } else {
         _newOpts.push(e);
       }
-      if(_newOpts.length === 0){
+      if (_newOpts.length === 0) {
         eMessage = t("REQUIRED_FIELD");
         isValid = false;
       }
@@ -1061,10 +1061,6 @@ export default function BusinessLoan(props) {
       let { value, name } = e.target;
       let isValid = true;
       let eMessage = "";
-      if (!value || value.lenght === 0) {
-        isValid = false;
-        eMessage = t("MANDATORY_FIELD");
-      }
       setREFile({ isValid: isValid, eMessage: eMessage, value: value });
     },
     [REFile]
@@ -1389,7 +1385,7 @@ export default function BusinessLoan(props) {
         }
         if (!REFile.isValid) {
           isValid = false;
-          handleREAddress({
+          handleREFile({
             target: { value: REFile.value ? REFile.value : "" }
           });
         }
@@ -1472,7 +1468,6 @@ export default function BusinessLoan(props) {
           saveLoan()
             .onOk(result => {
               if (!didCancel) {
-                debugger;
                 if (result.errors && result.length > 0) {
                   if (window.analytics)
                     window.analytics.track("Failure", {
@@ -2287,9 +2282,9 @@ export default function BusinessLoan(props) {
                             </div>
                             {/* </div> */}
                           </div>
-                          {!selectedREUsageCategory.isValid  && (
+                          {!selectedREUsageCategory.isValid && (
                             <span className="validation-messsage">
-                              {selectedREUsageCategory.eMessage }
+                              {selectedREUsageCategory.eMessage}
                             </span>
                           )}
                         </div>
@@ -2556,6 +2551,7 @@ export default function BusinessLoan(props) {
                             <UploaderApiIncluded
                               name="File"
                               innerText="File upload"
+                              onChange={(name, result) => setREFile(result.id)}
                             />
                           </div>
                         </div>

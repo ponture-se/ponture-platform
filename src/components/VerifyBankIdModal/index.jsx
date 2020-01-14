@@ -9,6 +9,12 @@ const isMobile = isMobileDevice();
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
   const { t } = useLocale();
+
+  //get config from props else set a default value for mandatory configs
+  const { companyList, isLogin } = props.config || {
+    companyList: true,
+    isLogin: false
+  };
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [status, setStatus] = useState(t("RFA1"));
   const [success, setSuccess] = useState(false);
@@ -38,14 +44,18 @@ export default function VerifyBankIdModal(props) {
                         }
                       );
                     }
-                    if (!props.isLogin) {
+                    if (!isLogin) {
                       if (window.analytics)
                         window.analytics.track("BankID Verified", {
                           category: "Loan Application",
                           label: "/app/loan/ bankid popup",
                           value: 0
                         });
-                      _getCompanies(result);
+                      if (companyList) {
+                        _getCompanies(result);
+                      } else {
+                        props.onClose(true, result);
+                      }
                     } else {
                       if (window.analytics)
                         window.analytics.track("BankID Verified", {
@@ -68,7 +78,7 @@ export default function VerifyBankIdModal(props) {
                     break;
                 }
               } else {
-                if (!props.isLogin) {
+                if (!isLogin) {
                   if (window.analytics)
                     window.analytics.track("BankID Failed", {
                       category: "Loan Application",

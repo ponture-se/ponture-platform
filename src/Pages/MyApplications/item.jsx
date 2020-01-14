@@ -12,7 +12,9 @@ import { CircleSpinner } from "components";
 const Item = props => {
   const [{ currentRole }, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
-  const { item, submit, verify } = props;
+  const { item } = props;
+  const parent_submit = props.submit;
+  const parent_verify = props.verify;
   const parent_onBankId = props.onBankId;
   const { personalNumber } = item.contactInfo;
   const stage = item.opportunityStage.toLowerCase();
@@ -24,11 +26,11 @@ const Item = props => {
 
   //functions
   const submitApplication = appData => {
-    if (typeof submit === "function") {
-      if (typeof verify === "function") {
+    if (typeof parent_submit === "function") {
+      if (typeof parent_verify === "function") {
         toggleLoading(true);
         //
-        submit(appData, res => {
+        parent_submit(appData, res => {
           console.log("submit result: ", res);
           setIsSubmitted(true);
           toggleLoading(false);
@@ -37,13 +39,13 @@ const Item = props => {
     }
   };
   const verifyApplication = pNum => {
-    if (typeof verify === "function") {
+    if (typeof parent_verify === "function") {
       toggleLoading(true);
       //
-      verify(pNum, res => {
+      parent_verify(pNum, res => {
         console.log("bankId modal: ", res);
-        setIsVerified(true);
         toggleLoading(false);
+        setIsVerified(true);
       });
     }
   };

@@ -866,10 +866,17 @@ export function agentLogin() {
   };
 }
 export function uploadFile() {
+  //
   let _onOkCallBack;
   function _onOk(result) {
     if (_onOkCallBack) {
       _onOkCallBack(result);
+    }
+  }
+  let _onProgressCallBack;
+  function _onProgress(result) {
+    if (_onProgressCallBack) {
+      _onProgressCallBack(result);
     }
   }
   let _onServerErrorCallBack;
@@ -908,14 +915,33 @@ export function uploadFile() {
       _unKnownErrorCallBack(result);
     }
   }
-  const _call = fileData => {
+  const _call = (fileData, progress) => {
     const url = uploadFileUrl;
     axios({
       method: "post",
       url: url,
       headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
+        // "Content-Type": "application/x-www-form-urlencoded",
         "Access-Control-Allow-Origin": "*"
+      },
+      onUploadProgress: progressEvent => {
+        const totalLength = progressEvent.lengthComputable
+          ? progressEvent.total
+          : progressEvent.target.getResponseHeader("content-length") ||
+            progressEvent.target.getResponseHeader(
+              "x-decompressed-content-length"
+            );
+        let progressPercentage = 0;
+        if (totalLength !== null) {
+          progressPercentage = Math.round(
+            (progressEvent.loaded * 100) / totalLength
+          );
+          return progress({
+            totalLength: totalLength,
+            uploadedLength: progressEvent.loaded,
+            progress: progressPercentage
+          });
+        }
       },
       data: fileData
     })
@@ -961,6 +987,10 @@ export function uploadFile() {
     call: _call,
     onOk: function(callback) {
       _onOkCallBack = callback;
+      return this;
+    },
+    onProgress: function(callback) {
+      _onProgressCallBack = callback;
       return this;
     },
     onServerError: function(callback) {

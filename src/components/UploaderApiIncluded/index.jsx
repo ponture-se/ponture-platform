@@ -14,7 +14,7 @@ export default class UploaderApiIncluded extends React.Component {
     };
     this.state = {
       progress: 0,
-      selectedImgUrl: props.defaultUrl, //? DownloadAsset(props.defaultUrl) : "",
+      // selectedImgUrl: false, //props.defaultUrl, //? DownloadAsset(props.defaultUrl) : "",
       uploading: false,
       uploaded: false
     };
@@ -37,93 +37,101 @@ export default class UploaderApiIncluded extends React.Component {
   upload = file => {
     this.setState({ uploading: true });
     const _file = file.target.files[0];
-    // const newForm = new FormData();
-    this.toBase64(_file).then(b64 => {
-      // newForm.append("title", _file.name);
-      // newForm.append("fileExtension", _file.type);
-      // newForm.append("content", encodeURIComponent(b64));
-      // _callback(newForm);
-      _callback(
-        `title=${encodeURIComponent(
-          _file.name
-        )}&fileExtension=${encodeURIComponent(
-          _file.type
-        )}&content=${encodeURIComponent(b64)}`
-      );
-    });
-    const _callback = file => {
-      uploadFile()
-        .onOk(result => {
-          // console.log("succes result: ", result);
-          // if (this.props.defaultUrl) {
-          //   // res.data["prev_file"] = this.props.defaultUrl;
-          //   // res.data["replace"] = true;
-          // } else {
-          //   // res.data["replace"] = false;
-          // }
-          this.props.onChange(this.props.name, result);
-          this.setState({
-            selectedImgUrl: "url",
-            uploaded: true //DownloadAsset(result.data.file.filename)
-          });
-          this.setState({ uploading: false });
-          //prog => this.setState({ progress: prog.progress }));
-          // if (window.analytics)
-          // window.analytics.track("BankID Verification", {
-          //   category: "Loan Application",
-          //   label: "/app/loan/ bankid popup",
-          //   value: 0
-          // });
-          // toggleVerifyingSpinner(false);
-          // setStartResult(result);
-          // toggleVerifyModal(true);
-        })
-        .onServerError(result => {
-          // if (!didCancel) {
-          // toggleVerifyingSpinner(false);
-          // changeTab(3);
-          // setError({
-          //   sender: "verifyBankId"
-          // });
-          // }
-          this.setState({ uploading: false });
-          console.log("server error ", result);
-        })
-        .onBadRequest(result => {
-          // if (!didCancel) {
-          //   toggleVerifyingSpinner(false);
-          //   changeTab(3);
-          //   setError({
-          //     sender: "verifyBankId"
-          //   });
-          // }
-          this.setState({ uploading: false });
-          console.log("Bad request", result);
-        })
-        .unAuthorized(result => {
-          // if (!didCancel) {
-          //   toggleVerifyingSpinner(false);
-          //   changeTab(3);
-          //   setError({
-          //     sender: "verifyBankId"
-          //   });
-          // }
-          this.setState({ uploading: false });
-          console.log("Bad request", result);
-        })
-        .unKnownError(result => {
-          // if (!didCancel) {
-          //   toggleVerifyingSpinner(false);
-          //   changeTab(3);
-          //   setError({
-          //     sender: "verifyBankId"
-          //   });
-          // }
-          this.setState({ uploading: false });
-          console.log("Bad request", result);
-        })
-        .call(file);
-    };
+    const _this = this;
+    const newForm = new FormData();
+    // this.toBase64(_file).then(b64 => {
+    newForm.append("title", _file.name);
+    newForm.append("fileExtension", _file.type);
+    newForm.append("file", _file);
+    // _callback(newForm);
+    // _callback(
+    //   `title=${encodeURIComponent(
+    //     _file.name
+    //   )}&fileExtension=${encodeURIComponent(
+    //     _file.type
+    //   )}&content=${encodeURIComponent(b64)}`
+    // );
+    // });
+    // const _callback = file => {
+    uploadFile()
+      .onOk(result => {
+        // console.log("succes result: ", result);
+        // if (this.props.defaultUrl) {
+        //   // res.data["prev_file"] = this.props.defaultUrl;
+        //   // res.data["replace"] = true;
+        // } else {
+        //   // res.data["replace"] = false;
+        // }
+        _this.setState(
+          {
+            uploaded: true, //DownloadAsset(result.data.file.filename)
+            uploading: false
+            // selectedImgUrl: "url",
+          },
+          () => {
+            _this.props.onChange(this.props.name, result);
+          }
+        );
+
+        //prog => this.setState({ progress: prog.progress }));
+        // if (window.analytics)
+        // window.analytics.track("BankID Verification", {
+        //   category: "Loan Application",
+        //   label: "/app/loan/ bankid popup",
+        //   value: 0
+        // });
+        // toggleVerifyingSpinner(false);
+        // setStartResult(result);
+        // toggleVerifyModal(true);
+      })
+      .onServerError(result => {
+        // if (!didCancel) {
+        // toggleVerifyingSpinner(false);
+        // changeTab(3);
+        // setError({
+        //   sender: "verifyBankId"
+        // });
+        // }
+        _this.setState({ uploading: false });
+        console.log("server error ", result);
+      })
+      .onBadRequest(result => {
+        // if (!didCancel) {
+        //   toggleVerifyingSpinner(false);
+        //   changeTab(3);
+        //   setError({
+        //     sender: "verifyBankId"
+        //   });
+        // }
+        _this.setState({ uploading: false });
+        console.log("Bad request", result);
+      })
+      .unAuthorized(result => {
+        // if (!didCancel) {
+        //   toggleVerifyingSpinner(false);
+        //   changeTab(3);
+        //   setError({
+        //     sender: "verifyBankId"
+        //   });
+        // }
+        _this.setState({ uploading: false });
+        console.log("Bad request", result);
+      })
+      .unKnownError(result => {
+        // if (!didCancel) {
+        //   toggleVerifyingSpinner(false);
+        //   changeTab(3);
+        //   setError({
+        //     sender: "verifyBankId"
+        //   });
+        // }
+        _this.setState({ uploading: false });
+        console.log("Bad request", result);
+      })
+      .call(newForm, res => {
+        _this.setState({ progress: res.progress });
+      });
+    // };
   };
   styleExporter = name => {
     let grabbedStyle = {};
@@ -198,7 +206,9 @@ export default class UploaderApiIncluded extends React.Component {
             className="selectorButton"
             onClick={() => this.fileRef.current.click()}
           >
-            {!this.state.uploaded ? this.props.innerText : "Completed"}
+            {!this.state.uploaded
+              ? this.props.innerText || "Select File"
+              : "Done!"}
           </span>
         )}
         <input

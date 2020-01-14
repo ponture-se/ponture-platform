@@ -17,8 +17,11 @@ const MyApplications = props => {
   const [data, setData] = useState();
   const [error, setError] = useState();
   const [verifyModal, toggleVerifyModal] = useState(false);
-  const [startResult, setStartResult] = useState();
+  const [startResult, setStartResult] = useState(undefined);
   const [personalNumber, setPersonalNumber] = useState("");
+  const [lastCallback, setLastCallback] = useState(() => {
+    return;
+  });
   //componentDidMount
   useEffect(() => {
     _getMyApplications();
@@ -29,8 +32,22 @@ const MyApplications = props => {
 
   //pNum: personalNumber
   //BankId function
-  function handleVerifyApplication(pNum) {}
-
+  function handleVerifyApplication(pNum, callback) {
+    toggleVerifyModal(true);
+    handleBankIdClicked(pNum, callback);
+  }
+  function handleSuccessBankId(result) {
+    if (result.progressStatus === "COMPLETE") {
+      if (lastCallback === "function") {
+        lastCallback(result);
+        toggleVerifyModal(false);
+        setStartResult(undefined);
+      }
+      // setLastCallback(() => {
+      //   return;
+      // });
+    }
+  }
   //After bankId
   function handleBankIdClicked(pNum, callback) {
     startBankId()
@@ -38,7 +55,7 @@ const MyApplications = props => {
         if (!didCancel) {
           setStartResult(result);
           if (typeof callback === "function") {
-            callback(result);
+            setLastCallback(callback);
           }
           // save result in session storage to use in customer portal
           // Cookies.set("@ponture-customer-portal/token", result);
@@ -96,7 +113,7 @@ const MyApplications = props => {
     // });
     cancelVerify()
       .onOk(result => {
-        console.log("cancled successful");
+        console.info("handleCancelVerify", result);
       })
       .onServerError(result => {
         if (!didCancel) {
@@ -119,39 +136,26 @@ const MyApplications = props => {
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
     if (isSuccess) {
-      //   const { companies, user_info } = result;
-      //   if (companies && companies.length > 0) {
-      //     dispatch({
-      //       type: "TOGGLE_B_L_MORE_INFO",
-      //       value: true
-      //     });
-      //     // save bank id result to us ein customer
-      //     dispatch({
-      //       type: "VERIFY_BANK_ID_SUCCESS",
-      //       payload: bIdResult
-      //     });
-      //     sessionStorage.setItem(
-      //       "@ponture-customer-bankid",
-      //       JSON.stringify(bIdResult)
-      //     );
-      //     setBankIdResult(bIdResult);
-      //     setCompanies(companies);
-      //     setLastName(user_info.surName);
-      //   } else {
-      //     toggleMainSpinner(false);
-      //     changeTab(3);
-      //     setError({
-      //       sender: "companies",
-      //       type: "loadData",
-      //       message: t("COMPANIES_IN_VALID_DATA")
-      //     });
-      //   }
-      // } else if (isSuccess === false) {
-      //   changeTab(3);
-      //   setError({
-      //     sender: "submitLoan"
-      //   });
-      // }
+      // dispatch({
+      //   type: "TOGGLE_B_L_MORE_INFO",
+      //   value: true
+      // });
+      // save bank id result to us ein customer
+      // dispatch({
+      //   type: "VERIFY_BANK_ID_SUCCESS",
+      //   payload: bIdResult
+      // });
+      // sessionStorage.setItem(
+      //   "@ponture-customer-bankid",
+      //   JSON.stringify(bIdResult)
+      // );
+      // lastCallback(result);
+      console.error("handleCloseVerifyModal", result);
+    } else {
+      // changeTab(3);
+      setError({
+        sender: "submitLoan"
+      });
     }
   }
   //Submit application function
@@ -161,8 +165,8 @@ const MyApplications = props => {
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
-          toggleLoading(false);
           setData(result);
+          toggleLoading(false);
         }
       })
       .onServerError(result => {
@@ -185,6 +189,7 @@ const MyApplications = props => {
       })
       .unAuthorized(result => {
         if (!didCancel) {
+          toggleLoading(false);
         }
       })
       .notFound(result => {
@@ -262,6 +267,10 @@ const MyApplications = props => {
               onClose={handleCloseVerifyModal}
               onVerified={handleSuccessBankId}
               onCancelVerify={handleCancelVerify}
+              config={{
+                companyList: false,
+                isLogin: true
+              }}
             />
           )}
         </>
