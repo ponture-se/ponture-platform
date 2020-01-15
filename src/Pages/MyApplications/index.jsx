@@ -6,11 +6,11 @@ import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getMyApplications } from "api/main-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
-import { startBankId, cancelVerify } from "api/business-loan-api";
+import { startBankId, cancelVerify, submitLoan } from "api/business-loan-api";
 //
 const MyApplications = props => {
   let didCancel = false;
-  const [{ userInfo, currentRole }] = useGlobalState();
+  const [{ userInfo, currentRole }, dispatch] = useGlobalState();
   const { t } = useLocale();
   const [selectedApp, setApp] = useState();
   const [loading, toggleLoading] = useState(true);
@@ -19,9 +19,7 @@ const MyApplications = props => {
   const [verifyModal, toggleVerifyModal] = useState(false);
   const [startResult, setStartResult] = useState(undefined);
   const [personalNumber, setPersonalNumber] = useState("");
-  const [lastCallback, setLastCallback] = useState(() => {
-    return;
-  });
+  const [lastCallback, setLastCallback] = useState(undefined);
   //componentDidMount
   useEffect(() => {
     _getMyApplications();
@@ -32,31 +30,35 @@ const MyApplications = props => {
 
   //pNum: personalNumber
   //BankId function
-  function handleVerifyApplication(pNum, callback) {
-    toggleVerifyModal(true);
-    handleBankIdClicked(pNum, callback);
+  function handleVerifyApplication(pNum, successCallback, failedCallback) {
+    handleBankIdClicked(pNum, {
+      success: successCallback,
+      failed: failedCallback
+    });
   }
   function handleSuccessBankId(result) {
-    if (result.progressStatus === "COMPLETE") {
-      if (lastCallback === "function") {
-        lastCallback(result);
-        toggleVerifyModal(false);
-        setStartResult(undefined);
-      }
-      // setLastCallback(() => {
-      //   return;
-      // });
+    // debugger;
+    setStartResult(undefined);
+    if (typeof lastCallback.success === "function") {
+      // _getMyApplications();
+      lastCallback.success(result, () => toggleVerifyModal(false));
     }
+
+    // setLastCallback(() => {
+    //   return;
+    // });
   }
   //After bankId
-  function handleBankIdClicked(pNum, callback) {
+  function handleBankIdClicked(pNum, callbacksObj) {
+    // debugger;
+    if (typeof callbacksObj === "object") {
+      setLastCallback(callbacksObj);
+    }
     startBankId()
       .onOk(result => {
         if (!didCancel) {
           setStartResult(result);
-          if (typeof callback === "function") {
-            setLastCallback(callback);
-          }
+          toggleVerifyModal(true);
           // save result in session storage to use in customer portal
           // Cookies.set("@ponture-customer-portal/token", result);
           // if (window.analytics)
@@ -67,74 +69,95 @@ const MyApplications = props => {
           //   });
         }
       })
-      // .onServerError(result => {
-      //   if (!didCancel) {
-      //     setError({
-      //       sender: "verifyBankId"
-      //     });
-      //   }
-      // })
-      // .onBadRequest(result => {
-      //   if (!didCancel) {
-      //     toggleVerifyingSpinner(false);
-      //     changeTab(3);
-      //     setError({
-      //       sender: "verifyBankId"
-      //     });
-      //   }
-      // })
-      // .unAuthorized(result => {
-      //   if (!didCancel) {
-      //     toggleVerifyingSpinner(false);
-      //     changeTab(3);
-      //     setError({
-      //       sender: "verifyBankId"
-      //     });
-      //   }
-      // })
-      // .unKnownError(result => {
-      //   if (!didCancel) {
-      //     toggleVerifyingSpinner(false);
-      //     changeTab(3);
-      //     setError({
-      //       sender: "verifyBankId"
-      //     });
-      //   }
-      // })
+      .onServerError(result => {
+        if (!didCancel) {
+          lastCallback.failed(result, () => setLastCallback(undefined));
+          setError({
+            sender: "verifyBankId"
+          });
+        }
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+          lastCallback.failed(result, () => setLastCallback(undefined));
+          setError({
+            sender: "verifyBankId"
+          });
+        }
+      })
+      .unAuthorized(result => {
+        if (!didCancel) {
+          lastCallback.failed(result, () => setLastCallback(undefined));
+          setError({
+            sender: "verifyBankId"
+          });
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          lastCallback.failed(result, () => setLastCallback(undefined));
+          setError({
+            sender: "verifyBankId"
+          });
+        }
+      })
       .call(pNum);
   }
   function handleCancelVerify() {
-    // toggleVerifyModal(false);
+    // debugger;
     // if (window.analytics)
     // window.analytics.track("BankID Failed", {
     //   category: "Loan Application",
     //   label: "/app/loan/ bankid popup",
     //   value: 0
     // });
+    toggleVerifyModal(false);
     cancelVerify()
       .onOk(result => {
-        console.info("handleCancelVerify", result);
+        if (typeof lastCallback.failed === "function") {
+          lastCallback.failed(result, () => setLastCallback(undefined));
+        }
+        setStartResult(false);
       })
       .onServerError(result => {
         if (!didCancel) {
+          if (typeof lastCallback === "function") {
+            lastCallback.failed(result, () => setLastCallback(undefined));
+          }
+          toggleVerifyModal(false);
+          setStartResult(false);
         }
       })
       .onBadRequest(result => {
         if (!didCancel) {
+          if (typeof lastCallback === "function") {
+            lastCallback.failed(result, () => setLastCallback(undefined));
+          }
+          toggleVerifyModal(false);
+          setStartResult(false);
         }
       })
       .unAuthorized(result => {
         if (!didCancel) {
+          if (typeof lastCallback === "function") {
+            lastCallback.failed(result, () => setLastCallback(undefined));
+          }
+          toggleVerifyModal(false);
+          setStartResult(false);
         }
       })
       .unKnownError(result => {
         if (!didCancel) {
+          if (typeof lastCallback === "function") {
+            lastCallback.failed(result, () => setLastCallback(undefined));
+          }
+          toggleVerifyModal(false);
+          setStartResult(false);
         }
       })
       .call(startResult.orderRef);
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
-    toggleVerifyModal(false);
     if (isSuccess) {
       // dispatch({
       //   type: "TOGGLE_B_L_MORE_INFO",
@@ -150,18 +173,93 @@ const MyApplications = props => {
       //   JSON.stringify(bIdResult)
       // );
       // lastCallback(result);
-      console.error("handleCloseVerifyModal", result);
+      dispatch({
+        type: "ADD_NOTIFY",
+        value: {
+          type: "success",
+          message: "BankId lyckades"
+        }
+      });
+      // toggleVerifyModal(false);
+      // setLastCallback(undefined);
+      // setStartResult(false);
     } else {
-      // changeTab(3);
-      setError({
-        sender: "submitLoan"
+      toggleVerifyModal(false);
+      setLastCallback(undefined);
+      setStartResult(false);
+      dispatch({
+        type: "ADD_NOTIFY",
+        value: {
+          type: "error",
+          message: "BankId misslyckades"
+        }
       });
     }
   }
   //Submit application function
-  function handleSubmitApplication() {}
+  function handleSubmitApplication(data, callback) {
+    submitLoan()
+      .onOk(result => {
+        if (!didCancel) {
+          if (result.errors) {
+            //failed
+            // if (window.analytics)
+            //   window.analytics.track("Failure", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: 0
+            //   });
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Skicka misslyckades"
+              }
+            });
+          } else {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "success",
+                message: "Skicka har varit framgångsrikt"
+              }
+            });
+            if (typeof callback === "function") {
+              _getMyApplications();
+              callback(result);
+            }
+            //success
+            // if (window.analytics)
+            //   window.analytics.track("Submit", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: loanAmount
+            //   });
+          }
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(result);
+          }
+          // setError({
+          //   sender: "submitLoan"
+          // });
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Skicka misslyckades"
+            }
+          });
+        }
+      })
+      .call(data);
+  }
 
   function _getMyApplications() {
+    toggleLoading(true);
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
@@ -265,7 +363,8 @@ const MyApplications = props => {
               startResult={startResult}
               personalNumber={personalNumber}
               onClose={handleCloseVerifyModal}
-              onVerified={handleSuccessBankId}
+              // onVerified={handleSuccessBankId}
+              onSuccess={handleSuccessBankId}
               onCancelVerify={handleCancelVerify}
               config={{
                 companyList: false,

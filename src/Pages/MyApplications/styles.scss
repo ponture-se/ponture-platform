@@ -3,6 +3,12 @@
   display: flex;
   flex-direction: column;
 }
+.btn {
+  &.--verified {
+    background-color: transparent;
+    color: rgb(9, 172, 102);
+  }
+}
 .application {
   background: white;
   box-shadow: 0 0 2px lightgray;

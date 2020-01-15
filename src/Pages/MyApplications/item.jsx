@@ -7,6 +7,7 @@ import track from "utils/trackAnalytic";
 import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
 import { CircleSpinner } from "components";
+import classnames from "classnames";
 
 //
 const Item = props => {
@@ -26,14 +27,22 @@ const Item = props => {
 
   //functions
   const submitApplication = appData => {
+    const oppId = appData.opportunityID;
+    const data = {
+      oppId: oppId
+    };
     if (typeof parent_submit === "function") {
       if (typeof parent_verify === "function") {
         toggleLoading(true);
         //
-        parent_submit(appData, res => {
-          console.log("submit result: ", res);
-          setIsSubmitted(true);
-          toggleLoading(false);
+        parent_submit(data, res => {
+          debugger;
+          if (res.success) {
+            setIsSubmitted(true);
+            toggleLoading(false);
+          } else {
+            toggleLoading(false);
+          }
         });
       }
     }
@@ -42,11 +51,23 @@ const Item = props => {
     if (typeof parent_verify === "function") {
       toggleLoading(true);
       //
-      parent_verify(pNum, res => {
-        console.log("bankId modal: ", res);
-        toggleLoading(false);
-        setIsVerified(true);
-      });
+      parent_verify(
+        pNum,
+        (SuccessRes, callback) => {
+          toggleLoading(false);
+          setIsVerified(true);
+          if (typeof callback === "function") {
+            callback();
+          }
+        },
+        (failedRes, callback) => {
+          toggleLoading(false);
+          setIsVerified(false);
+          if (typeof callback === "function") {
+            callback();
+          }
+        }
+      );
     }
   };
 
@@ -280,30 +301,60 @@ const Item = props => {
       {/* Application footer */}
       {stage !== "funded/closed won" && stage !== "not funded/ closed lost" && (
         <div className="application__footer">
-          <button className="btn --light" onClick={handleCancelClicked}>
-            <span className="icon-cross" />
-            {t("CANCEL")}
-          </button>
-          {!isSubmitted &&
-            (!isVerified ? (
-              <button
-                className="btn --primary"
-                onClick={() => verifyApplication(personalNumber)}
-                disabled={loading}
-              >
-                <span className="icon-info" style={{ fontSize: "14px" }} />
-                {loading ? <CircleSpinner show={true} /> : t("VERIFY")}
-              </button>
-            ) : (
-              <button
-                className="btn --success"
-                onClick={() => submitApplication(item)}
-                disabled={loading}
-              >
-                <span className="icon-checkmark" style={{ fontSize: "14px" }} />
-                {loading ? <CircleSpinner show={true} /> : t("SUBMIT_2")}
-              </button>
-            ))}
+          <div>
+            <button className="btn --light" onClick={handleCancelClicked}>
+              <span className="icon-cross" />
+              {t("CANCEL")}
+            </button>
+          </div>
+          <div style={{ flexDirection: "row", display: "flex" }}>
+            {stage === "created" && (
+              <>
+                <button
+                  className={classnames(
+                    "btn verifyBtn",
+                    isVerified ? "--verified" : "--primary"
+                  )}
+                  style={{ marginRight: "10px" }}
+                  onClick={() => verifyApplication(personalNumber)}
+                  disabled={loading || isVerified}
+                >
+                  {isVerified ? (
+                    <>
+                      <span
+                        className="icon-checkmark"
+                        style={{ fontSize: "14px", color: "#42ccad" }}
+                      />
+                      {t("VERIFIED")}
+                    </>
+                  ) : loading ? (
+                    <CircleSpinner show={true} />
+                  ) : (
+                    <>
+                      <span
+                        className="icon-info"
+                        style={{ fontSize: "14px" }}
+                      />
+                      {t("VERIFY")}
+                    </>
+                  )}
+                </button>
+                {isVerified && (
+                  <button
+                    className="btn --warning"
+                    onClick={() => submitApplication(item)}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <CircleSpinner show={true} />
+                    ) : (
+                      <>{t("SUBMIT_2")}</>
+                    )}
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>
