@@ -1,7 +1,7 @@
 export default {
   CLOSE: "Stänga",
   SUBMIT: "Ansök",
-  SUBMIT_2: "Sticka",
+  SUBMIT_2: "Sticka", //T:Submit
   SUBMITTED: "Inskickat",
   MON: "mån",
   MONTH: "månad",
@@ -28,7 +28,8 @@ export default {
   NOT_FOUND_MSG: "Not Found",
   ON_REQUEST_ERROR: "Request Error",
   ON_REQUEST_ERROR_MSG: "Request Error",
-  CANCEL: "Avbryt",
+  CANCEL: "Avbryt", //T: Cancel
+  EDIT: "Redigera", //T: EDit
   REJECT: "Tacka Nej",
   VIEW_OFFERS: "Visa Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
@@ -38,10 +39,11 @@ export default {
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
   APP_STATUS_REJECTED_TITLE: "Avslagen!",
   APP_STATUS_WON_TITLE: "Avslutat!",
-  APP_STATUS_CREATED_TITLE: "Skapad!",
-  VERIFY: "Pröva",
-  VERIFIED: "Verified",
-  MANDATORY_FIELD: "obligatoriskt fält",
+  APP_STATUS_CREATED_TITLE: "Skapad!", //T:Created
+  APP_EDIT: "Redigera applikationen", //T:Edit application
+  VERIFY: "Pröva", //T:Verify/identify
+  VERIFIED: "Verified", //T: Verified
+  MANDATORY_FIELD: "obligatoriskt fält", //T: Mandatory field
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:
@@ -49,7 +51,7 @@ export default {
   APP_STATUS_REJECTED_BY_USER_DESC: "Du avbröt din ansökan.",
   APP_STATUS_REJECTED_DESC: "Din ansökan är inte godkänd!",
   APP_STATUS_WON_DESC: "Din ansökan är avslutad!",
-  APP_STATUS_CREATED_DESC: "Din ansökan har skapats.",
+  APP_STATUS_CREATED_DESC: "Din ansökan har skapats.", //T:Anything
 
   MONTH_S: "month(s)",
   ARE_YOU_SURE: "Are you sure?",
@@ -60,7 +62,7 @@ export default {
     "Under tiden, prova gärna en gång till eller kontakta oss direkt så hjälper vi er vidare!",
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
   VIEW_DETAIL: "Visa detalj",
-  OPEN_BANK_ID: "Öppna BankID-appen",
+  OPEN_BANK_ID: "Öppna BankID-appen", //T:Open bankID
   VERIFY_AND_SUBMIT: "Skicka",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in till Mina Sidor",
@@ -121,14 +123,14 @@ export default {
 
   ///
   LOGIN_INFO:
-    "Access to the most powerful tool in the entire design and web industry",
-  LOGIN_USERNAME: "Username",
+    "Access to the most powerful tool in the entire design and web industry", //T
+  LOGIN_USERNAME: "Username", //T
   LOGIN_USERNAME_INFO: "Try to enter valid username",
-  LOGIN_PASSWORD: "Password",
-  LOGIN_PASSWORD_INFO: "Password must be at least 6 characters",
-  LOGIN_USERNAME_INPUT_PLACEHOLDER: "Enter username",
-  LOGIN_PASSWORD_INPUT_PLACEHOLDER: "Password",
-  LOGIN_BTN_NAME: "Login",
+  LOGIN_PASSWORD: "Password", //T
+  LOGIN_PASSWORD_INFO: "Password must be at least 6 characters", //T
+  LOGIN_USERNAME_INPUT_PLACEHOLDER: "Enter username", //T
+  LOGIN_PASSWORD_INPUT_PLACEHOLDER: "Password", //T
+  LOGIN_BTN_NAME: "Login", //T
 
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
@@ -140,9 +142,9 @@ export default {
   BL_PERSONAL_NUMBER: "Personnummer",
   BL_PERSONAL_NUMBER_INFO:
     "Ange ditt svenska personnummer så att vi kan hitta ditt företag",
-  BL_COMPANY: "Välj ditt företag",
-  BL_NEW_COMAPNY: "New company",
-  BL_SELECT_COMAPNY: "Välj ett företag",
+  BL_COMPANY: "Välj ditt företag", //T
+  BL_NEW_COMAPNY: "New company", //T
+  BL_SELECT_COMAPNY: "Välj ett företag", //T
   BL_CONTACT_BOX_TITLE: "Kontaktuppgifter:",
   BL_PHONE_NUMBER: "Telefon",
   BL_EMAIL: "E-post",
@@ -150,7 +152,6 @@ export default {
   BL_TERMS_LINK: "läs våra användarvillkor",
   BL_ORG_NAME: "Företagsnamn",
   BL_COMPANY_INFO: "Köpobjekt",
-  BL_NEW_COMPANY: "New company",
   BL_LOANREASON_IS_REQUIRED: "Välj en anledning krävs",
   BL_REALESTATE_TYPE: "Typ",
   BL_REALESTATE_INFO: "Fastighetsuppgifter",
@@ -170,8 +171,8 @@ export default {
   BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
   BL_ADDITIONAL_DETAILS: "Ytterliggare detaljer",
   BL_REALESTATE_INFO: "Fastighetsuppgifter",
-  BL_AREA: "Area (m2)",
-  BL_REALESTATE_AREA_IS_REQUIRED: "Område krävs",
+  BL_AREA: "Area(sqm)", //T
+  BL_REALESTATE_AREA_IS_REQUIRED: "Område krävs", //T
   BL_AGENT_NUMBER_PLACEHOLDER: "Ange ditt personnummer",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
@@ -185,7 +186,7 @@ export default {
   PRICE_IS_REQUIRED: "price är felaktigt",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
-  BL_ORGNAME_IS_REQUIRED: "Företagsnamn krävs",
+  BL_ORGNAME_IS_REQUIRED: "Företagsnamn krävs", //T
   BL_VERIFY_PID_BTN: "Identifiera med BankID",
   BL_TERMS_IS_REQUIRED:
     "Godkännande av våra villkor är obligatorisk för att ansöka.",

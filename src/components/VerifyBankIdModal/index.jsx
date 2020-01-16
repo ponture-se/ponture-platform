@@ -4,7 +4,6 @@ import { collect, getCompanies } from "api/business-loan-api";
 import { useLocale } from "hooks";
 import isMobileDevice from "utils/isMobileDevice";
 import "./styles.scss";
-import batchStates from "utils/batchStates";
 const isMobile = isMobileDevice();
 //
 export default function VerifyBankIdModal(props) {
@@ -21,41 +20,19 @@ export default function VerifyBankIdModal(props) {
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
   const [successResult, setSuccessResult] = useState();
-  //bankid success callback
-  // useEffect(() => {
-  //   const result = successResult;
-  //   if (props.onVerified) props.onVerified(result);
-  //   if (window.analytics) {
-  //     window.analytics.identify(result.userInfo.personalNumber, {
-  //       name: result.userInfo.name,
-  //       email: result.userInfo.email,
-  //       plan: result.userInfo.plan,
-  //       logins: result.userInfo.logins
-  //     });
-  //   }
-  //   if (!isLogin) {
-  //     if (window.analytics)
-  //       window.analytics.track("BankID Verified", {
-  //         category: "Loan Application",
-  //         label: "/app/loan/ bankid popup",
-  //         value: 0
-  //       });
-  //     if (companyList) {
-  //       _getCompanies(result);
-  //     } else {
-  //       props.onClose(true, result);
-  //     }
-  //   } else {
-  //     if (window.analytics)
-  //       window.analytics.track("BankID Verified", {
-  //         category: "Customer Portal",
-  //         label: "Customer Portal login bankid popup",
-  //         value: 0
-  //       });
-  //     if (props.onSuccess) props.onSuccess(result);
-  //   }
-  // }, [success, successResult]);
-
+  useEffect(() => {
+    if (
+      successResult &&
+      successResult.progressStatus.toLowerCase() === "complete"
+    ) {
+      setTimeout(() => {
+        if (props.onVerified) props.onVerified(successResult);
+        if (isLogin) {
+          if (props.onSuccess) props.onSuccess(successResult);
+        }
+      }, 1000);
+    }
+  }, [successResult]);
   //componentDidMount
   useEffect(() => {
     let didCancel = false;
@@ -68,13 +45,13 @@ export default function VerifyBankIdModal(props) {
                 switch (result.progressStatus.toLowerCase()) {
                   case "complete":
                     //
-                    batchStates(() => {
-                      toggleMainSpinner(false);
-                      setSuccess(true);
-                      // setSuccessResult(result);
-                    });
-                    // const result = successResult;
-                    if (props.onVerified) props.onVerified(result);
+                    // debugger;
+                    // batchStates(() => {
+                    toggleMainSpinner(false);
+                    setSuccess(true);
+                    setSuccessResult(result);
+                    // });
+
                     if (window.analytics) {
                       window.analytics.identify(
                         result.userInfo.personalNumber,
@@ -105,7 +82,7 @@ export default function VerifyBankIdModal(props) {
                           label: "Customer Portal login bankid popup",
                           value: 0
                         });
-                      if (props.onSuccess) props.onSuccess(result);
+                      // if (props.onSuccess) props.onSuccess(result);
                     }
                     //
                     break;

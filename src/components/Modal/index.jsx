@@ -13,7 +13,7 @@ export default function Modal(props) {
 
   function closeModal() {
     if (props.onClose) {
-      // props.onClose();
+      props.onClose();
     }
   }
   return ReactDOM.createPortal(

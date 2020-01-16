@@ -28,16 +28,21 @@ const Item = props => {
   //functions
   const submitApplication = appData => {
     const oppId = appData.opportunityID;
+    const phone = appData.contactInfo.phone;
+    const email = appData.contactInfo.email;
+
     const data = {
-      oppId: oppId
+      oppId: oppId,
+      phone: phone,
+      email: email
     };
+
     if (typeof parent_submit === "function") {
       if (typeof parent_verify === "function") {
         toggleLoading(true);
         //
         parent_submit(data, res => {
-          debugger;
-          if (res.success) {
+          if (res && res.success) {
             setIsSubmitted(true);
             toggleLoading(false);
           } else {
@@ -70,7 +75,9 @@ const Item = props => {
       );
     }
   };
-
+  function editItemModal(item) {
+    props.edit(item);
+  }
   function handleCancelClicked() {
     toggleAlert({
       title: t("APP_CANCEL_ALERT_INFO"),
@@ -241,6 +248,14 @@ const Item = props => {
                 />
               </div>
             </Link>
+          )}
+          {stage === "created" && (
+            <button
+              className="btn --light editBtn"
+              onClick={() => editItemModal(item)}
+            >
+              <span className="icon-pencil" />
+            </button>
           )}
         </div>
       </div>

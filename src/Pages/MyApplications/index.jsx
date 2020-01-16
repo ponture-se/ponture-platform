@@ -7,6 +7,7 @@ import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getMyApplications } from "api/main-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import { startBankId, cancelVerify, submitLoan } from "api/business-loan-api";
+import Modal from "components/Modal";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -20,6 +21,8 @@ const MyApplications = props => {
   const [startResult, setStartResult] = useState(undefined);
   const [personalNumber, setPersonalNumber] = useState("");
   const [lastCallback, setLastCallback] = useState(undefined);
+  const [editModal, setEditModal] = useState(false);
+  const [editModalData, setEditModalData] = useState({});
   //componentDidMount
   useEffect(() => {
     _getMyApplications();
@@ -31,7 +34,6 @@ const MyApplications = props => {
   //pNum: personalNumber
   //BankId function
   function handleVerifyApplication(pNum, successCallback, failedCallback) {
-    debugger;
     handleBankIdClicked(pNum, {
       success: successCallback,
       failed: failedCallback
@@ -247,11 +249,8 @@ const MyApplications = props => {
       .unKnownError(result => {
         if (!didCancel) {
           if (typeof callback === "function") {
-            callback(result);
+            callback(false);
           }
-          // setError({
-          //   sender: "submitLoan"
-          // });
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -333,7 +332,9 @@ const MyApplications = props => {
     toggleLoading(true);
     _getMyApplications();
   }
-
+  function toggleEditModal() {
+    setEditModal(!editModal);
+  }
   return (
     <div className="myApps">
       {loading ? (
@@ -362,6 +363,7 @@ const MyApplications = props => {
               onCancelSuccess={handleSuccessCancel}
               verify={handleVerifyApplication}
               submit={handleSubmitApplication}
+              edit={toggleEditModal}
             />
           ))}
           {verifyModal && (
@@ -379,6 +381,14 @@ const MyApplications = props => {
             />
           )}
         </>
+      )}
+      {editModal && (
+        <Modal>
+          <h1>{t("APP_EDIT")}</h1>
+          <button className="btn" onClick={toggleEditModal}>
+            {t("CLOSE")}
+          </button>
+        </Modal>
       )}
     </div>
   );
