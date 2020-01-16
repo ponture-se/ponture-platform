@@ -315,7 +315,6 @@ const Item = props => {
                     "btn verifyBtn",
                     isVerified ? "--verified" : "--primary"
                   )}
-                  style={{ marginRight: "10px" }}
                   onClick={() => verifyApplication(personalNumber)}
                   disabled={loading || isVerified}
                 >
@@ -330,13 +329,7 @@ const Item = props => {
                   ) : loading ? (
                     <CircleSpinner show={true} />
                   ) : (
-                    <>
-                      <span
-                        className="icon-info"
-                        style={{ fontSize: "14px" }}
-                      />
-                      {t("VERIFY")}
-                    </>
+                    <>{t("VERIFY")}</>
                   )}
                 </button>
                 {isVerified && (

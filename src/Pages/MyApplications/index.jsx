@@ -31,13 +31,13 @@ const MyApplications = props => {
   //pNum: personalNumber
   //BankId function
   function handleVerifyApplication(pNum, successCallback, failedCallback) {
+    debugger;
     handleBankIdClicked(pNum, {
       success: successCallback,
       failed: failedCallback
     });
   }
   function handleSuccessBankId(result) {
-    // debugger;
     setStartResult(undefined);
     if (typeof lastCallback.success === "function") {
       // _getMyApplications();
@@ -50,7 +50,6 @@ const MyApplications = props => {
   }
   //After bankId
   function handleBankIdClicked(pNum, callbacksObj) {
-    // debugger;
     if (typeof callbacksObj === "object") {
       setLastCallback(callbacksObj);
     }
@@ -71,7 +70,7 @@ const MyApplications = props => {
       })
       .onServerError(result => {
         if (!didCancel) {
-          lastCallback.failed(result, () => setLastCallback(undefined));
+          callbacksObj.failed(result, () => setLastCallback(undefined));
           setError({
             sender: "verifyBankId"
           });
@@ -79,7 +78,7 @@ const MyApplications = props => {
       })
       .onBadRequest(result => {
         if (!didCancel) {
-          lastCallback.failed(result, () => setLastCallback(undefined));
+          callbacksObj.failed(result, () => setLastCallback(undefined));
           setError({
             sender: "verifyBankId"
           });
@@ -87,7 +86,7 @@ const MyApplications = props => {
       })
       .unAuthorized(result => {
         if (!didCancel) {
-          lastCallback.failed(result, () => setLastCallback(undefined));
+          callbacksObj.failed(result, () => setLastCallback(undefined));
           setError({
             sender: "verifyBankId"
           });
@@ -95,7 +94,7 @@ const MyApplications = props => {
       })
       .unKnownError(result => {
         if (!didCancel) {
-          lastCallback.failed(result, () => setLastCallback(undefined));
+          callbacksObj.failed(result, () => setLastCallback(undefined));
           setError({
             sender: "verifyBankId"
           });
@@ -104,7 +103,6 @@ const MyApplications = props => {
       .call(pNum);
   }
   function handleCancelVerify() {
-    // debugger;
     // if (window.analytics)
     // window.analytics.track("BankID Failed", {
     //   category: "Loan Application",
@@ -173,6 +171,9 @@ const MyApplications = props => {
       //   JSON.stringify(bIdResult)
       // );
       // lastCallback(result);
+      if (typeof lastCallback.success === "function") {
+        lastCallback.success(result);
+      }
       dispatch({
         type: "ADD_NOTIFY",
         value: {
@@ -184,6 +185,9 @@ const MyApplications = props => {
       // setLastCallback(undefined);
       // setStartResult(false);
     } else {
+      if (typeof lastCallback.failed === "function") {
+        lastCallback.failed(result);
+      }
       toggleVerifyModal(false);
       setLastCallback(undefined);
       setStartResult(false);
@@ -196,6 +200,8 @@ const MyApplications = props => {
       });
     }
   }
+  //Submit verification
+  function handleSaveBankId() {}
   //Submit application function
   function handleSubmitApplication(data, callback) {
     submitLoan()
@@ -226,7 +232,7 @@ const MyApplications = props => {
             });
             if (typeof callback === "function") {
               _getMyApplications();
-              callback(result);
+              callback(false);
             }
             //success
             // if (window.analytics)
