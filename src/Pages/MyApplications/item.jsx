@@ -19,6 +19,7 @@ const Item = props => {
   const parent_onBankId = props.onBankId;
   const { personalNumber } = item.contactInfo;
   const stage = item.opportunityStage.toLowerCase();
+  const RecordType = item.RecordType.toLowerCase();
   const lostReason = item.lostReason ? item.lostReason.toLowerCase() : "";
   //States
   const [isVerified, setIsVerified] = useState(item.bankVerified);
@@ -249,7 +250,7 @@ const Item = props => {
               </div>
             </Link>
           )}
-          {stage === "created" && (
+          {stage === "created" && RecordType === "business acquisition loan" && (
             <button
               className="btn --light editBtn"
               onClick={() => editItemModal(item)}

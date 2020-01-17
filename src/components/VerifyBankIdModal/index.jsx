@@ -12,8 +12,8 @@ export default function VerifyBankIdModal(props) {
 
   //get config from props else set a default value for mandatory configs
   const { companyList, isLogin } = props.config || {
-    companyList: true,
-    isLogin: false
+    companyList: true, //needs company list or not
+    isLogin: false //useBankId for login verification or not
   };
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [status, setStatus] = useState(t("RFA1"));
@@ -44,13 +44,9 @@ export default function VerifyBankIdModal(props) {
               if (result.progressStatus) {
                 switch (result.progressStatus.toLowerCase()) {
                   case "complete":
-                    //
-                    // debugger;
-                    // batchStates(() => {
                     toggleMainSpinner(false);
                     setSuccess(true);
                     setSuccessResult(result);
-                    // });
 
                     if (window.analytics) {
                       window.analytics.identify(
@@ -291,9 +287,7 @@ export default function VerifyBankIdModal(props) {
   }
   function handleBankIDClicked() {
     window.open(
-      `
-    bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null 
-    `,
+      `bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null`,
       "_blank"
     );
   }

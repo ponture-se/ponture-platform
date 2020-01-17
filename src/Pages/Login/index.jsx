@@ -129,6 +129,7 @@ const Login = props => {
   }
 
   function handleSuccessVerify(result) {
+    debugger;
     toggleVerifyModal(false);
     dispatch({
       type: "VERIFY_BANK_ID_SUCCESS",
@@ -138,6 +139,7 @@ const Login = props => {
     props.history.push("/app/panel/myApplications");
   }
   function handleCancelVerify() {
+    debugger;
     track(
       "BankID Failed",
       "Customer Portal",
@@ -249,6 +251,7 @@ const Login = props => {
           personalNumber={personalNumber}
           onSuccess={handleSuccessVerify}
           onClose={handleCancelVerify}
+          config={{ companyList: true, isLogin: true }}
           onCancelVerify={handleCancelVerify}
         />
       )}
