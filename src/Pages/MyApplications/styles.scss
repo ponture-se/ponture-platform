@@ -229,8 +229,34 @@
   }
 }
 
+//ATTENTION: FOLLOWING NEEDS REFACTOR
+.bl {
+  &__infoBox {
+    margin-top: 0px !important;
+    padding: 0 4%;
+  }
+}
+.modal-footer {
+  display: flex;
+  flex-direction: row;
+  padding: 16px 40px;
+  justify-content: flex-end;
+}
+.modal-close {
+  position: absolute;
+  font-size: 14px !important;
+  top: 10px;
+  right: 0;
+  color: dimgray;
+  cursor: pointer;
+}
+//End
+
 // Large devices (desktops, 992px and up)
 @media (min-width: 992px) {
+  .modal {
+    width: 760px;
+  }
   .application {
     &__body {
       padding: 10px 40px 0 40px;
