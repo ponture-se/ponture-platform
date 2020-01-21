@@ -1,16 +1,17 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
+import "./EditApplication.scss";
 import "../BusinessLoan/styles.scss";
 import SquareSpinner from "components/SquareSpinner";
 import UploaderApiIncluded from "components/UploaderApiIncluded";
-
 const EditAppliation = props => {
   //Initialization
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
   const { t } = useLocale();
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
   const data = props.data;
+  const { toggleEditModal } = props;
   const BA = props.data.acquisition;
   const validations = props.isSubmit
     ? //false: Mandatory, true:Optional
@@ -161,7 +162,7 @@ const EditAppliation = props => {
     purchaserGuaranteesAvailable,
     setPurchaserGuaranteesAvailable
   ] = useState({
-    value: BA.available_guarantees,
+    value: BA.available_guarantees ? BA.available_guarantees : [],
     ...checkValidation("purchaserGuaranteesAvailable", BA.available_guarantees)
   });
   const [
@@ -612,471 +613,440 @@ const EditAppliation = props => {
   //    },
   //    [REFile]
   //  );
-  return null;
-  //      <>
-  //      <div className="bl bl__infoBox">
-  //    <div className="bl__infoBox__header">
-  //      {/* <div className="bl__infoBox__circleIcon">
-  //        <i className="icon-info" />
-  //      </div> */}
-  //      <span>{t("EDIT") + " "+ t("BL_NEW_COMPANY")}</span>
-  //      <span className="icon-cross modal-close" onClick={toggleEditModal}></span>
-  //    </div>
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!selectedREType.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label
-  //          className="bl__input__label"
-  //          style={{ marginBottom: "0" }}
-  //        >
-  //          {t("BL_REALESTATE_USAGE_CATEGORY")}
-  //        </label>
-  //        <div style={{ margin: "auto -8px" }}>
-  //          {/* <div className="element-group"> */}
-  //          <div className="element-group__center">
-  //            <div className="options">
-  //              {RETypeOpts.length > 0 &&
-  //                RETypeOpts.map((opt, idx) => {
-  //                  const isSelected =
-  //                    opt === selectedREType.value;
-  //                  return (
-  //                    <div
-  //                      key={idx}
-  //                      className={
-  //                        "btnReason " +
-  //                        (isSelected ? "--active" : "")
-  //                      }
-  //                      onClick={() => handleREType({target:{value:opt}})}
-  //                    >
-  //                      <div className="btnReason__title">
-  //                        {opt}
-  //                      </div>
-  //                      {isSelected && (
-  //                        <div className="btnReason__active">
-  //                          <span className="icon-checkmark" />
-  //                        </div>
-  //                      )}
-  //                    </div>
-  //                  );
-  //                })}
-  //            </div>
-  //            {/* </div> */}
-  //          </div>
-  //          {!selectedREType.isValid && (
-  //            <span className="validation-messsage" style={{paddingLeft:"10px"}}>
-  //              {selectedREType.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //    </div>
-  //    <br />
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REAreaIsValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_SIZE")}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="number"
-  //                className="my-input"
-  //                placeholder="Sqm"
-  //                value={REArea}
-  //                onChange={handleREAreaChange}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!REAreaIsValid && (
-  //            <span className="validation-messsage">
-  //              {REAreaValidationMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REPriceIsValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_PRICE") + " (Kr)"}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                placeholder="3 000 000"
-  //                value={REPrice.visualValue}
-  //                onChange={handleREPriceChanged}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!REPriceIsValid && (
-  //            <span className="validation-messsage">
-  //              {REPriceValidationMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //    </div>
-  //    <br />
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!selectedREUsageCategory.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label
-  //          className="bl__input__label"
-  //          style={{ marginBottom: "0" }}
-  //        >
-  //          {t("BL_REALESTATE_USAGE_CATEGORY")}
-  //        </label>
-  //        <div style={{ margin: "auto -8px" }}>
-  //          {/* <div className="element-group"> */}
-  //          <div className="element-group__center">
-  //            <div className="options">
-  //              {REUsageCategoryOpts.length > 0 &&
-  //                REUsageCategoryOpts.map((opt, idx) => {
-  //                  const isSelected =
-  //                    selectedREUsageCategory.value.indexOf(opt) >
-  //                    -1;
-  //                  return (
-  //                    <div
-  //                      key={idx}
-  //                      className={
-  //                        "btnReason " +
-  //                        (isSelected ? "--active" : "")
-  //                      }
-  //                      onClick={() => handleREUsageCategory(opt)}
-  //                    >
-  //                      <div className="btnReason__title">
-  //                        {opt}
-  //                      </div>
-  //                      {isSelected && (
-  //                        <div className="btnReason__active">
-  //                          <span className="icon-checkmark" />
-  //                        </div>
-  //                      )}
-  //                    </div>
-  //                  );
-  //                })}
-  //            </div>
-  //            {/* </div> */}
-  //          </div>
-  //          {!selectedREUsageCategory.isValid && (
-  //            <span className="validation-messsage" style={{paddingLeft:"10px"}}>
-  //              {selectedREUsageCategory.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //    </div>
-  //    <br />
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!RETaxationValue.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_TAXATION_VALUE") + " (Kr)"}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                placeholder="3 000 000"
-  //                value={RETaxationValue.value.visualValue}
-  //                onChange={handleRETaxationValue}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!RETaxationValue.isValid && (
-  //            <span className="validation-messsage">
-  //              {RETaxationValue.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REAddress.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_ADDRESS")}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                value={REAddress.value}
-  //                onChange={handleREAddress}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!REAddress.isValid && (
-  //            <span className="validation-messsage">
-  //              {REAddress.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //    </div>
-  //    <br />
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!RECity.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_CITY")}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                value={RECity.value}
-  //                onChange={handleRECity}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!RECity.isValid && (
-  //            <span className="validation-messsage">
-  //              {RECity.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!RELink.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label
-  //          className="bl__input__label"
-  //          style={{ fontSize: "12px", lineHeight: "1.84" }}
-  //        >
-  //          {t("BL_REALESTATE_LINK")}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                value={RELink.value}
-  //                onChange={handleRELink}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!RELink.isValid && (
-  //            <span className="validation-messsage">
-  //              {RELink.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //    </div>
-  //    <br />
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REDescription.isValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_DESCRIPTION")}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          {/* <div className="element-group">
-  //             <div className="element-group__center"> */}
-  //          <textarea
-  //            className="my-input"
-  //            value={REDescription.value}
-  //            onChange={handleREDescription}
-  //            style={{
-  //              maxWidth: "100%",
-  //              minWidth: "100%",
-  //              border: "1px solid lightgrey",
-  //              minHeight: "100px",
-  //              padding: "10px"
-  //            }}
-  //          ></textarea>
-  //          {/* </div>
-  //          </div> */}
-  //          {!REDescription.isValid && (
-  //            <span className="validation-messsage">
-  //              {REDescription.eMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //      {/* <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REPriceIsValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("PRICE") + " (Kr)"}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                placeholder="3 000 000"
-  //                value={REPrice.visualValue}
-  //                onChange={handleREPriceChanged}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!REPriceIsValid && (
-  //            <span className="validation-messsage">
-  //              {REPriceValidationMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div> */}
-  //    </div>
-  //    {/* <br/>
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REPriceIsValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("PRICE") + " (Kr)"}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                placeholder="3 000 000"
-  //                value={REPrice.visualValue}
-  //                onChange={handleREPriceChanged}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!REPriceIsValid && (
-  //            <span className="validation-messsage">
-  //              {REPriceValidationMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REPriceIsValid ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("PRICE") + " (Kr)"}
-  //        </label>
-  //        <div className="bl__input__element">
-  //          <div className="element-group">
-  //            <div className="element-group__center">
-  //              <input
-  //                type="text"
-  //                className="my-input"
-  //                placeholder="3 000 000"
-  //                value={REPrice.visualValue}
-  //                onChange={handleREPriceChanged}
-  //              />
-  //            </div>
-  //          </div>
-  //          {!REPriceIsValid && (
-  //            <span className="validation-messsage">
-  //              {REPriceValidationMessage}
-  //            </span>
-  //          )}
-  //        </div>
-  //      </div>
-  //    </div> */}
-  //    <br />
-  //    <div className="userInputs">
-  //      <div
-  //        className={
-  //          "bl__input animated fadeIn " +
-  //          (!REFile ? "--invalid" : "")
-  //        }
-  //      >
-  //        <label className="bl__input__label">
-  //          {t("BL_REALESTATE_FILE")}
-  //        </label>
-  //        {/* <div className="bl__input__element"> */}
-  //        <div
-  //          className="element-group"
-  //          style={{ margin: "auto -8px" }}
-  //        >
-  //          <div className="element-group__center">
-  //            <UploaderApiIncluded
-  //              name="File"
-  //              innerText="File upload"
-  //              onChange={(name, result) => setREFile(result.id)}
-  //            />
-  //          </div>
-  //        </div>
-  //        {!REFile.isValid && (
-  //          <span className="validation-messsage">
-  //            {REFile.eMessage}
-  //          </span>
-  //        )}
-  //      </div>
-  //    </div>
-  //    {/* </div> */}
-  //    <br />
-  //    <br />
-  //  </div>
-  //  <div className="modal-footer">
-
-  //    {/* <button className="btn" onClick={toggleEditModal}>
-  //  <span className="icon-cross"></span>
-  //  &nbsp;
-  //      {t("CLOSE")}
-  //    </button> */}
-  //  <button className="btn --success" onClick={toggleEditModal}>
-  //    <span className="icon-checkmark"></span>
-  //    &nbsp;
-  //    {t("SUBMIT")}
-  //    </button>
-  //  </div>
-  //  </>
+  return (
+    <>
+      <div className="bl editApplication bl__infoBox ">
+        <div className="bl__infoBox__header">
+          {/* <div className="bl__infoBox__circleIcon">
+         <i className="icon-info" />
+       </div> */}
+          <span>{t("APP_EDIT_APPLICATION")}</span>
+          <span
+            className="icon-cross modal-close"
+            onClick={props.cancelEdit}
+          ></span>
+        </div>
+        <span className="section-header">{t("APP_BUSINESS_ACQ1")}</span>
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectIndustryBranch.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label" style={{ marginBottom: "0" }}>
+              {t("APP_OBJECT_INDUSTRY_BRANCH")}
+            </label>
+            <div style={{ margin: "auto -8px" }}>
+              {/* <div className="element-group"> */}
+              <div className="element-group__center">
+                <div className="options">
+                  {objectIndustryBranch_opts.length > 0 &&
+                    objectIndustryBranch_opts.map((opt, idx) => {
+                      const isSelected = opt === objectIndustryBranch.value;
+                      return (
+                        <div
+                          key={idx}
+                          className={
+                            "btnReason " + (isSelected ? "--active" : "")
+                          }
+                          onClick={() =>
+                            handleObjectIndustryBranch({
+                              target: { value: opt }
+                            })
+                          }
+                        >
+                          <div className="btnReason__title">{opt}</div>
+                          {isSelected && (
+                            <div className="btnReason__active">
+                              <span className="icon-checkmark" />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+                {/* </div> */}
+              </div>
+              {!objectIndustryBranch.isValid && (
+                <span
+                  className="validation-messsage"
+                  style={{ paddingLeft: "10px" }}
+                >
+                  {objectIndustryBranch.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectPrice.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_PRICE") + " (Kr)"}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder="3 000 000"
+                    value={objectPrice.value.visualValue}
+                    onChange={handleObjectPrice}
+                  />
+                </div>
+              </div>
+              {!objectPrice.isValid && (
+                <span className="validation-messsage">
+                  {objectPrice.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+          {/* <div
+          className={
+            "bl__input animated fadeIn " + (!REAreaIsValid ? "--invalid" : "")
+          }
+        >
+          <label className="bl__input__label">{t("BL_REALESTATE_SIZE")}</label>
+          <div className="bl__input__element">
+            <div className="element-group">
+              <div className="element-group__center">
+                <input
+                  type="number"
+                  className="my-input"
+                  placeholder="Sqm"
+                  value={REArea}
+                  onChange={handleREAreaChange}
+                />
+              </div>
+            </div>
+            {!REAreaIsValid && (
+              <span className="validation-messsage">
+                {REAreaValidationMessage}
+              </span>
+            )}
+          </div>
+        </div> */}
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectValuationLetter.value ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_VALUATION_LETTER")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handleObjectValuationLetter({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!objectValuationLetter.isValid && (
+              <span className="validation-messsage">
+                {objectValuationLetter.eMessage}
+              </span>
+            )}
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectAnnualReport.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_ANNUAL_REPORT")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handleObjectAnnualReport({ target: { value: result.id } })
+                  }
+                />
+              </div>
+            </div>
+            {!objectAnnualReport.isValid && (
+              <span className="validation-messsage">
+                {objectAnnualReport.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        {/* // */}
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectLatestBalanceSheet.value ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_LATEST_BALANCE_SHEET")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handleObjectLatestBalanceSheet({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!objectLatestBalanceSheet.isValid && (
+              <span className="validation-messsage">
+                {objectLatestBalanceSheet.eMessage}
+              </span>
+            )}
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectLatestIncomeStatement.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_LATEST_INCOME_STATEMENT")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handleObjectLatestIncomeStatement({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!objectLatestIncomeStatement.isValid && (
+              <span className="validation-messsage">
+                {objectLatestIncomeStatement.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        <br />
+        {/* Purchaser */}
+        {/* <div className="bl__infoBox__header"> */}
+        {/* <div className="bl__infoBox__circleIcon">
+         <i className="icon-info" />
+       </div> */}
+        <span className="section-header">{t("APP_BUSINESS_ACQ2")}</span>
+        {/* </div> */}
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaserCompanyLatestBalanceSheet.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_COMPANY_LATEST_BALANCE_SHEET")}
+            </label>
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handlePurchaserCompanyLatestBalanceSheet({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!purchaserCompanyLatestBalanceSheet.isValid && (
+              <span className="validation-messsage">
+                {purchaserCompanyLatestBalanceSheet.eMessage}
+              </span>
+            )}
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaserCompanyLatestIncomeStatement.isValid
+                ? "--invalid"
+                : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_COMPANY_LATEST_INCOME_STATEMENT")}
+            </label>
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handlePurchaserCompanyLatestIncomeStatement({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!purchaserCompanyLatestIncomeStatement.isValid && (
+              <span className="validation-messsage">
+                {purchaserCompanyLatestIncomeStatement.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaserGuaranteesAvailable.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label" style={{ marginBottom: "0" }}>
+              {t("APP_PURCHASER_GUARANTEES_AVAILABLE")}
+            </label>
+            <div style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <div className="options">
+                  {purchaserGuaranteesAvailable_opts.length > 0 &&
+                    purchaserGuaranteesAvailable_opts.map((opt, idx) => {
+                      const isSelected =
+                        purchaserGuaranteesAvailable.value.indexOf(opt) > -1;
+                      return (
+                        <div
+                          key={idx}
+                          className={
+                            "btnReason " + (isSelected ? "--active" : "")
+                          }
+                          onClick={() =>
+                            handlePurchaserGuaranteesAvailable(opt)
+                          }
+                        >
+                          <div className="btnReason__title">{opt}</div>
+                          {isSelected && (
+                            <div className="btnReason__active">
+                              <span className="icon-checkmark" />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+              </div>
+              {!purchaserGuaranteesAvailable.isValid && (
+                <span
+                  className="validation-messsage"
+                  style={{ paddingLeft: "10px" }}
+                >
+                  {purchaserGuaranteesAvailable.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaserGuaranteesDescription.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_GUARANTEES_DESCRIPTION")}
+            </label>
+            <div className="bl__input__element">
+              {/* <div className="element-group">
+                             <div className="element-group__center"> */}
+              <textarea
+                className="my-input"
+                value={purchaserGuaranteesDescription.value}
+                onChange={handlePurchaserGuaranteesDescription}
+                style={{
+                  maxWidth: "200px",
+                  minWidth: "100%",
+                  border: "1px solid lightgrey",
+                  minHeight: "100px",
+                  padding: "10px"
+                }}
+              ></textarea>
+              {!purchaserGuaranteesDescription.isValid && (
+                <span className="validation-messsage">
+                  {purchaserGuaranteesDescription.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!experience.isValid ? "--invalid" : "")
+            }
+          >
+            <label
+              className="bl__input__label"
+              style={{ fontSize: "15px", marginBottom: "12px" }}
+            >
+              {t("APP_EXPERIENCE")}
+            </label>
+            <div className="bl__input__element">
+              {/* <div className="element-group">
+                             <div className="element-group__center"> */}
+              <textarea
+                className="my-input"
+                value={experience.value}
+                onChange={handleExperience}
+                style={{
+                  maxWidth: "200px",
+                  minWidth: "100%",
+                  border: "1px solid lightgrey",
+                  minHeight: "100px",
+                  padding: "10px"
+                }}
+              ></textarea>
+              {!experience.isValid && (
+                <span className="validation-messsage">
+                  {experience.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+      </div>
+    </>
+  );
 };
 
 export default EditAppliation;

@@ -462,10 +462,11 @@ const MyApplications = props => {
           style={{
             display: "flex",
             flexDirection: "column",
-            justifyContent: "space-between"
+            justifyContent: "space-between",
+            borderRadius: "0"
           }}
         >
-          <div className="bl__infoBox__header">
+          {/* <div className="bl__infoBox__header">
             <span style={{ fontSize: "15px" }}>
               {t("EDIT") + " " + t("BL_COMPANY_INFO")}
             </span>
@@ -473,8 +474,12 @@ const MyApplications = props => {
               className="icon-cross modal-close"
               onClick={toggleEditModal}
             ></span>
-          </div>
-          <EditAppliation isSubmit={false} data={editModalData} />
+          </div> */}
+          <EditAppliation
+            cancelEdit={toggleEditModal}
+            isSubmit={false}
+            data={editModalData}
+          />
           <div className="modal-footer">
             {/* <button className="btn" onClick={toggleEditModal}>
        <span className="icon-cross"></span>
