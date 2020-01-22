@@ -331,6 +331,19 @@ export default function BusinessLoan(props) {
     isValid: true,
     eMessage: ""
   });
+  const [REPurchaseDescription, setREPurchaseDescription] = useState({
+    value: "",
+    isValid: true,
+    eMessage: ""
+  });
+  const [REOwnInvestmentAmount, setREOwnInvestmentAmount] = useState({
+    value: {
+      realValue: 0,
+      visualValue: "0"
+    },
+    isValid: true,
+    eMessage: ""
+  });
   //email
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
@@ -1066,7 +1079,59 @@ export default function BusinessLoan(props) {
     },
     [REFile]
   );
+  const handleREOwnInvestmentAmount = useCallback(
+    e => {
+      const { value } = e.target;
+      let isValid = true,
+        validationMessage = "";
+      let _value = "";
 
+      if (!value || value.length === 0 || value === 0) {
+        isValid = false;
+        validationMessage = t("PRICE_IS_REQUIRED");
+        setREOwnInvestmentAmount({
+          value: {
+            realValue: 0,
+            visualValue: ""
+          },
+          isValid: isValid,
+          eMessage: validationMessage
+        });
+      } else {
+        _value = value.replace(/\s/g, "");
+        if (Number(_value)) {
+          isValid = true;
+          validationMessage = "";
+          setREOwnInvestmentAmount({
+            value: {
+              realValue: _value,
+              visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+            },
+            isValid: isValid,
+            eMessage: validationMessage
+          });
+        }
+      }
+    },
+    [REOwnInvestmentAmount]
+  );
+  const handleREPurchaseDescription = useCallback(
+    e => {
+      let { value, name } = e.target;
+      let isValid = true;
+      let eMessage = "";
+      if (!value || value.length === 0) {
+        isValid = false;
+        eMessage = t("MANDATORY_FIELD");
+      }
+      setREPurchaseDescription({
+        isValid: isValid,
+        eMessage: eMessage,
+        value: value
+      });
+    },
+    [REPurchaseDescription]
+  );
   //
   ////// Handlers
   //
@@ -1400,6 +1465,33 @@ export default function BusinessLoan(props) {
             target: { value: REDescription.value ? REDescription.value : "" }
           });
         }
+
+        if (
+          !REOwnInvestmentAmount.value.realValue ||
+          REOwnInvestmentAmount.value.realValue.length === 0
+        ) {
+          isValid = false;
+          handleREOwnInvestmentAmount({
+            target: {
+              value: REOwnInvestmentAmount.value.realValue
+                ? REOwnInvestmentAmount.value.realValue
+                : ""
+            }
+          });
+        }
+        if (
+          !REPurchaseDescription.value ||
+          REPurchaseDescription.value.length === 0
+        ) {
+          isValid = false;
+          handleREPurchaseDescription({
+            target: {
+              value: REPurchaseDescription.value
+                ? REPurchaseDescription.value
+                : ""
+            }
+          });
+        }
         // if (!REFile.value || REFile.value.lengt === 0) {
         //   isValid = false;
         //   handleREFile({
@@ -1419,9 +1511,9 @@ export default function BusinessLoan(props) {
             real_estate_link: RELink.value,
             real_estate_description: REDescription.value,
             real_estate_document: REFile.value,
-            description: "",
+            description: REPurchaseDescription.value,
             additional_details: "",
-            own_investment_amount: "0"
+            own_investment_amount: String(REOwnInvestmentAmount.value.realValue)
           }
         };
       }
@@ -1485,12 +1577,12 @@ export default function BusinessLoan(props) {
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors && result.length > 0) {
-                  if (window.analytics)
-                    window.analytics.track("Failure", {
-                      category: "Loan Application",
-                      label: "/app/loan/ wizard",
-                      value: 0
-                    });
+                  // if (window.analytics)
+                  //   window.analytics.track("Failure", {
+                  //     category: "Loan Application",
+                  //     label: "/app/loan/ wizard",
+                  //     value: 0
+                  //   });
                   changeTab(3);
                   setError({
                     sender: "submitLoan"
@@ -1498,7 +1590,7 @@ export default function BusinessLoan(props) {
                 } else {
                   resetForm();
                   if (window.analytics)
-                    window.analytics.track("Save", {
+                    window.analytics.track("Create", {
                       category: "Loan Application",
                       label: "/app/loan/ wizard",
                       value: loanAmount
@@ -1527,12 +1619,12 @@ export default function BusinessLoan(props) {
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors) {
-                  if (window.analytics)
-                    window.analytics.track("Failure", {
-                      category: "Loan Application",
-                      label: "/app/loan/ wizard",
-                      value: 0
-                    });
+                  // if (window.analytics)
+                  //   window.analytics.track("Failure", {
+                  //     category: "Loan Application",
+                  //     label: "/app/loan/ wizard",
+                  //     value: 0
+                  //   });
                   changeTab(3);
                   setError({
                     sender: "submitLoan"
@@ -2169,7 +2261,9 @@ export default function BusinessLoan(props) {
                                         "btnReason " +
                                         (isSelected ? "--active" : "")
                                       }
-                                      onClick={() => handleREType({target:{value:opt}})}
+                                      onClick={() =>
+                                        handleREType({ target: { value: opt } })
+                                      }
                                     >
                                       <div className="btnReason__title">
                                         {opt}
@@ -2186,7 +2280,10 @@ export default function BusinessLoan(props) {
                             {/* </div> */}
                           </div>
                           {!selectedREType.isValid && (
-                            <span className="validation-messsage" style={{paddingLeft:"10px"}}>
+                            <span
+                              className="validation-messsage"
+                              style={{ paddingLeft: "10px" }}
+                            >
                               {selectedREType.eMessage}
                             </span>
                           )}
@@ -2299,7 +2396,10 @@ export default function BusinessLoan(props) {
                             {/* </div> */}
                           </div>
                           {!selectedREUsageCategory.isValid && (
-                            <span className="validation-messsage" style={{paddingLeft:"10px"}}>
+                            <span
+                              className="validation-messsage"
+                              style={{ paddingLeft: "10px" }}
+                            >
                               {selectedREUsageCategory.eMessage}
                             </span>
                           )}
@@ -2459,45 +2559,17 @@ export default function BusinessLoan(props) {
                           )}
                         </div>
                       </div>
-                      {/* <div
-                        className={
-                          "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
-                        }
-                      >
-                        <label className="bl__input__label">
-                          {t("PRICE") + " (Kr)"}
-                        </label>
-                        <div className="bl__input__element">
-                          <div className="element-group">
-                            <div className="element-group__center">
-                              <input
-                                type="text"
-                                className="my-input"
-                                placeholder="3 000 000"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
-                              />
-                            </div>
-                          </div>
-                          {!REPriceIsValid && (
-                            <span className="validation-messsage">
-                              {REPriceValidationMessage}
-                            </span>
-                          )}
-                        </div>
-                      </div> */}
                     </div>
-                    {/* <br/>
+                    <br />
                     <div className="userInputs">
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!REOwnInvestmentAmount.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
-                          {t("PRICE") + " (Kr)"}
+                          {t("BL_OWN_INVESTMENT_AMOUNT") + " (Kr)"}
                         </label>
                         <div className="bl__input__element">
                           <div className="element-group">
@@ -2506,14 +2578,14 @@ export default function BusinessLoan(props) {
                                 type="text"
                                 className="my-input"
                                 placeholder="3 000 000"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={REOwnInvestmentAmount.value.visualValue}
+                                onChange={handleREOwnInvestmentAmount}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!REOwnInvestmentAmount.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {REOwnInvestmentAmount.eMessage}
                             </span>
                           )}
                         </div>
@@ -2521,11 +2593,11 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REPriceIsValid ? "--invalid" : "")
+                          (!REPurchaseDescription.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
-                          {t("PRICE") + " (Kr)"}
+                          {t("BL_PURCHASE_DESCRIPTION")}
                         </label>
                         <div className="bl__input__element">
                           <div className="element-group">
@@ -2533,20 +2605,19 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="3 000 000"
-                                value={REPrice.visualValue}
-                                onChange={handleREPriceChanged}
+                                value={REPurchaseDescription.value}
+                                onChange={handleREPurchaseDescription}
                               />
                             </div>
                           </div>
-                          {!REPriceIsValid && (
+                          {!REPurchaseDescription.isValid && (
                             <span className="validation-messsage">
-                              {REPriceValidationMessage}
+                              {REPurchaseDescription.eMessage}
                             </span>
                           )}
                         </div>
                       </div>
-                    </div> */}
+                    </div>
                     <br />
                     <div className="userInputs">
                       <div
