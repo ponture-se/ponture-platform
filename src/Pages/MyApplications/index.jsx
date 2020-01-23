@@ -7,7 +7,12 @@ import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getMyApplications } from "api/main-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
-import { startBankId, cancelVerify, submitLoan } from "api/business-loan-api";
+import {
+  startBankId,
+  cancelVerify,
+  submitLoan,
+  saveLoan
+} from "api/business-loan-api";
 import Modal from "components/Modal";
 import UploaderApiIncluded from "components/UploaderApiIncluded";
 import EditAppliation from "./EditApplication";
@@ -28,11 +33,13 @@ const MyApplications = props => {
   const [personalNumber, setPersonalNumber] = useState("");
   const [lastCallback, setLastCallback] = useState(undefined);
   const [editModal, setEditModal] = useState(false);
-  const [editModalData, setEditModalData] = useState(undefined);
+  const [itemData, setItemData] = useState(undefined);
 
   //pNum: personalNumber
   //BankId function
-  function handleVerifyApplication(pNum, successCallback, failedCallback) {
+  function handleVerifyApplication(data, successCallback, failedCallback) {
+    const pNum = data.contactInfo.personalNumber;
+    setItemData(data);
     handleBankIdClicked(pNum, {
       success: successCallback,
       failed: failedCallback
@@ -42,12 +49,13 @@ const MyApplications = props => {
     setStartResult(undefined);
     if (typeof lastCallback.success === "function") {
       // _getMyApplications();
-      lastCallback.success(result, () => toggleVerifyModal(false));
+      lastCallback.success(result, () => {
+        toggleVerifyModal(false);
+        saveApplication({
+          bankid: result
+        });
+      });
     }
-
-    // setLastCallback(() => {
-    //   return;
-    // });
   }
 
   //Side effects
@@ -60,65 +68,65 @@ const MyApplications = props => {
   }, []);
 
   // useEffect(() => {
-  //   if (editModalData) {
+  //   if (itemData) {
   //     setREPrice({
-  //       realValue: editModalData.real_estate.real_estate_price,
+  //       realValue: itemData.real_estate.real_estate_price,
   //       visualValue: String(
-  //         editModalData.real_estate.real_estate_price
+  //         itemData.real_estate.real_estate_price
   //       ).replace(numberFormatRegex, "$1 ")
   //     });
   //     setREPriceIsValid(true);
   //     setREPriceValidationMessage();
-  //     setREArea(editModalData.real_estate.real_estate_size);
+  //     setREArea(itemData.real_estate.real_estate_size);
   //     setREAreaIsValid(true);
   //     setREAreaValidationMessage();
   //     setSelectedREType({
-  //       value: editModalData.real_estate.real_estate_type,
+  //       value: itemData.real_estate.real_estate_type,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setREUsageCategory({
-  //       value: editModalData.real_estate.real_estate_usage_category,
+  //       value: itemData.real_estate.real_estate_usage_category,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setRETaxationValue({
-  //       value: editModalData.real_estate.real_estate_taxation_value,
+  //       value: itemData.real_estate.real_estate_taxation_value,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setREAddress({
-  //       value: editModalData.real_estate.real_estate_address,
+  //       value: itemData.real_estate.real_estate_address,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setRECity({
-  //       value: editModalData.real_estate.real_estate_city,
+  //       value: itemData.real_estate.real_estate_city,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setRELink({
-  //       value: editModalData.real_estate.real_estate_link,
+  //       value: itemData.real_estate.real_estate_link,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setREDescription({
-  //       value: editModalData.real_estate.real_estate_description,
+  //       value: itemData.real_estate.real_estate_description,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setREFile({
-  //       value: editModalData.real_estate.real_estate_document,
+  //       value: itemData.real_estate.real_estate_document,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //     setSelectedREUsageCategory({
-  //       value: editModalData.real_estate.real_estate_usage_category,
+  //       value: itemData.real_estate.real_estate_usage_category,
   //       isValid: true,
   //       eMessage: ""
   //     });
   //   }
-  // }, [editModalData]);
+  // }, [itemData]);
   //After bankId
   function handleBankIdClicked(pNum, callbacksObj) {
     if (typeof callbacksObj === "object") {
@@ -245,6 +253,9 @@ const MyApplications = props => {
       if (typeof lastCallback.success === "function") {
         lastCallback.success(result);
       }
+      saveApplication({
+        bankid: result
+      });
       dispatch({
         type: "ADD_NOTIFY",
         value: {
@@ -332,18 +343,24 @@ const MyApplications = props => {
       .call(data);
   }
 
-  function _getMyApplications() {
+  function _getMyApplications(callback) {
     toggleLoading(true);
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
           setData(result);
           toggleLoading(false);
+          if (typeof callback === "function") {
+            callback(true);
+          }
         }
       })
       .onServerError(result => {
         if (!didCancel) {
           toggleLoading(false);
+          if (typeof callback === "function") {
+            callback(false);
+          }
           setError({
             title: t("INTERNAL_SERVER_ERROR"),
             message: t("INTERNAL_SERVER_ERROR_MSG")
@@ -353,6 +370,9 @@ const MyApplications = props => {
       .onBadRequest(result => {
         if (!didCancel) {
           toggleLoading(false);
+          if (typeof callback === "function") {
+            callback(false);
+          }
           setError({
             title: t("BAD_REQUEST"),
             message: t("BAD_REQUEST_MSG")
@@ -360,6 +380,9 @@ const MyApplications = props => {
         }
       })
       .unAuthorized(result => {
+        if (typeof callback === "function") {
+          callback(false);
+        }
         if (!didCancel) {
           toggleLoading(false);
         }
@@ -367,6 +390,9 @@ const MyApplications = props => {
       .notFound(result => {
         if (!didCancel) {
           toggleLoading(false);
+          if (typeof callback === "function") {
+            callback(false);
+          }
           setError({
             title: t("NOT_FOUND"),
             message: t("NOT_FOUND_MSG")
@@ -375,6 +401,9 @@ const MyApplications = props => {
       })
       .unKnownError(result => {
         if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(false);
+          }
           toggleLoading(false);
           setError({
             title: t("UNKNOWN_ERROR"),
@@ -384,6 +413,9 @@ const MyApplications = props => {
       })
       .onRequestError(result => {
         if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(false);
+          }
           toggleLoading(false);
           setError({
             title: t("ON_REQUEST_ERROR"),
@@ -401,12 +433,89 @@ const MyApplications = props => {
     toggleLoading(true);
     _getMyApplications();
   }
+  function saveApplication(obj) {
+    debugger;
+    for (const key in itemData) {
+      if (itemData[key] === null) {
+        itemData[key] = "";
+      }
+    }
+    for (const key in itemData.real_estate) {
+      if (itemData.real_estate[key] === null) {
+        itemData.real_estate[key] = "";
+      }
+    }
+    const _obj = {
+      ...itemData,
+      ...obj,
+      lastName: itemData.contactInfo.lastName,
+      amourtizationPeriod: itemData.amortizationPeriod,
+      personalNumber: itemData.contactInfo.personalNumber,
+      need: itemData.need.map(item => item.apiName)
+    };
+    if (userInfo.broker_id) {
+      _obj.broker_id = userInfo.broker_id;
+    }
+    if (itemData.need[0] !== "purchase_of_business") {
+      _obj.orgName = itemData.Name;
+    }
+    saveLoan(currentRole)
+      .onOk(result => {
+        if (!didCancel) {
+          if (result.errors && result.length > 0) {
+            // if (window.analytics)
+            //   window.analytics.track("Failure", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: 0
+            //   });
+            setError({
+              sender: "submitLoan"
+            });
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Unsuccessful"
+              }
+            });
+          } else {
+            _getMyApplications(() => {
+              setEditModal(false);
+              dispatch({
+                type: "ADD_NOTIFY",
+                value: {
+                  type: "success",
+                  message: "Successful"
+                }
+              });
+            });
+
+            // if (window.analytics)
+            //   window.analytics.track("Create", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: loanAmount
+            //   });
+          }
+        }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          // toggleSubmitSpinner(false);
+          setError({
+            sender: "submitLoan"
+          });
+        }
+      })
+      .call(_obj);
+  }
   function toggleEditModal(data) {
-    //If modal is open then it's time to make editModalData state empty
+    //If modal is open then it's time to make itemData state empty
     if (editModal) {
-      setEditModalData(undefined);
+      setItemData(undefined);
     } else {
-      setEditModalData(data);
+      setItemData(data);
     }
     setEditModal(!editModal);
   }
@@ -477,21 +586,10 @@ const MyApplications = props => {
           </div> */}
           <EditAppliation
             cancelEdit={toggleEditModal}
-            isSubmit={false}
-            data={editModalData}
+            action={"edit"}
+            data={itemData}
+            onEdit={saveApplication}
           />
-          <div className="modal-footer">
-            {/* <button className="btn" onClick={toggleEditModal}>
-       <span className="icon-cross"></span>
-       &nbsp;
-           {t("CLOSE")}
-         </button> */}
-            <button className="btn --success" onClick={toggleEditModal}>
-              <span className="icon-checkmark"></span>
-              &nbsp;
-              {t("SUBMIT")}
-            </button>
-          </div>
         </Modal>
       )}
     </div>

@@ -13,44 +13,57 @@ const EditAppliation = props => {
   const data = props.data;
   const { toggleEditModal } = props;
   const BA = props.data.acquisition;
-  const validations = props.isSubmit
-    ? //false: Mandatory, true:Optional
-      {
-        // objectName: "Mandatory",
-        // objectCompanyName: "Mandatory",
-        // objectOrganizationNumber: "Mandatory",
-        objectIndustryBranch: false,
-        objectPrice: false,
-        objectValuationLetter: false,
-        objectAnnualReport: false,
-        objectLatestBalanceSheet: false,
-        objectLatestIncomeStatement: false,
-        purchaserCompanyOrganizationNumber: false, //IMP
-        purchaserCompanyLatestBalanceSheet: false, //IMP
-        purchaserCompanyLatestIncomeStatement: false, //IMP
-        purchaserGuaranteesAvailable: false,
-        purchaserGuaranteesDescription: true,
-        purchaserPersonalNumber: false,
-        experience: false
-      }
-    : {
-        // objectName: true,
-        // objectCompanyName: true,
-        // objectOrganizationNumber: true,
-        objectIndustryBranch: true,
-        objectPrice: true,
-        objectValuationLetter: true,
-        objectAnnualReport: true,
-        objectLatestBalanceSheet: true,
-        objectLatestIncomeStatement: true,
-        purchaserCompanyOrganizationNumber: false,
-        purchaserCompanyLatestBalanceSheet: true,
-        purchaserCompanyLatestIncomeStatement: true,
-        purchaserGuaranteesAvailable: true,
-        purchaserGuaranteesDescription: true,
-        purchaserPersonalNumber: false,
-        experience: true
-      };
+  const validations =
+    props.action === "submit"
+      ? //false: Mandatory, true:Optional
+        {
+          // objectName: "Mandatory",
+          // objectCompanyName: "Mandatory",
+          // objectOrganizationNumber: "Mandatory",
+          objectIndustryBranch: false,
+          objectPrice: false,
+          objectValuationLetter: false,
+          objectAnnualReport: false,
+          objectLatestBalanceSheet: false,
+          objectLatestIncomeStatement: false,
+          purchaserCompanyOrganizationNumber: false, //IMP
+          purchaserCompanyLatestBalanceSheet: false, //IMP
+          purchaserCompanyLatestIncomeStatement: false, //IMP
+          purchaserGuaranteesAvailable: false,
+          purchaserGuaranteesDescription: true,
+          purchaserPersonalNumber: false,
+          experience: false,
+          purchaseType: false,
+          additional_files: true,
+          business_plan: false,
+          own_investment_amount: false,
+          own_investment_description: true
+        }
+      : props.action === "edit"
+      ? {
+          // objectName: true,
+          // objectCompanyName: true,
+          // objectOrganizationNumber: true,
+          objectIndustryBranch: true,
+          objectPrice: true,
+          objectValuationLetter: true,
+          objectAnnualReport: true,
+          objectLatestBalanceSheet: true,
+          objectLatestIncomeStatement: true,
+          purchaserCompanyOrganizationNumber: false,
+          purchaserCompanyLatestBalanceSheet: true,
+          purchaserCompanyLatestIncomeStatement: true,
+          purchaserGuaranteesAvailable: true,
+          purchaserGuaranteesDescription: true,
+          purchaserPersonalNumber: false,
+          experience: true,
+          purchaseType: true,
+          additional_files: true,
+          business_plan: true,
+          own_investment_amount: true,
+          own_investment_description: true
+        }
+      : {};
 
   //customValidation: func
   const checkValidation = (name, value, customValidation) => {
@@ -59,12 +72,12 @@ const EditAppliation = props => {
     if (typeof customValidation !== "function") {
       if (!validations[name] && (!value || value.length === 0)) {
         isValid = false;
-        eMessage = t("REQUIRED_FIELD");
+        eMessage = t("MANDATORY_FIELD");
       }
     } else {
       if (!customValidation()) {
         isValid = false;
-        eMessage = t("REQUIRED_FIELD");
+        eMessage = t("MANDATORY_FIELD");
       }
     }
     return { isValid: isValid, eMessage: eMessage };
@@ -186,6 +199,10 @@ const EditAppliation = props => {
     value: BA.purchaser_profile ? BA.purchaser_profile : "",
     ...checkValidation("experience", BA.purchaser_profile)
   });
+  const [purchaseType, setPurchaseType] = useState({
+    value: BA.purchaseType ? BA.purchaseType : "",
+    ...checkValidation("purchaseType", BA.purchaseType)
+  });
   //
   const objectIndustryBranch_opts = [
     "Butiker",
@@ -205,7 +222,7 @@ const EditAppliation = props => {
     "Mark",
     "Företagsteckningar"
   ];
-
+  const purchaseType_opts = ["Ren overlåtesle", "Köp av inkråmet"];
   //ObjectName
   // const handleObjectName = useCallback(
   //   e => {
@@ -425,7 +442,73 @@ const EditAppliation = props => {
     },
     [experience]
   );
-
+  const handlePurchaseType = useCallback(
+    e => {
+      let _newOpts = Array.from(purchaseType.value);
+      let eMessage = "";
+      let isValid = true;
+      if (purchaseType.value.indexOf(e) > -1) {
+        _newOpts.splice(_newOpts.indexOf(e), 1);
+      } else {
+        _newOpts.push(e);
+      }
+      if (_newOpts.length === 0) {
+        eMessage = t("MANDATORY_FIELD");
+        isValid = false;
+      }
+      setPurchaseType({
+        isValid: isValid,
+        eMessage: eMessage,
+        value: _newOpts
+      });
+    },
+    [purchaseType]
+  );
+  const editApplication = () => {
+    props.onEdit({
+      acquisition: {
+        object_industry:
+          objectIndustryBranch.value === null ? "" : objectIndustryBranch.value,
+        object_price: String(objectPrice.value.realValue),
+        object_valuation_letter:
+          objectValuationLetter.value === null
+            ? ""
+            : objectValuationLetter.value,
+        object_annual_report:
+          objectAnnualReport.value === null ? "" : objectAnnualReport.value,
+        object_balance_sheet:
+          objectLatestBalanceSheet.value === null
+            ? ""
+            : objectLatestBalanceSheet.value,
+        object_income_statement:
+          objectLatestIncomeStatement.value === null
+            ? ""
+            : objectLatestIncomeStatement.value,
+        account_balance_sheet:
+          purchaserCompanyLatestBalanceSheet.value === null
+            ? ""
+            : purchaserCompanyLatestBalanceSheet.value,
+        account_income_statement:
+          purchaserCompanyLatestIncomeStatement.value === null
+            ? ""
+            : purchaserCompanyLatestIncomeStatement.value,
+        available_guarantees:
+          purchaserGuaranteesAvailable.value === null
+            ? ""
+            : purchaserGuaranteesAvailable.value,
+        available_guarantees_description:
+          purchaserGuaranteesDescription.value === null
+            ? ""
+            : purchaserGuaranteesDescription.value,
+        purchaser_profile: experience.value === null ? "" : experience.value,
+        purchase_type: purchaseType.value === null ? "" : purchaseType.value
+        // own_investment_amount:,
+        // own_investment_details:,
+        // business_plan:,
+        // additional_details:,
+      }
+    });
+  };
   //  const handleREUsageCategory = useCallback(
   //    e => {
   //      let _newOpts = Array.from(selectedREUsageCategory.value);
@@ -628,6 +711,62 @@ const EditAppliation = props => {
             onClick={props.cancelEdit}
           ></span>
         </div>
+
+        <span className="section-header">{t("APP_GENERAL_INFO")}</span>
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaseType.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label" style={{ marginBottom: "0" }}>
+              {t("APP_BA_PURCHASE_TYPE")}
+            </label>
+            <div style={{ margin: "auto -8px" }}>
+              {/* <div className="element-group"> */}
+              <div className="element-group__center">
+                <div className="options">
+                  {purchaseType_opts.length > 0 &&
+                    purchaseType_opts.map((opt, idx) => {
+                      const isSelected = opt === purchaseType.value;
+                      return (
+                        <div
+                          key={idx}
+                          className={
+                            "btnReason " + (isSelected ? "--active" : "")
+                          }
+                          onClick={() =>
+                            handlePurchaseType({
+                              target: { value: opt }
+                            })
+                          }
+                        >
+                          <div className="btnReason__title">{opt}</div>
+                          {isSelected && (
+                            <div className="btnReason__active">
+                              <span className="icon-checkmark" />
+                            </div>
+                          )}
+                        </div>
+                      );
+                    })}
+                </div>
+                {/* </div> */}
+              </div>
+              {!purchaseType.isValid && (
+                <span
+                  className="validation-messsage"
+                  style={{ paddingLeft: "10px" }}
+                >
+                  {purchaseType.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <br />
         <span className="section-header">{t("APP_BUSINESS_ACQ1")}</span>
         <div className="userInputs">
           <div
@@ -1048,6 +1187,18 @@ const EditAppliation = props => {
           </div>
         </div>
         <br />
+      </div>
+      <div className="modal-footer">
+        {/* <button className="btn" onClick={toggleEditModal}>
+       <span className="icon-cross"></span>
+       &nbsp;
+           {t("CLOSE")}
+         </button> */}
+        <button className="btn --success" onClick={editApplication}>
+          <span className="icon-checkmark"></span>
+          &nbsp;
+          {t("SUBMIT")}
+        </button>
       </div>
     </>
   );

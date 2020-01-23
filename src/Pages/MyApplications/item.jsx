@@ -331,7 +331,7 @@ const Item = props => {
                     "btn verifyBtn",
                     isVerified ? "--verified" : "--primary"
                   )}
-                  onClick={() => verifyApplication(personalNumber)}
+                  onClick={() => verifyApplication(item)}
                   disabled={loading || isVerified}
                 >
                   {isVerified ? (

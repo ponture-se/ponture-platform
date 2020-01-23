@@ -128,6 +128,8 @@ export default {
   APP_BUSINESS_ACQ1: "Köpobjekt",
   APP_BUSINESS_ACQ2: "Köparens uppgifter",
   APP_EDIT_APPLICATION: "Edit Application",
+  APP_BA_PURCHASE_TYPE: "Köpstyp",
+  APP_GENERAL_INFO: "General info", //t
   OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
   OFFER_LOAN_AMOUNT: "Godkänt belopp",
   OFFER_LOAN_PERIOD: "Låneperiod",
