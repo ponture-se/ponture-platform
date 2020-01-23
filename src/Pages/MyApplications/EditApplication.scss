@@ -9,6 +9,14 @@
     height: 32px;
     margin-bottom: 25px;
   }
+  & .userInputs {
+    flex-direction: var(--flex-direction);
+  }
+  &.bl {
+    & .userInputs .bl__input:nth-child(even) {
+      margin: 0;
+    }
+  }
 }
 .bl {
   &__infoBox {

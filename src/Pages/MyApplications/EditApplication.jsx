@@ -169,7 +169,9 @@ const EditAppliation = props => {
     purchaserGuaranteesDescription,
     setPurchaserGuaranteesDescription
   ] = useState({
-    value: BA.available_guarantees_description,
+    value: BA.available_guarantees_description
+      ? BA.available_guarantees_description
+      : "",
     ...checkValidation(
       "purchaserGuaranteesDescription",
       BA.available_guarantees_description
@@ -181,7 +183,7 @@ const EditAppliation = props => {
   //       eMessage: ""
   //     });
   const [experience, setExperience] = useState({
-    value: BA.purchaser_profile,
+    value: BA.purchaser_profile ? BA.purchaser_profile : "",
     ...checkValidation("experience", BA.purchaser_profile)
   });
   //
@@ -1008,6 +1010,8 @@ const EditAppliation = props => {
               )}
             </div>
           </div>
+        </div>
+        <div className="userInputs">
           <div
             className={
               "bl__input animated fadeIn " +

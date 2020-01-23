@@ -764,7 +764,7 @@ export default function BusinessLoan(props) {
   //   }
   //   setpersonalNumber(e.target.value);
   // }
-  function handleEnterKeyPressed(e, callback) {
+  function handleEnterKeyPressed(callback, e) {
     const key = e.which || e.key;
     if (key === 13 && callback && typeof callback === "function") callback();
   }
@@ -2065,6 +2065,9 @@ export default function BusinessLoan(props) {
                     <button
                       className="btn --success --large bankIdBtn"
                       onClick={handleBankIdClicked}
+                      onKeyDown={e =>
+                        handleEnterKeyPressed(handleBankIdClicked, e)
+                      }
                     >
                       {verifyingSpinner && (
                         <CircleSpinner show={true} size="small" />
