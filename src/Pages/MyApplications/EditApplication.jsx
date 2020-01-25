@@ -36,10 +36,12 @@ const EditAppliation = props => {
           purchaserPersonalNumber: false,
           experience: false,
           purchaseType: false,
-          additional_files: true,
-          business_plan: false,
-          own_investment_amount: false,
-          own_investment_description: true
+          additionalFiles: true,
+          additionalDetails: true,
+          businessPlan: false,
+          ownInvestmentAmount: false,
+          ownInvestmentDetails: true,
+          description: false
         }
       : props.action === "edit"
       ? {
@@ -60,10 +62,12 @@ const EditAppliation = props => {
           purchaserPersonalNumber: false,
           experience: true,
           purchaseType: true,
-          additional_files: true,
-          business_plan: true,
-          own_investment_amount: true,
-          own_investment_description: true
+          additionalFiles: true,
+          additionalDetails: true,
+          businessPlan: true,
+          ownInvestmentAmount: true,
+          ownInvestmentDetails: true,
+          description: false
         }
       : {};
 
@@ -87,20 +91,6 @@ const EditAppliation = props => {
     }
     return { isValid: isValid, eMessage: eMessage };
   };
-  // acquisition_object
-  // acquisition_object
-  // acquisition_object
-  // object_industry
-  // object_price
-  // object_valuation_letter
-  // object_annual_report
-  // object_balance_sheet
-  // object_income_statement
-  // account_balance_sheet
-  // account_income_statement
-  // available_guarantees
-  // available_guarantees_description
-  // purchaser_profile
   const [objectName, setObjectName] = useState({
     value: BA.object_name,
     isValid: true,
@@ -149,13 +139,6 @@ const EditAppliation = props => {
       BA.object_income_Statement
     )
   });
-  // const [purchaserCompanyOrganizationNumber,setPurchaserCompanyOrganizationNumber] = useState({
-  //   value: BA.object_income_Statement,
-  //   ...checkValidation(
-  //     "objectLatestIncomeStatement",
-  //     BA.object_income_Statement
-  //   )
-  // });
   const [
     purchaserCompanyLatestBalanceSheet,
     setPurchaserCompanyLatestBalanceSheet
@@ -195,11 +178,6 @@ const EditAppliation = props => {
       BA.available_guarantees_description
     )
   });
-  // const [purchaserPersonalNumber, setPurchaserPersonalNumber] = useState({
-  //       value: BA.,
-  //       isValid: true,
-  //       eMessage: ""
-  //     });
   const [experience, setExperience] = useState({
     value: BA.purchaser_profile ? BA.purchaser_profile : "",
     ...checkValidation("experience", BA.purchaser_profile)
@@ -207,6 +185,36 @@ const EditAppliation = props => {
   const [purchaseType, setPurchaseType] = useState({
     value: BA.purchaseType ? BA.purchaseType : "",
     ...checkValidation("purchaseType", BA.purchaseType)
+  });
+  const [ownInvestmentAmount, setOwnInvestmentAmount] = useState({
+    value: {
+      realValue: BA.own_investment_amount,
+      visualValue: String(BA.own_investment_amount).replace(
+        numberFormatRegex,
+        "$1 "
+      )
+    },
+    ...checkValidation("ownInvestmentAmount", BA.own_investment_amount)
+  });
+  const [ownInvestmentDetails, setOwnInvestmentDetails] = useState({
+    value: SafeValue(BA, "own_investment_details", "string", ""),
+    ...checkValidation("ownInvestmentDetails", BA.own_investment_details)
+  });
+  const [additionalFiles, setAdditionalFiles] = useState({
+    value: SafeValue(BA, "additional_files", "array", []),
+    ...checkValidation("additionalFiles", BA.additional_files)
+  });
+  const [businessPlan, setBusinessPlan] = useState({
+    value: SafeValue(BA, "business_plan", "array", []),
+    ...checkValidation("businessPlan", BA.business_plan)
+  });
+  const [additionalDetails, setAdditionalDetails] = useState({
+    value: SafeValue(BA, "additional_details", "string", ""),
+    ...checkValidation("additionalDetails", BA.additional_details)
+  });
+  const [description, setDescription] = useState({
+    value: SafeValue(BA, "description", "string", ""),
+    ...checkValidation("description", BA.description)
   });
   //
   const objectIndustryBranch_opts = [
@@ -358,20 +366,6 @@ const EditAppliation = props => {
     },
     [objectLatestIncomeStatement]
   );
-  // const handlePurchaserCompanyOrganizationNumber = useCallback(
-  //   e => {
-  //     let { value } = e.target;
-  //     let isValid = true;
-  //     let eMessage = "";
-  //     setPurchaserCompanyOrganizationNumber({
-  //       value: value,
-  //       ...checkValidation("purchaserCompanyOrganizationNumber", value, () => {
-  //         return value.length < 10 && value.length > 11;
-  //       })
-  //     });
-  //   },
-  //   [purchaserCompanyOrganizationNumber]
-  // );
   const handlePurchaserCompanyLatestBalanceSheet = useCallback(
     e => {
       let { value } = e.target;
@@ -458,6 +452,73 @@ const EditAppliation = props => {
     },
     [purchaseType]
   );
+  const handleOwnInvestmentAmount = useCallback(
+    e => {
+      const { value } = e.target;
+      let _value = "";
+      _value = value.replace(/\s/g, "");
+      if (Number(_value)) {
+        setObjectPrice({
+          value: {
+            realValue: _value,
+            visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
+          },
+          ...checkValidation("ownInvestmentAmount", _value)
+        });
+      }
+    },
+    [ownInvestmentAmount]
+  );
+  const handleOwnInvestmentDetails = useCallback(
+    e => {
+      let { value } = e.target;
+      setOwnInvestmentDetails({
+        value: value,
+        ...checkValidation("ownInvestmentDetails", value)
+      });
+    },
+    [ownInvestmentDetails]
+  );
+  const handleAdditionalDetails = useCallback(
+    e => {
+      let { value } = e.target;
+      setAdditionalDetails({
+        value: value,
+        ...checkValidation("additionalDetails", value)
+      });
+    },
+    [additionalDetails]
+  );
+  const handleDescription = useCallback(
+    e => {
+      let { value } = e.target;
+      setDescription({
+        value: value,
+        ...checkValidation("description", value)
+      });
+    },
+    [description]
+  );
+  const handleBusinessPlan = useCallback(
+    e => {
+      let { value } = e.target;
+      setBusinessPlan({
+        value: value,
+        ...checkValidation("businessPlan", value)
+      });
+    },
+    [businessPlan]
+  );
+  const handleAdditionalFiles = useCallback(
+    e => {
+      let { value } = e.target;
+      setAdditionalFiles({
+        value: value,
+        ...checkValidation("additionalFiles", value)
+      });
+    },
+    [additionalFiles]
+  );
   const editApplication = () => {
     props.onEdit({
       acquisition: {
@@ -524,11 +585,29 @@ const EditAppliation = props => {
           ""
         ),
         purchaser_profile: SafeValue(experience, "value", "string", ""),
-        purchase_type: SafeValue(purchaseType, "value", "string", "")
-        // own_investment_amount:,
-        // own_investment_details:,
-        // business_plan:,
-        // additional_details:,
+        purchase_type: SafeValue(purchaseType, "value", "string", ""),
+        own_investment_amount: SafeValue(
+          ownInvestmentAmount,
+          "value",
+          "string",
+          ""
+        ),
+        own_investment_details: SafeValue(
+          ownInvestmentDetails,
+          "value",
+          "string",
+          ""
+        ),
+        business_plan: SafeValue(businessPlan, "value", "array", "string", []),
+        additional_files: SafeValue(
+          additionalFiles,
+          "value",
+          "array",
+          "string",
+          []
+        ),
+        additional_details: SafeValue(additionalDetails, "value", "string", ""),
+        description: SafeValue(description, "value", "string", "")
       }
     });
   };
@@ -789,6 +868,201 @@ const EditAppliation = props => {
           </div>
         </div>
         <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!ownInvestmentAmount.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OWN_INVESTMENT_AMOUNT") + " (Kr)"}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder="3 000 000"
+                    value={ownInvestmentAmount.value.visualValue}
+                    onChange={handleOwnInvestmentAmount}
+                  />
+                </div>
+              </div>
+              {!ownInvestmentAmount.isValid && (
+                <span className="validation-messsage">
+                  {ownInvestmentAmount.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!additionalDetails.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_ADDITIONAL_DETAILS")}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder=""
+                    value={additionalDetails.value}
+                    onChange={handleAdditionalDetails}
+                  />
+                </div>
+              </div>
+              {!additionalDetails.isValid && (
+                <span className="validation-messsage">
+                  {additionalDetails.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!additionalFiles.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_ADDITIONAL_FILES")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handleAdditionalFiles({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!additionalFiles.isValid && (
+              <span className="validation-messsage">
+                {additionalFiles.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!businessPlan.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">{t("APP_BUSINESS_PLAN")}</label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <UploaderApiIncluded
+                  name="File"
+                  innerText="File upload"
+                  onChange={(name, result) =>
+                    handleBusinessPlan({
+                      target: { value: result.id }
+                    })
+                  }
+                />
+              </div>
+            </div>
+            {!businessPlan.isValid && (
+              <span className="validation-messsage">
+                {businessPlan.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!ownInvestmentDetails.isValid ? "--invalid" : "")
+            }
+          >
+            <label
+              className="bl__input__label"
+              style={{ fontSize: "15px", marginBottom: "12px" }}
+            >
+              {t("APP_OWN_INVESTMENT_DETAILS")}
+            </label>
+            <div className="bl__input__element">
+              {/* <div className="element-group">
+                             <div className="element-group__center"> */}
+              <textarea
+                className="my-input"
+                value={ownInvestmentDetails.value}
+                onChange={handleOwnInvestmentDetails}
+                style={{
+                  maxWidth: "200px",
+                  minWidth: "100%",
+                  border: "1px solid lightgrey",
+                  minHeight: "100px",
+                  padding: "10px"
+                }}
+              ></textarea>
+              {!ownInvestmentDetails.isValid && (
+                <span className="validation-messsage">
+                  {ownInvestmentDetails.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!description.isValid ? "--invalid" : "")
+            }
+          >
+            <label
+              className="bl__input__label"
+              style={{ fontSize: "15px", marginBottom: "12px" }}
+            >
+              {t("APP_PURCHASE_OF_DESCRIPTION")}
+            </label>
+            <div className="bl__input__element">
+              {/* <div className="element-group">
+                             <div className="element-group__center"> */}
+              <textarea
+                className="my-input"
+                value={description.value}
+                onChange={handleDescription}
+                style={{
+                  maxWidth: "200px",
+                  minWidth: "100%",
+                  border: "1px solid lightgrey",
+                  minHeight: "100px",
+                  padding: "10px"
+                }}
+              ></textarea>
+              {!description.isValid && (
+                <span className="validation-messsage">
+                  {description.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
         <br />
         <span className="section-header">{t("APP_BUSINESS_ACQ1")}</span>
         <div className="userInputs">
@@ -964,7 +1238,7 @@ const EditAppliation = props => {
           <div
             className={
               "bl__input animated fadeIn " +
-              (!objectValuationLetter.value ? "--invalid" : "")
+              (!objectValuationLetter.isValid ? "--invalid" : "")
             }
           >
             <label className="bl__input__label">
@@ -1024,7 +1298,7 @@ const EditAppliation = props => {
           <div
             className={
               "bl__input animated fadeIn " +
-              (!objectLatestBalanceSheet.value ? "--invalid" : "")
+              (!objectLatestBalanceSheet.isValid ? "--invalid" : "")
             }
           >
             <label className="bl__input__label">

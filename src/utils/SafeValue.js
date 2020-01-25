@@ -9,10 +9,11 @@ export default function SafeValue(
   defaultValue,
   alternativeIndex
 ) {
-  let correctReturn;
+  let _correctReturn;
+  let _checkType;
   try {
     const parimaryData = data;
-    correctReturn = () => {
+    _correctReturn = () => {
       if (alternativeIndex && alternativeIndex.length) {
         return SafeValue(
           parimaryData,
@@ -25,6 +26,34 @@ export default function SafeValue(
         return defaultValue;
       }
     };
+    _checkType = data => {
+      if (data !== null && data !== undefined) {
+        //special type checkings mention here
+        switch (type) {
+          case "all":
+          case typeof data:
+            return data;
+          case "json":
+            type = typeof JSON.parse(data);
+            if (type === "object") return data;
+            else return _correctReturn();
+          case "jsonArray":
+            const parsedData = JSON.parse(data);
+            type = typeof parsedData;
+            if (type === "object" && parsedData.length) return data;
+            else return _correctReturn();
+          case "array":
+            type = typeof data;
+            if (type === "object" && Array.isArray(data)) return data;
+            else return _correctReturn();
+          default:
+            return _correctReturn();
+        }
+      } else {
+        // console.warn(`index ${val} is not valid.`, `${val} : ${data}`);
+        return _correctReturn();
+      }
+    };
     if (!Boolean(data) || data === null) {
       return defaultValue;
     }
@@ -32,15 +61,7 @@ export default function SafeValue(
     index = parseInt(index) === index ? parseInt(index) : index;
     //if index was empty string then just check validation of data
     if (index === "") {
-      if (
-        data !== null &&
-        data !== undefined &&
-        (type === "all" || typeof data === type)
-      ) {
-        return data;
-      } else {
-        return correctReturn();
-      }
+      _checkType(data);
     }
     let indexArr = typeof index === "string" ? index.split(".") : index;
     const cnt = indexArr.length;
@@ -52,31 +73,10 @@ export default function SafeValue(
       }
       data = data[val];
       if (i === cnt - 1) {
-        if (data !== null && data !== undefined) {
-          //special type checkings mention here
-          switch (type) {
-            case "all":
-            case typeof data:
-              return data;
-            case "json":
-              type = typeof JSON.parse(data);
-              if (type === "object") return data;
-              else return correctReturn();
-            case "jsonArray":
-              const parsedData = JSON.parse(data);
-              type = typeof parsedData;
-              if (type === "object" && parsedData.length) return data;
-              else return correctReturn();
-            default:
-              return correctReturn();
-          }
-        } else {
-          // console.warn(`index ${val} is not valid.`, `${val} : ${data}`);
-          return correctReturn();
-        }
+        _checkType();
       }
     }
   } catch (err) {
-    return correctReturn();
+    return _correctReturn();
   }
 }
