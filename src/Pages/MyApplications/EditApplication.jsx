@@ -5,11 +5,13 @@ import "./EditApplication.scss";
 import "../BusinessLoan/styles.scss";
 import SquareSpinner from "components/SquareSpinner";
 import UploaderApiIncluded from "components/UploaderApiIncluded";
+import SafeValue from "utils/SafeValue";
 const EditAppliation = props => {
   //Initialization
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
   const { t } = useLocale();
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
+  const orgNumberFormatRegex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
   const data = props.data;
   const { toggleEditModal } = props;
   const BA = props.data.acquisition;
@@ -17,9 +19,9 @@ const EditAppliation = props => {
     props.action === "submit"
       ? //false: Mandatory, true:Optional
         {
-          // objectName: "Mandatory",
-          // objectCompanyName: "Mandatory",
-          // objectOrganizationNumber: "Mandatory",
+          objectName: false,
+          objectCompanyName: false,
+          objectOrgNumber: false,
           objectIndustryBranch: false,
           objectPrice: false,
           objectValuationLetter: false,
@@ -41,9 +43,9 @@ const EditAppliation = props => {
         }
       : props.action === "edit"
       ? {
-          // objectName: true,
-          // objectCompanyName: true,
-          // objectOrganizationNumber: true,
+          objectName: true,
+          objectCompanyName: true,
+          objectOrgNumber: true,
           objectIndustryBranch: true,
           objectPrice: true,
           objectValuationLetter: true,
@@ -75,9 +77,12 @@ const EditAppliation = props => {
         eMessage = t("MANDATORY_FIELD");
       }
     } else {
-      if (!customValidation()) {
-        isValid = false;
-        eMessage = t("MANDATORY_FIELD");
+      //Do not check validation for Optional fields with zero value length
+      if (!(validations[name] && value.length === 0)) {
+        if (!customValidation()) {
+          isValid = false;
+          eMessage = t("INVALID_VALUE");
+        }
       }
     }
     return { isValid: isValid, eMessage: eMessage };
@@ -96,21 +101,21 @@ const EditAppliation = props => {
   // available_guarantees
   // available_guarantees_description
   // purchaser_profile
-  // const [objectName, setObjectName] = useState({
-  //   value: BA.,
-  //   isValid: true,
-  //   eMessage: ""
-  // });
-  // const [objectCompanyName, setObjectCompanyName] = useState({
-  //       value: BA.,
-  //       isValid: true,
-  //       eMessage: ""
-  //     });
-  // const [objectOrganizationNumber, setObjectOrganizationNumber] = useState({
-  //       value: BA.,
-  //       isValid: true,
-  //       eMessage: ""
-  //     });
+  const [objectName, setObjectName] = useState({
+    value: BA.object_name,
+    isValid: true,
+    eMessage: ""
+  });
+  const [objectCompanyName, setObjectCompanyName] = useState({
+    value: BA.object_company_name,
+    isValid: true,
+    eMessage: ""
+  });
+  const [objectOrgNumber, setObjectOrgNumber] = useState({
+    value: BA.object_organization_number,
+    isValid: true,
+    eMessage: ""
+  });
   const [objectIndustryBranch, setObjectIndustryBranch] = useState({
     value: BA.object_industry,
     ...checkValidation("objectIndustryBranch", BA.object_industry)
@@ -224,53 +229,42 @@ const EditAppliation = props => {
   ];
   const purchaseType_opts = ["Ren overlåtesle", "Köp av inkråmet"];
   //ObjectName
-  // const handleObjectName = useCallback(
-  //   e => {
-  //     const { value } = e.target;
-  //     let isValid = true,
-  //       eMessage = "";
-  //     // if (value.length === 0) {
-  //     //   isValid = false;
-  //     //   eMessage = t("REQUIRED_FIELD");
-  //     // }
-  //     setObjectName({
-  //       isValid: isValid,
-  //       eMessage: eMessage,
-  //       value: value
-  //     });
-  //   },
-  //   [objectName]
-  // );
+  const handleObjectName = useCallback(
+    e => {
+      const { value } = e.target;
+      setObjectName({
+        value: value,
+        ...checkValidation("objectName", value)
+      });
+    },
+    [objectName]
+  );
 
   // //company name
-  // const handleObjectCompanyName = useCallback(
-  //   e => {
-  //     const { value } = e.target;
-  //     let isValid = true,
-  //       eMessage = "";
-  //     setObjectCompanyName({
-  //       isValid: isValid,
-  //       eMessage: eMessage,
-  //       value: value
-  //     });
-  //   },
-  //   [objectCompanyName]
-  // );
+  const handleObjectCompanyName = useCallback(
+    e => {
+      const { value } = e.target;
+      setObjectCompanyName({
+        value: value,
+        ...checkValidation("objectCompanyName", value)
+      });
+    },
+    [objectCompanyName]
+  );
 
-  // //Orgnumber
-  // const handleObjectOrganizationNumber = useCallback(
-  //   e => {
-  //     const { value } = e.target;
-  //     let isValid = true,
-  //       eMessage = "";
-  //     setObjectOrganizationNumber({
-  //       isValid: isValid,
-  //       eMessage: eMessage,
-  //       value: value
-  //     });
-  //   },
-  //   [objectOrganizationNumber]
-  // );
+  //Orgnumber
+  const handleObjectOrgNumber = useCallback(
+    e => {
+      const { value } = e.target;
+      setObjectOrgNumber({
+        value: value,
+        ...checkValidation("objectOrgNumber", value, () => {
+          return orgNumberFormatRegex.test(value);
+        })
+      });
+    },
+    [objectOrgNumber]
+  );
 
   //Industry branch
   const handleObjectIndustryBranch = useCallback(
@@ -320,7 +314,7 @@ const EditAppliation = props => {
   //Object Valuation Letter
   const handleObjectValuationLetter = useCallback(
     e => {
-      let { value, name } = e.target;
+      let { value } = e.target;
       setObjectValuationLetter({
         value: value,
         ...checkValidation("objectValuationLetter", value)
@@ -467,41 +461,70 @@ const EditAppliation = props => {
   const editApplication = () => {
     props.onEdit({
       acquisition: {
-        object_industry:
-          objectIndustryBranch.value === null ? "" : objectIndustryBranch.value,
-        object_price: String(objectPrice.value.realValue),
-        object_valuation_letter:
-          objectValuationLetter.value === null
-            ? ""
-            : objectValuationLetter.value,
-        object_annual_report:
-          objectAnnualReport.value === null ? "" : objectAnnualReport.value,
-        object_balance_sheet:
-          objectLatestBalanceSheet.value === null
-            ? ""
-            : objectLatestBalanceSheet.value,
-        object_income_statement:
-          objectLatestIncomeStatement.value === null
-            ? ""
-            : objectLatestIncomeStatement.value,
-        account_balance_sheet:
-          purchaserCompanyLatestBalanceSheet.value === null
-            ? ""
-            : purchaserCompanyLatestBalanceSheet.value,
-        account_income_statement:
-          purchaserCompanyLatestIncomeStatement.value === null
-            ? ""
-            : purchaserCompanyLatestIncomeStatement.value,
-        available_guarantees:
-          purchaserGuaranteesAvailable.value === null
-            ? ""
-            : purchaserGuaranteesAvailable.value,
-        available_guarantees_description:
-          purchaserGuaranteesDescription.value === null
-            ? ""
-            : purchaserGuaranteesDescription.value,
-        purchaser_profile: experience.value === null ? "" : experience.value,
-        purchase_type: purchaseType.value === null ? "" : purchaseType.value
+        object_name: SafeValue(objectName, "value", "string", ""),
+        object_company_name: SafeValue(
+          objectCompanyName,
+          "value",
+          "string",
+          ""
+        ),
+        object_organization_number: String(
+          SafeValue(objectOrgNumber, "value", "number", "")
+        ),
+        object_industry: SafeValue(objectIndustryBranch, "value", "string", ""),
+        object_price: String(
+          SafeValue(objectPrice, "value.realValue", "number", "")
+        ),
+        object_valuation_letter: SafeValue(
+          objectValuationLetter,
+          "value",
+          "string",
+          ""
+        ),
+        object_annual_report: SafeValue(
+          objectAnnualReport,
+          "value",
+          "string",
+          ""
+        ),
+        object_balance_sheet: SafeValue(
+          objectLatestBalanceSheet,
+          "value",
+          "string",
+          ""
+        ),
+        object_income_statement: SafeValue(
+          objectLatestIncomeStatement,
+          "value",
+          "string",
+          ""
+        ),
+        account_balance_sheet: SafeValue(
+          purchaserCompanyLatestBalanceSheet,
+          "value",
+          "string",
+          ""
+        ),
+        account_income_statement: SafeValue(
+          purchaserCompanyLatestIncomeStatement,
+          "value",
+          "string",
+          ""
+        ),
+        available_guarantees: SafeValue(
+          purchaserGuaranteesAvailable,
+          "value",
+          "string",
+          ""
+        ),
+        available_guarantees_description: SafeValue(
+          purchaserGuaranteesDescription,
+          "value",
+          "string",
+          ""
+        ),
+        purchaser_profile: SafeValue(experience, "value", "string", ""),
+        purchase_type: SafeValue(purchaseType, "value", "string", "")
         // own_investment_amount:,
         // own_investment_details:,
         // business_plan:,
@@ -772,6 +795,122 @@ const EditAppliation = props => {
           <div
             className={
               "bl__input animated fadeIn " +
+              (!objectName.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">{t("APP_OBJECT_NAME")}</label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder=""
+                    value={objectName.value}
+                    onChange={handleObjectName}
+                  />
+                </div>
+              </div>
+              {!objectName.isValid && (
+                <span className="validation-messsage">
+                  {objectName.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectCompanyName.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_COMPANY_NAME")}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder=""
+                    value={objectCompanyName.value}
+                    onChange={handleObjectCompanyName}
+                  />
+                </div>
+              </div>
+              {!objectCompanyName.isValid && (
+                <span className="validation-messsage">
+                  {objectCompanyName.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectOrgNumber.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_ORG_NUMBER")}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder="(i,e:1234561234 or 123456-1234)"
+                    value={objectOrgNumber.value}
+                    onChange={handleObjectOrgNumber}
+                  />
+                </div>
+              </div>
+              {!objectOrgNumber.isValid && (
+                <span className="validation-messsage">
+                  {objectOrgNumber.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectPrice.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_PRICE") + " (Kr)"}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder="3 000 000"
+                    value={objectPrice.value.visualValue}
+                    onChange={handleObjectPrice}
+                  />
+                </div>
+              </div>
+              {!objectPrice.isValid && (
+                <span className="validation-messsage">
+                  {objectPrice.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
               (!objectIndustryBranch.isValid ? "--invalid" : "")
             }
           >
@@ -819,62 +958,6 @@ const EditAppliation = props => {
               )}
             </div>
           </div>
-        </div>
-        <br />
-        <div className="userInputs">
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!objectPrice.isValid ? "--invalid" : "")
-            }
-          >
-            <label className="bl__input__label">
-              {t("APP_OBJECT_PRICE") + " (Kr)"}
-            </label>
-            <div className="bl__input__element">
-              <div className="element-group">
-                <div className="element-group__center">
-                  <input
-                    type="text"
-                    className="my-input"
-                    placeholder="3 000 000"
-                    value={objectPrice.value.visualValue}
-                    onChange={handleObjectPrice}
-                  />
-                </div>
-              </div>
-              {!objectPrice.isValid && (
-                <span className="validation-messsage">
-                  {objectPrice.eMessage}
-                </span>
-              )}
-            </div>
-          </div>
-          {/* <div
-          className={
-            "bl__input animated fadeIn " + (!REAreaIsValid ? "--invalid" : "")
-          }
-        >
-          <label className="bl__input__label">{t("BL_REALESTATE_SIZE")}</label>
-          <div className="bl__input__element">
-            <div className="element-group">
-              <div className="element-group__center">
-                <input
-                  type="number"
-                  className="my-input"
-                  placeholder="Sqm"
-                  value={REArea}
-                  onChange={handleREAreaChange}
-                />
-              </div>
-            </div>
-            {!REAreaIsValid && (
-              <span className="validation-messsage">
-                {REAreaValidationMessage}
-              </span>
-            )}
-          </div>
-        </div> */}
         </div>
         <br />
         <div className="userInputs">

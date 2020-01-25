@@ -459,6 +459,13 @@ const MyApplications = props => {
     if (itemData.need[0] !== "purchase_of_business") {
       _obj.orgName = itemData.Name;
     }
+    if (itemData.acquisition) {
+      for (const item in itemData.acquisition) {
+        if (itemData.acquisition[item] === null) {
+          itemData.acquisition[item] = "";
+        }
+      }
+    }
     saveLoan(currentRole)
       .onOk(result => {
         if (!didCancel) {

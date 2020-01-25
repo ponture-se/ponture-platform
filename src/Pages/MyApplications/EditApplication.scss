@@ -48,4 +48,40 @@
       }
     }
   }
+  &__input {
+    margin: 0 5px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .editApplication {
+    margin: 10px 20px 0 20px;
+  }
+  .bl {
+    &__infoBox {
+      padding: 0 !important;
+      &__header {
+        border-bottom: none;
+        height: 85px;
+        margin-top: 0;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        flex-direction: var(--flex-direction);
+      }
+    }
+    & .userInputs {
+      flex-direction: column;
+    }
+    & .options {
+      flex-direction: column;
+      .btnReason {
+        width: calc(100% - 20px);
+      }
+    }
+    &__input {
+      margin: 0 !important;
+    }
+  }
 }

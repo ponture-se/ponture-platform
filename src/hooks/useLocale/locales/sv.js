@@ -34,6 +34,7 @@ export default {
   VIEW_OFFERS: "Visa Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
   PRICE: "Köpspris",
+  INVALID_VALUE: "Ogiltigt värde", //T: Invalid value
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
@@ -109,7 +110,7 @@ export default {
     "Choosing this offer as accepted for the application",
   APP_OBJECT_NAME: "Objektsnamn",
   APP_OBJECT_COMPANY_NAME: "Företagsnamn",
-  APP_OBJECT_ORGANIZATION_NUMBER: "Organisationsnummer",
+  APP_OBJECT_ORG_NUMBER: "Organisationsnummer",
   APP_OBJECT_INDUSTRY_BRANCH: "Industribransch",
   APP_OBJECT_PRICE: "Köpspris",
   APP_OBJECT_VALUATION_LETTER: "Värderingsbrev",
