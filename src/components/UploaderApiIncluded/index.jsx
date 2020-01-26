@@ -3,11 +3,13 @@ import { uploadFile } from "../../api/main-api/";
 import "./index.scss";
 import classnames from "classnames";
 import axios from "axios";
+import { downloadAppAsset } from "api/main-api";
 export default class UploaderApiIncluded extends React.Component {
   constructor(props) {
     super(props);
     const src = props.defaultSrc;
-    const { messages, width, height, maxFileSize } = props;
+    const { messages, width, height, maxFileSize, defaultFile } = props;
+
     const componentConfig = {
       iconFiletypes: [".jpg", ".png", ".gif"],
       showFiletypeIcon: true,
@@ -19,10 +21,12 @@ export default class UploaderApiIncluded extends React.Component {
       uploading: false,
       uploaded: false,
       uploadedFileName: "",
-      cancelUpload: undefined
+      cancelUpload: undefined,
+      defaultFile: undefined
     };
     this.state = {
-      ...this.initialStates
+      ...this.initialStates,
+      defaultFile: defaultFile
     };
     this.fileRef = React.createRef();
   }
@@ -50,12 +54,91 @@ export default class UploaderApiIncluded extends React.Component {
       }
     );
   };
+  downloadAsset = fileId => {
+    console.log("herre", fileId);
+    downloadAppAsset()
+      .onOk(result => {
+        // console.log("succes result: ", result);
+        // if (this.props.defaultUrl) {
+        //   // res.data["prev_file"] = this.props.defaultUrl;
+        //   // res.data["replace"] = true;
+        // } else {
+        //   // res.data["replace"] = false;
+        // }
+        console.log("result", result);
+        // _this.setState(
+        //   {
+        //     uploaded: true, //DownloadAsset(result.data.file.filename)
+        //     uploading: false,
+        //     uploadedFileName: _file.name
+        //     // selectedImgUrl: "url",
+        //   },
+        //   () => {
+        //     _this.props.onChange(this.props.name, result);
+        //   }
+        // );
+        //prog => this.setState({ progress: prog.progress }));
+        // if (window.analytics)
+        // window.analytics.track("BankID Verification", {
+        //   category: "Loan Application",
+        //   label: "/app/loan/ bankid popup",
+        //   value: 0
+        // });
+        // toggleVerifyingSpinner(false);
+        // setStartResult(result);
+        // toggleVerifyModal(true);
+      })
+      .onServerError(result => {
+        // if (!didCancel) {
+        // toggleVerifyingSpinner(false);
+        // changeTab(3);
+        // setError({
+        //   sender: "verifyBankId"
+        // });
+        // }
+        // _this.setState({ uploading: false });
+        console.log("server error ", result);
+      })
+      .onBadRequest(result => {
+        // if (!didCancel) {
+        //   toggleVerifyingSpinner(false);
+        //   changeTab(3);
+        //   setError({
+        //     sender: "verifyBankId"
+        //   });
+        // }
+        // _this.setState({ uploading: false });
+        console.log("Bad request", result);
+      })
+      .unAuthorized(result => {
+        // if (!didCancel) {
+        //   toggleVerifyingSpinner(false);
+        //   changeTab(3);
+        //   setError({
+        //     sender: "verifyBankId"
+        //   });
+        // }
+        // _this.setState({ uploading: false });
+        console.log("Bad request", result);
+      })
+      .unKnownError(result => {
+        // if (!didCancel) {
+        //   toggleVerifyingSpinner(false);
+        //   changeTab(3);
+        //   setError({
+        //     sender: "verifyBankId"
+        //   });
+        // }
+        // _this.setState({ uploading: false });
+        console.log("Bad request", result);
+      })
+      .call(fileId);
+  };
   upload = file => {
     this.setState({ uploading: true });
     const _file = file.target.files[0];
     const _this = this;
     const newForm = new FormData();
-
     // this.toBase64(_file).then(b64 => {
     newForm.append("title", _file.name);
     newForm.append("fileExtension", _file.type);
@@ -70,7 +153,6 @@ export default class UploaderApiIncluded extends React.Component {
     // );
     // });
     // const _callback = file => {
-
     uploadFile()
       .onOk(result => {
         // console.log("succes result: ", result);
@@ -202,7 +284,8 @@ export default class UploaderApiIncluded extends React.Component {
   };
   render() {
     const { styleExporter } = this;
-    const { cancelUpload } = this.state;
+    const { cancelUpload, defaultFile } = this.state;
+    const fileId = typeof defaultFile === "string" ? defaultFile : undefined;
     return (
       <div className="IUAI">
         <div
@@ -212,13 +295,13 @@ export default class UploaderApiIncluded extends React.Component {
           )}
           style={styleExporter("imgWrapperStyle")}
         >
-          {this.state.selectedImgUrl && (
+          {/* {this.state.selectedImgUrl && (
             <img
               src={this.state.selectedImgUrl}
               alt={`uploader+${this.props.name}`}
               style={styleExporter("imageStyle")}
             />
-          )}
+          )} */}
           {this.state.uploading ? (
             <>
               <span
@@ -229,7 +312,7 @@ export default class UploaderApiIncluded extends React.Component {
                 {this.state.progress} %
               </span>
             </>
-          ) : !this.state.uploaded ? (
+          ) : !this.state.uploaded && !fileId ? (
             <span
               className="fileName"
               style={{ fontSize: "16px", cursor: "pointer" }}
@@ -239,13 +322,31 @@ export default class UploaderApiIncluded extends React.Component {
             >
               {this.props.innerText || "Select File"}
             </span>
-          ) : (
+          ) : !fileId ? (
             <>
               <span
                 className="icon-cross cancelButton"
                 onClick={this.resetFile}
               ></span>
               <span className="fileName">{this.state.uploadedFileName}</span>
+            </>
+          ) : (
+            <>
+              <span
+                className="icon-cross cancelButton"
+                onClick={this.resetFile}
+              ></span>
+              <span
+                className="fileName"
+                style={{
+                  fontSize: "16px",
+                  cursor: "pointer",
+                  fontFamily: "OpenSanceBold"
+                }}
+                onClick={() => this.downloadAsset(fileId)}
+              >
+                Download File
+              </span>
             </>
           )}
           <input

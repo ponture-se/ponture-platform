@@ -14,7 +14,6 @@ import {
   saveLoan
 } from "api/business-loan-api";
 import Modal from "components/Modal";
-import UploaderApiIncluded from "components/UploaderApiIncluded";
 import EditAppliation from "./EditApplication";
 //
 const MyApplications = props => {
@@ -434,7 +433,6 @@ const MyApplications = props => {
     _getMyApplications();
   }
   function saveApplication(obj) {
-    debugger;
     for (const key in itemData) {
       if (itemData[key] === null) {
         itemData[key] = "";
@@ -465,6 +463,12 @@ const MyApplications = props => {
           itemData.acquisition[item] = "";
         }
       }
+    }
+    if (obj.acquisition) {
+      _obj.acquisition = {
+        ...itemData.acquisition,
+        ...obj.acquisition
+      };
     }
     saveLoan(currentRole)
       .onOk(result => {

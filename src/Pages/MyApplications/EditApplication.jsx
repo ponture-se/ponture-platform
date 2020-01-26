@@ -6,6 +6,7 @@ import "../BusinessLoan/styles.scss";
 import SquareSpinner from "components/SquareSpinner";
 import UploaderApiIncluded from "components/UploaderApiIncluded";
 import SafeValue from "utils/SafeValue";
+import { CircleSpinner } from "components";
 const EditAppliation = props => {
   //Initialization
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
@@ -91,6 +92,7 @@ const EditAppliation = props => {
     }
     return { isValid: isValid, eMessage: eMessage };
   };
+  const [buttonSpinner, toggleButtonSpinner] = useState(false);
   const [objectName, setObjectName] = useState({
     value: BA.object_name,
     isValid: true,
@@ -112,7 +114,7 @@ const EditAppliation = props => {
   });
   const [objectPrice, setObjectPrice] = useState({
     value: {
-      realValue: BA.object_price,
+      realValue: String(BA.object_price),
       visualValue: String(BA.object_price).replace(numberFormatRegex, "$1 ")
     },
     ...checkValidation("objectPrice", BA.object_price)
@@ -183,12 +185,12 @@ const EditAppliation = props => {
     ...checkValidation("experience", BA.purchaser_profile)
   });
   const [purchaseType, setPurchaseType] = useState({
-    value: BA.purchaseType ? BA.purchaseType : "",
-    ...checkValidation("purchaseType", BA.purchaseType)
+    value: BA.purchase_type ? BA.purchase_type : "",
+    ...checkValidation("purchaseType", BA.purchase_type)
   });
   const [ownInvestmentAmount, setOwnInvestmentAmount] = useState({
     value: {
-      realValue: BA.own_investment_amount,
+      realValue: String(BA.own_investment_amount),
       visualValue: String(BA.own_investment_amount).replace(
         numberFormatRegex,
         "$1 "
@@ -279,8 +281,6 @@ const EditAppliation = props => {
     e => {
       const { value } = e.target;
       let _newOpt = "";
-      let isValid = true;
-      let eMessage = "";
       if (objectIndustryBranch.value !== value) {
         _newOpt = value;
       }
@@ -318,7 +318,6 @@ const EditAppliation = props => {
     },
     [objectPrice]
   );
-
   //Object Valuation Letter
   const handleObjectValuationLetter = useCallback(
     e => {
@@ -357,8 +356,6 @@ const EditAppliation = props => {
   const handleObjectLatestIncomeStatement = useCallback(
     e => {
       let { value, name } = e.target;
-      let isValid = true;
-      let eMessage = "";
       setObjectLatestIncomeStatement({
         value: value,
         ...checkValidation("objectLatestIncomeStatement", value)
@@ -379,7 +376,6 @@ const EditAppliation = props => {
   const handlePurchaserCompanyLatestIncomeStatement = useCallback(
     e => {
       let { value } = e.target;
-
       setPurchaserCompanyLatestIncomeStatement({
         value: value,
         ...checkValidation("purchaserCompanyLatestIncomeStatement", value)
@@ -432,22 +428,14 @@ const EditAppliation = props => {
   );
   const handlePurchaseType = useCallback(
     e => {
-      let _newOpts = Array.from(purchaseType.value);
-      let eMessage = "";
-      let isValid = true;
-      if (purchaseType.value.indexOf(e) > -1) {
-        _newOpts.splice(_newOpts.indexOf(e), 1);
-      } else {
-        _newOpts.push(e);
-      }
-      if (_newOpts.length === 0) {
-        eMessage = t("MANDATORY_FIELD");
-        isValid = false;
+      const { value } = e.target;
+      let _newOpts = "";
+      if (purchaseType.value !== value) {
+        _newOpts = value;
       }
       setPurchaseType({
-        isValid: isValid,
-        eMessage: eMessage,
-        value: _newOpts
+        value: _newOpts,
+        ...checkValidation("purchaseType", _newOpts)
       });
     },
     [purchaseType]
@@ -458,7 +446,7 @@ const EditAppliation = props => {
       let _value = "";
       _value = value.replace(/\s/g, "");
       if (Number(_value)) {
-        setObjectPrice({
+        setOwnInvestmentAmount({
           value: {
             realValue: _value,
             visualValue: _value && _value.replace(numberFormatRegex, "$1 ")
@@ -520,7 +508,8 @@ const EditAppliation = props => {
     [additionalFiles]
   );
   const editApplication = () => {
-    props.onEdit({
+    toggleButtonSpinner(true);
+    const API_obj = {
       acquisition: {
         object_name: SafeValue(objectName, "value", "string", ""),
         object_company_name: SafeValue(
@@ -529,13 +518,14 @@ const EditAppliation = props => {
           "string",
           ""
         ),
-        object_organization_number: String(
-          SafeValue(objectOrgNumber, "value", "number", "")
+        object_organization_number: SafeValue(
+          objectOrgNumber,
+          "value",
+          "string",
+          ""
         ),
         object_industry: SafeValue(objectIndustryBranch, "value", "string", ""),
-        object_price: String(
-          SafeValue(objectPrice, "value.realValue", "number", "")
-        ),
+        object_price: SafeValue(objectPrice, "value.realValue", "string", "0"),
         object_valuation_letter: SafeValue(
           objectValuationLetter,
           "value",
@@ -572,12 +562,9 @@ const EditAppliation = props => {
           "string",
           ""
         ),
-        available_guarantees: SafeValue(
-          purchaserGuaranteesAvailable,
-          "value",
-          "string",
-          ""
-        ),
+        available_guarantees: String(
+          SafeValue(purchaserGuaranteesAvailable, "value", "array", [])
+        ), //BUG
         available_guarantees_description: SafeValue(
           purchaserGuaranteesDescription,
           "value",
@@ -588,9 +575,9 @@ const EditAppliation = props => {
         purchase_type: SafeValue(purchaseType, "value", "string", ""),
         own_investment_amount: SafeValue(
           ownInvestmentAmount,
-          "value",
+          "value.realValue",
           "string",
-          ""
+          "0"
         ),
         own_investment_details: SafeValue(
           ownInvestmentDetails,
@@ -598,18 +585,13 @@ const EditAppliation = props => {
           "string",
           ""
         ),
-        business_plan: SafeValue(businessPlan, "value", "array", "string", []),
-        additional_files: SafeValue(
-          additionalFiles,
-          "value",
-          "array",
-          "string",
-          []
-        ),
+        business_plan: SafeValue(businessPlan, "value", "array", []),
+        additional_files: SafeValue(additionalFiles, "value", "array", []),
         additional_details: SafeValue(additionalDetails, "value", "string", ""),
         description: SafeValue(description, "value", "string", "")
       }
-    });
+    };
+    props.onEdit(API_obj);
   };
   //  const handleREUsageCategory = useCallback(
   //    e => {
@@ -943,6 +925,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={additionalFiles}
                   onChange={(name, result) =>
                     handleAdditionalFiles({
                       target: { value: result.id }
@@ -973,6 +956,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={businessPlan.value}
                   onChange={(name, result) =>
                     handleBusinessPlan({
                       target: { value: result.id }
@@ -1250,6 +1234,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={objectValuationLetter.value}
                   onChange={(name, result) =>
                     handleObjectValuationLetter({
                       target: { value: result.id }
@@ -1279,6 +1264,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={objectAnnualReport.value}
                   onChange={(name, result) =>
                     handleObjectAnnualReport({ target: { value: result.id } })
                   }
@@ -1310,6 +1296,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={objectLatestBalanceSheet.value}
                   onChange={(name, result) =>
                     handleObjectLatestBalanceSheet({
                       target: { value: result.id }
@@ -1339,6 +1326,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={objectLatestIncomeStatement.value}
                   onChange={(name, result) =>
                     handleObjectLatestIncomeStatement({
                       target: { value: result.id }
@@ -1378,6 +1366,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={purchaserCompanyLatestBalanceSheet.value}
                   onChange={(name, result) =>
                     handlePurchaserCompanyLatestBalanceSheet({
                       target: { value: result.id }
@@ -1408,6 +1397,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
+                  defaultFile={purchaserCompanyLatestIncomeStatement.value}
                   onChange={(name, result) =>
                     handlePurchaserCompanyLatestIncomeStatement({
                       target: { value: result.id }
@@ -1507,6 +1497,7 @@ const EditAppliation = props => {
             </div>
           </div>
         </div>
+        <br />
         <div className="userInputs">
           <div
             className={
@@ -1514,12 +1505,7 @@ const EditAppliation = props => {
               (!experience.isValid ? "--invalid" : "")
             }
           >
-            <label
-              className="bl__input__label"
-              style={{ fontSize: "15px", marginBottom: "12px" }}
-            >
-              {t("APP_EXPERIENCE")}
-            </label>
+            <label className="bl__input__label">{t("APP_EXPERIENCE")}</label>
             <div className="bl__input__element">
               {/* <div className="element-group">
                              <div className="element-group__center"> */}
@@ -1551,10 +1537,20 @@ const EditAppliation = props => {
        &nbsp;
            {t("CLOSE")}
          </button> */}
-        <button className="btn --success" onClick={editApplication}>
-          <span className="icon-checkmark"></span>
-          &nbsp;
-          {t("SUBMIT")}
+        <button
+          className="btn --success"
+          onClick={editApplication}
+          disabled={buttonSpinner}
+        >
+          {!buttonSpinner ? (
+            <>
+              <span className="icon-checkmark"></span>
+              &nbsp;
+              {t("SUBMIT")}
+            </>
+          ) : (
+            <CircleSpinner show={true} />
+          )}
         </button>
       </div>
     </>

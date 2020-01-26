@@ -61,7 +61,7 @@ export default function SafeValue(
     index = parseInt(index) === index ? parseInt(index) : index;
     //if index was empty string then just check validation of data
     if (index === "") {
-      _checkType(data);
+      return _checkType(data);
     }
     let indexArr = typeof index === "string" ? index.split(".") : index;
     const cnt = indexArr.length;
@@ -73,7 +73,7 @@ export default function SafeValue(
       }
       data = data[val];
       if (i === cnt - 1) {
-        _checkType();
+        return _checkType(data);
       }
     }
   } catch (err) {
