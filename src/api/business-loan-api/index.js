@@ -653,7 +653,12 @@ export function submitLoan() {
       _unKnownErrorCallBack(result);
     }
   }
-
+  let _onInvalidRequestCallback;
+  function _onInvalidRequest(result) {
+    if (_onInvalidRequestCallback) {
+      _onInvalidRequestCallback(result);
+    }
+  }
   const _call = loan => {
     const url = submitUrl;
     const token = Cookies.get("@pontrue-wizard/token");
@@ -683,6 +688,9 @@ export function submitLoan() {
               break;
             case 404:
               _notFound();
+              break;
+            case 422:
+              _onInvalidRequest();
               break;
             case 500:
               if (window.analytics)
@@ -723,6 +731,10 @@ export function submitLoan() {
     },
     unAuthorized: function(callback) {
       _unAuthorizedCallBack = callback;
+      return this;
+    },
+    onInvalidRequest: function(callback) {
+      _onInvalidRequestCallback = callback;
       return this;
     },
     onRequestError: function(callback) {

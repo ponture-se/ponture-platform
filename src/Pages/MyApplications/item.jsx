@@ -32,7 +32,7 @@ const Item = props => {
     const phone = appData.contactInfo.phone;
     const email = appData.contactInfo.email;
 
-    const data = {
+    const apiData = {
       oppId: oppId,
       phone: phone,
       email: email
@@ -42,7 +42,7 @@ const Item = props => {
       if (typeof parent_verify === "function") {
         toggleLoading(true);
         //
-        parent_submit(data, res => {
+        parent_submit(apiData, appData, res => {
           if (res && res.success) {
             setIsSubmitted(true);
             toggleLoading(false);
@@ -263,15 +263,15 @@ const Item = props => {
           )}
           &nbsp;
           {/* view application */}
-          {RecordType === "real estate" ||
-            (RecordType === "business acquisition loan" && (
-              <button
-                className="btn --light headerBtn"
-                onClick={() => viewItemModal(item)}
-              >
-                <span className="icon-more-h" />
-              </button>
-            ))}
+          {(RecordType === "real estate" ||
+            RecordType === "business acquisition loan") && (
+            <button
+              className="btn --light headerBtn"
+              onClick={() => viewItemModal(item)}
+            >
+              <span className="icon-more-h" />
+            </button>
+          )}
         </div>
       </div>
 
@@ -284,11 +284,21 @@ const Item = props => {
             <span>{separateNumberByChar(item.amount)} Kr</span>
           </span>
         </div>
+        <div className="application__bodyRow">
+          <span>{t("APP_RECORD_TYPE")}</span>
+          <span>{item.RecordType}</span>
+        </div>
         {currentRole === "agent" && (
-          <div className="application__bodyRow">
-            <span>{t("APP_CONTACT_NAME")}</span>
-            <span>{item.contactInfo.name}</span>
-          </div>
+          <>
+            <div className="application__bodyRow">
+              <span>{t("APP_CONTACT_NAME")}</span>
+              <span>{item.contactInfo.name}</span>
+            </div>
+            <div className="application__bodyRow">
+              <span>{t("BL_PERSONAL_NUMBER")}</span>
+              <span>{item.contactInfo.personalNumber}</span>
+            </div>
+          </>
         )}
         <div className="application__bodyRow">
           <span>{t("APP_COMPANY_NAME")}</span>

@@ -96,6 +96,7 @@ export default {
   OFFER_ACCEPTED: "Accepterat",
   OFFER_REJECTED: "Avslagen",
   MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
+
   APP_NEEDS: "Dina anledningar till lån",
   APP_COMPANY_NAME: "Företag",
   APP_ADDITIONAL_FILES: "Övrigt fil",
@@ -111,6 +112,8 @@ export default {
   APP_CANCELED_SUCCESS: "The application was canceled successfully",
   APP_OFFERS_REJECT_ALERT_INFO: "Vill du avslå det här erbjudandet?",
   APP_CONTACT_NAME: "Kontaktnamn",
+  APP_PERSONAL_NUMBER: "Personnummer",
+  APP_RECORD_TYPE: "Typ", //T: record type
   OFFER_REJECT_SUCCESS: "Offer was rejected successfully.",
   APP_OFFERS_ACCEPT_ALERT_INFO:
     "Choosing this offer as accepted for the application",

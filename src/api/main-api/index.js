@@ -928,6 +928,12 @@ export function uploadFile() {
       _cancelCallBack(result);
     }
   }
+  let _onInvalidRequestCallback;
+  function _onInvalidRequest(result) {
+    if (_onInvalidRequestCallback) {
+      _onInvalidRequestCallback(result);
+    }
+  }
   const _call = (fileData, progress) => {
     const CancelToken = axios.CancelToken;
     const url = uploadFileUrl;
@@ -996,6 +1002,9 @@ export function uploadFile() {
             case "canceled":
               _onCancel();
               break;
+            case 422:
+              _onInvalidRequest();
+              break;
             default:
               _unKnownError();
               break;
@@ -1028,6 +1037,10 @@ export function uploadFile() {
     },
     onBadRequest: function(callback) {
       _onBadRequestCallBack = callback;
+      return this;
+    },
+    onInvalidRequest: function(callback) {
+      _onInvalidRequestCallback = callback;
       return this;
     },
     notFound: function(callback) {

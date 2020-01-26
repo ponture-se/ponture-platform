@@ -134,10 +134,10 @@ const EditAppliation = props => {
     objectLatestIncomeStatement,
     setObjectLatestIncomeStatement
   ] = useState({
-    value: BA.object_income_Statement,
+    value: BA.object_income_statement,
     ...checkValidation(
       "objectLatestIncomeStatement",
-      BA.object_income_Statement
+      BA.object_income_statement
     )
   });
   const [
@@ -507,120 +507,257 @@ const EditAppliation = props => {
     [additionalFiles]
   );
   const editApplication = () => {
-    toggleButtonSpinner(true);
-    const API_BA_obj = {
-      object_name: SafeValue(objectName, "value", "string", ""),
-      object_company_name: SafeValue(objectCompanyName, "value", "string", ""),
-      object_organization_number: SafeValue(
-        objectOrgNumber,
-        "value",
-        "string",
-        ""
-      ),
-      object_industry: SafeValue(objectIndustryBranch, "value", "string", ""),
-      object_price: SafeValue(objectPrice, "value.realValue", "string", "0"),
-      object_valuation_letter: SafeValue(
-        objectValuationLetter,
-        "value",
-        "string",
-        ""
-      ),
-      object_annual_report: SafeValue(
-        objectAnnualReport,
-        "value",
-        "string",
-        ""
-      ),
-      object_balance_sheet: SafeValue(
-        objectLatestBalanceSheet,
-        "value",
-        "string",
-        ""
-      ),
-      object_income_statement: SafeValue(
-        objectLatestIncomeStatement,
-        "value",
-        "string",
-        ""
-      ),
-      account_balance_sheet: SafeValue(
-        purchaserCompanyLatestBalanceSheet,
-        "value",
-        "string",
-        ""
-      ),
-      account_income_statement: SafeValue(
-        purchaserCompanyLatestIncomeStatement,
-        "value",
-        "string",
-        ""
-      ),
-      available_guarantees: String(
-        SafeValue(purchaserGuaranteesAvailable, "value", "array", [])
-      ), //BUG
-      available_guarantees_description: SafeValue(
-        purchaserGuaranteesDescription,
-        "value",
-        "string",
-        ""
-      ),
-      purchaser_profile: SafeValue(experience, "value", "string", ""),
-      purchase_type: SafeValue(purchaseType, "value", "string", ""),
-      own_investment_amount: SafeValue(
-        ownInvestmentAmount,
-        "value.realValue",
-        "string",
-        "0"
-      ),
-      own_investment_details: SafeValue(
-        ownInvestmentDetails,
-        "value",
-        "string",
-        ""
-      ),
-      business_plan: SafeValue(businessPlan, "value", "array", []),
-      additional_files: SafeValue(additionalFiles, "value", "array", []),
-      additional_details: SafeValue(additionalDetails, "value", "string", ""),
-      description: SafeValue(description, "value", "string", "")
-    };
-    for (const key in data) {
-      if (data[key] === null) {
-        data[key] = "";
-      }
-    }
-    for (const key in data.real_estate) {
-      if (data.real_estate[key] === null) {
-        data.real_estate[key] = "";
-      }
-    }
     const _obj = {
       ...data,
-      ...API_BA_obj,
-      lastName: data.contactInfo.lastName,
-      amourtizationPeriod: data.amortizationPeriod,
-      personalNumber: data.contactInfo.personalNumber,
-      need: data.need.map(item => item.apiName)
+      acquisition: {
+        object_name: SafeValue(objectName, "value", "string", ""),
+        object_company_name: SafeValue(
+          objectCompanyName,
+          "value",
+          "string",
+          ""
+        ),
+        object_organization_number: SafeValue(
+          objectOrgNumber,
+          "value",
+          "string",
+          ""
+        ),
+        object_industry: SafeValue(objectIndustryBranch, "value", "string", ""),
+        object_price: SafeValue(objectPrice, "value.realValue", "string", "0"),
+        object_valuation_letter: SafeValue(
+          objectValuationLetter,
+          "value",
+          "string",
+          ""
+        ),
+        object_annual_report: SafeValue(
+          objectAnnualReport,
+          "value",
+          "string",
+          ""
+        ),
+        object_balance_sheet: SafeValue(
+          objectLatestBalanceSheet,
+          "value",
+          "string",
+          ""
+        ),
+        object_income_statement: SafeValue(
+          objectLatestIncomeStatement,
+          "value",
+          "string",
+          ""
+        ),
+        account_balance_sheet: SafeValue(
+          purchaserCompanyLatestBalanceSheet,
+          "value",
+          "string",
+          ""
+        ),
+        account_income_statement: SafeValue(
+          purchaserCompanyLatestIncomeStatement,
+          "value",
+          "string",
+          ""
+        ),
+        available_guarantees: String(
+          SafeValue(purchaserGuaranteesAvailable, "value", "array", [])
+        ), //BUG
+        available_guarantees_description: SafeValue(
+          purchaserGuaranteesDescription,
+          "value",
+          "string",
+          ""
+        ),
+        purchaser_profile: SafeValue(experience, "value", "string", ""),
+        purchase_type: SafeValue(purchaseType, "value", "string", ""),
+        own_investment_amount: SafeValue(
+          ownInvestmentAmount,
+          "value.realValue",
+          "string",
+          "0"
+        ),
+        own_investment_details: SafeValue(
+          ownInvestmentDetails,
+          "value",
+          "string",
+          ""
+        ),
+        business_plan: SafeValue(businessPlan, "value", "array", []),
+        additional_files: SafeValue(additionalFiles, "value", "array", []),
+        additional_details: SafeValue(additionalDetails, "value", "string", ""),
+        description: SafeValue(description, "value", "string", "")
+      }
     };
-    if (userInfo.broker_id) {
-      _obj.broker_id = userInfo.broker_id;
+    //
+    //Check inputs validation before submit
+    let formIsValid = true;
+    if (!checkValidation("objectOrgNumber", objectOrgNumber.value).isValid) {
+      handleObjectOrgNumber({ target: { value: objectOrgNumber.value } });
+      formIsValid = false;
     }
-    if (data.need[0] !== "purchase_of_business") {
-      _obj.orgName = data.Name;
+    if (
+      !checkValidation("objectValuationLetter", objectValuationLetter.value)
+        .isValid
+    ) {
+      handleObjectValuationLetter({
+        target: { value: objectValuationLetter.value }
+      });
+      formIsValid = false;
     }
-    if (data.acquisition) {
+    if (
+      !checkValidation("objectAnnualReport", objectAnnualReport.value).isValid
+    ) {
+      handleObjectAnnualReport({ target: { value: objectAnnualReport.value } });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "objectLatestBalanceSheet",
+        objectLatestBalanceSheet.value
+      ).isValid
+    ) {
+      handleObjectLatestBalanceSheet({
+        target: { value: objectLatestBalanceSheet.value }
+      });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "objectLatestIncomeStatement",
+        objectLatestIncomeStatement.value
+      ).isValid
+    ) {
+      handleObjectLatestIncomeStatement({
+        target: { value: objectLatestIncomeStatement.value }
+      });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "purchaserCompanyLatestBalanceSheet",
+        purchaserCompanyLatestBalanceSheet.value
+      ).isValid
+    ) {
+      handlePurchaserCompanyLatestBalanceSheet({
+        target: { value: purchaserCompanyLatestBalanceSheet.value }
+      });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "purchaserCompanyLatestIncomeStatement",
+        purchaserCompanyLatestIncomeStatement.value
+      ).isValid
+    ) {
+      handlePurchaserCompanyLatestIncomeStatement({
+        target: { value: purchaserCompanyLatestIncomeStatement.value }
+      });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "purchaserGuaranteesDescription",
+        purchaserGuaranteesDescription.value
+      ).isValid
+    ) {
+      handlePurchaserGuaranteesDescription({
+        target: { value: purchaserGuaranteesDescription.value }
+      });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "ownInvestmentAmount",
+        ownInvestmentAmount.value.realValue
+      ).isValid
+    ) {
+      handleOwnInvestmentAmount({
+        target: { value: ownInvestmentAmount.value.visualValue }
+      });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation("ownInvestmentDetails", ownInvestmentDetails.value)
+        .isValid
+    ) {
+      handleOwnInvestmentDetails({
+        target: { value: ownInvestmentDetails.value }
+      });
+      formIsValid = false;
+    }
+    if (!checkValidation("objectName", objectName.value).isValid) {
+      handleObjectName({ target: { value: objectName.value } });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation("objectCompanyName", objectCompanyName.value).isValid
+    ) {
+      handleObjectCompanyName({ target: { value: objectCompanyName.value } });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation("objectIndustryBranch", objectIndustryBranch.value)
+        .isValid
+    ) {
+      handleObjectIndustryBranch({
+        target: { value: objectIndustryBranch.value }
+      });
+      formIsValid = false;
+    }
+    if (!checkValidation("objectPrice", objectPrice.value.realValue).isValid) {
+      handleObjectPrice({ target: { value: objectPrice.value.visualValue } });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation(
+        "purchaserGuaranteesAvailable",
+        purchaserGuaranteesAvailable.value
+      ).isValid
+    ) {
+      handlePurchaserGuaranteesAvailable({
+        target: { value: purchaserGuaranteesAvailable.value }
+      });
+      formIsValid = false;
+    }
+    if (!checkValidation("experience", experience.value).isValid) {
+      handleExperience({ target: { value: experience.value } });
+      formIsValid = false;
+    }
+    if (!checkValidation("purchaseType", purchaseType.value).isValid) {
+      handlePurchaseType({ target: { value: purchaseType.value } });
+      formIsValid = false;
+    }
+    if (!checkValidation("businessPlan", businessPlan.value).isValid) {
+      handleBusinessPlan({ target: { value: businessPlan.value } });
+      formIsValid = false;
+    }
+    if (!checkValidation("additionalFiles", additionalFiles.value).isValid) {
+      handleAdditionalFiles({ target: { value: additionalFiles.value } });
+      formIsValid = false;
+    }
+    if (
+      !checkValidation("additionalDetails", additionalDetails.value).isValid
+    ) {
+      handleAdditionalDetails({ target: { value: additionalDetails.value } });
+      formIsValid = false;
+    }
+    if (!checkValidation("description", description.value).isValid) {
+      handleDescription({ target: { value: description.value } });
+      formIsValid = false;
+    }
+    if (_obj.acquisition) {
       for (const item in data.acquisition) {
         if (data.acquisition[item] === null) {
           data.acquisition[item] = "";
         }
       }
     }
-    if (API_BA_obj) {
-      _obj.acquisition = {
-        ...data.acquisition,
-        ...API_BA_obj
-      };
+    if (formIsValid) {
+      toggleButtonSpinner(true);
+      props.onEdit(_obj);
     }
-    props.onEdit(_obj);
   };
   //  const handleREUsageCategory = useCallback(
   //    e => {

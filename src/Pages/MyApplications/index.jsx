@@ -58,9 +58,15 @@ const MyApplications = props => {
       // _getMyApplications();
       lastCallback.success(result, () => {
         toggleVerifyModal(false);
-        saveApplication({
-          bankid: result
-        });
+        saveApplication(
+          {
+            ...itemData,
+            bankid: result
+          },
+          () => {
+            setItemData(undefined);
+          }
+        );
       });
     }
   }
@@ -384,35 +390,45 @@ const MyApplications = props => {
   }
 
   //Submit application function
-  function handleSubmitApplication(obj, callback) {
-    for (const key in obj) {
-      if (itemData[key] === null) {
-        itemData[key] = "";
-      }
-    }
-    for (const key in itemData.real_estate) {
-      if (itemData.real_estate[key] === null) {
-        itemData.real_estate[key] = "";
-      }
-    }
-    for (const key in itemData.acquisition) {
-      if (itemData.acquisition[key] === null) {
-        itemData.acquisition[key] = "";
-      }
-    }
+  function handleSubmitApplication(apiData, appData, callback) {
+    // for (const key in obj) {
+    //   if (itemData[key] === null) {
+    //     itemData[key] = "";
+    //   }
+    // }
+    // for (const key in itemData.real_estate) {
+    //   if (itemData.real_estate[key] === null) {
+    //     itemData.real_estate[key] = "";
+    //   }
+    // }
+    // for (const key in itemData.acquisition) {
+    //   if (itemData.acquisition[key] === null) {
+    //     itemData.acquisition[key] = "";
+    //   }
+    // }
+    // const _obj = {
+    //   ...obj,
+    //   // lastName: itemData.contactInfo.lastName,
+    //   amourtizationPeriod: itemData.amortizationPeriod,
+    //   // personalNumber: itemData.contactInfo.personalNumber,
+    //   need: itemData.need.map(item => item.apiName)
+    // };
+    // // if (obj.bankid) {
+    // //   _obj["personalNumber"] = obj.userInfo.personalNumber;
+    // //   _obj["lastName"] = obj.userInfo.surname;
+    // // } else if (obj.contactInfo) {
+    // //   _obj["personalNumber"] = obj.contactInfo.personalNumber;
+    // //   _obj["lastName"] = obj.contactInfo.lastName;
+    // // }
+    // if (userInfo.broker_id) {
+    //   _obj.broker_id = userInfo.broker_id;
+    // }
+    // if (itemData.need[0] !== "purchase_of_business") {
+    //   _obj.orgName = itemData.Name;
+    // }
     const _obj = {
-      ...obj,
-      lastName: itemData.contactInfo.lastName,
-      amourtizationPeriod: itemData.amortizationPeriod,
-      personalNumber: itemData.contactInfo.personalNumber,
-      need: itemData.need.map(item => item.apiName)
+      ...apiData
     };
-    if (userInfo.broker_id) {
-      _obj.broker_id = userInfo.broker_id;
-    }
-    if (itemData.need[0] !== "purchase_of_business") {
-      _obj.orgName = itemData.Name;
-    }
     submitLoan()
       .onOk(result => {
         if (!didCancel) {
@@ -431,6 +447,13 @@ const MyApplications = props => {
                 message: "Skicka misslyckades"
               }
             });
+            if (!result.success) {
+              setEditModal({
+                visibility: true,
+                action: "submit",
+                data: appData
+              });
+            }
           } else {
             dispatch({
               type: "ADD_NOTIFY",
@@ -458,6 +481,63 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
+          // setEditModal({
+          //   visibility: true,
+          //   action: "submit",
+          //   data: appData
+          // });
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Skicka misslyckades"
+            }
+          });
+        }
+      })
+      .onInvalidRequest(result => {
+        if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(false);
+          }
+          setEditModal({
+            visibility: true,
+            action: "submit",
+            data: appData
+          });
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Skicka misslyckades"
+            }
+          });
+        }
+      })
+      .unAuthorized(result => {
+        if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(false);
+          }
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Un Athorized" //T
+            }
+          });
+        }
+      })
+      .onBadRequest(result => {
+        if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(false);
+          }
+          setEditModal({
+            visibility: true,
+            action: "submit",
+            data: appData
+          });
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -469,11 +549,43 @@ const MyApplications = props => {
       })
       .call(_obj);
   }
-  function saveApplication(obj, callback) {
+  function saveApplication(data, _callback) {
+    //replace null values with "" ,because of Api bug
+    //Api returns null but doesn't accept null when POST or PUT going to update or submit data
+    for (const key in data) {
+      if (data[key] === null) {
+        data[key] = "";
+      }
+    }
+    for (const key in data.real_estate) {
+      if (data.real_estate[key] === null) {
+        data.real_estate[key] = "";
+      }
+    }
+    const _obj = {
+      ...data,
+      amourtizationPeriod: data.amortizationPeriod,
+      //personalNumber: data.contactInfo.personalNumber,
+      need: data.need.map(item => item.apiName)
+      //lastName: data.contactInfo.lastName
+    };
+    if (data.bankid) {
+      _obj["personalNumber"] = data.bankid.personalNumber;
+      _obj["lastName"] = data.bankid.surname;
+    } else if (data.contactInfo) {
+      _obj["personalNumber"] = data.contactInfo.personalNumber;
+      _obj["lastName"] = data.contactInfo.lastName;
+    }
+    if (userInfo.broker_id) {
+      _obj.broker_id = userInfo.broker_id;
+    }
+    if (data.need[0] !== "purchase_of_business") {
+      _obj.orgName = data.Name;
+    }
     saveLoan(currentRole)
       .onOk(result => {
         if (!didCancel) {
-          if (result.errors && result.length > 0) {
+          if (result.length > 0 && result.errors && result.errors.length > 0) {
             // if (window.analytics)
             //   window.analytics.track("Failure", {
             //     category: "Loan Application",
@@ -490,7 +602,13 @@ const MyApplications = props => {
                 message: "Unsuccessful"
               }
             });
+            if (typeof _callback === "function") {
+              _callback(result);
+            }
           } else {
+            if (typeof _callback === "function") {
+              _callback(result);
+            }
             _getMyApplications(() => {
               setEditModal(false);
               dispatch({
@@ -514,12 +632,15 @@ const MyApplications = props => {
       .unKnownError(result => {
         if (!didCancel) {
           // toggleSubmitSpinner(false);
+          if (typeof _callback === "function") {
+            _callback(result);
+          }
           setError({
             sender: "submitLoan"
           });
         }
       })
-      .call(obj);
+      .call(_obj);
   }
   function toggleEditModal(data, action) {
     //If modal is open then it's time to make itemData state empty
