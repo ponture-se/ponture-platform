@@ -88,9 +88,12 @@
           justify-content: center;
         }
       }
-      & .editBtn {
+      & .headerBtn {
         border-radius: 50%;
-        padding: 16px !important;
+        padding: 14px !important;
+        font-size: 15px;
+        max-height: 43px;
+        align-self: center;
       }
     }
   }

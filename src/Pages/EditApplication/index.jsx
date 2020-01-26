@@ -1,9 +1,8 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
-import "./EditApplication.scss";
 import "../BusinessLoan/styles.scss";
-import SquareSpinner from "components/SquareSpinner";
+// import SquareSpinner from "components/SquareSpinner";
 import UploaderApiIncluded from "components/UploaderApiIncluded";
 import SafeValue from "utils/SafeValue";
 import { CircleSpinner } from "components";
@@ -509,89 +508,119 @@ const EditAppliation = props => {
   );
   const editApplication = () => {
     toggleButtonSpinner(true);
-    const API_obj = {
-      acquisition: {
-        object_name: SafeValue(objectName, "value", "string", ""),
-        object_company_name: SafeValue(
-          objectCompanyName,
-          "value",
-          "string",
-          ""
-        ),
-        object_organization_number: SafeValue(
-          objectOrgNumber,
-          "value",
-          "string",
-          ""
-        ),
-        object_industry: SafeValue(objectIndustryBranch, "value", "string", ""),
-        object_price: SafeValue(objectPrice, "value.realValue", "string", "0"),
-        object_valuation_letter: SafeValue(
-          objectValuationLetter,
-          "value",
-          "string",
-          ""
-        ),
-        object_annual_report: SafeValue(
-          objectAnnualReport,
-          "value",
-          "string",
-          ""
-        ),
-        object_balance_sheet: SafeValue(
-          objectLatestBalanceSheet,
-          "value",
-          "string",
-          ""
-        ),
-        object_income_statement: SafeValue(
-          objectLatestIncomeStatement,
-          "value",
-          "string",
-          ""
-        ),
-        account_balance_sheet: SafeValue(
-          purchaserCompanyLatestBalanceSheet,
-          "value",
-          "string",
-          ""
-        ),
-        account_income_statement: SafeValue(
-          purchaserCompanyLatestIncomeStatement,
-          "value",
-          "string",
-          ""
-        ),
-        available_guarantees: String(
-          SafeValue(purchaserGuaranteesAvailable, "value", "array", [])
-        ), //BUG
-        available_guarantees_description: SafeValue(
-          purchaserGuaranteesDescription,
-          "value",
-          "string",
-          ""
-        ),
-        purchaser_profile: SafeValue(experience, "value", "string", ""),
-        purchase_type: SafeValue(purchaseType, "value", "string", ""),
-        own_investment_amount: SafeValue(
-          ownInvestmentAmount,
-          "value.realValue",
-          "string",
-          "0"
-        ),
-        own_investment_details: SafeValue(
-          ownInvestmentDetails,
-          "value",
-          "string",
-          ""
-        ),
-        business_plan: SafeValue(businessPlan, "value", "array", []),
-        additional_files: SafeValue(additionalFiles, "value", "array", []),
-        additional_details: SafeValue(additionalDetails, "value", "string", ""),
-        description: SafeValue(description, "value", "string", "")
-      }
+    const API_BA_obj = {
+      object_name: SafeValue(objectName, "value", "string", ""),
+      object_company_name: SafeValue(objectCompanyName, "value", "string", ""),
+      object_organization_number: SafeValue(
+        objectOrgNumber,
+        "value",
+        "string",
+        ""
+      ),
+      object_industry: SafeValue(objectIndustryBranch, "value", "string", ""),
+      object_price: SafeValue(objectPrice, "value.realValue", "string", "0"),
+      object_valuation_letter: SafeValue(
+        objectValuationLetter,
+        "value",
+        "string",
+        ""
+      ),
+      object_annual_report: SafeValue(
+        objectAnnualReport,
+        "value",
+        "string",
+        ""
+      ),
+      object_balance_sheet: SafeValue(
+        objectLatestBalanceSheet,
+        "value",
+        "string",
+        ""
+      ),
+      object_income_statement: SafeValue(
+        objectLatestIncomeStatement,
+        "value",
+        "string",
+        ""
+      ),
+      account_balance_sheet: SafeValue(
+        purchaserCompanyLatestBalanceSheet,
+        "value",
+        "string",
+        ""
+      ),
+      account_income_statement: SafeValue(
+        purchaserCompanyLatestIncomeStatement,
+        "value",
+        "string",
+        ""
+      ),
+      available_guarantees: String(
+        SafeValue(purchaserGuaranteesAvailable, "value", "array", [])
+      ), //BUG
+      available_guarantees_description: SafeValue(
+        purchaserGuaranteesDescription,
+        "value",
+        "string",
+        ""
+      ),
+      purchaser_profile: SafeValue(experience, "value", "string", ""),
+      purchase_type: SafeValue(purchaseType, "value", "string", ""),
+      own_investment_amount: SafeValue(
+        ownInvestmentAmount,
+        "value.realValue",
+        "string",
+        "0"
+      ),
+      own_investment_details: SafeValue(
+        ownInvestmentDetails,
+        "value",
+        "string",
+        ""
+      ),
+      business_plan: SafeValue(businessPlan, "value", "array", []),
+      additional_files: SafeValue(additionalFiles, "value", "array", []),
+      additional_details: SafeValue(additionalDetails, "value", "string", ""),
+      description: SafeValue(description, "value", "string", "")
     };
-    props.onEdit(API_obj);
+    for (const key in data) {
+      if (data[key] === null) {
+        data[key] = "";
+      }
+    }
+    for (const key in data.real_estate) {
+      if (data.real_estate[key] === null) {
+        data.real_estate[key] = "";
+      }
+    }
+    const _obj = {
+      ...data,
+      ...API_BA_obj,
+      lastName: data.contactInfo.lastName,
+      amourtizationPeriod: data.amortizationPeriod,
+      personalNumber: data.contactInfo.personalNumber,
+      need: data.need.map(item => item.apiName)
+    };
+    if (userInfo.broker_id) {
+      _obj.broker_id = userInfo.broker_id;
+    }
+    if (data.need[0] !== "purchase_of_business") {
+      _obj.orgName = data.Name;
+    }
+    if (data.acquisition) {
+      for (const item in data.acquisition) {
+        if (data.acquisition[item] === null) {
+          data.acquisition[item] = "";
+        }
+      }
+    }
+    if (API_BA_obj) {
+      _obj.acquisition = {
+        ...data.acquisition,
+        ...API_BA_obj
+      };
+    }
+    props.onEdit(_obj);
   };
   //  const handleREUsageCategory = useCallback(
   //    e => {

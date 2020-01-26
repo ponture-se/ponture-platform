@@ -14,7 +14,8 @@ import {
   saveLoan
 } from "api/business-loan-api";
 import Modal from "components/Modal";
-import EditAppliation from "./EditApplication";
+import EditAppliation from "../EditApplication";
+import ViewAppliation from "../ViewApplication";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -31,9 +32,16 @@ const MyApplications = props => {
   const [startResult, setStartResult] = useState(undefined);
   const [personalNumber, setPersonalNumber] = useState("");
   const [lastCallback, setLastCallback] = useState(undefined);
-  const [editModal, setEditModal] = useState(false);
+  const [editModal, setEditModal] = useState({
+    visibility: false,
+    action: undefined,
+    data: undefined
+  });
+  const [viewModal, setViewModal] = useState({
+    visibility: false,
+    data: undefined
+  });
   const [itemData, setItemData] = useState(undefined);
-
   //pNum: personalNumber
   //BankId function
   function handleVerifyApplication(data, successCallback, failedCallback) {
@@ -283,64 +291,6 @@ const MyApplications = props => {
   }
   //Submit verification
   function handleSaveBankId() {}
-  //Submit application function
-  function handleSubmitApplication(data, callback) {
-    submitLoan()
-      .onOk(result => {
-        if (!didCancel) {
-          if (result.errors) {
-            //failed
-            // if (window.analytics)
-            //   window.analytics.track("Failure", {
-            //     category: "Loan Application",
-            //     label: "/app/loan/ wizard",
-            //     value: 0
-            //   });
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "error",
-                message: "Skicka misslyckades"
-              }
-            });
-          } else {
-            dispatch({
-              type: "ADD_NOTIFY",
-              value: {
-                type: "success",
-                message: "Skicka har varit framgångsrikt"
-              }
-            });
-            if (typeof callback === "function") {
-              _getMyApplications();
-              callback(false);
-            }
-            //success
-            // if (window.analytics)
-            //   window.analytics.track("Submit", {
-            //     category: "Loan Application",
-            //     label: "/app/loan/ wizard",
-            //     value: loanAmount
-            //   });
-          }
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          if (typeof callback === "function") {
-            callback(false);
-          }
-          dispatch({
-            type: "ADD_NOTIFY",
-            value: {
-              type: "error",
-              message: "Skicka misslyckades"
-            }
-          });
-        }
-      })
-      .call(data);
-  }
 
   function _getMyApplications(callback) {
     toggleLoading(true);
@@ -432,8 +382,10 @@ const MyApplications = props => {
     toggleLoading(true);
     _getMyApplications();
   }
-  function saveApplication(obj) {
-    for (const key in itemData) {
+
+  //Submit application function
+  function handleSubmitApplication(obj, callback) {
+    for (const key in obj) {
       if (itemData[key] === null) {
         itemData[key] = "";
       }
@@ -443,8 +395,12 @@ const MyApplications = props => {
         itemData.real_estate[key] = "";
       }
     }
+    for (const key in itemData.acquisition) {
+      if (itemData.acquisition[key] === null) {
+        itemData.acquisition[key] = "";
+      }
+    }
     const _obj = {
-      ...itemData,
       ...obj,
       lastName: itemData.contactInfo.lastName,
       amourtizationPeriod: itemData.amortizationPeriod,
@@ -457,19 +413,63 @@ const MyApplications = props => {
     if (itemData.need[0] !== "purchase_of_business") {
       _obj.orgName = itemData.Name;
     }
-    if (itemData.acquisition) {
-      for (const item in itemData.acquisition) {
-        if (itemData.acquisition[item] === null) {
-          itemData.acquisition[item] = "";
+    submitLoan()
+      .onOk(result => {
+        if (!didCancel) {
+          if (result.errors) {
+            //failed
+            // if (window.analytics)
+            //   window.analytics.track("Failure", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: 0
+            //   });
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "Skicka misslyckades"
+              }
+            });
+          } else {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "success",
+                message: "Skicka har varit framgångsrikt"
+              }
+            });
+            if (typeof callback === "function") {
+              _getMyApplications();
+              callback(false);
+            }
+            //success
+            // if (window.analytics)
+            //   window.analytics.track("Submit", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: loanAmount
+            //   });
+          }
         }
-      }
-    }
-    if (obj.acquisition) {
-      _obj.acquisition = {
-        ...itemData.acquisition,
-        ...obj.acquisition
-      };
-    }
+      })
+      .unKnownError(result => {
+        if (!didCancel) {
+          if (typeof callback === "function") {
+            callback(false);
+          }
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Skicka misslyckades"
+            }
+          });
+        }
+      })
+      .call(_obj);
+  }
+  function saveApplication(obj, callback) {
     saveLoan(currentRole)
       .onOk(result => {
         if (!didCancel) {
@@ -519,16 +519,22 @@ const MyApplications = props => {
           });
         }
       })
-      .call(_obj);
+      .call(obj);
   }
-  function toggleEditModal(data) {
+  function toggleEditModal(data, action) {
     //If modal is open then it's time to make itemData state empty
-    if (editModal) {
-      setItemData(undefined);
+    if (editModal.visibility) {
+      setEditModal({ visibility: false, data: data, action: undefined });
     } else {
-      setItemData(data);
+      setEditModal({ visibility: true, data: data, action: action });
     }
-    setEditModal(!editModal);
+  }
+  function toggleViewModal(data) {
+    if (viewModal.visibility) {
+      setViewModal({ visibility: false, data: undefined });
+    } else {
+      setViewModal({ visibility: true, data: data });
+    }
   }
   return (
     <div className="myApps">
@@ -559,6 +565,7 @@ const MyApplications = props => {
               verify={handleVerifyApplication}
               submit={handleSubmitApplication}
               edit={toggleEditModal}
+              view={toggleViewModal}
             />
           ))}
           {verifyModal && (
@@ -577,7 +584,28 @@ const MyApplications = props => {
           )}
         </>
       )}
-      {editModal && (
+      {viewModal.visibility && (
+        <Modal
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            borderRadius: "0"
+          }}
+        >
+          {/* <div className="bl__infoBox__header">
+            <span style={{ fontSize: "15px" }}>
+              {t("EDIT") + " " + t("BL_COMPANY_INFO")}
+            </span>
+            <span
+              className="icon-cross modal-close"
+              onClick={toggleEditModal}
+            ></span>
+          </div> */}
+          <ViewAppliation cancelEdit={toggleViewModal} data={viewModal.data} />
+        </Modal>
+      )}
+      {editModal.visibility && (
         <Modal
           style={{
             display: "flex",
@@ -597,8 +625,8 @@ const MyApplications = props => {
           </div> */}
           <EditAppliation
             cancelEdit={toggleEditModal}
-            action={"edit"}
-            data={itemData}
+            action={editModal.action}
+            data={editModal.data}
             onEdit={saveApplication}
           />
         </Modal>

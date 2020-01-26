@@ -77,7 +77,10 @@ const Item = props => {
     }
   };
   function editItemModal(item) {
-    props.edit(item);
+    props.edit(item, "edit");
+  }
+  function viewItemModal(item) {
+    props.view(item);
   }
   function handleCancelClicked() {
     toggleAlert({
@@ -227,7 +230,6 @@ const Item = props => {
                 : ""}
             </span>
           </div>
-
           {(stage === "approved" ||
             stage === "submitted" ||
             stage === "offer received" ||
@@ -250,14 +252,26 @@ const Item = props => {
               </div>
             </Link>
           )}
+          {/* edit application */}
           {stage === "created" && RecordType === "business acquisition loan" && (
             <button
-              className="btn --light editBtn"
+              className="btn --light headerBtn"
               onClick={() => editItemModal(item)}
             >
               <span className="icon-pencil" />
             </button>
           )}
+          &nbsp;
+          {/* view application */}
+          {RecordType === "real estate" ||
+            (RecordType === "business acquisition loan" && (
+              <button
+                className="btn --light headerBtn"
+                onClick={() => viewItemModal(item)}
+              >
+                <span className="icon-more-h" />
+              </button>
+            ))}
         </div>
       </div>
 
