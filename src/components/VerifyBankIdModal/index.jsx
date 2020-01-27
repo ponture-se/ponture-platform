@@ -28,7 +28,8 @@ export default function VerifyBankIdModal(props) {
       setTimeout(() => {
         if (props.onVerified) props.onVerified(successResult);
         if (isLogin) {
-          if (props.onSuccess) props.onSuccess(successResult);
+          if (typeof props.onSuccess === "function")
+            props.onSuccess(successResult);
         }
       }, 1000);
     }

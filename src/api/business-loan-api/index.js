@@ -659,9 +659,11 @@ export function submitLoan() {
       _onInvalidRequestCallback(result);
     }
   }
-  const _call = loan => {
+  const _call = (loan, isLogin) => {
     const url = submitUrl;
-    const token = Cookies.get("@pontrue-wizard/token");
+    const token = isLogin
+      ? Cookies.get("@ponture-customer-portal/token")
+      : Cookies.get("@pontrue-wizard/token");
     axios({
       method: "post",
       url: url,
@@ -792,9 +794,11 @@ export function saveLoan(permission) {
     }
   }
 
-  const _call = loan => {
+  const _call = (loan, isLogin) => {
     const url = saveUrl;
-    const token = Cookies.get("@pontrue-wizard/token");
+    const token = isLogin
+      ? Cookies.get("@ponture-customer-portal/token")
+      : Cookies.get("@pontrue-wizard/token");
     const additionalHeaders =
       permission === "customer" ? { Authorization: `Bearer ${token}` } : {};
     axios({

@@ -1368,6 +1368,8 @@ export default function BusinessLoan(props) {
           ...obj,
           acquisition: {
             object_price: String(newOrgPrice.realValue),
+            object_company_name:orgName,
+            object_organization_number:selectedCompany ? selectedCompany.companyId : "0",
             object_industry: "",
             object_annual_report: "",
             object_balance_sheet: "",
@@ -1384,7 +1386,7 @@ export default function BusinessLoan(props) {
             business_plan: [],
             additional_details: "",
             purchase_type: "",
-            description: "Description of purchase" //needs change
+            description: "Description" //needs change
           }
         };
       }
@@ -1568,6 +1570,18 @@ export default function BusinessLoan(props) {
             obj["last_referral_date"] = r.last_referral_date;
           }
         } catch (error) {}
+
+
+        //Api error function
+        const ApiErrorCallback = result => {
+          if (!didCancel) {
+            toggleSubmitSpinner(false);
+            changeTab(3);
+            setError({
+              sender: "submitLoan"
+            });
+          }
+        }
         if (
           p_userRole === "agent" ||
           (p_userRole === "customer" &&
@@ -1577,12 +1591,12 @@ export default function BusinessLoan(props) {
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors && result.length > 0) {
-                  // if (window.analytics)
-                  //   window.analytics.track("Failure", {
-                  //     category: "Loan Application",
-                  //     label: "/app/loan/ wizard",
-                  //     value: 0
-                  //   });
+                  if (window.analytics)
+                    window.analytics.track("Failure", {
+                      category: "Loan Application",
+                      label: "/app/loan/ wizard",
+                      value: 0
+                    });
                   changeTab(3);
                   setError({
                     sender: "submitLoan"
@@ -1599,15 +1613,9 @@ export default function BusinessLoan(props) {
                 }
               }
             })
-            .unKnownError(result => {
-              if (!didCancel) {
-                toggleSubmitSpinner(false);
-                changeTab(3);
-                setError({
-                  sender: "submitLoan"
-                });
-              }
-            })
+            .unKnownError(ApiErrorCallback)
+            .unAuthorized(ApiErrorCallback)
+            .onBadRequest(ApiErrorCallback)
             .call(obj);
         }
         if (
@@ -1619,12 +1627,12 @@ export default function BusinessLoan(props) {
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors) {
-                  // if (window.analytics)
-                  //   window.analytics.track("Failure", {
-                  //     category: "Loan Application",
-                  //     label: "/app/loan/ wizard",
-                  //     value: 0
-                  //   });
+                  if (window.analytics)
+                    window.analytics.track("Failure", {
+                      category: "Loan Application",
+                      label: "/app/loan/ wizard",
+                      value: 0
+                    });
                   changeTab(3);
                   setError({
                     sender: "submitLoan"
@@ -1641,15 +1649,9 @@ export default function BusinessLoan(props) {
                 }
               }
             })
-            .unKnownError(result => {
-              if (!didCancel) {
-                toggleSubmitSpinner(false);
-                changeTab(3);
-                setError({
-                  sender: "submitLoan"
-                });
-              }
-            })
+            .unKnownError(ApiErrorCallback)
+            .unAuthorized(ApiErrorCallback)
+            .onBadRequest(ApiErrorCallback)
             .call(obj);
         }
       }

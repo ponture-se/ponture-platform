@@ -34,7 +34,7 @@ const Item = props => {
 
     const apiData = {
       oppId: oppId,
-      phone: phone,
+      phoneNumber: phone,
       email: email
     };
 

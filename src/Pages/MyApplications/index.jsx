@@ -56,25 +56,40 @@ const MyApplications = props => {
     setStartResult(undefined);
     if (typeof lastCallback.success === "function") {
       // _getMyApplications();
-      lastCallback.success(result, () => {
-        toggleVerifyModal(false);
-        saveApplication(
-          {
-            ...itemData,
-            bankid: result
-          },
-          () => {
-            setItemData(undefined);
-          }
-        );
-      });
+      lastCallback.success(result);
+      // dispatch({
+      //   type: "ADD_NOTIFY",
+      //   value: {
+      //     type: "success",
+      //     message: "Verified Sucessfuly,Please wait ..." //T
+      //   }
+      // });
+      saveApplication(
+        {
+          ...itemData,
+          bankid: result
+        },
+        () => {
+          setItemData(undefined);
+          toggleVerifyModal(false);
+        }
+      );
     }
+    // if (typeof lastCallback.failed === "function") {
+    //   lastCallback.failed(result, () => {
+    //     setItemData(undefined);
+    //     toggleVerifyModal(false);
+    //   });
+    // }
   }
 
   //Side effects
   //componentDidMount
   useEffect(() => {
-    _getMyApplications();
+    toggleLoading(true);
+    _getMyApplications(() => {
+      toggleLoading(false);
+    });
     return () => {
       didCancel = true;
     };
@@ -266,9 +281,10 @@ const MyApplications = props => {
       if (typeof lastCallback.success === "function") {
         lastCallback.success(result);
       }
-      saveApplication({
-        bankid: result
-      });
+      console.log("on close", result);
+      // saveApplication({
+      //   bankid: result
+      // });
       dispatch({
         type: "ADD_NOTIFY",
         value: {
@@ -299,22 +315,19 @@ const MyApplications = props => {
   function handleSaveBankId() {}
 
   function _getMyApplications(callback) {
-    toggleLoading(true);
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
           setData(result);
-          toggleLoading(false);
           if (typeof callback === "function") {
-            callback(true);
+            callback(result);
           }
         }
       })
       .onServerError(result => {
         if (!didCancel) {
-          toggleLoading(false);
           if (typeof callback === "function") {
-            callback(false);
+            callback(result);
           }
           setError({
             title: t("INTERNAL_SERVER_ERROR"),
@@ -324,9 +337,8 @@ const MyApplications = props => {
       })
       .onBadRequest(result => {
         if (!didCancel) {
-          toggleLoading(false);
           if (typeof callback === "function") {
-            callback(false);
+            callback(result);
           }
           setError({
             title: t("BAD_REQUEST"),
@@ -335,18 +347,16 @@ const MyApplications = props => {
         }
       })
       .unAuthorized(result => {
-        if (typeof callback === "function") {
-          callback(false);
-        }
         if (!didCancel) {
-          toggleLoading(false);
+          if (typeof callback === "function") {
+            callback(result);
+          }
         }
       })
       .notFound(result => {
         if (!didCancel) {
-          toggleLoading(false);
           if (typeof callback === "function") {
-            callback(false);
+            callback(result);
           }
           setError({
             title: t("NOT_FOUND"),
@@ -359,7 +369,6 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          toggleLoading(false);
           setError({
             title: t("UNKNOWN_ERROR"),
             message: t("UNKNOWN_ERROR_MSG")
@@ -371,7 +380,6 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          toggleLoading(false);
           setError({
             title: t("ON_REQUEST_ERROR"),
             message: t("ON_REQUEST_ERROR_MSG")
@@ -386,7 +394,9 @@ const MyApplications = props => {
   }
   function handleSuccessCancel() {
     toggleLoading(true);
-    _getMyApplications();
+    _getMyApplications(() => {
+      toggleLoading(false);
+    });
   }
 
   //Submit application function
@@ -447,7 +457,10 @@ const MyApplications = props => {
                 message: "Skicka misslyckades"
               }
             });
-            if (!result.success) {
+            if (
+              !result.success &&
+              appData.RecordType === "Business Acquisition Loan"
+            ) {
               setEditModal({
                 visibility: true,
                 action: "submit",
@@ -462,10 +475,11 @@ const MyApplications = props => {
                 message: "Skicka har varit framgångsrikt"
               }
             });
-            if (typeof callback === "function") {
-              _getMyApplications();
-              callback(false);
-            }
+            _getMyApplications(() => {
+              if (typeof callback === "function") {
+                callback(result);
+              }
+            });
             //success
             // if (window.analytics)
             //   window.analytics.track("Submit", {
@@ -481,11 +495,13 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          // setEditModal({
-          //   visibility: true,
-          //   action: "submit",
-          //   data: appData
-          // });
+          if (appData.RecordType === "Business Acquisition Loan") {
+            setEditModal({
+              visibility: true,
+              action: "submit",
+              data: appData
+            });
+          }
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -500,11 +516,13 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          setEditModal({
-            visibility: true,
-            action: "submit",
-            data: appData
-          });
+          if (appData.RecordType === "Business Acquisition Loan") {
+            setEditModal({
+              visibility: true,
+              action: "submit",
+              data: appData
+            });
+          }
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -518,6 +536,13 @@ const MyApplications = props => {
         if (!didCancel) {
           if (typeof callback === "function") {
             callback(false);
+          }
+          if (appData.RecordType === "Business Acquisition Loan") {
+            setEditModal({
+              visibility: true,
+              action: "submit",
+              data: appData
+            });
           }
           dispatch({
             type: "ADD_NOTIFY",
@@ -533,11 +558,13 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          setEditModal({
-            visibility: true,
-            action: "submit",
-            data: appData
-          });
+          if (appData.RecordType === "Business Acquisition Loan") {
+            setEditModal({
+              visibility: true,
+              action: "submit",
+              data: appData
+            });
+          }
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -547,8 +574,13 @@ const MyApplications = props => {
           });
         }
       })
-      .call(_obj);
+      .call(_obj, true);
   }
+  // function editApplication(data, _callback) {
+  //   saveApplication(data, res => {
+
+  //   });
+  // }
   function saveApplication(data, _callback) {
     //replace null values with "" ,because of Api bug
     //Api returns null but doesn't accept null when POST or PUT going to update or submit data
@@ -562,6 +594,11 @@ const MyApplications = props => {
         data.real_estate[key] = "";
       }
     }
+    for (const key in data.acquisition) {
+      if (data.acquisition[key] === null) {
+        data.acquisition[key] = "";
+      }
+    }
     const _obj = {
       ...data,
       amourtizationPeriod: data.amortizationPeriod,
@@ -570,8 +607,8 @@ const MyApplications = props => {
       //lastName: data.contactInfo.lastName
     };
     if (data.bankid) {
-      _obj["personalNumber"] = data.bankid.personalNumber;
-      _obj["lastName"] = data.bankid.surname;
+      _obj["personalNumber"] = data.bankid.userInfo.personalNumber;
+      _obj["lastName"] = data.bankid.userInfo.surname;
     } else if (data.contactInfo) {
       _obj["personalNumber"] = data.contactInfo.personalNumber;
       _obj["lastName"] = data.contactInfo.lastName;
@@ -606,20 +643,23 @@ const MyApplications = props => {
               _callback(result);
             }
           } else {
-            if (typeof _callback === "function") {
-              _callback(result);
-            }
             _getMyApplications(() => {
-              setEditModal(false);
-              dispatch({
-                type: "ADD_NOTIFY",
-                value: {
-                  type: "success",
-                  message: "Successful"
-                }
+              if (typeof _callback === "function") {
+                _callback(result);
+              }
+              setEditModal({
+                visibility: false,
+                data: undefined,
+                action: undefined
               });
+              // dispatch({
+              //   type: "ADD_NOTIFY",
+              //   value: {
+              //     type: "success",
+              //     message: "Done" //T
+              //   }
+              // });
             });
-
             // if (window.analytics)
             //   window.analytics.track("Create", {
             //     category: "Loan Application",
@@ -640,7 +680,7 @@ const MyApplications = props => {
           });
         }
       })
-      .call(_obj);
+      .call(_obj, true);
   }
   function toggleEditModal(data, action) {
     //If modal is open then it's time to make itemData state empty
