@@ -603,7 +603,8 @@ const MyApplications = props => {
       ...data,
       amourtizationPeriod: data.amortizationPeriod,
       //personalNumber: data.contactInfo.personalNumber,
-      need: data.need.map(item => item.apiName)
+      need: data.need.map(item => item.apiName),
+      oppId: data.opportunityID
       //lastName: data.contactInfo.lastName
     };
     if (data.bankid) {
@@ -746,25 +747,25 @@ const MyApplications = props => {
         </>
       )}
       {viewModal.visibility && (
-        <Modal
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            borderRadius: "0"
-          }}
-        >
-          {/* <div className="bl__infoBox__header">
+        // <Modal
+        //   style={{
+        //     display: "flex",
+        //     flexDirection: "column",
+        //     justifyContent: "space-between",
+        //     borderRadius: "0"
+        //   }}
+        // >
+        /* <div className="bl__infoBox__header">
             <span style={{ fontSize: "15px" }}>
-              {t("EDIT") + " " + t("BL_COMPANY_INFO")}
+            {t("EDIT") + " " + t("BL_COMPANY_INFO")}
             </span>
             <span
-              className="icon-cross modal-close"
-              onClick={toggleEditModal}
+            className="icon-cross modal-close"
+            onClick={toggleEditModal}
             ></span>
-          </div> */}
-          <ViewAppliation cancelEdit={toggleViewModal} data={viewModal.data} />
-        </Modal>
+          </div> */
+        <ViewAppliation cancelEdit={toggleViewModal} data={viewModal.data} />
+        // </Modal>
       )}
       {editModal.visibility && (
         <Modal
