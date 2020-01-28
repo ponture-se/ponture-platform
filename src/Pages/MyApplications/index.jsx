@@ -65,6 +65,7 @@ const MyApplications = props => {
         }
       });
     }
+    toggleVerifyModal(false);
     saveApplication(
       {
         ...itemData,
@@ -72,7 +73,6 @@ const MyApplications = props => {
       },
       () => {
         setItemData(undefined);
-        toggleVerifyModal(false);
       }
     );
     // if (typeof lastCallback.failed === "function") {
@@ -644,23 +644,17 @@ const MyApplications = props => {
               _callback(result);
             }
           } else {
-            _getMyApplications(() => {
-              if (typeof _callback === "function") {
-                _callback(result);
-              }
-              setEditModal({
-                visibility: false,
-                data: undefined,
-                action: undefined
-              });
-              // dispatch({
-              //   type: "ADD_NOTIFY",
-              //   value: {
-              //     type: "success",
-              //     message: "Done" //T
-              //   }
-              // });
-            });
+            if (typeof _callback === "function") {
+              _callback(result);
+            }
+
+            // dispatch({
+            //   type: "ADD_NOTIFY",
+            //   value: {
+            //     type: "success",
+            //     message: "Done" //T
+            //   }
+            // });
             // if (window.analytics)
             //   window.analytics.track("Create", {
             //     category: "Loan Application",
@@ -705,6 +699,10 @@ const MyApplications = props => {
       setViewModal({ visibility: true, data: data });
     }
   }
+  useEffect(() => {
+    if (!editModal.visibility) {
+    }
+  }, [editModal]);
   return (
     <div className="myApps">
       {loading ? (
@@ -797,7 +795,17 @@ const MyApplications = props => {
             cancelEdit={toggleEditModal}
             action={editModal.action}
             data={editModal.data}
-            onEdit={saveApplication}
+            onEdit={item =>
+              saveApplication(item, () => {
+                _getMyApplications(() => {
+                  setEditModal({
+                    visibility: false,
+                    data: data,
+                    action: undefined
+                  });
+                });
+              })
+            }
           />
         </Modal>
       )}

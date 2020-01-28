@@ -345,7 +345,7 @@ export default class UploaderApiIncluded extends React.Component {
                 }}
                 onClick={() => this.downloadAsset(fileId)}
               >
-                Download File
+                File Attached (Download)
               </span>
             </>
           )}

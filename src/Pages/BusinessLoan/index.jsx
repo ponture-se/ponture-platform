@@ -482,11 +482,11 @@ export default function BusinessLoan(props) {
             toggleMainSpinner(false);
             changeTab(3);
             console.log("needs error");
-            setError({
-              sender: "needs",
-              type: "resultError",
-              message: t("NEEDS_RESULT_ERROR")
-            });
+            // setError({
+            //   sender: "needs",
+            //   type: "resultError",
+            //   message: t("NEEDS_RESULT_ERROR")
+            // });
           }
         }
       })
@@ -494,55 +494,55 @@ export default function BusinessLoan(props) {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
-          setError({
-            sender: "needs",
-            type: "serverError",
-            message: t("NEEDS_ERROR_500")
-          });
+          // setError({
+          //   sender: "needs",
+          //   type: "serverError",
+          //   message: t("NEEDS_ERROR_500")
+          // });
         }
       })
       .onBadRequest(result => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
-          setError({
-            sender: "needs",
-            type: "Bad Request",
-            message: t("NEEDS_ERROR_400")
-          });
+          // setError({
+          //   sender: "needs",
+          //   type: "Bad Request",
+          //   message: t("NEEDS_ERROR_400")
+          // });
         }
       })
       .unAuthorized(result => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
-          setError({
-            sender: "needs",
-            type: "unAuthorized",
-            message: t("NEEDS_ERROR_401")
-          });
+          // setError({
+          //   sender: "needs",
+          //   type: "unAuthorized",
+          //   message: t("NEEDS_ERROR_401")
+          // });
         }
       })
       .notFound(result => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
-          setError({
-            sender: "needs",
-            type: "notFound",
-            message: t("NEEDS_ERROR_404")
-          });
+          // setError({
+          //   sender: "needs",
+          //   type: "notFound",
+          //   message: t("NEEDS_ERROR_404")
+          // });
         }
       })
       .unKnownError(result => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
-          setError({
-            sender: "needs",
-            type: "unKnownError",
-            message: t("NEEDS_ERROR_UNKNOWN")
-          });
+          // setError({
+          //   sender: "needs",
+          //   type: "unKnownError",
+          //   message: t("NEEDS_ERROR_UNKNOWN")
+          // });
         }
       })
       .call(currentLang);
@@ -1369,9 +1369,11 @@ export default function BusinessLoan(props) {
           ...obj,
           acquisition: {
             object_price: String(newOrgPrice.realValue),
-            object_company_name:orgName,
-            object_name:orgName,
-            object_organization_number:selectedCompany ? selectedCompany.companyId : "",
+            object_company_name: orgName,
+            object_name: orgName,
+            object_organization_number: selectedCompany
+              ? selectedCompany.companyId
+              : "",
             object_industry: "",
             object_annual_report: "",
             object_balance_sheet: "",
@@ -1573,7 +1575,6 @@ export default function BusinessLoan(props) {
           }
         } catch (error) {}
 
-
         //Api error function
         const ApiErrorCallback = result => {
           if (!didCancel) {
@@ -1583,7 +1584,7 @@ export default function BusinessLoan(props) {
               sender: "submitLoan"
             });
           }
-        }
+        };
         if (
           p_userRole === "agent" ||
           (p_userRole === "customer" &&
@@ -1671,10 +1672,17 @@ export default function BusinessLoan(props) {
     window.location.href = "https://www.ponture.com/";
   }
   function refreshPage() {
-    window.location.href = window.location.href;//.split("?")[0];
+    window.location.href = window.location.href; //.split("?")[0];
   }
   function openMyApps() {
-    props.history.push({pathname:"/app/panel/myApplications",search:"?brokerid="+brokerId});
+    if (brokerId) {
+      props.history.push({
+        pathname: "/app/panel/myApplications",
+        search: "?brokerid=" + brokerId
+      });
+    } else {
+      props.history.push("/app/panel/myApplications");
+    }
   }
 
   //After bankId
