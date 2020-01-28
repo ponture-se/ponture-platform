@@ -155,7 +155,13 @@ export default function BusinessLoan(props) {
     formInitValues["loanReasons"] = undefined;
   }
   //Loan reason
-  const [loanReasons, setLoanReasons] = useState(formInitValues.loanReasons);
+  const [loanReasons, setLoanReasons] = useState(()=>{
+    return(
+      formInitValues.loanReasons && formInitValues.loanReasons.length > 0
+        ? formInitValues.loanReasons
+        : [])
+    }
+  );
   const [loanReasonsIsValid, setLoanReasonsIsValid] = useState(false);
   const [selectedLoanReasons, setSelectedLoanReasons] = useState([]); //selected loan reason
   const [
@@ -372,22 +378,12 @@ export default function BusinessLoan(props) {
 
   //componentDidMount
   useEffect(() => {
-    _loadNeeds(() => {
-      //Create reasons' category state from loanReasons
-      const cats = [];
-      loanReasons.forEach(reason => {
-        if (cats.indexOf(reason.category) === -1) {
-          cats.push(reason.category);
-        }
-      });
-      setLoanReasonsCategories(cats);
-      toggleMainSpinner(false);
-    });
+    _loadNeeds();
     return () => {
       didCancel = true;
     };
   }, []);
-
+  
   //Conditional componentDidUpdate
   useEffect(() => {
     setLoanAmountDisplay(
@@ -395,9 +391,6 @@ export default function BusinessLoan(props) {
     );
   }, [loanAmount]);
 
-  // useEffect(()=>{
-  //   console.log("did cancel",didCancel);
-  // });
   //Remove need(s) if their category deselected
   useEffect(() => {
     if (selectedLoanReasonsCat && selectedLoanReasonsCat.length) {
@@ -471,78 +464,95 @@ export default function BusinessLoan(props) {
                 }
               }
             }
+            //Create reasons' category state from loanReasons
+            const cats = [];
+            result.forEach(reason => {
+              if (cats.indexOf(reason.category) === -1) {
+                cats.push(reason.category);
+              }
+            });
             setLoanReasons(result);
+            setLoanReasonsCategories(cats);
+            toggleMainSpinner(false);
             //set cookie
             _setLoanReasons(JSON.stringify(result));
-            if (callBack) {
+            
+            if (typeof callBack === "function") {
               callBack();
-            } else toggleMainSpinner(false);
+            } else {
+              toggleMainSpinner(false);
+            }
           } else {
             track("Failure", "Loan Application", "/app/loan/ wizard", 0);
             toggleMainSpinner(false);
             changeTab(3);
-            console.log("needs error");
-            // setError({
-            //   sender: "needs",
-            //   type: "resultError",
-            //   message: t("NEEDS_RESULT_ERROR")
-            // });
+            console.log("not result");
+            setError({
+              sender: "needs",
+              type: "resultError",
+              message: t("NEEDS_RESULT_ERROR")
+            });
           }
         }
       })
       .onServerError(result => {
         if (!didCancel) {
+          console.log("server error");
           toggleMainSpinner(false);
           changeTab(3);
-          // setError({
-          //   sender: "needs",
-          //   type: "serverError",
-          //   message: t("NEEDS_ERROR_500")
-          // });
+          setError({
+            sender: "needs",
+            type: "serverError",
+            message: t("NEEDS_ERROR_500")
+          });
         }
       })
       .onBadRequest(result => {
         if (!didCancel) {
+          console.log("bad request");
           toggleMainSpinner(false);
           changeTab(3);
-          // setError({
-          //   sender: "needs",
-          //   type: "Bad Request",
-          //   message: t("NEEDS_ERROR_400")
-          // });
+          setError({
+            sender: "needs",
+            type: "Bad Request",
+            message: t("NEEDS_ERROR_400")
+          });
         }
       })
       .unAuthorized(result => {
         if (!didCancel) {
+          console.log("un athorized");
           toggleMainSpinner(false);
           changeTab(3);
-          // setError({
-          //   sender: "needs",
-          //   type: "unAuthorized",
-          //   message: t("NEEDS_ERROR_401")
-          // });
+          setError({
+            sender: "needs",
+            type: "unAuthorized",
+            message: t("NEEDS_ERROR_401")
+          });
         }
       })
       .notFound(result => {
         if (!didCancel) {
+          console.log("not found");
           toggleMainSpinner(false);
           changeTab(3);
-          // setError({
-          //   sender: "needs",
-          //   type: "notFound",
-          //   message: t("NEEDS_ERROR_404")
-          // });
+          setError({
+            sender: "needs",
+            type: "notFound",
+            message: t("NEEDS_ERROR_404")
+          });
         }
       })
       .unKnownError(result => {
         if (!didCancel) {
+          console.log("unknown error");
           toggleMainSpinner(false);
           changeTab(3);
-          // setError({
-          //   sender: "needs",
-          //   type: "unKnownError",
-          //   message: t("NEEDS_ERROR_UNKNOWN")
-          // });
+          setError({
+            sender: "needs",
+            type: "unKnownError",
+            message: t("NEEDS_ERROR_UNKNOWN")
+          });
         }
       })
       .call(currentLang);
