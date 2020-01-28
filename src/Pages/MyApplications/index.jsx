@@ -44,9 +44,9 @@ const MyApplications = props => {
   const [itemData, setItemData] = useState(undefined);
   //pNum: personalNumber
   //BankId function
-  function handleVerifyApplication(data, successCallback, failedCallback) {
-    const pNum = data.contactInfo.personalNumber;
-    setItemData(data);
+  function handleVerifyApplication(item, successCallback, failedCallback) {
+    const pNum = item.contactInfo.personalNumber;
+    setItemData(item);
     handleBankIdClicked(pNum, {
       success: successCallback,
       failed: failedCallback
@@ -57,24 +57,24 @@ const MyApplications = props => {
     if (typeof lastCallback.success === "function") {
       // _getMyApplications();
       lastCallback.success(result);
-      // dispatch({
-      //   type: "ADD_NOTIFY",
-      //   value: {
-      //     type: "success",
-      //     message: "Verified Sucessfuly,Please wait ..." //T
-      //   }
-      // });
-      saveApplication(
-        {
-          ...itemData,
-          bankid: result
-        },
-        () => {
-          setItemData(undefined);
-          toggleVerifyModal(false);
+      dispatch({
+        type: "ADD_NOTIFY",
+        value: {
+          type: "success",
+          message: "Application verified sucessfuly, Saving data ..." //T
         }
-      );
+      });
     }
+    saveApplication(
+      {
+        ...itemData,
+        bankid: result
+      },
+      () => {
+        setItemData(undefined);
+        toggleVerifyModal(false);
+      }
+    );
     // if (typeof lastCallback.failed === "function") {
     //   lastCallback.failed(result, () => {
     //     setItemData(undefined);
@@ -442,7 +442,7 @@ const MyApplications = props => {
     submitLoan()
       .onOk(result => {
         if (!didCancel) {
-          if (result.errors) {
+          if (result.errors && result.errors.length > 0) {
             //failed
             // if (window.analytics)
             //   window.analytics.track("Failure", {
@@ -454,7 +454,7 @@ const MyApplications = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Skicka misslyckades"
+                message: "Skicka misslyckades" //T
               }
             });
             if (
@@ -623,7 +623,7 @@ const MyApplications = props => {
     saveLoan(currentRole)
       .onOk(result => {
         if (!didCancel) {
-          if (result.length > 0 && result.errors && result.errors.length > 0) {
+          if (!result.success || (result.errors && result.errors.length > 0)) {
             // if (window.analytics)
             //   window.analytics.track("Failure", {
             //     category: "Loan Application",
@@ -637,7 +637,7 @@ const MyApplications = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Unsuccessful"
+                message: "Cannot save data, please try again"
               }
             });
             if (typeof _callback === "function") {
@@ -676,6 +676,13 @@ const MyApplications = props => {
           if (typeof _callback === "function") {
             _callback(result);
           }
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Cannot save data, please try again"
+            }
+          });
           setError({
             sender: "submitLoan"
           });
@@ -742,6 +749,7 @@ const MyApplications = props => {
                 companyList: false,
                 isLogin: true
               }}
+              style={{ maxWidth: "500px" }}
             />
           )}
         </>

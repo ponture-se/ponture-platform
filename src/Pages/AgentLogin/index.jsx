@@ -155,7 +155,7 @@ const AgentLogin = props => {
             </div>
           </div>
           <button
-            className="btn --primary"
+            className="btn --success"
             disabled={
               !(
                 username &&

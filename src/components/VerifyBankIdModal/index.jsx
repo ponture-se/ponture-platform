@@ -15,11 +15,13 @@ export default function VerifyBankIdModal(props) {
     companyList: true, //needs company list or not
     isLogin: false //useBankId for login verification or not
   };
+  const { style } = props;
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [status, setStatus] = useState(t("RFA1"));
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
   const [successResult, setSuccessResult] = useState();
+  const [test, setTest] = useState(1);
   useEffect(() => {
     if (
       successResult &&
@@ -28,8 +30,10 @@ export default function VerifyBankIdModal(props) {
       setTimeout(() => {
         if (props.onVerified) props.onVerified(successResult);
         if (isLogin) {
-          if (typeof props.onSuccess === "function")
-            props.onSuccess(successResult);
+          if (typeof props.onSuccess === "function") {
+            setTest(0);
+            if (test === 1) props.onSuccess(successResult);
+          }
         }
       }, 1000);
     }
@@ -294,7 +298,7 @@ export default function VerifyBankIdModal(props) {
   }
   return (
     <div className="modal-back animated fadeIn">
-      <div className="modal">
+      <div className="modal" style={style}>
         <div className="bankId__centerBox">
           <div className="bankId__centerBox__header">
             <img src={require("./../../assets/bankidLogo.png")} alt="logo" />

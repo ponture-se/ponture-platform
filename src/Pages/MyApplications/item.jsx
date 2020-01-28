@@ -53,12 +53,12 @@ const Item = props => {
       }
     }
   };
-  const verifyApplication = pNum => {
+  const verifyApplication = item => {
     if (typeof parent_verify === "function") {
       toggleLoading(true);
       //
       parent_verify(
-        pNum,
+        item,
         (SuccessRes, callback) => {
           toggleLoading(false);
           setIsVerified(true);
@@ -263,7 +263,7 @@ const Item = props => {
           )}
           &nbsp;
           {/* view application */}
-          {(RecordType === "real estate" ||
+          {/* {(RecordType === "real estate" ||
             RecordType === "business acquisition loan") && (
             <button
               className="btn --light headerBtn"
@@ -271,7 +271,7 @@ const Item = props => {
             >
               <span className="icon-more-h" />
             </button>
-          )}
+          )} */}
         </div>
       </div>
 
@@ -353,7 +353,7 @@ const Item = props => {
                 <button
                   className={classnames(
                     "btn verifyBtn",
-                    isVerified ? "--verified" : "--primary"
+                    isVerified ? "--verified" : "--success"
                   )}
                   onClick={() => verifyApplication(item)}
                   disabled={loading || isVerified}

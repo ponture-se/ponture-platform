@@ -481,6 +481,7 @@ export default function BusinessLoan(props) {
             track("Failure", "Loan Application", "/app/loan/ wizard", 0);
             toggleMainSpinner(false);
             changeTab(3);
+            console.log("needs error");
             setError({
               sender: "needs",
               type: "resultError",
@@ -1369,7 +1370,8 @@ export default function BusinessLoan(props) {
           acquisition: {
             object_price: String(newOrgPrice.realValue),
             object_company_name:orgName,
-            object_organization_number:selectedCompany ? selectedCompany.companyId : "0",
+            object_name:orgName,
+            object_organization_number:selectedCompany ? selectedCompany.companyId : "",
             object_industry: "",
             object_annual_report: "",
             object_balance_sheet: "",
@@ -1669,10 +1671,10 @@ export default function BusinessLoan(props) {
     window.location.href = "https://www.ponture.com/";
   }
   function refreshPage() {
-    window.location.href = window.location.href.split("?")[0];
+    window.location.href = window.location.href;//.split("?")[0];
   }
   function openMyApps() {
-    props.history.push("/app/panel/myApplications");
+    props.history.push({pathname:"/app/panel/myApplications",search:"?brokerid="+brokerId});
   }
 
   //After bankId

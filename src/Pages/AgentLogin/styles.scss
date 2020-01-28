@@ -17,6 +17,7 @@
       margin: 20px;
     }
   }
+
   .loginBox {
     padding: 0px 20px 40px 20px;
     width: 450px;
@@ -36,6 +37,9 @@
       & span:first-child {
         font-size: 25px;
       }
+    }
+    & input {
+      font-size: 17px;
     }
     form {
       margin-top: 20px;
