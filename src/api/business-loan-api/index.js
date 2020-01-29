@@ -63,11 +63,9 @@ export function getNeedsList() {
         }
       })
       .then(response => {
-        debugger;
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        debugger;
         if (window.analytics)
           window.analytics.track("Failure", {
             category: "Loan Application",

@@ -20,7 +20,7 @@ const withResolver = WrappedComponent => {
       window.location.reload();
     }
     useEffect(() => {
-      if (currentRole === "customer") {
+      if (currentRole !== "agent") {
         //If token or userInfo missed after bankId process before getting into component do login again
         if (!token || !userInfo) {
           //creating object to pass to API for further authentications

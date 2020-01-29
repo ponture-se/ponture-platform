@@ -281,7 +281,6 @@ const MyApplications = props => {
       if (typeof lastCallback.success === "function") {
         lastCallback.success(result);
       }
-      console.log("on close", result);
       // saveApplication({
       //   bankid: result
       // });

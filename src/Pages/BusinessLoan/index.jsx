@@ -476,7 +476,7 @@ export default function BusinessLoan(props) {
             toggleMainSpinner(false);
             //set cookie
             _setLoanReasons(JSON.stringify(result));
-            
+
             if (typeof callBack === "function") {
               callBack();
             } else {
@@ -486,7 +486,6 @@ export default function BusinessLoan(props) {
             track("Failure", "Loan Application", "/app/loan/ wizard", 0);
             toggleMainSpinner(false);
             changeTab(3);
-            console.log("not result");
             setError({
               sender: "needs",
               type: "resultError",
@@ -497,7 +496,6 @@ export default function BusinessLoan(props) {
       })
       .onServerError(result => {
         if (!didCancel) {
-          console.log("server error");
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -509,7 +507,6 @@ export default function BusinessLoan(props) {
       })
       .onBadRequest(result => {
         if (!didCancel) {
-          console.log("bad request");
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -521,7 +518,6 @@ export default function BusinessLoan(props) {
       })
       .unAuthorized(result => {
         if (!didCancel) {
-          console.log("un athorized");
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -533,7 +529,6 @@ export default function BusinessLoan(props) {
       })
       .notFound(result => {
         if (!didCancel) {
-          console.log("not found");
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -545,7 +540,6 @@ export default function BusinessLoan(props) {
       })
       .unKnownError(result => {
         if (!didCancel) {
-          console.log("unknown error");
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -1420,7 +1414,6 @@ export default function BusinessLoan(props) {
           });
         }
         if (!selectedREType.value || selectedREType.value.length === 0) {
-          // debugger;
           isValid = false;
           setSelectedREType({
             value: "",
@@ -2710,7 +2703,7 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="07902660255"
+                                placeholder="0790266255"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChanged}
                               />

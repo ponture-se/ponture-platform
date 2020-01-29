@@ -11,7 +11,7 @@ const acceptOfferUrl = baseUrl + config.REACT_APP_ACCEPT_OFFER;
 const openAppUrl = baseUrl + config.REACT_APP_OPEN_APP;
 const agentLoginUrl = baseUrl + config.REACT_APP_AGENT_LOGIN;
 const uploadFileUrl = baseUrl + config.REACT_APP_UPLOAD_FILE;
-const getAppAttachmentUrl = config.REACT_APP_GET_APP_ATTACHMENT;
+const getAppAttachmentUrl = baseUrl + config.REACT_APP_GET_APP_ATTACHMENT;
 export function customerLogin() {
   let _onOkCallBack;
   function _onOk(result) {
@@ -666,6 +666,7 @@ export function acceptOffer() {
   const _call = offerId => {
     const url = acceptOfferUrl + "?offerId=" + offerId;
     const token = Cookies.get("@ponture-customer-portal/token");
+
     axios({
       method: "put",
       url: url,
@@ -1109,14 +1110,16 @@ export function downloadAppAsset() {
 
   const _call = async attId => {
     const url = getAppAttachmentUrl;
+    const token = Cookies.get("@ponture-customer-portal/token");
     axios({
       method: "get",
       url: url,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`
       },
       params: {
-        id: attId
+        fileId: attId
       }
     })
       .then(response => {
