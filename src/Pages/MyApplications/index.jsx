@@ -55,17 +55,13 @@ const MyApplications = props => {
   }
   function handleSuccessBankId(result) {
     setStartResult(undefined);
-    if (typeof lastCallback.success === "function") {
-      // _getMyApplications();
-      lastCallback.success(result);
-      dispatch({
-        type: "ADD_NOTIFY",
-        value: {
-          type: "success",
-          message: "Application verified sucessfuly, Saving data ..." //T
-        }
-      });
-    }
+    dispatch({
+      type: "ADD_NOTIFY",
+      value: {
+        type: "success",
+        message: "Application verified sucessfuly, Saving data ..." //T
+      }
+    });
     toggleVerifyModal(false);
     saveApplication(
       {
@@ -73,6 +69,10 @@ const MyApplications = props => {
         bankid: result
       },
       () => {
+        if (typeof lastCallback.success === "function") {
+          // _getMyApplications();
+          lastCallback.success(result);
+        }
         setItemData(undefined);
       }
     );
