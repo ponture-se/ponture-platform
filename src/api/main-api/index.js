@@ -1,4 +1,5 @@
 import Cookies from "js-cookie";
+import FileSaver, { saveAs } from "file-saver";
 const axios = require("axios");
 const config = process.env;
 const baseUrl = config.REACT_APP_BASE_URL;
@@ -666,7 +667,6 @@ export function acceptOffer() {
   const _call = offerId => {
     const url = acceptOfferUrl + "?offerId=" + offerId;
     const token = Cookies.get("@ponture-customer-portal/token");
-
     axios({
       method: "put",
       url: url,
@@ -1123,6 +1123,17 @@ export function downloadAppAsset() {
       }
     })
       .then(response => {
+        const CT = response.headers["content-type"];
+        const type = CT.split("/")[1];
+        console.log(response);
+        var blob = new Blob([response.data], {
+          type: `${CT};charset=utf-8`
+        });
+        var file = new File([response.data], `helloworld.${type}`, {
+          type: `${CT};charset=utf-8`
+        });
+        FileSaver.saveAs(file);
+
         _onOk(
           response.data
             ? response.data.data

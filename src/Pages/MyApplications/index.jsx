@@ -35,7 +35,8 @@ const MyApplications = props => {
   const [editModal, setEditModal] = useState({
     visibility: false,
     action: undefined,
-    data: undefined
+    data: undefined,
+    loading: false
   });
   const [viewModal, setViewModal] = useState({
     visibility: false,
@@ -629,9 +630,9 @@ const MyApplications = props => {
             //     label: "/app/loan/ wizard",
             //     value: 0
             //   });
-            setError({
-              sender: "submitLoan"
-            });
+            // setError({
+            //   sender: "submitLoan"
+            // });
             dispatch({
               type: "ADD_NOTIFY",
               value: {
@@ -646,7 +647,13 @@ const MyApplications = props => {
             if (typeof _callback === "function") {
               _callback(result);
             }
-
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "success",
+                message: "Application saved successfully"
+              }
+            });
             // dispatch({
             //   type: "ADD_NOTIFY",
             //   value: {
@@ -676,9 +683,6 @@ const MyApplications = props => {
               message: "Cannot save data, please try again"
             }
           });
-          setError({
-            sender: "submitLoan"
-          });
         }
       })
       .call(_obj, true);
@@ -686,9 +690,19 @@ const MyApplications = props => {
   function toggleEditModal(data, action) {
     //If modal is open then it's time to make itemData state empty
     if (editModal.visibility) {
-      setEditModal({ visibility: false, data: data, action: undefined });
+      setEditModal({
+        visibility: false,
+        data: data,
+        action: undefined,
+        loading: false
+      });
     } else {
-      setEditModal({ visibility: true, data: data, action: action });
+      setEditModal({
+        visibility: true,
+        data: data,
+        action: action,
+        loading: false
+      });
     }
   }
   function toggleViewModal(data) {
@@ -698,10 +712,6 @@ const MyApplications = props => {
       setViewModal({ visibility: true, data: data });
     }
   }
-  useEffect(() => {
-    if (!editModal.visibility) {
-    }
-  }, [editModal]);
   return (
     <div className="myApps">
       {loading ? (
@@ -794,17 +804,30 @@ const MyApplications = props => {
             cancelEdit={toggleEditModal}
             action={editModal.action}
             data={editModal.data}
-            onEdit={item =>
-              saveApplication(item, () => {
-                _getMyApplications(() => {
-                  setEditModal({
-                    visibility: false,
-                    data: data,
-                    action: undefined
+            loading={editModal.loading}
+            onEdit={item => {
+              setEditModal({
+                ...editModal,
+                loading: true
+              });
+              saveApplication(item, res => {
+                if (res && res.success) {
+                  _getMyApplications(() => {
+                    setEditModal({
+                      visibility: false,
+                      data: data,
+                      action: undefined,
+                      loading: false
+                    });
                   });
-                });
-              })
-            }
+                } else {
+                  setEditModal({
+                    ...editModal,
+                    loading: false
+                  });
+                }
+              });
+            }}
           />
         </Modal>
       )}

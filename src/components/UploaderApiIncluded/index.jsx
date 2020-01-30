@@ -4,6 +4,7 @@ import "./index.scss";
 import classnames from "classnames";
 import axios from "axios";
 import { downloadAppAsset } from "api/main-api";
+import { CircleSpinner } from "components";
 export default class UploaderApiIncluded extends React.Component {
   constructor(props) {
     super(props);
@@ -22,7 +23,8 @@ export default class UploaderApiIncluded extends React.Component {
       uploaded: false,
       uploadedFileName: "",
       cancelUpload: undefined,
-      defaultFile: undefined
+      defaultFile: undefined,
+      downloading: false
     };
     this.state = {
       ...this.initialStates,
@@ -51,11 +53,12 @@ export default class UploaderApiIncluded extends React.Component {
       },
       () => {
         this.fileRef.current.value = "";
+        this.props.onChange(this.props.name, "");
       }
     );
   };
   downloadAsset = fileId => {
-    console.log("herre", fileId);
+    this.setState({ downloading: true });
     downloadAppAsset()
       .onOk(result => {
         // console.log("succes result: ", result);
@@ -66,6 +69,7 @@ export default class UploaderApiIncluded extends React.Component {
         //   // res.data["replace"] = false;
         // }
         console.log("result", result);
+        this.setState({ downloading: false });
         // _this.setState(
         //   {
         //     uploaded: true, //DownloadAsset(result.data.file.filename)
@@ -284,7 +288,7 @@ export default class UploaderApiIncluded extends React.Component {
   };
   render() {
     const { styleExporter } = this;
-    const { cancelUpload, defaultFile } = this.state;
+    const { cancelUpload, defaultFile, downloading } = this.state;
     const fileId = typeof defaultFile === "string" ? defaultFile : undefined;
     return (
       <div className="IUAI">
@@ -344,8 +348,13 @@ export default class UploaderApiIncluded extends React.Component {
                   fontFamily: "OpenSanceBold"
                 }}
                 onClick={() => this.downloadAsset(fileId)}
+                disabled={downloading}
               >
-                File Attached (Download)
+                {downloading ? (
+                  <CircleSpinner show={true} size={"medium"} bgColor={"gray"} />
+                ) : (
+                  "File Attached (Download)"
+                )}
               </span>
             </>
           )}

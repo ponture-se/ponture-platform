@@ -13,7 +13,7 @@ const EditAppliation = props => {
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
   const orgNumberFormatRegex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
   const data = props.data;
-  const { toggleEditModal } = props;
+  const { toggleEditModal, loading } = props;
   const BA = props.data.acquisition;
   const validations =
     props.action === "submit"
@@ -82,7 +82,13 @@ const EditAppliation = props => {
       }
     } else {
       //Do not check validation for Optional fields with zero value length
-      if (!(validations[name] && value.length === 0)) {
+      if (
+        !(
+          validations[name] &&
+          ["boolean", "number"].indexOf(typeof value) === -1 && //value's type is not number or boolean
+          Object.keys(value).length === 0
+        )
+      ) {
         if (!customValidation()) {
           isValid = false;
           eMessage = t("INVALID_VALUE");
@@ -91,7 +97,7 @@ const EditAppliation = props => {
     }
     return { isValid: isValid, eMessage: eMessage };
   };
-  const [buttonSpinner, toggleButtonSpinner] = useState(false);
+  const [buttonSpinner, toggleButtonSpinner] = useState(loading);
   const [objectName, setObjectName] = useState({
     value: BA.object_name,
     isValid: true,
@@ -144,28 +150,31 @@ const EditAppliation = props => {
     purchaserCompanyLatestBalanceSheet,
     setPurchaserCompanyLatestBalanceSheet
   ] = useState({
-    value: BA.object_balance_sheet,
+    value: BA.account_balance_sheet,
     ...checkValidation(
       "purchaserCompanyLatestBalanceSheet",
-      BA.object_balance_sheet
+      BA.account_balance_sheet
     )
   });
   const [
     purchaserCompanyLatestIncomeStatement,
     setPurchaserCompanyLatestIncomeStatement
   ] = useState({
-    value: BA.object_income_statement,
+    value: BA.account_income_statement,
     ...checkValidation(
       "purchaserCompanyLatestIncomeStatement",
-      BA.object_income_statement
+      BA.account_income_statement
     )
   });
   const [
     purchaserGuaranteesAvailable,
     setPurchaserGuaranteesAvailable
   ] = useState({
-    value: BA.available_guarantees ? BA.available_guarantees : [],
-    ...checkValidation("purchaserGuaranteesAvailable", BA.available_guarantees)
+    value: BA.available_guarantees ? BA.available_guarantees.split(",") : [],
+    ...checkValidation(
+      "purchaserGuaranteesAvailable",
+      BA.available_guarantees ? BA.available_guarantees.split(",") : []
+    )
   });
   const [
     purchaserGuaranteesDescription,
@@ -202,11 +211,11 @@ const EditAppliation = props => {
     ...checkValidation("ownInvestmentDetails", BA.own_investment_details)
   });
   const [additionalFiles, setAdditionalFiles] = useState({
-    value: SafeValue(BA, "additional_files", "array", []),
+    value: SafeValue(BA, "additional_files.0", "string", []),
     ...checkValidation("additionalFiles", BA.additional_files)
   });
   const [businessPlan, setBusinessPlan] = useState({
-    value: SafeValue(BA, "business_plan", "array", []),
+    value: SafeValue(BA, "business_plan.0", "string", []),
     ...checkValidation("businessPlan", BA.business_plan)
   });
   const [additionalDetails, setAdditionalDetails] = useState({
@@ -392,10 +401,10 @@ const EditAppliation = props => {
       } else {
         _newOpts.push(e);
       }
-      if (_newOpts.length === 0) {
-        eMessage = t("MANDATORY_FIELD");
-        isValid = false;
-      }
+      // if (_newOpts.length === 0) {
+      //   eMessage = t("MANDATORY_FIELD");
+      //   isValid = false;
+      // }
       setPurchaserGuaranteesAvailable({
         isValid: isValid,
         eMessage: eMessage,
@@ -584,8 +593,8 @@ const EditAppliation = props => {
           "string",
           ""
         ),
-        business_plan: SafeValue(businessPlan, "value", "array", []),
-        additional_files: SafeValue(additionalFiles, "value", "array", []),
+        business_plan: [SafeValue(businessPlan, "value", "string", [])], //needs change
+        additional_files: [SafeValue(additionalFiles, "value", "string", [])], //needs change
         additional_details: SafeValue(additionalDetails, "value", "string", ""),
         description: SafeValue(description, "value", "string", "")
       }
@@ -755,10 +764,15 @@ const EditAppliation = props => {
       }
     }
     if (formIsValid) {
-      toggleButtonSpinner(true);
       props.onEdit(_obj);
     }
   };
+
+  //Effects
+  useEffect(() => {
+    toggleButtonSpinner(loading);
+  }, [loading]);
+
   //  const handleREUsageCategory = useCallback(
   //    e => {
   //      let _newOpts = Array.from(selectedREUsageCategory.value);
@@ -1091,7 +1105,7 @@ const EditAppliation = props => {
                 <UploaderApiIncluded
                   name="File"
                   innerText="File upload"
-                  defaultFile={additionalFiles}
+                  defaultFile={additionalFiles.value}
                   onChange={(name, result) =>
                     handleAdditionalFiles({
                       target: { value: result.id }
