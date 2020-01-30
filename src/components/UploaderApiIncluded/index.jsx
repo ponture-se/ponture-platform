@@ -57,87 +57,6 @@ export default class UploaderApiIncluded extends React.Component {
       }
     );
   };
-  downloadAsset = fileId => {
-    this.setState({ downloading: true });
-    downloadAppAsset()
-      .onOk(result => {
-        // console.log("succes result: ", result);
-        // if (this.props.defaultUrl) {
-        //   // res.data["prev_file"] = this.props.defaultUrl;
-        //   // res.data["replace"] = true;
-        // } else {
-        //   // res.data["replace"] = false;
-        // }
-        console.log("result", result);
-        this.setState({ downloading: false });
-        // _this.setState(
-        //   {
-        //     uploaded: true, //DownloadAsset(result.data.file.filename)
-        //     uploading: false,
-        //     uploadedFileName: _file.name
-        //     // selectedImgUrl: "url",
-        //   },
-        //   () => {
-        //     _this.props.onChange(this.props.name, result);
-        //   }
-        // );
-        //prog => this.setState({ progress: prog.progress }));
-        // if (window.analytics)
-        // window.analytics.track("BankID Verification", {
-        //   category: "Loan Application",
-        //   label: "/app/loan/ bankid popup",
-        //   value: 0
-        // });
-        // toggleVerifyingSpinner(false);
-        // setStartResult(result);
-        // toggleVerifyModal(true);
-      })
-      .onServerError(result => {
-        // if (!didCancel) {
-        // toggleVerifyingSpinner(false);
-        // changeTab(3);
-        // setError({
-        //   sender: "verifyBankId"
-        // });
-        // }
-        // _this.setState({ uploading: false });
-        console.log("server error ", result);
-      })
-      .onBadRequest(result => {
-        // if (!didCancel) {
-        //   toggleVerifyingSpinner(false);
-        //   changeTab(3);
-        //   setError({
-        //     sender: "verifyBankId"
-        //   });
-        // }
-        // _this.setState({ uploading: false });
-        console.log("Bad request", result);
-      })
-      .unAuthorized(result => {
-        // if (!didCancel) {
-        //   toggleVerifyingSpinner(false);
-        //   changeTab(3);
-        //   setError({
-        //     sender: "verifyBankId"
-        //   });
-        // }
-        // _this.setState({ uploading: false });
-        console.log("Bad request", result);
-      })
-      .unKnownError(result => {
-        // if (!didCancel) {
-        //   toggleVerifyingSpinner(false);
-        //   changeTab(3);
-        //   setError({
-        //     sender: "verifyBankId"
-        //   });
-        // }
-        // _this.setState({ uploading: false });
-        console.log("Bad request", result);
-      })
-      .call(fileId);
-  };
   upload = file => {
     this.setState({ uploading: true });
     const _file = file.target.files[0];
@@ -347,13 +266,17 @@ export default class UploaderApiIncluded extends React.Component {
                   cursor: "pointer",
                   fontFamily: "OpenSanceBold"
                 }}
-                onClick={() => this.downloadAsset(fileId)}
                 disabled={downloading}
               >
                 {downloading ? (
                   <CircleSpinner show={true} size={"medium"} bgColor={"gray"} />
                 ) : (
-                  "File Attached (Download)"
+                  <a
+                    href={downloadAppAsset.call(this, fileId)}
+                    style={{ color: "black" }}
+                  >
+                    File Attached (Download)
+                  </a>
                 )}
               </span>
             </>
