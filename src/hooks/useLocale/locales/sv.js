@@ -209,7 +209,6 @@ export default {
   BL_AREA: "Area(sqm)", //T
   BL_REALESTATE_AREA_IS_REQUIRED: "Område krävs", //T
   BL_AGENT_NUMBER_PLACEHOLDER: "Ange ditt personnummer",
-  BL_OWN_INVESTMENT_AMOUNT: "Summa egna pengar",
   BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",

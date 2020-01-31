@@ -134,7 +134,7 @@ const BusinessAcquisitionView = props => {
         <span className="section-header">{t("APP_GENERAL_INFO")}</span>
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
-            <label className="bl__input__label" style={{ marginBottom: "0" }}>
+            <label className="bl__input__label">
               {t("APP_BA_PURCHASE_TYPE")}
             </label>
             <div className="element-group__center">
