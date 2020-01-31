@@ -1679,7 +1679,6 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href; //.split("?")[0];
   }
   function openMyApps() {
-    debugger;
     if (brokerId) {
       props.history.push({
         pathname: "/app/panel/myApplications",
@@ -1829,10 +1828,10 @@ export default function BusinessLoan(props) {
                           onChange={handleLoanAmount}
                         />
                         <div className="rangeElement__custom-labels">
-                          <span classNames="min">
+                          <span className="min">
                             {separateNumberByChar(loanAmountMin) + " kr"}
                           </span>
-                          <span classNames="max">
+                          <span className="max">
                             {separateNumberByChar(loanAmountMax) + " kr"}
                           </span>
                         </div>
@@ -1880,10 +1879,10 @@ export default function BusinessLoan(props) {
                           onChange={handleLoanPeriod}
                         />
                         <div className="rangeElement__custom-labels">
-                          <span classNames="min">
+                          <span className="min">
                             {separateNumberByChar(loanPeriodMin) + " mån"}
                           </span>
-                          <span classNames="max">
+                          <span className="max">
                             {"+" + separateNumberByChar(loanPeriodMax) + " mån"}
                           </span>
                         </div>

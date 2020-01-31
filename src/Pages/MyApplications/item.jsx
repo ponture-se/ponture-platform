@@ -79,8 +79,8 @@ const Item = props => {
   function editItemModal(item) {
     props.edit(item, "edit");
   }
-  function viewItemModal(item) {
-    props.view(item);
+  function viewItemModal(item, type) {
+    props.view(item, type);
   }
   function handleCancelClicked() {
     toggleAlert({
@@ -263,15 +263,17 @@ const Item = props => {
           )}
           &nbsp;
           {/* view application */}
-          {/* {(RecordType === "real estate" ||
+          {(RecordType === "real estate" ||
             RecordType === "business acquisition loan") && (
             <button
               className="btn --light headerBtn"
-              onClick={() => viewItemModal(item)}
+              onClick={() =>
+                viewItemModal(item, RecordType === "real estate" ? "RE" : "BA")
+              }
             >
               <span className="icon-more-h" />
             </button>
-          )} */}
+          )}
         </div>
       </div>
 

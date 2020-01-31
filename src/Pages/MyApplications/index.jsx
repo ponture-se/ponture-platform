@@ -15,7 +15,8 @@ import {
 } from "api/business-loan-api";
 import Modal from "components/Modal";
 import EditAppliation from "../EditApplication";
-import ViewAppliation from "../ViewApplication";
+import BusinessAcquisitionView from "../ViewApplication/BusinessAcquisitionView";
+import RealEstateView from "../ViewApplication/RealEstateView";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -39,7 +40,8 @@ const MyApplications = props => {
   });
   const [viewModal, setViewModal] = useState({
     visibility: false,
-    data: undefined
+    data: undefined,
+    type: undefined
   });
   const [itemData, setItemData] = useState(undefined);
   //pNum: personalNumber
@@ -705,11 +707,11 @@ const MyApplications = props => {
       });
     }
   }
-  function toggleViewModal(data) {
+  function toggleViewModal(data, type) {
     if (viewModal.visibility) {
-      setViewModal({ visibility: false, data: undefined });
+      setViewModal({ visibility: false, data: undefined, type: undefined });
     } else {
-      setViewModal({ visibility: true, data: data });
+      setViewModal({ visibility: true, data: data, type: type });
     }
   }
   return (
@@ -761,27 +763,6 @@ const MyApplications = props => {
           )}
         </>
       )}
-      {viewModal.visibility && (
-        // <Modal
-        //   style={{
-        //     display: "flex",
-        //     flexDirection: "column",
-        //     justifyContent: "space-between",
-        //     borderRadius: "0"
-        //   }}
-        // >
-        /* <div className="bl__infoBox__header">
-            <span style={{ fontSize: "15px" }}>
-            {t("EDIT") + " " + t("BL_COMPANY_INFO")}
-            </span>
-            <span
-            className="icon-cross modal-close"
-            onClick={toggleEditModal}
-            ></span>
-          </div> */
-        <ViewAppliation cancelEdit={toggleViewModal} data={viewModal.data} />
-        // </Modal>
-      )}
       {editModal.visibility && (
         <Modal
           style={{
@@ -829,6 +810,27 @@ const MyApplications = props => {
               });
             }}
           />
+        </Modal>
+      )}
+      {viewModal.visibility && (
+        <Modal
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            borderRadius: "0"
+          }}
+        >
+          {console.log("view", viewModal)}
+          {viewModal.type === "RE" && (
+            <RealEstateView close={toggleViewModal} data={viewModal.data} />
+          )}
+          {viewModal.type === "BA" && (
+            <BusinessAcquisitionView
+              close={toggleViewModal}
+              data={viewModal.data}
+            />
+          )}
         </Modal>
       )}
     </div>

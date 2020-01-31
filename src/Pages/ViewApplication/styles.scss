@@ -1,285 +1,90 @@
-@import "./../../styles/variables.scss";
-@import "./../../styles/mixins.scss";
-.viewAppModalSize {
-  width: 1000px;
-}
-.viewApp {
-  display: flex;
-  flex-direction: column;
-  @include variable(body-bg, background, lightgray);
-}
-.viewAppItem {
-  background: white;
-  display: flex;
-  flex-direction: column;
-  &__header {
-    margin: 20px 40px 0 40px;
-    padding-bottom: 10px;
-    display: flex;
-    flex-direction: column;
+.viewApplication {
+  margin: 20px 40px 0 40px;
+  box-shadow: none !important;
+  & .section-header {
+    font-size: 18px;
+    font-family: OpenSanceBold;
+    padding: none !important;
     border-bottom: 1px solid lightgray;
-    position: relative;
-    .closeModal {
-      position: absolute;
-      right: 0;
-      text-align: right;
-      width: 30px;
-      height: 30px;
-      cursor: pointer;
-      color: gray;
-      font-size: 13px;
-      transition-duration: 0.2s;
-      &:hover {
-        color: black;
-        transition-duration: 0.2s;
-      }
-    }
+    height: 32px;
+    margin-bottom: 25px;
   }
-  &__title {
-    font-size: 20px;
-    font-family: OpenSanceBold;
-    margin-bottom: 10px;
+  & .userInputs {
+    flex-direction: var(--flex-direction);
   }
-  &__headerinfo {
-    max-width: 90%;
-    display: flex;
-    justify-content: space-between;
-    font-family: OpenSanceBold;
-    .headerItem {
-      display: flex;
-      flex-direction: column;
-      font-size: 13px;
-      color: gray;
-      width: calc(25%);
-      span:first-child {
-        font-size: 14px;
-        color: black;
+  &.bl {
+    & .userInputs .bl__input {
+      background-color: whitesmoke;
+      padding: 10px 13px;
+      &:nth-child(even) {
+        margin: 0;
       }
-      span:last-child {
-        width: 100%;
-        overflow: hidden;
-        white-space: nowrap;
-        overflow: hidden !important;
-        text-overflow: ellipsis;
-      }
-    }
-  }
-  &__body {
-    flex: 1;
-    padding: 10px 40px;
-    display: flex;
-    flex-direction: column;
-    .otherNeeds {
-      font-size: 13px;
-    }
-  }
-  &__bodyRow {
-    flex: 1;
-    display: flex;
-    font-size: 13px;
-    max-width: 90%;
-    padding: 10px 0;
-    &__left {
-      width: 280px;
-      font-family: OpenSanceBold;
-    }
-    &__right {
-      flex: 1;
-      display: flex;
-      justify-content: space-between;
-      span {
-        flex: 1;
-      }
-      & span:first-child {
-        flex: 2;
-      }
-      & span:last-child span {
+      &__label {
         font-family: OpenSanceBold;
       }
     }
-    i {
-      padding: 0 5px;
-      color: greenyellow;
-    }
   }
-  &__footer {
-    background: whitesmoke;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    padding: 0 40px;
-    .--warning {
-      margin-right: 150px;
-      width: 130px;
-      font-family: OpenSanceBold;
-    }
-    .--primary {
-      min-width: 150px;
-      margin-right: 20px;
-    }
+  a {
+    color: rgb(50, 50, 50);
   }
 }
-.detail {
-  min-height: 300px;
-  background: white;
-  display: flex;
-  flex-direction: column;
-  &__header {
-    margin: 20px 40px 0 40px;
-    padding-bottom: 20px;
-    display: flex;
-    border-bottom: 1px solid lightgray;
-    justify-content: space-between;
-    padding-right: 10%;
-    .--warning {
-      margin-right: 120px;
-      width: 130px;
-      font-family: OpenSanceBold;
-    }
-    .--primary {
-      min-width: 150px;
-      margin-right: 20px;
-    }
-  }
-  &__body {
-    padding: 20px 40px;
-  }
-  &__icon {
-    img {
-      width: 150px;
-    }
-  }
-  &__row {
-    display: flex;
-    margin-bottom: 50px;
-    &__item {
-      width: calc(25% - 10px);
+.bl {
+  &__infoBox {
+    padding: 0 !important;
+    &__header {
+      border-bottom: none;
+      height: 85px;
+      margin-top: 0;
+      padding: 0 !important;
       display: flex;
-      flex-direction: column;
-      font-size: 12px;
-      font-family: OpenSanceBold;
-      margin-right: 10px;
-      & span:first-child {
-        padding-bottom: 10px;
-        font-size: 14px;
-      }
-      & span:last-child {
-        // width: 200px;
-        overflow: hidden;
-        // overflow: hidden;
-      }
-      i {
-        color: greenyellow;
-        margin-top: 3px;
-        margin-right: 5px;
-      }
-    }
-    &__item:last-child {
-      width: auto;
-    }
-  }
-  &__table {
-    margin-bottom: 40px;
-    span {
-      font-family: OpenSanceBold;
-      font-size: 20px;
-    }
-    .table {
-      margin-top: 20px;
-      background: whitesmoke;
-      padding: 0 20px;
-      table {
-        width: 100%;
-        thead {
-          border-bottom: 1px solid lightgray !important;
-          tr {
-            height: 50px;
-            td {
-              font-family: OpenSanceBold;
-              width: 25%;
-            }
-          }
-        }
-        tbody {
-          tr {
-            td {
-              font-size: 13px;
-              padding: 10px 0;
-              div {
-                display: flex;
-                flex-direction: column;
-                span:last-child {
-                  font-size: 12px;
-                  font-family: OpenSance;
-                }
-              }
-              span {
-                font-size: 13px;
-              }
-            }
-          }
-        }
-      }
-    }
-  }
-  &__finan {
-    font-size: 13px;
-    margin-bottom: 10px;
-    .title {
-      font-family: OpenSanceBold;
-      font-size: 20px;
-    }
-  }
-  &__attachment {
-    font-size: 13px;
-    margin-top: 20px;
-    margin-bottom: 10px;
-    .title {
-      font-family: OpenSanceBold;
-      font-size: 20px;
-    }
-    &__item {
-      font-weight: bold;
-      font-size: 14px;
-      & a {
-        font-weight: bold;
+      align-items: center;
+      margin-bottom: 0;
+      flex-direction: var(--flex-direction);
+      & span {
+        font-size: 21px;
         font-family: OpenSanceBold;
+        padding: 0;
+      }
+      & .modal-close {
         &:hover {
-          cursor: pointer;
-          color: mediumblue;
+          color: black;
         }
+        position: absolute;
+        top: 25px !important;
+        right: 40px !important;
+        font-size: 13px !important;
+        color: dimgray;
+        cursor: pointer;
       }
     }
   }
-  &__lastBox {
-    display: flex;
-    margin-top: 40px;
-    &__left {
-      width: 40%;
-      margin-right: 10%;
-    }
-    &__right {
-      width: 45%;
-    }
-    .lastBoxItem {
-      margin-bottom: 20px;
-      &__header {
-        font-size: 22px;
-        font-family: OpenSanceBold;
-        padding: 10px 0;
-        border-bottom: 1px solid lightgray;
+  &__input {
+    margin: 0 5px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .viewApplication {
+    margin: 10px 20px 0 20px;
+  }
+
+  .bl {
+    & .userInputs .bl__input {
+      &:nth-child(even) {
+        margin: 20px 0 0 0 !important;
       }
-      &__body {
-        &__row {
-          display: flex;
-          justify-content: space-between;
-          padding: 10px 0;
-          font-size: 13px;
-          & span:first-child {
-            font-family: OpenSanceBold;
-          }
-        }
+    }
+    & .userInputs {
+      flex-direction: column;
+    }
+    & .options {
+      flex-direction: column;
+      .btnReason {
+        width: calc(100% - 20px);
       }
+    }
+    &__input {
+      margin: 0 !important;
     }
   }
 }

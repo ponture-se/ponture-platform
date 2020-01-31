@@ -31,6 +31,7 @@ export default {
   CANCEL: "Avbryt", //T: Cancel
   EDIT: "Redigera", //T: EDit
   REJECT: "Tacka Nej",
+  NOT_SPECIFIED: "Ej angivet", //t: Not specified
   VIEW_OFFERS: "Visa Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
   PRICE: "Köpspris",
@@ -137,7 +138,8 @@ export default {
   APP_EXPERIENCE: "Köprens erfarenheter inom industribranschen",
   APP_BUSINESS_ACQ1: "Köpobjekt",
   APP_BUSINESS_ACQ2: "Köparens uppgifter",
-  APP_EDIT_APPLICATION: "Edit Application",
+  APP_EDIT_APPLICATION: "Edit Application", //T
+  APP_VIEW_APPLICATION: "View Application", //T
   APP_BA_PURCHASE_TYPE: "Köpstyp",
   APP_GENERAL_INFO: "General info", //t
   OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
