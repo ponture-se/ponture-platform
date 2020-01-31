@@ -27,9 +27,11 @@ const Header = props => {
         </div>
         <div className="right">
           <div className="mainHeader__userInfo">
-            {userInfo && currentRole === "agent"
-              ? userInfo.name
-              : userInfo.firstName + " " + userInfo.lastName}
+            {console.log("uInfo: ", userInfo)}
+            {userInfo &&
+              (currentRole === "agent"
+                ? userInfo.name
+                : userInfo.firstName + " " + userInfo.lastName)}
           </div>
           <div className="mainHeader__signout" onClick={handleSignout}>
             <span>{t("SIGN_OUT")}</span>

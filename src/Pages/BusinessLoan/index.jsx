@@ -3,6 +3,7 @@ import InputRange from "react-input-range";
 import Cookies from "js-cookie";
 import "react-input-range/lib/css/index.css";
 import classnames from "classnames";
+import separateNumberByChar from "./../../utils/separateNumberByChar";
 //
 import {
   getParameterByName,
@@ -155,13 +156,11 @@ export default function BusinessLoan(props) {
     formInitValues["loanReasons"] = undefined;
   }
   //Loan reason
-  const [loanReasons, setLoanReasons] = useState(()=>{
-    return(
-      formInitValues.loanReasons && formInitValues.loanReasons.length > 0
-        ? formInitValues.loanReasons
-        : [])
-    }
-  );
+  const [loanReasons, setLoanReasons] = useState(() => {
+    return formInitValues.loanReasons && formInitValues.loanReasons.length > 0
+      ? formInitValues.loanReasons
+      : [];
+  });
   const [loanReasonsIsValid, setLoanReasonsIsValid] = useState(false);
   const [selectedLoanReasons, setSelectedLoanReasons] = useState([]); //selected loan reason
   const [
@@ -383,7 +382,7 @@ export default function BusinessLoan(props) {
       didCancel = true;
     };
   }, []);
-  
+
   //Conditional componentDidUpdate
   useEffect(() => {
     setLoanAmountDisplay(
@@ -1394,7 +1393,9 @@ export default function BusinessLoan(props) {
             business_plan: [],
             additional_details: "",
             purchase_type: "",
-            description: "Description" //needs change
+            description: loanReasons.filter(
+              loan => loan.API_Name === selectedLoanReasons[0]
+            )[0].Label //needs change
           }
         };
       }
@@ -1678,6 +1679,7 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href; //.split("?")[0];
   }
   function openMyApps() {
+    debugger;
     if (brokerId) {
       props.history.push({
         pathname: "/app/panel/myApplications",
@@ -1826,6 +1828,14 @@ export default function BusinessLoan(props) {
                           value={loanAmount}
                           onChange={handleLoanAmount}
                         />
+                        <div className="rangeElement__custom-labels">
+                          <span classNames="min">
+                            {separateNumberByChar(loanAmountMin) + " kr"}
+                          </span>
+                          <span classNames="max">
+                            {separateNumberByChar(loanAmountMax) + " kr"}
+                          </span>
+                        </div>
                       </div>
                       <div
                         className="rangeElement__right"
@@ -1869,6 +1879,14 @@ export default function BusinessLoan(props) {
                           value={loanPeriod}
                           onChange={handleLoanPeriod}
                         />
+                        <div className="rangeElement__custom-labels">
+                          <span classNames="min">
+                            {separateNumberByChar(loanPeriodMin) + " mån"}
+                          </span>
+                          <span classNames="max">
+                            {"+" + separateNumberByChar(loanPeriodMax) + " mån"}
+                          </span>
+                        </div>
                       </div>
                       <div
                         className="rangeElement__right"

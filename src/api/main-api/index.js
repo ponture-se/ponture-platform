@@ -1,5 +1,6 @@
 import Cookies from "js-cookie";
-import FileSaver, { saveAs } from "file-saver";
+
+//Declarations
 const axios = require("axios");
 const config = process.env;
 const baseUrl = config.REACT_APP_BASE_URL;
@@ -13,6 +14,8 @@ const openAppUrl = baseUrl + config.REACT_APP_OPEN_APP;
 const agentLoginUrl = baseUrl + config.REACT_APP_AGENT_LOGIN;
 const uploadFileUrl = baseUrl + config.REACT_APP_UPLOAD_FILE;
 const getAppAttachmentUrl = baseUrl + config.REACT_APP_GET_APP_ATTACHMENT;
+
+//Functions
 export function customerLogin() {
   let _onOkCallBack;
   function _onOk(result) {
@@ -175,8 +178,8 @@ export function getMyApplications() {
     }
   }
 
-  const _call = userInfo => {
-    const { currentRole, id } = userInfo;
+  const _call = (userInfo, role) => {
+    const { id, currentRole } = userInfo;
     const paramName = currentRole === "agent" ? "broker_id" : "customerId";
     const url = myAppsUrl + `?${paramName}=${id}`;
     const token = Cookies.get("@ponture-customer-portal/token");
@@ -1066,7 +1069,6 @@ export function uploadFile() {
 
 export function downloadAppAsset(attId) {
   const url = getAppAttachmentUrl;
-  console.log(url + "?fileId=" + attId);
   return url + "?fileId=" + attId;
 }
 export function getApplicationById() {

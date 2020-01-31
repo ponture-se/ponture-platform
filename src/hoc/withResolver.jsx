@@ -5,13 +5,15 @@ import { customerLogin } from "api/main-api";
 import { useGlobalState, useLocale } from "hooks";
 import { Wrong } from "components/Commons/ErrorsComponent";
 import NotFoundUser from "Pages/NotFoundUser";
+
 //
 const withResolver = WrappedComponent => {
   return withRouter(props => {
     const [
-      { verifyInfo, userInfo, currentRole, lastRole, isAuthenticated },
+      { verifyInfo, userInfo, lastRole, isAuthenticated },
       dispatch
     ] = useGlobalState();
+    let [{ currentRole }] = useGlobalState();
     const { t } = useLocale();
     const token = Cookies.get("@ponture-customer-portal/token");
     const [loading, toggleLoading] = useState(token && userInfo ? false : true);
@@ -19,6 +21,7 @@ const withResolver = WrappedComponent => {
     function refresh() {
       window.location.reload();
     }
+
     useEffect(() => {
       if (currentRole !== "agent") {
         //If token or userInfo missed after bankId process before getting into component do login again

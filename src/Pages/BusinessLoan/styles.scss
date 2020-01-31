@@ -386,7 +386,7 @@
     &__label {
     }
     &.--sliderInput {
-      margin-bottom: 50px;
+      margin-bottom: 25px;
       direction: ltr;
       .bl__rangeElement {
         display: flex;
@@ -410,17 +410,18 @@
         .input-range__label--value {
           top: -2.2rem;
         }
-        .input-range__label--min {
-          left: 2%;
-        }
-        .input-range__label--max {
-          right: 2%;
+        .input-range__label {
+          &--min,
+          &--max {
+            display: none;
+          }
         }
         .rangeElement__left {
           width: 30px;
           display: flex;
           align-items: center;
           cursor: pointer;
+          margin-top: -24px;
         }
         .rangeElement__center {
           flex: 1;
@@ -432,6 +433,17 @@
           font-weight: bolder;
           cursor: pointer;
           flex-direction: row-reverse;
+          margin-top: -24px;
+        }
+        .rangeElement__custom-labels {
+          display: inline-flex;
+          justify-content: space-between;
+          width: 105%;
+          margin: 10px -13px 0;
+          color: #aaa;
+          font-family: Helvetica Neue, san-serif;
+          font-size: 0.8rem;
+          white-space: nowrap;
         }
       }
     }

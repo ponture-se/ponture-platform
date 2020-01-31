@@ -20,7 +20,6 @@ import ViewAppliation from "../ViewApplication";
 const MyApplications = props => {
   let didCancel = false;
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
-
   //state initialization
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
   const { t } = useLocale();
@@ -387,9 +386,10 @@ const MyApplications = props => {
         }
       })
       .call(
-        userInfo && currentRole === "agent"
-          ? { currentRole: "agent", id: userInfo.broker_id }
-          : { currentRole: "customer", id: userInfo.personalNumber }
+        userInfo &&
+          (currentRole === "agent"
+            ? { currentRole: "agent", id: userInfo.broker_id }
+            : { currentRole: "customer", id: userInfo.personalNumber })
       );
   }
   function handleSuccessCancel() {

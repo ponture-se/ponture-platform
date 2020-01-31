@@ -1,30 +1,39 @@
+import { getParameterByName } from "./../../utils";
 //
-//Initial actions when application loading for the first time
+//Initial actions and global states while application loading for the first time
 let bankIdInfo = null;
-let agentReferralId = null;
-let currentRole = null;
+let brokerId = null;
+let currentRole = "customer"; //default role is customer
 let _isAuthenticated = false;
+let brokerParam = undefined;
+let brokerSession = undefined;
 try {
   bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
-  if (bankIdInfo) currentRole = "customer";
-  _isAuthenticated = true;
+  if (bankIdInfo) {
+    _isAuthenticated = true;
+  }
 } catch (error) {}
 
 try {
-  agentReferralId = JSON.parse(sessionStorage.getItem("@ponture-agent-info"))
-    .broker_id;
-  if (agentReferralId) currentRole = "agent";
-  _isAuthenticated = true;
+  brokerParam = getParameterByName("brokerid", window.location.href);
+  brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+  if (brokerSession) {
+    sessionStorage.removeItem("@ponture-agent-info");
+  }
+  brokerId = brokerParam;
+  if (brokerId) currentRole = "agent";
+  if (!brokerSession) {
+    _isAuthenticated = false;
+  } else {
+    _isAuthenticated = true;
+  }
 } catch (error) {}
 //reAuthenticate has a hidden but important role
 //If user is authenticated there is no need for user reAuthentication. But,
 //If user not authenticated then do authentication based on user role and user data
 export const initialState = {
-  isAuthenticated:
-    (bankIdInfo && currentRole === "customer") ||
-    (agentReferralId && currentRole === "agent")
-      ? true
-      : false,
+  isAuthenticated: _isAuthenticated,
+  //(bankIdInfo && currentRole === "customer") ||(brokerSession && brokerSession.broker_id && currentRole === "agent")? true: false,
   b_loan_moreInfo_visibility: false,
   verifyInfo: bankIdInfo,
   userInfo: null,

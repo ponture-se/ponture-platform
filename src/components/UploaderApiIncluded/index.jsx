@@ -274,6 +274,7 @@ export default class UploaderApiIncluded extends React.Component {
                   <a
                     href={downloadAppAsset.call(this, fileId)}
                     style={{ color: "black" }}
+                    target="_blank"
                   >
                     File Attached (Download)
                   </a>
