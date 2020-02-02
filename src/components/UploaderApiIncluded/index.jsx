@@ -76,6 +76,7 @@ export default class UploaderApiIncluded extends React.Component {
     // );
     // });
     // const _callback = file => {
+    _this.props.onUploadStarts();
     uploadFile()
       .onOk(result => {
         // console.log("succes result: ", result);
@@ -94,6 +95,7 @@ export default class UploaderApiIncluded extends React.Component {
           },
           () => {
             _this.props.onChange(this.props.name, result);
+            _this.props.onUploadEnds({ success: true, status: "uploaded" });
           }
         );
         //prog => this.setState({ progress: prog.progress }));
@@ -116,6 +118,7 @@ export default class UploaderApiIncluded extends React.Component {
         // });
         // }
         _this.setState({ uploading: false });
+        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("server error ", result);
       })
       .onBadRequest(result => {
@@ -127,6 +130,7 @@ export default class UploaderApiIncluded extends React.Component {
         //   });
         // }
         _this.setState({ uploading: false });
+        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("Bad request", result);
       })
       .unAuthorized(result => {
@@ -138,6 +142,7 @@ export default class UploaderApiIncluded extends React.Component {
         //   });
         // }
         _this.setState({ uploading: false });
+        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("Bad request", result);
       })
       .unKnownError(result => {
@@ -149,6 +154,7 @@ export default class UploaderApiIncluded extends React.Component {
         //   });
         // }
         _this.setState({ uploading: false });
+        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("Bad request", result);
       })
       .onCancel(() => {
@@ -158,6 +164,7 @@ export default class UploaderApiIncluded extends React.Component {
           },
           () => {
             this.fileRef.current.value = "";
+            _this.props.onUploadEnds({ success: false, status: "canceled" });
           }
         );
       })

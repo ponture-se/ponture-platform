@@ -5,29 +5,56 @@ let bankIdInfo = null;
 let brokerId = null;
 let currentRole = "customer"; //default role is customer
 let _isAuthenticated = false;
-let brokerParam = undefined;
+let brokerParam = getParameterByName("brokerid", window.location.href);
+let customerParam = getParameterByName("customerid", window.location.href);
 let brokerSession = undefined;
-try {
-  bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
-  if (bankIdInfo) {
-    _isAuthenticated = true;
-  }
-} catch (error) {}
+//first check URL params to determine user role, then if any params aren't set check cookies for role specifying
+if (brokerParam) {
+  currentRole = "agent";
+  try {
+    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+    if (!brokerSession) {
+      _isAuthenticated = false;
+    } else {
+      _isAuthenticated = true;
+    }
+  } catch (error) {}
+} else if (customerParam) {
+  currentRole = "customer";
+  try {
+    bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
+    if (bankIdInfo) {
+      _isAuthenticated = true;
+    } else {
+      _isAuthenticated = false;
+    }
+  } catch (error) {}
+} else {
+  try {
+    bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
+    if (bankIdInfo) {
+      currentRole = "customer";
+      if (bankIdInfo) {
+        _isAuthenticated = true;
+      } else {
+        _isAuthenticated = false;
+      }
+    }
+  } catch (error) {}
 
-try {
-  brokerParam = getParameterByName("brokerid", window.location.href);
-  brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
-  if (brokerSession) {
-    sessionStorage.removeItem("@ponture-agent-info");
-  }
-  brokerId = brokerParam;
-  if (brokerId) currentRole = "agent";
-  if (!brokerSession) {
-    _isAuthenticated = false;
-  } else {
-    _isAuthenticated = true;
-  }
-} catch (error) {}
+  try {
+    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+    if (brokerSession) {
+      currentRole = "agent";
+      if (!brokerSession) {
+        _isAuthenticated = false;
+      } else {
+        _isAuthenticated = true;
+      }
+    }
+  } catch (error) {}
+}
+
 //reAuthenticate has a hidden but important role
 //If user is authenticated there is no need for user reAuthentication. But,
 //If user not authenticated then do authentication based on user role and user data

@@ -28,12 +28,7 @@ const BusinessAcquisitionView = props => {
     "string",
     t("NOT_SPECIFIED")
   );
-  const objectIndustryBranch = SafeValue(
-    BA,
-    "object_industry",
-    "string",
-    t("NOT_SPECIFIED")
-  );
+  const objectIndustryBranch = SafeValue(BA, "object_industry", "string", "");
   const objectPrice = String(BA.object_price).replace(numberFormatRegex, "$1 ");
   const objectValuationLetter = SafeValue(
     BA,
@@ -75,7 +70,7 @@ const BusinessAcquisitionView = props => {
     BA,
     "available_guarantees",
     "string",
-    t("NOT_SPECIFIED")
+    ""
   );
   const purchaserGuaranteesDescription = SafeValue(
     BA,
@@ -89,12 +84,7 @@ const BusinessAcquisitionView = props => {
     "string",
     t("NOT_SPECIFIED")
   );
-  const purchaseType = SafeValue(
-    BA,
-    "purchase_type",
-    "string",
-    t("NOT_SPECIFIED")
-  );
+  const purchaseType = SafeValue(BA, "purchase_type", "string", "");
   const ownInvestmentAmount = String(BA.own_investment_amount).replace(
     numberFormatRegex,
     "$1 "
@@ -138,7 +128,13 @@ const BusinessAcquisitionView = props => {
               {t("APP_BA_PURCHASE_TYPE")}
             </label>
             <div className="element-group__center">
-              <div className="options">{purchaseType}</div>
+              <div className="options">
+                {purchaseType ? (
+                  <span className="tag">{purchaseType}</span>
+                ) : (
+                  t("NOT_SPECIFIED")
+                )}
+              </div>
             </div>
           </div>
         </div>
@@ -270,11 +266,17 @@ const BusinessAcquisitionView = props => {
         <br />
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
-            <label className="bl__input__label" style={{ marginBottom: "0" }}>
+            <label className="bl__input__label">
               {t("APP_OBJECT_INDUSTRY_BRANCH")}
             </label>
             {/* <div className="element-group"> */}
-            <div className="element-group__center">{objectIndustryBranch}</div>
+            <div className="element-group__center">
+              {objectIndustryBranch ? (
+                <span className="tag">{objectIndustryBranch}</span>
+              ) : (
+                t("NOT_SPECIFIED")
+              )}
+            </div>
           </div>
         </div>
         <br />
@@ -430,7 +432,13 @@ const BusinessAcquisitionView = props => {
               {t("APP_PURCHASER_GUARANTEES_AVAILABLE")}
             </label>
             <div className="element-group__center">
-              {purchaserGuaranteesAvailable}
+              {purchaserGuaranteesAvailable
+                ? purchaserGuaranteesAvailable.split(",").map((item, key) => (
+                    <span className="tag" key={key}>
+                      {item}
+                    </span>
+                  ))
+                : t("NOT_SPECIFIED")}
             </div>
           </div>
         </div>

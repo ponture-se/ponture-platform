@@ -821,7 +821,6 @@ const MyApplications = props => {
             borderRadius: "0"
           }}
         >
-          {console.log("view", viewModal)}
           {viewModal.type === "RE" && (
             <RealEstateView close={toggleViewModal} data={viewModal.data} />
           )}

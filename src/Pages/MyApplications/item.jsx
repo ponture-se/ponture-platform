@@ -20,6 +20,7 @@ const Item = props => {
   const { personalNumber } = item.contactInfo;
   const stage = item.opportunityStage.toLowerCase();
   const RecordType = item.RecordType.toLowerCase();
+  const need = item.need;
   const lostReason = item.lostReason ? item.lostReason.toLowerCase() : "";
   //States
   const [isVerified, setIsVerified] = useState(item.bankVerified);
@@ -280,7 +281,12 @@ const Item = props => {
       {/* Application body info */}
       <div className="application__body">
         <div className="application__body__header">
-          <span>{t("BUSINESS_LOAN")}</span>
+          <span>
+            {RecordType === "real estate" ||
+            RecordType === "business acquisition loan"
+              ? need[0].title
+              : t("BUSINESS_LOAN")}
+          </span>
           <span className="loanAmount">
             <span>{t("MY_APPS_ITEM_HEADER_TITLE")}</span>
             <span>{separateNumberByChar(item.amount)} Kr</span>

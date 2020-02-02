@@ -29,6 +29,7 @@ const AgentLogin = props => {
       .onOk(info => {
         if (!didCancel) {
           toggleLoading(false);
+          sessionStorage.removeItem("@ponture-customer-bankid");
           sessionStorage.setItem("@ponture-agent-info", JSON.stringify(info));
           dispatch({
             type: "SET_USER_INFO",
@@ -38,7 +39,7 @@ const AgentLogin = props => {
               isAuthenticated: true
             }
           });
-          props.history.push("/app/panel/myapplications");
+          props.history.push("/app/panel/myapplications?brokerid=" + username);
         }
       })
       .onServerError(result => {

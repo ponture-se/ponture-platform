@@ -1685,7 +1685,8 @@ export default function BusinessLoan(props) {
         search: "?brokerid=" + brokerId
       });
     } else {
-      props.history.push("/app/panel/myApplications");
+      const pId = personalNumber.replace("-", "");
+      props.history.push("/app/panel/myApplications?customerid="+pId);
     }
   }
 

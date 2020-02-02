@@ -18,6 +18,14 @@
     }
   }
 }
+.form-error-box {
+  display: inline-flex;
+  align-items: center;
+  justify-self: left;
+  padding: 0 10px;
+  font-size: 13px;
+  color: red;
+}
 .bl {
   &__infoBox {
     padding: 0 !important;

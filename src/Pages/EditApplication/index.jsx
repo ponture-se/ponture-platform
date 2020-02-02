@@ -9,6 +9,8 @@ import { CircleSpinner } from "components";
 const EditAppliation = props => {
   //Initialization
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
+  const [activeOperationsCount, setActiveOperationsCount] = useState(0);
+  const [activeOperationsError, setActiveOperationsError] = useState(false);
   const { t } = useLocale();
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
   const orgNumberFormatRegex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
@@ -516,6 +518,9 @@ const EditAppliation = props => {
     [additionalFiles]
   );
   const editApplication = () => {
+    if (activeOperationsCount > 0) {
+      setActiveOperationsError(true);
+    }
     const _obj = {
       ...data,
       acquisition: {
@@ -763,7 +768,7 @@ const EditAppliation = props => {
         }
       }
     }
-    if (formIsValid) {
+    if (formIsValid && activeOperationsCount <= 0) {
       props.onEdit(_obj);
     }
   };
@@ -773,6 +778,11 @@ const EditAppliation = props => {
     toggleButtonSpinner(loading);
   }, [loading]);
 
+  useEffect(() => {
+    if (activeOperationsCount <= 0 && activeOperationsError) {
+      setActiveOperationsError(false);
+    }
+  }, [activeOperationsCount]);
   //  const handleREUsageCategory = useCallback(
   //    e => {
   //      let _newOpts = Array.from(selectedREUsageCategory.value);
@@ -1111,6 +1121,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1142,6 +1158,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1420,6 +1442,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1448,6 +1476,12 @@ const EditAppliation = props => {
                   onChange={(name, result) =>
                     handleObjectAnnualReport({ target: { value: result.id } })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1482,6 +1516,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1512,6 +1552,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1552,6 +1598,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1583,6 +1635,12 @@ const EditAppliation = props => {
                       target: { value: result.id }
                     })
                   }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
                 />
               </div>
             </div>
@@ -1717,6 +1775,12 @@ const EditAppliation = props => {
        &nbsp;
            {t("CLOSE")}
          </button> */}
+        {activeOperationsError && (
+          <span className="form-error-box">
+            {`Please wait until ${activeOperationsCount} pending operation(s) to be
+              finish`}
+          </span>
+        )}
         <button
           className="btn --success"
           onClick={editApplication}

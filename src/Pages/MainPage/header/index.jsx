@@ -27,7 +27,6 @@ const Header = props => {
         </div>
         <div className="right">
           <div className="mainHeader__userInfo">
-            {console.log("uInfo: ", userInfo)}
             {userInfo &&
               (currentRole === "agent"
                 ? userInfo.name

@@ -109,7 +109,7 @@ const RealEstateView = props => {
               {t("BL_REALESTATE_TYPE")}
             </label>
             <div className="element-group__center">
-              <div className="options">{realEstateType}</div>
+              <span className="tag">{realEstateType}</span>
             </div>
           </div>
         </div>
@@ -140,8 +140,12 @@ const RealEstateView = props => {
             </label>
             {/* <div className="bl__input__element"> */}
             <div className="element-group__center">
-              {realEstateUsageCategory.length !== 0
-                ? realEstateUsageCategory.join(" , ")
+              {realEstateUsageCategory.length > 0
+                ? realEstateUsageCategory.map((item, key) => (
+                    <span className="tag" key={key}>
+                      {item}
+                    </span>
+                  ))
                 : t("NOT_SPECIFIED")}
             </div>
           </div>
