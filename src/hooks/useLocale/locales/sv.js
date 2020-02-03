@@ -105,6 +105,7 @@ export default {
   OFFER_GUARANTEE_NEEDED: "Säkerhet krävs",
   OFFER_TITLE: "Erbjudande",
   OFFER_TITLE_VALUE: "Företagslån",
+  OFFER_TITLE_VALUE_CHECKCREDIT: "Checkkredit",
   OFFER_AMOUNT: "Godkänt bellop",
   OFFER_COMPANY: "Företag",
   OFFER_AMORTIZATION_PERIOD: "Låneperiod",
