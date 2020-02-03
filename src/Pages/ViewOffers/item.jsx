@@ -11,9 +11,11 @@ const Item = props => {
   const { t } = useLocale();
   const { app, offer } = props;
   const [acceptSpinner, toggleAcceptSpinner] = useState();
-  const type = offer.Product_Master_Name.includes("Checkkredit")
-    ? "checkcredit"
-    : "businessloan";
+  const type =
+    offer.Product_Master_Name &&
+    offer.Product_Master_Name.includes("Checkkredit")
+      ? "checkcredit"
+      : "businessloan";
   useEffect(() => {
     return () => {
       didCancel = true;
@@ -104,8 +106,8 @@ const Item = props => {
           </div>
           {offer.outline &&
             offer.outline.length > 0 &&
-            offer.outline.map(c => (
-              <div className="myOfferItem__bodyRow">
+            offer.outline.map((c, key) => (
+              <div className="myOfferItem__bodyRow" key={key}>
                 <span>{c.label}</span>
                 <span>
                   {c.isShared
