@@ -100,21 +100,32 @@ const Item = props => {
           </div> */}
           {offer.outline &&
             offer.outline.length > 0 &&
-            offer.outline.map(c => (
-              <div className="myOfferItem__bodyRow">
+            offer.outline.map((c, key) => (
+              <div className="myOfferItem__bodyRow" key={key}>
                 <span>{c.label}</span>
                 <span>
                   {c.isShared
                     ? offer[c.apiName]
-                      ? offer[c.apiName] +
+                      ? (c.type === "CURRENCY"
+                          ? separateNumberByChar(
+                              offer[c.apiName]
+                                ? offer[c.apiName]
+                                : c.defaultValue
+                            )
+                          : offer[c.apiName]
+                          ? offer[c.apiName]
+                          : c.defaultValue) +
                         (c.customerUnit ? " " + c.customerUnit + " " : "")
                       : ""
                     : offer.detail
                     ? offer.detail[c.apiName]
                       ? offer.detail[c.apiName] +
                         (c.customerUnit ? " " + c.customerUnit + " " : "")
-                      : ""
-                    : ""}
+                      : c.defaultValue
+                      ? c.defaultValue +
+                        (c.customerUnit ? " " + c.customerUnit + " " : "")
+                      : " - "
+                    : " - "}
                 </span>
               </div>
             ))}

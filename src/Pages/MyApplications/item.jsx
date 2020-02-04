@@ -338,7 +338,7 @@ const Item = props => {
         </div>
         <div className="application__bodyRow">
           <span>{t("APP_CLOSE_DATE")}</span>
-          <span>{item.closeDate && item.closeDate.split(" ")[0]}</span>
+          <span>{item.createdAt && item.createdAt.split(" ")[0]}</span>
         </div>
         <div className="application__bodyRow">
           <span>{t("APP_CREDIT_SAFE")}</span>

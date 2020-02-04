@@ -497,13 +497,6 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          if (appData.RecordType === "Business Acquisition Loan") {
-            setEditModal({
-              visibility: true,
-              action: "submit",
-              data: appData
-            });
-          }
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -518,13 +511,6 @@ const MyApplications = props => {
           if (typeof callback === "function") {
             callback(false);
           }
-          if (appData.RecordType === "Business Acquisition Loan") {
-            setEditModal({
-              visibility: true,
-              action: "submit",
-              data: appData
-            });
-          }
           dispatch({
             type: "ADD_NOTIFY",
             value: {
@@ -538,13 +524,6 @@ const MyApplications = props => {
         if (!didCancel) {
           if (typeof callback === "function") {
             callback(false);
-          }
-          if (appData.RecordType === "Business Acquisition Loan") {
-            setEditModal({
-              visibility: true,
-              action: "submit",
-              data: appData
-            });
           }
           dispatch({
             type: "ADD_NOTIFY",
