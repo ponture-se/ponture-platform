@@ -777,11 +777,11 @@ export default function BusinessLoan(props) {
       if (e.target.value.length === 0) {
         togglePhoneNumberValidation(false);
         setPhoneNumberValidationMessage(t("PHONE_NUMBER_IS_REQUIRED"));
+      } else if (!isPhoneNumber(e.target.value)) {
+        togglePhoneNumberValidation(false);
+        setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
       } else {
-        if (e.target.value.length < 9) {
-          togglePhoneNumberValidation(false);
-          setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
-        } else togglePhoneNumberValidation(true);
+        togglePhoneNumberValidation(true);
       }
       setPhoneNumber(e.target.value);
       _setPhoneNumber(e.target.value);
@@ -1335,7 +1335,7 @@ export default function BusinessLoan(props) {
           target: { value: loanReasonOther ? loanReasonOther : "" }
         });
       }
-      if (!phoneNumber || phoneNumber.length < 9) {
+      if (!phoneNumber || !isPhoneNumber(phoneNumber)) {
         isValid = false;
         handlePhoneNumberChanged({
           target: { value: phoneNumber ? phoneNumber : "" }
@@ -1580,12 +1580,24 @@ export default function BusinessLoan(props) {
         } catch (error) {}
 
         //Api error function
-        const ApiErrorCallback = result => {
+        const ApiErrorCallback = (result, sender) => {
           if (!didCancel) {
             toggleSubmitSpinner(false);
             changeTab(3);
             setError({
-              sender: "submitLoan"
+              sender: sender
+            });
+          }
+        };
+        const Notif = (type, text) => {
+          if (!didCancel) {
+            toggleSubmitSpinner(false);
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: type,
+                message: text
+              }
             });
           }
         };
@@ -1606,7 +1618,7 @@ export default function BusinessLoan(props) {
                     });
                   changeTab(3);
                   setError({
-                    sender: "submitLoan"
+                    sender: "saveLoan"
                   });
                 } else {
                   resetForm();
@@ -1620,9 +1632,12 @@ export default function BusinessLoan(props) {
                 }
               }
             })
-            .unKnownError(ApiErrorCallback)
-            .unAuthorized(ApiErrorCallback)
-            .onBadRequest(ApiErrorCallback)
+            .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
+            .onServerError(res =>
+              Notif("error", "Server error, please try again")
+            )
+            .onBadRequest(res => Notif("error", "Form inputs error"))
+            .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
         }
         if (
@@ -1656,9 +1671,12 @@ export default function BusinessLoan(props) {
                 }
               }
             })
-            .unKnownError(ApiErrorCallback)
-            .unAuthorized(ApiErrorCallback)
-            .onBadRequest(ApiErrorCallback)
+            .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
+            .onServerError(res =>
+              Notif("error", "Server error, please try again")
+            )
+            .onBadRequest(res => Notif("error", "Form inputs error"))
+            .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
         }
       }
@@ -1686,7 +1704,7 @@ export default function BusinessLoan(props) {
       });
     } else {
       const pId = personalNumber.replace("-", "");
-      props.history.push("/app/panel/myApplications?customerid="+pId);
+      props.history.push("/app/panel/myApplications?customerid=" + pId);
     }
   }
 

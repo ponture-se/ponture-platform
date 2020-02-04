@@ -211,7 +211,7 @@ export default {
   BL_AGENT_NUMBER_PLACEHOLDER: "Ange ditt personnummer",
   BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
-  PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
+  PHONE_NUMBER_IN_CORRECT: "Felaktig telefon. Ange ditt telefon.",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
   EMAIL_IN_CORRECT: "email är felaktigt",
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",

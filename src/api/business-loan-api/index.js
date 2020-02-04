@@ -819,24 +819,24 @@ export function saveLoan(permission) {
           switch (status) {
             case 200:
               break;
-            // case 400:
-            //   _onBadRequest();
-            //   break;
-            // case 401:
-            //   _unAuthorized();
-            //   break;
-            // case 404:
-            //   _notFound();
-            //   break;
-            // case 500:
-            //   if (window.analytics)
-            //     window.analytics.track("Failure", {
-            //       category: "Loan Application",
-            //       label: "/app/loan/wizard",
-            //       value: 0
-            //     });
-            //   _onServerError();
-            //   break;
+            case 400:
+              _onBadRequest();
+              break;
+            case 401:
+              _unAuthorized();
+              break;
+            case 404:
+              _notFound();
+              break;
+            case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/wizard",
+                  value: 0
+                });
+              _onServerError();
+              break;
             default:
               _unKnownError();
               break;
