@@ -117,7 +117,7 @@ const Item = props => {
                           : c.defaultValue) +
                         (c.customerUnit ? " " + c.customerUnit + " " : "")
                       : " - "
-                    : offer.detail
+                    : offer.detail && offer.detail[c.apiName]
                     ? (c.type === "CURRENCY"
                         ? separateNumberByChar(
                             offer.detail[c.apiName]
