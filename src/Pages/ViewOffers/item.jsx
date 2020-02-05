@@ -11,11 +11,7 @@ const Item = props => {
   const { t } = useLocale();
   const { app, offer } = props;
   const [acceptSpinner, toggleAcceptSpinner] = useState();
-  const type =
-    offer.Product_Master_Name &&
-    offer.Product_Master_Name.includes("Checkkredit")
-      ? "checkcredit"
-      : "businessloan";
+
   useEffect(() => {
     return () => {
       didCancel = true;
@@ -95,15 +91,13 @@ const Item = props => {
       </div>
       <div className="myOfferItem__body">
         <div className="left">
-          <div className="myOfferItem__bodyRow">
+          {/* <div className="myOfferItem__bodyRow">
             <span>{t("OFFER_TITLE")}</span>
             <span>
-              {type === "checkcredit"
-                ? t("OFFER_TITLE_VALUE_CHECKCREDIT")
-                : t("OFFER_TITLE_VALUE")}{" "}
+              {t("OFFER_TITLE_VALUE")}{" "}
               {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
             </span>
-          </div>
+          </div> */}
           {offer.outline &&
             offer.outline.length > 0 &&
             offer.outline.map((c, key) => (
@@ -112,15 +106,30 @@ const Item = props => {
                 <span>
                   {c.isShared
                     ? offer[c.apiName]
-                      ? offer[c.apiName] +
+                      ? (c.type === "CURRENCY"
+                          ? separateNumberByChar(
+                              offer[c.apiName]
+                                ? offer[c.apiName]
+                                : c.defaultValue
+                            )
+                          : offer[c.apiName]
+                          ? offer[c.apiName]
+                          : c.defaultValue) +
                         (c.customerUnit ? " " + c.customerUnit + " " : "")
-                      : ""
-                    : offer.detail
-                    ? offer.detail[c.apiName]
-                      ? offer.detail[c.apiName] +
-                        (c.customerUnit ? " " + c.customerUnit + " " : "")
-                      : ""
-                    : ""}
+                      : " - "
+                    : (offer.detail && offer.detail[c.apiName]) ||
+                      c.defaultValue
+                    ? (c.type === "CURRENCY"
+                        ? separateNumberByChar(
+                            offer.detail[c.apiName]
+                              ? offer.detail[c.apiName]
+                              : c.defaultValue
+                          )
+                        : offer.detail[c.apiName]
+                        ? offer.detail[c.apiName]
+                        : c.defaultValue) +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
+                    : " - "}
                 </span>
               </div>
             ))}
