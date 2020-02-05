@@ -116,15 +116,18 @@ const Item = props => {
                           ? offer[c.apiName]
                           : c.defaultValue) +
                         (c.customerUnit ? " " + c.customerUnit + " " : "")
-                      : ""
-                    : offer.detail
-                    ? offer.detail[c.apiName]
-                      ? offer.detail[c.apiName] +
-                        (c.customerUnit ? " " + c.customerUnit + " " : "")
-                      : c.defaultValue
-                      ? c.defaultValue +
-                        (c.customerUnit ? " " + c.customerUnit + " " : "")
                       : " - "
+                    : offer.detail
+                    ? (c.type === "CURRENCY"
+                        ? separateNumberByChar(
+                            offer.detail[c.apiName]
+                              ? offer.detail[c.apiName]
+                              : c.defaultValue
+                          )
+                        : offer.detail[c.apiName]
+                        ? offer.detail[c.apiName]
+                        : c.defaultValue) +
+                      (c.customerUnit ? " " + c.customerUnit + " " : "")
                     : " - "}
                 </span>
               </div>
