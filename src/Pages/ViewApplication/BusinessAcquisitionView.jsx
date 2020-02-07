@@ -142,10 +142,12 @@ const BusinessAcquisitionView = props => {
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
-              {t("APP_OWN_INVESTMENT_AMOUNT") + " (Kr)"}
+              {t("APP_OWN_INVESTMENT_AMOUNT")}
             </label>
             <div className="bl__input__element">
-              <div className="element-group__center">{ownInvestmentAmount}</div>
+              <div className="element-group__center">
+                {ownInvestmentAmount + " Kr"}
+              </div>
             </div>
           </div>
           <div className="bl__input animated fadeIn ">
