@@ -136,7 +136,7 @@ const RealEstateView = props => {
         <div className="userInputs">
           <div className="bl__input animated fadeIn">
             <label className="bl__input__label">
-              {t("APP_ADDITIONAL_FILES")}
+              {t("BL_REALESTATE_USAGE_CATEGORY")}
             </label>
             {/* <div className="bl__input__element"> */}
             <div className="element-group__center">
