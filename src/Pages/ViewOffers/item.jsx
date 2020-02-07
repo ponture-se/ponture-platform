@@ -95,7 +95,7 @@ const Item = props => {
       </div>
       <div className="myOfferItem__body">
         <div className="left">
-          <div className="myOfferItem__bodyRow">
+          {/* <div className="myOfferItem__bodyRow">
             <span>{t("OFFER_TITLE")}</span>
             <span>
               {issueType === "checkcredit"
@@ -103,7 +103,7 @@ const Item = props => {
                 : t("OFFER_TITLE_VALUE")}{" "}
               {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
             </span>
-          </div>
+          </div> */}
           {offer.outline &&
             offer.outline.length > 0 &&
             offer.outline.map((c, key) => (

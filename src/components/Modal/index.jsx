@@ -4,6 +4,7 @@ import "./styles.scss";
 
 export default function Modal(props) {
   const { size } = props;
+  const { style } = props;
   useEffect(() => {
     document.body.style.overflow = "hidden";
     return () => {
@@ -13,13 +14,16 @@ export default function Modal(props) {
 
   function closeModal() {
     if (props.onClose) {
-      // props.onClose();
+      props.onClose();
     }
   }
   return ReactDOM.createPortal(
     <React.Fragment>
       <div className="modal-back" onClick={closeModal}>
-        <div className={"modal animated fadeIn " + (size ? size : "md")}>
+        <div
+          className={"modal animated fadeIn " + (size ? size : "md")}
+          style={style}
+        >
           {props.children}
         </div>
       </div>

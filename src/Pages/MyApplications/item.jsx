@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import PropTypes from "prop-types";
 import { useGlobalState, useLocale } from "hooks";
@@ -6,13 +6,83 @@ import separateNumberByChar from "utils/separateNumberByChar";
 import track from "utils/trackAnalytic";
 import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
+import { CircleSpinner } from "components";
+import classnames from "classnames";
+
 //
 const Item = props => {
-  const [{}, dispatch] = useGlobalState();
+  const [{ currentRole }, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
   const { item } = props;
+  const parent_submit = props.submit;
+  const parent_verify = props.verify;
+  const parent_onBankId = props.onBankId;
+  const { personalNumber } = item.contactInfo;
   const stage = item.opportunityStage.toLowerCase();
+  const RecordType = item.RecordType.toLowerCase();
+  const need = item.need;
   const lostReason = item.lostReason ? item.lostReason.toLowerCase() : "";
+  //States
+  const [isVerified, setIsVerified] = useState(item.bankVerified);
+  const [isSubmitted, setIsSubmitted] = useState(item.bankVerified);
+  const [loading, toggleLoading] = useState(false);
+
+  //functions
+  const submitApplication = appData => {
+    const oppId = appData.opportunityID;
+    const phone = appData.contactInfo.phone;
+    const email = appData.contactInfo.email;
+
+    const apiData = {
+      oppId: oppId,
+      phoneNumber: phone,
+      email: email
+    };
+
+    if (typeof parent_submit === "function") {
+      if (typeof parent_verify === "function") {
+        toggleLoading(true);
+        //
+        parent_submit(apiData, appData, res => {
+          if (res && res.success) {
+            setIsSubmitted(true);
+            toggleLoading(false);
+          } else {
+            toggleLoading(false);
+          }
+        });
+      }
+    }
+  };
+  const verifyApplication = item => {
+    if (typeof parent_verify === "function") {
+      toggleLoading(true);
+      //
+      parent_verify(
+        item,
+        (SuccessRes, callback) => {
+          toggleLoading(false);
+          setIsVerified(true);
+          if (typeof callback === "function") {
+            callback();
+          }
+        },
+        (failedRes, callback) => {
+          toggleLoading(false);
+          setIsVerified(false);
+          if (typeof callback === "function") {
+            callback();
+          }
+        }
+      );
+    }
+  };
+  function editItemModal(item) {
+    props.edit(item, "edit");
+  }
+  function viewItemModal(item, type) {
+    props.view(item, type);
+  }
   function handleCancelClicked() {
     toggleAlert({
       title: t("APP_CANCEL_ALERT_INFO"),
@@ -77,6 +147,7 @@ const Item = props => {
   }
   return (
     <div className="application animated fadeIn">
+      {/* Application header info */}
       <div className="application__header">
         <div className="left">
           <div
@@ -93,6 +164,8 @@ const Item = props => {
                 ? "rejectedIcon"
                 : stage === "funded/closed won"
                 ? "closedIcon"
+                : stage === "created"
+                ? "appCreatedIcon"
                 : "")
             }
           >
@@ -133,6 +206,8 @@ const Item = props => {
                 ? t("APP_STATUS_REJECTED_TITLE")
                 : stage === "funded/closed won"
                 ? t("APP_STATUS_WON_TITLE")
+                : stage === "created"
+                ? t("APP_STATUS_CREATED_TITLE")
                 : ""}
             </span>
             <span>
@@ -151,10 +226,11 @@ const Item = props => {
                 ? t("APP_STATUS_REJECTED_DESC")
                 : stage === "funded/closed won"
                 ? t("APP_STATUS_WON_DESC")
+                : stage === "created"
+                ? t("APP_STATUS_CREATED_DESC")
                 : ""}
             </span>
           </div>
-
           {(stage === "approved" ||
             stage === "submitted" ||
             stage === "offer received" ||
@@ -177,16 +253,61 @@ const Item = props => {
               </div>
             </Link>
           )}
+          {/* edit application */}
+          {stage === "created" && RecordType === "business acquisition loan" && (
+            <button
+              className="btn --light headerBtn"
+              onClick={() => editItemModal(item)}
+            >
+              <span className="icon-pencil" />
+            </button>
+          )}
+          &nbsp;
+          {/* view application */}
+          {(RecordType === "real estate" ||
+            RecordType === "business acquisition loan") && (
+            <button
+              className="btn --light headerBtn"
+              onClick={() =>
+                viewItemModal(item, RecordType === "real estate" ? "RE" : "BA")
+              }
+            >
+              <span className="icon-more-h" />
+            </button>
+          )}
         </div>
       </div>
+
+      {/* Application body info */}
       <div className="application__body">
         <div className="application__body__header">
-          <span>{t("BUSINESS_LOAN")}</span>
+          <span>
+            {RecordType === "real estate" ||
+            RecordType === "business acquisition loan"
+              ? need[0].title
+              : t("BUSINESS_LOAN")}
+          </span>
           <span className="loanAmount">
             <span>{t("MY_APPS_ITEM_HEADER_TITLE")}</span>
             <span>{separateNumberByChar(item.amount)} Kr</span>
           </span>
         </div>
+        <div className="application__bodyRow">
+          <span>{t("APP_RECORD_TYPE")}</span>
+          <span>{item.RecordType}</span>
+        </div>
+        {currentRole === "agent" && (
+          <>
+            <div className="application__bodyRow">
+              <span>{t("APP_CONTACT_NAME")}</span>
+              <span>{item.contactInfo.name}</span>
+            </div>
+            <div className="application__bodyRow">
+              <span>{t("BL_PERSONAL_NUMBER")}</span>
+              <span>{item.contactInfo.personalNumber}</span>
+            </div>
+          </>
+        )}
         <div className="application__bodyRow">
           <span>{t("APP_COMPANY_NAME")}</span>
           <span>
@@ -224,12 +345,57 @@ const Item = props => {
           <span>{item.creditSafeScore}</span>
         </div>
       </div>
+
+      {/* Application footer */}
       {stage !== "funded/closed won" && stage !== "not funded/ closed lost" && (
         <div className="application__footer">
-          <button className="btn --light" onClick={handleCancelClicked}>
-            <span className="icon-cross" />
-            {t("CANCEL")}
-          </button>
+          <div>
+            <button className="btn --light" onClick={handleCancelClicked}>
+              <span className="icon-cross" />
+              {t("CANCEL")}
+            </button>
+          </div>
+          <div style={{ flexDirection: "row", display: "flex" }}>
+            {stage === "created" && (
+              <>
+                <button
+                  className={classnames(
+                    "btn verifyBtn",
+                    isVerified ? "--verified" : "--success"
+                  )}
+                  onClick={() => verifyApplication(item)}
+                  disabled={loading || isVerified}
+                >
+                  {isVerified ? (
+                    <>
+                      <span
+                        className="icon-checkmark"
+                        style={{ fontSize: "14px", color: "#42ccad" }}
+                      />
+                      {t("VERIFIED")}
+                    </>
+                  ) : loading ? (
+                    <CircleSpinner show={true} />
+                  ) : (
+                    <>{t("VERIFY")}</>
+                  )}
+                </button>
+                {isVerified && (
+                  <button
+                    className="btn --warning"
+                    onClick={() => submitApplication(item)}
+                    disabled={loading}
+                  >
+                    {loading ? (
+                      <CircleSpinner show={true} />
+                    ) : (
+                      <>{t("SUBMIT_2")}</>
+                    )}
+                  </button>
+                )}
+              </>
+            )}
+          </div>
         </div>
       )}
     </div>

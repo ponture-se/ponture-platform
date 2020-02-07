@@ -18,8 +18,9 @@ const CircleSpinner = props => {
   return props.show ? (
     <div
       style={{
+        margin: "auto",
         borderColor: props.bgColor || "#f3f3f3",
-        borderTopColor: props.color || "transparent",
+        borderTopColor: props.color || "transparent"
       }}
       className={classNames}
       onClick={handleClick}

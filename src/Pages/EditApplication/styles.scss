@@ -1,0 +1,95 @@
+.editApplication {
+  margin: 20px 40px 0 40px;
+  box-shadow: none !important;
+  & .section-header {
+    font-size: 18px;
+    font-family: OpenSanceBold;
+    padding: none !important;
+    border-bottom: 1px solid lightgray;
+    height: 32px;
+    margin-bottom: 25px;
+  }
+  & .userInputs {
+    flex-direction: var(--flex-direction);
+  }
+  &.bl {
+    & .userInputs .bl__input:nth-child(even) {
+      margin: 0;
+    }
+  }
+}
+.form-error-box {
+  display: inline-flex;
+  align-items: center;
+  justify-self: left;
+  padding: 0 10px;
+  font-size: 13px;
+  color: red;
+}
+.bl {
+  &__infoBox {
+    padding: 0 !important;
+    &__header {
+      border-bottom: none;
+      height: 85px;
+      margin-top: 0;
+      padding: 0 !important;
+      display: flex;
+      align-items: center;
+      margin-bottom: 0;
+      flex-direction: var(--flex-direction);
+      & span {
+        font-size: 21px;
+        font-family: OpenSanceBold;
+        padding: 0;
+      }
+      & .modal-close {
+        &:hover {
+          color: black;
+        }
+        position: absolute;
+        top: 25px !important;
+        right: 40px !important;
+        font-size: 13px !important;
+        color: dimgray;
+        cursor: pointer;
+      }
+    }
+  }
+  &__input {
+    margin: 0 5px !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .editApplication {
+    margin: 10px 20px 0 20px;
+  }
+  .bl {
+    &__infoBox {
+      padding: 0 !important;
+      &__header {
+        border-bottom: none;
+        height: 85px;
+        margin-top: 0;
+        padding: 0 !important;
+        display: flex;
+        align-items: center;
+        margin-bottom: 0;
+        flex-direction: var(--flex-direction);
+      }
+    }
+    & .userInputs {
+      flex-direction: column;
+    }
+    & .options {
+      flex-direction: column;
+      .btnReason {
+        width: calc(100% - 20px);
+      }
+    }
+    &__input {
+      margin: 0 !important;
+    }
+  }
+}

@@ -16,7 +16,6 @@ export default function loadScript(url, callback) {
       callback();
     };
   }
-
   script.src = url;
   document.getElementsByTagName("head")[0].appendChild(script);
 }

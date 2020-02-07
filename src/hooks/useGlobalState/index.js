@@ -10,6 +10,5 @@ export const StateProvider = props => {
     </StateContext.Provider>
   );
 };
-
-const useGlobalState = () => useContext(StateContext);
+const useGlobalState = props => useContext(StateContext);
 export default useGlobalState;

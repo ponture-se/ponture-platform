@@ -3,17 +3,29 @@ import React, { useState, useEffect } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
-import { isBankId } from "utils";
+import { startBankId, cancelVerify } from "api/business-loan-api";
+import { isBankId, getParameterByName } from "utils";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
-import { startBankId, cancelVerify } from "api/business-loan-api";
 import "./styles.scss";
 
 const Login = props => {
   let didCancel = false;
   const { t } = useLocale();
   const [{}, dispatch] = useGlobalState();
-  const [personalNumber, setPersonalNumber] = useState("");
+  const [personalNumber, setPersonalNumber] = useState(() => {
+    const customerid = getParameterByName("customerid", window.location.href);
+    const customerSession = JSON.parse(
+      sessionStorage.getItem("@ponture-customer-bankid")
+    );
+    if (customerid) {
+      return getParameterByName("customerid", window.location.href);
+    } else if (customerSession && Object.keys(customerSession).length > 0) {
+      return customerSession.userInfo.personalNumber;
+    } else {
+      return "";
+    }
+  });
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
   const [verifyModal, toggleVerifyModal] = useState();
@@ -134,6 +146,7 @@ const Login = props => {
       type: "VERIFY_BANK_ID_SUCCESS",
       payload: result
     });
+    sessionStorage.removeItem("@ponture-agent-info");
     sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
     props.history.push("/app/panel/myApplications");
   }
@@ -249,6 +262,7 @@ const Login = props => {
           personalNumber={personalNumber}
           onSuccess={handleSuccessVerify}
           onClose={handleCancelVerify}
+          config={{ companyList: true, isLogin: true }}
           onCancelVerify={handleCancelVerify}
         />
       )}

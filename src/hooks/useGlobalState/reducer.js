@@ -1,17 +1,74 @@
+import { getParameterByName } from "./../../utils";
 //
+//Initial actions and global states while application loading for the first time
 let bankIdInfo = null;
-try {
-  bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
-} catch (error) {}
+let brokerId = null;
+let currentRole = "customer"; //default role is customer
+let _isAuthenticated = false;
+let brokerParam = getParameterByName("brokerid", window.location.href);
+let customerParam = getParameterByName("customerid", window.location.href);
+let brokerSession = undefined;
+//first check URL params to determine user role, then if any params aren't set check cookies for role specifying
+if (brokerParam) {
+  currentRole = "agent";
+  try {
+    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+    if (!brokerSession) {
+      _isAuthenticated = false;
+    } else {
+      _isAuthenticated = true;
+    }
+  } catch (error) {}
+} else if (customerParam) {
+  currentRole = "customer";
+  try {
+    bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
+    if (bankIdInfo) {
+      _isAuthenticated = true;
+    } else {
+      _isAuthenticated = false;
+    }
+  } catch (error) {}
+} else {
+  try {
+    bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
+    if (bankIdInfo) {
+      currentRole = "customer";
+      if (bankIdInfo) {
+        _isAuthenticated = true;
+      } else {
+        _isAuthenticated = false;
+      }
+    }
+  } catch (error) {}
 
+  try {
+    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+    if (brokerSession) {
+      currentRole = "agent";
+      if (!brokerSession) {
+        _isAuthenticated = false;
+      } else {
+        _isAuthenticated = true;
+      }
+    }
+  } catch (error) {}
+}
+
+//reAuthenticate has a hidden but important role
+//If user is authenticated there is no need for user reAuthentication. But,
+//If user not authenticated then do authentication based on user role and user data
 export const initialState = {
-  isAuthenticated: bankIdInfo ? true : false,
+  isAuthenticated: _isAuthenticated,
+  //(bankIdInfo && currentRole === "customer") ||(brokerSession && brokerSession.broker_id && currentRole === "agent")? true: false,
   b_loan_moreInfo_visibility: false,
   verifyInfo: bankIdInfo,
   userInfo: null,
-  notifies: []
+  notifies: [],
+  currentRole: currentRole
 };
 //
+
 export const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
@@ -25,7 +82,9 @@ export const reducer = (state, action) => {
         ...state,
         isAuthenticated: false,
         verifyInfo: null,
-        userInfo: null
+        userInfo: null,
+        currentRole: null,
+        lastRole: payload.lastRole
       };
       return logout;
     case "TOGGLE_B_L_MORE_INFO":
@@ -43,7 +102,9 @@ export const reducer = (state, action) => {
     case "SET_USER_INFO":
       return {
         ...state,
-        userInfo: payload
+        userInfo: payload.userInfo,
+        currentRole: payload.currentRole,
+        isAuthenticated: payload.isAuthenticated
       };
     case "ADD_NOTIFY":
       let newItem = { ...action.value };

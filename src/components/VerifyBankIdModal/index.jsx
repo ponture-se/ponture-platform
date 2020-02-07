@@ -9,11 +9,36 @@ const isMobile = isMobileDevice();
 export default function VerifyBankIdModal(props) {
   let didCancel = false;
   const { t } = useLocale();
+
+  //get config from props else set a default value for mandatory configs
+  const { companyList, isLogin } = props.config || {
+    companyList: true, //needs company list or not
+    isLogin: false //useBankId for login verification or not
+  };
+  const { style } = props;
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [status, setStatus] = useState(t("RFA1"));
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
-
+  const [successResult, setSuccessResult] = useState();
+  const [test, setTest] = useState(1);
+  useEffect(() => {
+    if (
+      successResult &&
+      successResult.progressStatus.toLowerCase() === "complete"
+    ) {
+      setTimeout(() => {
+        if (props.onVerified) props.onVerified(successResult);
+        if (isLogin) {
+          if (typeof props.onSuccess === "function") {
+            setTest(0);
+            if (test === 1) props.onSuccess(successResult);
+          }
+        }
+      }, 1000);
+    }
+  }, [successResult]);
+  //componentDidMount
   useEffect(() => {
     let didCancel = false;
     let fetchInterval = setInterval(() => {
@@ -26,6 +51,8 @@ export default function VerifyBankIdModal(props) {
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
+                    setSuccessResult(result);
+
                     if (window.analytics) {
                       window.analytics.identify(
                         result.userInfo.personalNumber,
@@ -37,14 +64,18 @@ export default function VerifyBankIdModal(props) {
                         }
                       );
                     }
-                    if (!props.isLogin) {
+                    if (!isLogin) {
                       if (window.analytics)
                         window.analytics.track("BankID Verified", {
                           category: "Loan Application",
                           label: "/app/loan/ bankid popup",
                           value: 0
                         });
-                      _getCompanies(result);
+                      if (companyList) {
+                        _getCompanies(result);
+                      } else {
+                        props.onClose(true, result);
+                      }
                     } else {
                       if (window.analytics)
                         window.analytics.track("BankID Verified", {
@@ -52,9 +83,9 @@ export default function VerifyBankIdModal(props) {
                           label: "Customer Portal login bankid popup",
                           value: 0
                         });
-
-                      if (props.onSuccess) props.onSuccess(result);
+                      // if (props.onSuccess) props.onSuccess(result);
                     }
+                    //
                     break;
                   case "no_client":
                     // check is mobile
@@ -68,7 +99,7 @@ export default function VerifyBankIdModal(props) {
                     break;
                 }
               } else {
-                if (!props.isLogin) {
+                if (!isLogin) {
                   if (window.analytics)
                     window.analytics.track("BankID Failed", {
                       category: "Loan Application",
@@ -190,7 +221,7 @@ export default function VerifyBankIdModal(props) {
     getCompanies()
       .onOk(result => {
         if (!didCancel) {
-          if (Array.isArray(result))
+          if (Array.isArray(result.companies))
             props.onClose(true, result, completedResult);
           else props.onClose(false, []);
         }
@@ -261,15 +292,13 @@ export default function VerifyBankIdModal(props) {
   }
   function handleBankIDClicked() {
     window.open(
-      `
-    bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null 
-    `,
+      `bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null`,
       "_blank"
     );
   }
   return (
     <div className="modal-back animated fadeIn">
-      <div className="modal">
+      <div className="modal" style={style}>
         <div className="bankId__centerBox">
           <div className="bankId__centerBox__header">
             <img src={require("./../../assets/bankidLogo.png")} alt="logo" />

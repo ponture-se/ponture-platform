@@ -1,6 +1,7 @@
 export default {
   CLOSE: "Stänga",
   SUBMIT: "Ansök",
+  SUBMIT_2: "Sticka", //T:Submit
   SUBMITTED: "Inskickat",
   MON: "mån",
   MONTH: "månad",
@@ -27,15 +28,24 @@ export default {
   NOT_FOUND_MSG: "Not Found",
   ON_REQUEST_ERROR: "Request Error",
   ON_REQUEST_ERROR_MSG: "Request Error",
-  CANCEL: "Avbryt",
+  CANCEL: "Avbryt", //T: Cancel
+  EDIT: "Redigera", //T: EDit
   REJECT: "Tacka Nej",
+  NOT_SPECIFIED: "Ej angivet", //t: Not specified
   VIEW_OFFERS: "Visa Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
+  PRICE: "Köpspris",
+  INVALID_VALUE: "Ogiltigt värde", //T: Invalid value
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
   APP_STATUS_REJECTED_TITLE: "Avslagen!",
   APP_STATUS_WON_TITLE: "Avslutat!",
+  APP_STATUS_CREATED_TITLE: "Skapad!", //T:Created
+  APP_EDIT: "Redigera applikationen", //T:Edit application
+  VERIFY: "Pröva", //T:Verify/identify
+  VERIFIED: "Verified", //T: Verified
+  MANDATORY_FIELD: "obligatoriskt fält", //T: Mandatory field
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:
@@ -43,6 +53,7 @@ export default {
   APP_STATUS_REJECTED_BY_USER_DESC: "Du avbröt din ansökan.",
   APP_STATUS_REJECTED_DESC: "Din ansökan är inte godkänd!",
   APP_STATUS_WON_DESC: "Din ansökan är avslutad!",
+  APP_STATUS_CREATED_DESC: "Din ansökan har skapats.", //T:Anything
 
   MONTH_S: "month(s)",
   ARE_YOU_SURE: "Are you sure?",
@@ -53,7 +64,8 @@ export default {
     "Under tiden, prova gärna en gång till eller kontakta oss direkt så hjälper vi er vidare!",
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
   VIEW_DETAIL: "Visa detalj",
-  OPEN_BANK_ID: "Öppna BankID-appen",
+  OPEN_BANK_ID: "Öppna BankID-appen", //T:Open bankID
+  VERIFY_AND_SUBMIT: "Skicka",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in till Mina Sidor",
   LOGIN_TITLE1: "Vi använder BankID för att skydda din information.",
@@ -85,17 +97,51 @@ export default {
   OFFER_ACCEPTED: "Accepterat",
   OFFER_REJECTED: "Avslagen",
   MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
+
   APP_NEEDS: "Dina anledningar till lån",
   APP_COMPANY_NAME: "Företag",
+  APP_ADDITIONAL_FILES: "Övrigt fil",
+  APP_ADDITIONAL_DETAILS: "Ytterliggare detaljer",
+  APP_BUSINESS_PLAN: "Äffarsplan",
+  APP_OWN_INVESTMENT_AMOUNT: "Summa egna pengar",
+  APP_OWN_INVESTMENT_DETAILS: "Egna pengar beskrivning",
+  APP_PURCHASE_OF_DESCRIPTION: "Köpsbeskrivning",
   APP_AMORTIZATION_PERIOD: "Önskad låneperiod",
   APP_CLOSE_DATE: "Ansökningsdatum",
   APP_CREDIT_SAFE: "Din kreditscore [0-100]",
   APP_CANCEL_ALERT_INFO: "Vill du avbryta den här ansökan?",
   APP_CANCELED_SUCCESS: "The application was canceled successfully",
   APP_OFFERS_REJECT_ALERT_INFO: "Vill du avslå det här erbjudandet?",
+  APP_CONTACT_NAME: "Kontaktnamn",
+  APP_PERSONAL_NUMBER: "Personnummer",
+  APP_RECORD_TYPE: "Typ", //T: record type
   OFFER_REJECT_SUCCESS: "Offer was rejected successfully.",
   APP_OFFERS_ACCEPT_ALERT_INFO:
     "Choosing this offer as accepted for the application",
+  APP_OBJECT_NAME: "Objektsnamn",
+  APP_OBJECT_COMPANY_NAME: "Företagsnamn",
+  APP_OBJECT_ORG_NUMBER: "Organisationsnummer",
+  APP_OBJECT_INDUSTRY_BRANCH: "Industribransch",
+  APP_OBJECT_PRICE: "Köpspris",
+  APP_OBJECT_VALUATION_LETTER: "Värderingsbrev",
+  APP_OBJECT_ANNUAL_REPORT: "Senaste Årsredovisning",
+  APP_OBJECT_LATEST_BALANCE_SHEET: "Senaste preliminärt balansrapport ",
+  APP_OBJECT_LATEST_INCOME_STATEMENT: "Senaste preliminärt resultatrapport",
+  APP_PURCHASER_COMPANY_ORGANIZATION_NUMBER: "Företagsnamn",
+  APP_PURCHASER_COMPANY_LATEST_BALANCE_SHEET:
+    "Senaste preliminärt balansrapport",
+  APP_PURCHASER_COMPANY_LATEST_INCOME_STATEMENT:
+    "Senaste preliminärt resultatrapport",
+  APP_PURCHASER_GUARANTEES_AVAILABLE: "Tillgängliga säkerheter",
+  APP_PURCHASER_GUARANTEES_DESCRIPTION: "Tillgängliga säkerhetsditaljer",
+  APP_PURCHASER_PERSONAL_NUMBER: "Köparens personnummer",
+  APP_EXPERIENCE: "Köprens erfarenheter inom industribranschen",
+  APP_BUSINESS_ACQ1: "Köpobjekt",
+  APP_BUSINESS_ACQ2: "Köparens uppgifter",
+  APP_EDIT_APPLICATION: "Edit Application", //T
+  APP_VIEW_APPLICATION: "View Application", //T
+  APP_BA_PURCHASE_TYPE: "Köpstyp",
+  APP_GENERAL_INFO: "General info", //t
   OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
   OFFER_LOAN_AMOUNT: "Godkänt belopp",
   OFFER_LOAN_PERIOD: "Låneperiod",
@@ -111,6 +157,17 @@ export default {
   OFFER_AMORTIZATION_PERIOD: "Låneperiod",
   OFFER_INTEREST_RATE: "Ränta",
 
+  ///
+  LOGIN_INFO:
+    "Access to the most powerful tool in the entire design and web industry", //T
+  LOGIN_USERNAME: "Username", //T
+  LOGIN_USERNAME_INFO: "Try to enter valid username",
+  LOGIN_PASSWORD: "Password", //T
+  LOGIN_PASSWORD_INFO: "Password must be at least 6 characters", //T
+  LOGIN_USERNAME_INPUT_PLACEHOLDER: "Enter username", //T
+  LOGIN_PASSWORD_INPUT_PLACEHOLDER: "Password", //T
+  LOGIN_BTN_NAME: "Login", //T
+
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
   BL_LOAN_PERIOD: "Önskad låneperiod",
@@ -121,14 +178,41 @@ export default {
   BL_PERSONAL_NUMBER: "Personnummer",
   BL_PERSONAL_NUMBER_INFO:
     "Ange ditt svenska personnummer så att vi kan hitta ditt företag",
-  BL_COMPANY: "Välj ditt företag",
+  BL_COMPANY: "Välj ditt företag", //T
+  BL_NEW_COMAPNY: "New company", //T
+  BL_SELECT_COMAPNY: "Välj ett företag", //T
   BL_CONTACT_BOX_TITLE: "Kontaktuppgifter:",
   BL_PHONE_NUMBER: "Telefon",
   BL_EMAIL: "E-post",
   BL_TERMS: "Härmed godkänner jag användarvillkoren.",
   BL_TERMS_LINK: "läs våra användarvillkor",
+  BL_ORG_NAME: "Företagsnamn",
+  BL_COMPANY_INFO: "Köpobjekt",
+  BL_LOANREASON_IS_REQUIRED: "Välj en anledning krävs",
+  BL_REALESTATE_TYPE: "Typ",
+  BL_REALESTATE_INFO: "Fastighetsuppgifter",
+  BL_REALESTATE_USAGE_CATEGORY: "Användningskategori",
+  BL_REALESTATE_PRICE: "Fastighetspris",
+  BL_REALESTATE_TAXATION_VALUE: "Taxeringsvärde",
+  BL_REALESTATE_SIZE: "Yta/Storlek (sqm)",
+  BL_REALESTATE_ADDRESS: "Plats/adress",
+  BL_REALESTATE_CITY: "City",
+  BL_REALESTATE_LINK:
+    "Länk till säljobjekts sida på mäklaren eller Objektvision.se",
+  BL_REALESTATE_DESCRIPTION: "Fastighets utförlig beskrivning",
+  BL_REALESTATE_FILE: "Fastighets dokument",
+  BL_LOAN_AMOUNT: "Önskat lånebelopp",
+  BL_LOAN_PERIOD: "Önskad låneperiod",
+  BL_OWN_INVESTMENT_AMOUNT: "Summa egna pengar",
+  BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
+  BL_ADDITIONAL_DETAILS: "Ytterliggare detaljer",
+  BL_REALESTATE_INFO: "Fastighetsuppgifter",
+  BL_AREA: "Area(sqm)", //T
+  BL_REALESTATE_AREA_IS_REQUIRED: "Område krävs", //T
+  BL_AGENT_NUMBER_PLACEHOLDER: "Ange ditt personnummer",
+  BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
-  PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
+  PHONE_NUMBER_IN_CORRECT: "Felaktig telefon. Ange ditt telefon.",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
   EMAIL_IN_CORRECT: "email är felaktigt",
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",
@@ -136,8 +220,10 @@ export default {
   PERSONAL_NUMBER_IN_CORRECT:
     "Ange ditt korrekta personnummer exampel : 19806101-1234)",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
+  PRICE_IS_REQUIRED: "price är felaktigt",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
+  BL_ORGNAME_IS_REQUIRED: "Företagsnamn krävs", //T
   BL_VERIFY_PID_BTN: "Identifiera med BankID",
   BL_TERMS_IS_REQUIRED:
     "Godkännande av våra villkor är obligatorisk för att ansöka.",
