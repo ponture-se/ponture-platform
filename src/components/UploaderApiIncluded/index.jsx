@@ -2,7 +2,6 @@ import React from "react";
 import { uploadFile } from "../../api/main-api/";
 import "./index.scss";
 import classnames from "classnames";
-import axios from "axios";
 import { downloadAppAsset } from "api/main-api";
 import { CircleSpinner } from "components";
 export default class UploaderApiIncluded extends React.Component {
@@ -12,7 +11,19 @@ export default class UploaderApiIncluded extends React.Component {
     const { messages, width, height, maxFileSize, defaultFile } = props;
 
     const componentConfig = {
-      iconFiletypes: [".jpg", ".png", ".gif"],
+      iconFiletypes: [
+        "jpg",
+        "jpeg",
+        "png",
+        "pdf",
+        "txt",
+        "doc",
+        "docx",
+        "ppt",
+        "pptx",
+        "xls",
+        "xlsx"
+      ],
       showFiletypeIcon: true,
       postUrl: ""
     };
@@ -53,7 +64,8 @@ export default class UploaderApiIncluded extends React.Component {
       },
       () => {
         this.fileRef.current.value = "";
-        this.props.onChange(this.props.name, "");
+        if (typeof this.props.onChange === "function")
+          this.props.onChange(this.props.name, "");
       }
     );
   };
@@ -76,7 +88,8 @@ export default class UploaderApiIncluded extends React.Component {
     // );
     // });
     // const _callback = file => {
-    _this.props.onUploadStarts();
+    if (typeof _this.props.onUploadStarts === "function")
+      _this.props.onUploadStarts();
     uploadFile()
       .onOk(result => {
         // console.log("succes result: ", result);
@@ -94,8 +107,11 @@ export default class UploaderApiIncluded extends React.Component {
             // selectedImgUrl: "url",
           },
           () => {
-            _this.props.onChange(this.props.name, result);
-            _this.props.onUploadEnds({ success: true, status: "uploaded" });
+            if (typeof _this.props.onChange === "function")
+              _this.props.onChange(this.props.name, result);
+
+            if (typeof _this.props.onUploadEnds === "function")
+              _this.props.onUploadEnds({ success: true, status: "uploaded" });
           }
         );
         //prog => this.setState({ progress: prog.progress }));
@@ -118,7 +134,8 @@ export default class UploaderApiIncluded extends React.Component {
         // });
         // }
         _this.setState({ uploading: false });
-        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        if (typeof _this.props.onUploadEnds === "function")
+          _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("server error ", result);
       })
       .onBadRequest(result => {
@@ -130,7 +147,8 @@ export default class UploaderApiIncluded extends React.Component {
         //   });
         // }
         _this.setState({ uploading: false });
-        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        if (typeof _this.props.onUploadEnds === "function")
+          _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("Bad request", result);
       })
       .unAuthorized(result => {
@@ -142,7 +160,8 @@ export default class UploaderApiIncluded extends React.Component {
         //   });
         // }
         _this.setState({ uploading: false });
-        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        if (typeof _this.props.onUploadEnds === "function")
+          _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("Bad request", result);
       })
       .unKnownError(result => {
@@ -154,7 +173,8 @@ export default class UploaderApiIncluded extends React.Component {
         //   });
         // }
         _this.setState({ uploading: false });
-        _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        if (typeof _this.props.onUploadEnds === "function")
+          _this.props.onUploadEnds({ success: false, status: "uploaderror" });
         console.log("Bad request", result);
       })
       .onCancel(() => {
@@ -164,7 +184,8 @@ export default class UploaderApiIncluded extends React.Component {
           },
           () => {
             this.fileRef.current.value = "";
-            _this.props.onUploadEnds({ success: false, status: "canceled" });
+            if (typeof _this.props.onUploadEnds === "function")
+              _this.props.onUploadEnds({ success: false, status: "canceled" });
           }
         );
       })
