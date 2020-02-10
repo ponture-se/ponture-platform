@@ -1069,7 +1069,7 @@ export function uploadFile() {
 
 export function downloadAppAsset(attId) {
   const url = getAppAttachmentUrl;
-  return url + "?fileid=" + attId;
+  return url + "?fileId=" + attId;
 }
 export function getApplicationById() {
   let _onOkCallBack;
