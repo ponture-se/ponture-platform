@@ -8,25 +8,28 @@ export default class UploaderApiIncluded extends React.Component {
   constructor(props) {
     super(props);
     const src = props.defaultSrc;
-    const { messages, width, height, maxFileSize, defaultFile } = props;
-
-    const componentConfig = {
-      iconFiletypes: [
-        "jpg",
-        "jpeg",
-        "png",
-        "pdf",
-        "txt",
-        "doc",
-        "docx",
-        "ppt",
-        "pptx",
-        "xls",
-        "xlsx"
-      ],
-      showFiletypeIcon: true,
-      postUrl: ""
-    };
+    const {
+      messages,
+      width,
+      height,
+      maxFileSize,
+      defaultFile,
+      fileTypes
+    } = props;
+    const _fileTypes = [
+      "jpg",
+      "jpeg",
+      "png",
+      "pdf",
+      "txt",
+      "doc",
+      "docx",
+      "ppt",
+      "pptx",
+      "xls",
+      "xlsx"
+    ];
+    const _maxFileSize = 11000; //Kb
     this.initialStates = {
       progress: 0,
       // selectedImgUrl: false, //props.defaultUrl, //? DownloadAsset(props.defaultUrl) : "",
@@ -35,7 +38,13 @@ export default class UploaderApiIncluded extends React.Component {
       uploadedFileName: "",
       cancelUpload: undefined,
       defaultFile: undefined,
-      downloading: false
+      downloading: false,
+      maxFileSize: maxFileSize ? maxFileSize : _maxFileSize, //Kb
+      fileTypes: fileTypes ? fileTypes : _fileTypes,
+      error: {
+        hasError: false,
+        message: ""
+      }
     };
     this.state = {
       ...this.initialStates,
@@ -70,14 +79,36 @@ export default class UploaderApiIncluded extends React.Component {
     );
   };
   upload = file => {
-    this.setState({ uploading: true });
-    const _file = file.target.files[0];
     const _this = this;
     const newForm = new FormData();
+    const _file = file.target.files[0];
+    try {
+      const _size = _file.size / 1000; //convert byte to Kb
+      const _type = _file.name.split(".").pop();
+      if (_size > this.state.maxFileSize) {
+        this.setState({
+          error: {
+            hasError: true,
+            message: "Max size 10Mb" //T
+          }
+        });
+        return;
+      } else if (!_type || this.state.fileTypes.indexOf(_type) === -1) {
+        this.setState({
+          error: {
+            hasError: true,
+            message: "Invalid file type" //T
+          }
+        });
+        return;
+      }
+      newForm.append("title", _file.name);
+      newForm.append("fileExtension", _file.type);
+      newForm.append("file", _file);
+    } catch (err) {}
+    this.setState({ uploading: true });
     // this.toBase64(_file).then(b64 => {
-    newForm.append("title", _file.name);
-    newForm.append("fileExtension", _file.type);
-    newForm.append("file", _file);
+
     // _callback(newForm);
     // _callback(
     //   `title=${encodeURIComponent(
@@ -90,6 +121,13 @@ export default class UploaderApiIncluded extends React.Component {
     // const _callback = file => {
     if (typeof _this.props.onUploadStarts === "function")
       _this.props.onUploadStarts();
+
+    this.setState({
+      error: {
+        hasError: false,
+        message: "" //T
+      }
+    });
     uploadFile()
       .onOk(result => {
         // console.log("succes result: ", result);
@@ -136,6 +174,12 @@ export default class UploaderApiIncluded extends React.Component {
         _this.setState({ uploading: false });
         if (typeof _this.props.onUploadEnds === "function")
           _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        this.setState({
+          error: {
+            hasError: true,
+            message: "Upload error" //T
+          }
+        });
         console.log("server error ", result);
       })
       .onBadRequest(result => {
@@ -149,6 +193,12 @@ export default class UploaderApiIncluded extends React.Component {
         _this.setState({ uploading: false });
         if (typeof _this.props.onUploadEnds === "function")
           _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        this.setState({
+          error: {
+            hasError: true,
+            message: "Upload error" //T
+          }
+        });
         console.log("Bad request", result);
       })
       .unAuthorized(result => {
@@ -162,6 +212,12 @@ export default class UploaderApiIncluded extends React.Component {
         _this.setState({ uploading: false });
         if (typeof _this.props.onUploadEnds === "function")
           _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        this.setState({
+          error: {
+            hasError: true,
+            message: "Upload error" //T
+          }
+        });
         console.log("Bad request", result);
       })
       .unKnownError(result => {
@@ -175,6 +231,12 @@ export default class UploaderApiIncluded extends React.Component {
         _this.setState({ uploading: false });
         if (typeof _this.props.onUploadEnds === "function")
           _this.props.onUploadEnds({ success: false, status: "uploaderror" });
+        this.setState({
+          error: {
+            hasError: true,
+            message: "Upload error" //T
+          }
+        });
         console.log("Bad request", result);
       })
       .onCancel(() => {
@@ -235,7 +297,17 @@ export default class UploaderApiIncluded extends React.Component {
   };
   render() {
     const { styleExporter } = this;
-    const { cancelUpload, defaultFile, downloading } = this.state;
+    const {
+      cancelUpload,
+      defaultFile,
+      downloading,
+      uploading,
+      uploaded,
+      uploadedFileName,
+      progress,
+      error
+    } = this.state;
+    const { innerText } = this.props;
     const fileId = typeof defaultFile === "string" ? defaultFile : undefined;
     return (
       <div className="IUAI">
@@ -244,6 +316,11 @@ export default class UploaderApiIncluded extends React.Component {
             "IUAI__item",
             this.state.selectedImgUrl ? "hasImage" : ""
           )}
+          onClick={
+            !fileId
+              ? () => !uploading && !uploaded && this.fileRef.current.click()
+              : undefined
+          }
           style={styleExporter("imgWrapperStyle")}
         >
           {/* {this.state.selectedImgUrl && (
@@ -253,25 +330,22 @@ export default class UploaderApiIncluded extends React.Component {
               style={styleExporter("imageStyle")}
             />
           )} */}
-          {this.state.uploading ? (
+          {uploading ? (
             <>
               <span
                 className="icon-cross cancelButton"
                 onClick={cancelUpload}
               ></span>
               <span style={{ color: "black", direction: "ltr", zIndex: "1" }}>
-                {this.state.progress} %
+                {progress} %
               </span>
             </>
-          ) : !this.state.uploaded && !fileId ? (
+          ) : !uploaded && !fileId ? (
             <span
               className="fileName"
               style={{ fontSize: "16px", cursor: "pointer" }}
-              onClick={() =>
-                !this.state.uploaded && this.fileRef.current.click()
-              }
             >
-              {this.props.innerText || "Select File"}
+              {innerText || "Select File"}
             </span>
           ) : !fileId ? (
             <>
@@ -279,7 +353,7 @@ export default class UploaderApiIncluded extends React.Component {
                 className="icon-cross cancelButton"
                 onClick={this.resetFile}
               ></span>
-              <span className="fileName">{this.state.uploadedFileName}</span>
+              <span className="fileName">{uploadedFileName}</span>
             </>
           ) : (
             <>
@@ -305,6 +379,7 @@ export default class UploaderApiIncluded extends React.Component {
                     target="_blank"
                   >
                     File Attached (Download)
+                    {/* //T */}
                   </a>
                 )}
               </span>
@@ -326,6 +401,7 @@ export default class UploaderApiIncluded extends React.Component {
             <strong>Change file</strong>
           </span>
         )} */}
+        {error.hasError && <span className="error">{error.message}</span>}
       </div>
     );
   }

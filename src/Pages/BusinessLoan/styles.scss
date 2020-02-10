@@ -736,6 +736,14 @@
     @include variable(bl-mainform-bg, background, white);
     @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
   }
+  & .form-error-box {
+    display: inline-flex;
+    align-items: center;
+    justify-self: left;
+    padding: 0 10px;
+    font-size: 13px;
+    color: red;
+  }
 }
 select {
   @include variable(direction, direction, ltr);

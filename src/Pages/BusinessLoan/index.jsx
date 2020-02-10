@@ -50,7 +50,7 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   : 1;
 const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
 // ===============================================================
-
+const activeOperationsError = false;
 export default function BusinessLoan(props) {
   let didCancel = false;
 

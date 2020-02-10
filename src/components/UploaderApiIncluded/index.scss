@@ -4,6 +4,7 @@
   height: auto;
   margin: -10px -10px -10px 0;
   &__item {
+    cursor: pointer;
     &.hasImage {
       & .selectorButton {
         display: none !important;
@@ -36,5 +37,11 @@
       }
       background-color: whitesmoke !important;
     }
+  }
+  & .error {
+    width: 110px;
+    font-size: 13px;
+    color: red;
+    margin: -10px 0 0 10px;
   }
 }

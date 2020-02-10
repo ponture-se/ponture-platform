@@ -102,18 +102,15 @@ const EditAppliation = props => {
   const [buttonSpinner, toggleButtonSpinner] = useState(loading);
   const [objectName, setObjectName] = useState({
     value: BA.object_name,
-    isValid: true,
-    eMessage: ""
+    ...checkValidation("objectName", BA.object_name)
   });
   const [objectCompanyName, setObjectCompanyName] = useState({
     value: BA.object_company_name,
-    isValid: true,
-    eMessage: ""
+    ...checkValidation("objectCompanyName", BA.object_company_name)
   });
   const [objectOrgNumber, setObjectOrgNumber] = useState({
     value: BA.object_organization_number,
-    isValid: true,
-    eMessage: ""
+    ...checkValidation("objectOrgNumber", BA.object_organization_number)
   });
   const [objectIndustryBranch, setObjectIndustryBranch] = useState({
     value: BA.object_industry,
@@ -1779,6 +1776,7 @@ const EditAppliation = props => {
           <span className="form-error-box">
             {`Please wait until ${activeOperationsCount} pending operation(s) to be
               finish`}
+            {/* //T */}
           </span>
         )}
         <button
