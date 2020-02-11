@@ -1076,7 +1076,7 @@ export default function BusinessLoan(props) {
   );
   const handleREFile = useCallback(
     e => {
-      let { value, name } = e.target;
+      let { value } = e.target;
       let isValid = true;
       let eMessage = "";
       setREFile({ isValid: isValid, eMessage: eMessage, value: value });
@@ -2691,7 +2691,7 @@ export default function BusinessLoan(props) {
                             <UploaderApiIncluded
                               name="File"
                               innerText="File upload"
-                              onChange={(name, result) => setREFile(result.id)}
+                              onChange={(name, result) => handleREFile({target:{value:result.id}})}
                             />
                           </div>
                         </div>
