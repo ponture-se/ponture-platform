@@ -234,25 +234,38 @@ const Item = props => {
           {(stage === "approved" ||
             stage === "submitted" ||
             stage === "offer received" ||
-            stage === "offer accepted") && (
-            <Link to={"/app/panel/viewOffers/" + item.opportunityID}>
-              <span className="linkTitle">
-                {t("VIEW_OFFERS")}{" "}
-                {item.activeOffersCount || item.activeOffersCount === 0
-                  ? "(" + item.activeOffersCount + ")"
-                  : ""}
+            stage === "offer accepted") &&
+            (currentRole !== "agent" ? (
+              <Link
+                className="offers-button"
+                to={"/app/panel/viewOffers/" + item.opportunityID}
+              >
+                <span className="linkTitle">
+                  {t("VIEW_OFFERS")}{" "}
+                  {item.activeOffersCount || item.activeOffersCount === 0
+                    ? "(" + item.activeOffersCount + ")"
+                    : ""}
+                </span>
+                <div className="icon">
+                  <i
+                    className={
+                      direction === "ltr"
+                        ? "icon-arrow-right2"
+                        : "icon-arrow-left2"
+                    }
+                  />
+                </div>
+              </Link>
+            ) : (
+              <span className="offers-button">
+                <span className="linkTitle" style={{ textDecoration: "none" }}>
+                  {t("OFFERS_NUMBER")}{" "}
+                  {item.activeOffersCount || item.activeOffersCount === 0
+                    ? "(" + item.activeOffersCount + ")"
+                    : ""}
+                </span>
               </span>
-              <div className="icon">
-                <i
-                  className={
-                    direction === "ltr"
-                      ? "icon-arrow-right2"
-                      : "icon-arrow-left2"
-                  }
-                />
-              </div>
-            </Link>
-          )}
+            ))}
           {/* edit application */}
           {stage === "created" && RecordType === "business acquisition loan" && (
             <button

@@ -66,7 +66,8 @@
           color: gray;
         }
       }
-      a {
+      & .offers-button,
+      & a {
         display: flex;
         text-decoration: none;
         color: rgb(35, 65, 141);

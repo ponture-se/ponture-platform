@@ -1602,9 +1602,9 @@ export default function BusinessLoan(props) {
           }
         };
         if (
-          p_userRole === "agent" ||
-          (p_userRole === "customer" &&
-            (activeCompanyTypeSelection || activeRealEstateSection))
+          (p_userRole === "agent" ||
+          p_userRole === "customer" )&&
+            activeCompanyTypeSelection
         ) {
           saveLoan(p_userRole)
             .onOk(result => {
@@ -1642,8 +1642,7 @@ export default function BusinessLoan(props) {
         }
         if (
           p_userRole === "customer" &&
-          !activeCompanyTypeSelection &&
-          !activeRealEstateSection
+          !activeCompanyTypeSelection
         ) {
           submitLoan()
             .onOk(result => {

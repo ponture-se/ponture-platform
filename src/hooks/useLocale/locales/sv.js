@@ -33,6 +33,7 @@ export default {
   REJECT: "Tacka Nej",
   NOT_SPECIFIED: "Ej angivet", //t: Not specified
   VIEW_OFFERS: "Visa Erbjudanden",
+  OFFERS_NUMBER: "Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
   PRICE: "Köpspris",
   INVALID_VALUE: "Ogiltigt värde", //T: Invalid value
