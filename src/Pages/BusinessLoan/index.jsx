@@ -32,7 +32,7 @@ import {
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
-import UploaderApiIncluded from "../../components/UploaderApiIncluded";
+import {SingleUploader} from "../../components/UploaderApiIncluded";
 
 // Get slider setting from react config and fill the initial data
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
@@ -1604,7 +1604,7 @@ export default function BusinessLoan(props) {
         if (
           (p_userRole === "agent" ||
           p_userRole === "customer" )&&
-            activeCompanyTypeSelection
+            (activeCompanyTypeSelection || activeRealEstateSection)
         ) {
           saveLoan(p_userRole)
             .onOk(result => {
@@ -2688,7 +2688,7 @@ export default function BusinessLoan(props) {
                           style={{ margin: "auto -8px" }}
                         >
                           <div className="element-group__center">
-                            <UploaderApiIncluded
+                            <SingleUploader
                               name="File"
                               innerText="File upload"
                               onChange={(name, result) => handleREFile({target:{value:result.id}})}

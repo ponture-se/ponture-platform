@@ -95,7 +95,7 @@ const BusinessAcquisitionView = props => {
     "string",
     ""
   );
-  const additionalFiles = SafeValue(BA, "additional_files.0", "string", "");
+  const additionalFiles = SafeValue(BA, "additional_files", "array", []);
   const businessPlan = SafeValue(BA, "business_plan.0", "string", "");
   const additionalDetails = SafeValue(
     BA,
@@ -167,15 +167,21 @@ const BusinessAcquisitionView = props => {
             </label>
             {/* <div className="bl__input__element"> */}
             <div className="element-group__center">
-              {additionalFiles.length !== 0 ? (
+              {additionalFiles.length > 0 ? (
                 <>
-                  <i className="icon-file-plus-o"></i>&nbsp;
-                  <a
-                    href={downloadAppAsset.call(this, additionalFiles)}
-                    target="_blank"
-                  >
-                    Attachment 1
-                  </a>
+                  {additionalFiles.map(name => (
+                    <>
+                      <i className="icon-file-plus-o"></i>&nbsp;
+                      <a
+                        href={downloadAppAsset.call(this, name)}
+                        target="_blank"
+                      >
+                        {name}
+                      </a>
+                      <br />
+                    </>
+                  ))}
+                  {console.log("SS FILES", additionalFiles)}
                 </>
               ) : (
                 t("NOT_SPECIFIED")

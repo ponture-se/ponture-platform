@@ -3,7 +3,7 @@ import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
 import "../BusinessLoan/styles.scss";
 // import SquareSpinner from "components/SquareSpinner";
-import UploaderApiIncluded from "components/UploaderApiIncluded";
+import { SingleUploader, MultiUploader } from "components/UploaderApiIncluded";
 import SafeValue from "utils/SafeValue";
 import { CircleSpinner } from "components";
 const EditAppliation = props => {
@@ -210,7 +210,7 @@ const EditAppliation = props => {
     ...checkValidation("ownInvestmentDetails", BA.own_investment_details)
   });
   const [additionalFiles, setAdditionalFiles] = useState({
-    value: SafeValue(BA, "additional_files.0", "string", []),
+    value: SafeValue(BA, "additional_files", "array", []),
     ...checkValidation("additionalFiles", BA.additional_files)
   });
   const [businessPlan, setBusinessPlan] = useState({
@@ -595,8 +595,8 @@ const EditAppliation = props => {
           "string",
           ""
         ),
-        business_plan: [SafeValue(businessPlan, "value", "string", [])], //needs change
-        additional_files: [SafeValue(additionalFiles, "value", "string", [])], //needs change
+        business_plan: [SafeValue(businessPlan, "value", "string", null)], //needs change
+        additional_files: SafeValue(additionalFiles, "value", "array", []),
         additional_details: SafeValue(additionalDetails, "value", "string", ""),
         description: SafeValue(description, "value", "string", "")
       }
@@ -1100,45 +1100,6 @@ const EditAppliation = props => {
           <div
             className={
               "bl__input animated fadeIn " +
-              (!additionalFiles.isValid ? "--invalid" : "")
-            }
-          >
-            <label className="bl__input__label">
-              {t("APP_ADDITIONAL_FILES")}
-            </label>
-            {/* <div className="bl__input__element"> */}
-            <div className="element-group" style={{ margin: "auto -8px" }}>
-              <div className="element-group__center">
-                <UploaderApiIncluded
-                  name="File"
-                  innerText="File upload"
-                  defaultFile={additionalFiles.value}
-                  onChange={(name, result) =>
-                    handleAdditionalFiles({
-                      target: { value: result.id }
-                    })
-                  }
-                  onUploadEnds={res => {
-                    setActiveOperationsCount(activeOperationsCount - 1);
-                  }}
-                  onUploadStarts={res => {
-                    setActiveOperationsCount(activeOperationsCount + 1);
-                  }}
-                />
-              </div>
-            </div>
-            {!additionalFiles.isValid && (
-              <span className="validation-messsage">
-                {additionalFiles.eMessage}
-              </span>
-            )}
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
-          <div
-            className={
-              "bl__input animated fadeIn " +
               (!businessPlan.isValid ? "--invalid" : "")
             }
           >
@@ -1146,7 +1107,7 @@ const EditAppliation = props => {
             {/* <div className="bl__input__element"> */}
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={businessPlan.value}
@@ -1430,7 +1391,7 @@ const EditAppliation = props => {
             {/* <div className="bl__input__element"> */}
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={objectValuationLetter.value}
@@ -1466,7 +1427,7 @@ const EditAppliation = props => {
             {/* <div className="bl__input__element"> */}
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={objectAnnualReport.value}
@@ -1504,7 +1465,7 @@ const EditAppliation = props => {
             {/* <div className="bl__input__element"> */}
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={objectLatestBalanceSheet.value}
@@ -1540,7 +1501,7 @@ const EditAppliation = props => {
             {/* <div className="bl__input__element"> */}
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={objectLatestIncomeStatement.value}
@@ -1586,7 +1547,7 @@ const EditAppliation = props => {
             </label>
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={purchaserCompanyLatestBalanceSheet.value}
@@ -1623,7 +1584,7 @@ const EditAppliation = props => {
             </label>
             <div className="element-group" style={{ margin: "auto -8px" }}>
               <div className="element-group__center">
-                <UploaderApiIncluded
+                <SingleUploader
                   name="File"
                   innerText="File upload"
                   defaultFile={purchaserCompanyLatestIncomeStatement.value}
@@ -1762,6 +1723,45 @@ const EditAppliation = props => {
                 </span>
               )}
             </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!additionalFiles.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_ADDITIONAL_FILES")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <MultiUploader
+                  name="File"
+                  innerText="File upload"
+                  data={additionalFiles.value}
+                  onChange={result =>
+                    handleAdditionalFiles({
+                      target: { value: result }
+                    })
+                  }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
+                />
+              </div>
+            </div>
+            {!additionalFiles.isValid && (
+              <span className="validation-messsage">
+                {additionalFiles.eMessage}
+              </span>
+            )}
           </div>
         </div>
         <br />

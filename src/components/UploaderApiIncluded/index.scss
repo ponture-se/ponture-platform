@@ -45,3 +45,22 @@
     margin: -10px 0 0 10px;
   }
 }
+.MultiUploader {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  align-items: center;
+  & .addUploader {
+    width: 110px;
+    height: 110px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 2px solid lightgray;
+    margin: 10px;
+    &:hover {
+      background-color: whitesmoke;
+      cursor: pointer;
+    }
+  }
+}

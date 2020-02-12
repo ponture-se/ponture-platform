@@ -360,57 +360,110 @@ const Item = props => {
       </div>
 
       {/* Application footer */}
-      {stage !== "funded/closed won" && stage !== "not funded/ closed lost" && (
-        <div className="application__footer">
-          <div>
-            <button className="btn --light" onClick={handleCancelClicked}>
-              <span className="icon-cross" />
-              {t("CANCEL")}
-            </button>
-          </div>
-          <div style={{ flexDirection: "row", display: "flex" }}>
-            {stage === "created" && (
-              <>
-                <button
-                  className={classnames(
-                    "btn verifyBtn",
-                    isVerified ? "--verified" : "--success"
-                  )}
-                  onClick={() => verifyApplication(item)}
-                  disabled={loading || isVerified}
-                >
-                  {isVerified ? (
-                    <>
-                      <span
-                        className="icon-checkmark"
-                        style={{ fontSize: "14px", color: "#42ccad" }}
-                      />
-                      {t("VERIFIED")}
-                    </>
-                  ) : loading ? (
-                    <CircleSpinner show={true} />
-                  ) : (
-                    <>{t("VERIFY")}</>
-                  )}
-                </button>
-                {isVerified && (
+      {currentRole === "customer" &&
+        stage !== "funded/closed won" &&
+        stage !== "not funded/ closed lost" && (
+          <div className="application__footer">
+            <div>
+              <button className="btn --light" onClick={handleCancelClicked}>
+                <span className="icon-cross" />
+                {t("CANCEL")}
+              </button>
+            </div>
+            <div style={{ flexDirection: "row", display: "flex" }}>
+              {stage === "created" && (
+                <>
                   <button
-                    className="btn --warning"
-                    onClick={() => submitApplication(item)}
-                    disabled={loading}
+                    className={classnames(
+                      "btn verifyBtn",
+                      isVerified ? "--verified" : "--success"
+                    )}
+                    onClick={() => verifyApplication(item)}
+                    disabled={loading || isVerified}
                   >
-                    {loading ? (
+                    {isVerified ? (
+                      <>
+                        <span
+                          className="icon-checkmark"
+                          style={{ fontSize: "14px", color: "#42ccad" }}
+                        />
+                        {t("VERIFIED")}
+                      </>
+                    ) : loading ? (
                       <CircleSpinner show={true} />
                     ) : (
-                      <>{t("SUBMIT_2")}</>
+                      <>{t("VERIFY")}</>
                     )}
                   </button>
-                )}
-              </>
-            )}
+                  {isVerified && (
+                    <button
+                      className="btn --warning"
+                      onClick={() => submitApplication(item)}
+                      disabled={loading}
+                    >
+                      {loading ? (
+                        <CircleSpinner show={true} />
+                      ) : (
+                        <>{t("SUBMIT_2")}</>
+                      )}
+                    </button>
+                  )}
+                </>
+              )}
+            </div>
           </div>
-        </div>
-      )}
+        )}
+
+      {currentRole === "agent" &&
+        stage === "created" &&
+        stage !== "funded/closed won" &&
+        stage !== "not funded/ closed lost" && (
+          <div className="application__footer">
+            <div>
+              <button className="btn --light" onClick={handleCancelClicked}>
+                <span className="icon-cross" />
+                {t("CANCEL")}
+              </button>
+            </div>
+            <div style={{ flexDirection: "row", display: "flex" }}>
+              <button
+                className={classnames(
+                  "btn verifyBtn",
+                  isVerified ? "--verified" : "--success"
+                )}
+                onClick={() => verifyApplication(item)}
+                disabled={loading || isVerified}
+              >
+                {isVerified ? (
+                  <>
+                    <span
+                      className="icon-checkmark"
+                      style={{ fontSize: "14px", color: "#42ccad" }}
+                    />
+                    {t("VERIFIED")}
+                  </>
+                ) : loading ? (
+                  <CircleSpinner show={true} />
+                ) : (
+                  <>{t("VERIFY")}</>
+                )}
+              </button>
+              {isVerified && (
+                <button
+                  className="btn --warning"
+                  onClick={() => submitApplication(item)}
+                  disabled={loading}
+                >
+                  {loading ? (
+                    <CircleSpinner show={true} />
+                  ) : (
+                    <>{t("SUBMIT_2")}</>
+                  )}
+                </button>
+              )}
+            </div>
+          </div>
+        )}
     </div>
   );
 };
