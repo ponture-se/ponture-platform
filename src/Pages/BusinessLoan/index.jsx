@@ -32,7 +32,7 @@ import {
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
-import {SingleUploader} from "../../components/UploaderApiIncluded";
+import { SingleUploader } from "../../components/UploaderApiIncluded";
 
 // Get slider setting from react config and fill the initial data
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
@@ -381,6 +381,8 @@ export default function BusinessLoan(props) {
     return () => {
       didCancel = true;
     };
+    sessionStorage.removeItem("@ponture-customer-bankid");
+    sessionStorage.removeItem("@ponture-agent-info");
   }, []);
 
   //Conditional componentDidUpdate
@@ -1602,9 +1604,8 @@ export default function BusinessLoan(props) {
           }
         };
         if (
-          (p_userRole === "agent" ||
-          p_userRole === "customer" )&&
-            (activeCompanyTypeSelection || activeRealEstateSection)
+          (p_userRole === "agent") ||
+          (p_userRole === "customer" && activeCompanyTypeSelection)
         ) {
           saveLoan(p_userRole)
             .onOk(result => {
@@ -1639,11 +1640,7 @@ export default function BusinessLoan(props) {
             .onBadRequest(res => Notif("error", "Form inputs error"))
             .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
-        }
-        if (
-          p_userRole === "customer" &&
-          !activeCompanyTypeSelection
-        ) {
+        }else{
           submitLoan()
             .onOk(result => {
               if (!didCancel) {
@@ -2691,7 +2688,9 @@ export default function BusinessLoan(props) {
                             <SingleUploader
                               name="File"
                               innerText="File upload"
-                              onChange={(name, result) => handleREFile({target:{value:result.id}})}
+                              onChange={(name, result) =>
+                                handleREFile({ target: { value: result.id } })
+                              }
                             />
                           </div>
                         </div>

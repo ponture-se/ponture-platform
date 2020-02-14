@@ -180,8 +180,8 @@ export default {
   BL_PERSONAL_NUMBER_INFO:
     "Ange ditt svenska personnummer så att vi kan hitta ditt företag",
   BL_COMPANY: "Välj ditt företag", //T
-  BL_NEW_COMAPNY: "New company", //T
-  BL_SELECT_COMAPNY: "Välj ett företag", //T
+  BL_NEW_COMPANY: "New company", //T
+  BL_SELECT_COMPANY: "Välj ett företag", //T
   BL_CONTACT_BOX_TITLE: "Kontaktuppgifter:",
   BL_PHONE_NUMBER: "Telefon",
   BL_EMAIL: "E-post",

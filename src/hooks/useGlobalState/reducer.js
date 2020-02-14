@@ -1,6 +1,7 @@
 import { getParameterByName } from "./../../utils";
 //
 //Initial actions and global states while application loading for the first time
+//IMPORTANT: Role handling must be improved.
 let bankIdInfo = null;
 let brokerId = null;
 let currentRole = "customer"; //default role is customer
@@ -30,6 +31,7 @@ if (brokerParam) {
     }
   } catch (error) {}
 } else {
+  sessionStorage.removeItem("@ponture-agent-info");
   try {
     bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
     if (bankIdInfo) {
