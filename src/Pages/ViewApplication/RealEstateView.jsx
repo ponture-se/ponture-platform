@@ -117,7 +117,7 @@ const RealEstateView = props => {
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
-              {t("BL_REALESTATE_SIZE") + " (Sqm)"}
+              {t("BL_REALESTATE_SIZE")}
             </label>
             <div className="bl__input__element">
               <div className="element-group__center">{realEstateSize}</div>
