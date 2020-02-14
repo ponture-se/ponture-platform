@@ -47,6 +47,7 @@ export default {
   VERIFY: "Pröva", //T:Verify/identify
   VERIFIED: "Verified", //T: Verified
   MANDATORY_FIELD: "obligatoriskt fält", //T: Mandatory field
+  UPLOAD_FILE: "Upload file", //T: upload file
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:

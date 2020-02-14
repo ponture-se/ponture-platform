@@ -1,20 +1,18 @@
 import React from "react";
-import { uploadFile } from "../../api/main-api/";
-import "./index.scss";
-import classnames from "classnames";
-import { downloadAppAsset } from "api/main-api";
-import { CircleSpinner } from "components";
+import "./style.scss";
 import { SingleUploader } from ".";
 import SafeValue from "utils/SafeValue";
 export default class MultiUploader extends React.Component {
   constructor(props) {
     super(props);
+    const _data = SafeValue(props, "data", "array", []);
     const _files =
-      SafeValue(props, "data", "array", []).length > 0
-        ? SafeValue(props, "data", "array", []).map((file, idx) => {
-            return { value: file, name: "uploader" + idx };
+      _data.length > 0
+        ? _data.map((file, idx) => {
+            return { value: file, name: "uploader" + this.newId() };
           })
-        : [{ value: "", name: "uploader0" }];
+        : [];
+    _files.push({ value: "", name: `uploader${this.newId()}` });
     this.state = {
       //   activeAddAction: false,
       files: _files
@@ -22,28 +20,37 @@ export default class MultiUploader extends React.Component {
   }
   addUploader = () => {
     const { files } = this.state;
-    files.push({ value: "", name: "uploader" + files.length });
+    files.push({ value: "", name: "uploader" + this.newId() });
     this.setState({
       files: files
     });
   };
-  onChange = (name, file) => {
+  newId = () => {
+    return parseInt(Math.random() * 10000000);
+  };
+  _onChange = (name, file, realFileName) => {
     const { files } = this.state;
     let _file = file.id;
+    let addExtraUploader = false;
+    let isUpdated = false;
+    let _name = "";
     if (_file) {
-      let isUpdated = false;
       //update file
       for (let i = 0; i < files.length; i++) {
         if (files[i].name === name) {
           isUpdated = true;
+          if (files[i]["value"] === "") {
+            addExtraUploader = true;
+          }
           files[i]["value"] = _file;
+          files[i]["realFileName"] = realFileName;
         }
       }
       //or add a new file
       if (!isUpdated) {
         files.push({
           value: _file,
-          name: `uploader${files.length}`
+          name: `uploader${this.newId()}`
         });
       }
     } else {
@@ -60,12 +67,15 @@ export default class MultiUploader extends React.Component {
       },
       () => {
         const _fileForApi = [];
+        if (addExtraUploader) {
+          this.addUploader();
+        }
         this.state.files.forEach(item => {
           if (item.value) {
             _fileForApi.push(item.value);
           }
         });
-        console.log(this.state.files);
+        // console.log("ffapi: ", _fileForApi);
         this.props.onChange(_fileForApi);
       }
     );
@@ -77,26 +87,22 @@ export default class MultiUploader extends React.Component {
         {files.length > 0 &&
           files.map((file, idx) => (
             <SingleUploader
-              key={idx}
-              messages={this.props.messages}
-              width={this.props.width}
-              height={this.props.height}
-              maxFileSize={this.props.maxFileSize}
+              {...this.props}
+              key={idx + file.name}
               defaultFile={file.value}
-              defaultSrc={this.props.defaultSrc}
-              onChange={this.onChange}
+              realFileName={file.realFileName}
+              downloadable={false}
+              onChange={this._onChange}
               behaviour={"multi"}
               name={file.name}
+              // onUploadEnds={this.props.onUploadEnds}
+              // onUploadStarts={this.props.onUploadStarts}
+              // innerText={this.props.innerText}
             />
           ))}
         {
           //activeUploaders === files.length &&
-          <div className="addUploader" onClick={this.addUploader}>
-            <i
-              className="icon-add"
-              style={{ fontSize: "30px", color: "dimgray" }}
-            ></i>
-          </div>
+          <div className="addUploader"></div>
         }
       </div>
     );

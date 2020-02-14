@@ -1,6 +1,6 @@
 import React from "react";
 import { uploadFile } from "../../api/main-api";
-import "./index.scss";
+import "./style.scss";
 import classnames from "classnames";
 import { downloadAppAsset } from "api/main-api";
 import { CircleSpinner } from "components";
@@ -148,7 +148,7 @@ export default class SingleUploader extends React.Component {
           },
           () => {
             if (typeof _this.props.onChange === "function")
-              _this.props.onChange(this.props.name, result);
+              _this.props.onChange(this.props.name, result, _file.name);
 
             if (typeof _this.props.onUploadEnds === "function")
               _this.props.onUploadEnds({ success: true, status: "uploaded" });
@@ -309,8 +309,9 @@ export default class SingleUploader extends React.Component {
       progress,
       error
     } = this.state;
-    const { innerText } = this.props;
+    const { downloadable, innerText, realFileName } = this.props;
     const fileId = typeof defaultFile === "string" ? defaultFile : undefined;
+
     return (
       <div className="IUAI">
         <div
@@ -349,13 +350,15 @@ export default class SingleUploader extends React.Component {
             >
               {innerText || "Select File"}
             </span>
-          ) : !fileId ? (
+          ) : !fileId || realFileName ? (
             <>
               <span
                 className="icon-cross cancelButton"
                 onClick={this.resetFile}
               ></span>
-              <span className="fileName">{uploadedFileName}</span>
+              <span className="fileName">
+                {uploadedFileName || realFileName}
+              </span>
             </>
           ) : (
             <>
@@ -380,7 +383,7 @@ export default class SingleUploader extends React.Component {
                     style={{ color: "black" }}
                     target="_blank"
                   >
-                    File Attached (Download)
+                    {fileId} (Download)
                     {/* //T */}
                   </a>
                 )}

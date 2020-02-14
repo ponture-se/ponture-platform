@@ -1109,7 +1109,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={businessPlan.value}
                   onChange={(name, result) =>
                     handleBusinessPlan({
@@ -1252,7 +1252,11 @@ const EditAppliation = props => {
                     type="text"
                     className="my-input"
                     placeholder=""
-                    value={objectCompanyName.value}
+                    value={
+                      objectCompanyName.value
+                        ? objectCompanyName.value
+                        : undefined
+                    }
                     onChange={handleObjectCompanyName}
                   />
                 </div>
@@ -1393,7 +1397,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={objectValuationLetter.value}
                   onChange={(name, result) =>
                     handleObjectValuationLetter({
@@ -1429,7 +1433,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={objectAnnualReport.value}
                   onChange={(name, result) =>
                     handleObjectAnnualReport({ target: { value: result.id } })
@@ -1467,7 +1471,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={objectLatestBalanceSheet.value}
                   onChange={(name, result) =>
                     handleObjectLatestBalanceSheet({
@@ -1503,7 +1507,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={objectLatestIncomeStatement.value}
                   onChange={(name, result) =>
                     handleObjectLatestIncomeStatement({
@@ -1549,7 +1553,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={purchaserCompanyLatestBalanceSheet.value}
                   onChange={(name, result) =>
                     handlePurchaserCompanyLatestBalanceSheet({
@@ -1586,7 +1590,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <SingleUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   defaultFile={purchaserCompanyLatestIncomeStatement.value}
                   onChange={(name, result) =>
                     handlePurchaserCompanyLatestIncomeStatement({
@@ -1741,7 +1745,7 @@ const EditAppliation = props => {
               <div className="element-group__center">
                 <MultiUploader
                   name="File"
-                  innerText="File upload"
+                  innerText={t("UPLOAD_FILE")}
                   data={additionalFiles.value}
                   onChange={result =>
                     handleAdditionalFiles({
