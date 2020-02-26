@@ -1913,7 +1913,6 @@ export default function BusinessLoan(props) {
                   <div className="bl__input animated fadeIn">
                     <label className="bl__input__label">
                       {t("BL_REASON_LOAN")}
-                      <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
                     <div
                       className="options options__category"
@@ -1935,7 +1934,8 @@ export default function BusinessLoan(props) {
                           );
                         })}
                     </div>
-                    <br />
+                    <div style={{fontSize:"13px"}}>{t("BL_REASON_LOAN_INFO_1")}</div>
+                    <div style={{fontSize:"13px"}}>{t("BL_REASON_LOAN_INFO_2")}</div>
                     {selectedLoanReasonsCat && (
                       <div className="options" style={{ margin: "auto -8px" }}>
                         {loanReasons &&
@@ -2035,7 +2035,7 @@ export default function BusinessLoan(props) {
                             />
                             {!userIsVerified && (
                               <button
-                                className="btn --success --small --right"
+                                className="btn --success --small --right verifyButton"
                                 onClick={getComponiesWithoutBankId}
                               >
                                 {verifyingSpinner && (
@@ -2294,7 +2294,7 @@ export default function BusinessLoan(props) {
                           className="bl__input__label"
                           style={{ marginBottom: "0" }}
                         >
-                          {t("BL_REALESTATE_USAGE_CATEGORY")}
+                          {t("BL_REALESTATE_TYPE")}
                         </label>
                         <div style={{ margin: "auto -8px" }}>
                           {/* <div className="element-group"> */}
@@ -2345,34 +2345,6 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REAreaIsValid ? "--invalid" : "")
-                        }
-                      >
-                        <label className="bl__input__label">
-                          {t("BL_REALESTATE_SIZE")}
-                        </label>
-                        <div className="bl__input__element">
-                          <div className="element-group">
-                            <div className="element-group__center">
-                              <input
-                                type="number"
-                                className="my-input"
-                                placeholder="Sqm"
-                                value={REArea}
-                                onChange={handleREAreaChange}
-                              />
-                            </div>
-                          </div>
-                          {!REAreaIsValid && (
-                            <span className="validation-messsage">
-                              {REAreaValidationMessage}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          "bl__input animated fadeIn " +
                           (!REPriceIsValid ? "--invalid" : "")
                         }
                       >
@@ -2394,6 +2366,34 @@ export default function BusinessLoan(props) {
                           {!REPriceIsValid && (
                             <span className="validation-messsage">
                               {REPriceValidationMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!REOwnInvestmentAmount.isValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("BL_OWN_INVESTMENT_AMOUNT") + " (Kr)"}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="text"
+                                className="my-input"
+                                placeholder="3 000 000"
+                                value={REOwnInvestmentAmount.value.visualValue}
+                                onChange={handleREOwnInvestmentAmount}
+                              />
+                            </div>
+                          </div>
+                          {!REOwnInvestmentAmount.isValid && (
+                            <span className="validation-messsage">
+                              {REOwnInvestmentAmount.eMessage}
                             </span>
                           )}
                         </div>
@@ -2461,11 +2461,11 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!RETaxationValue.isValid ? "--invalid" : "")
+                          (!REPurchaseDescription.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
-                          {t("BL_REALESTATE_TAXATION_VALUE") + " (Kr)"}
+                          {t("BL_PURCHASE_DESCRIPTION")}
                         </label>
                         <div className="bl__input__element">
                           <div className="element-group">
@@ -2473,19 +2473,79 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="3 000 000"
-                                value={RETaxationValue.value.visualValue}
-                                onChange={handleRETaxationValue}
+                                value={REPurchaseDescription.value}
+                                onChange={handleREPurchaseDescription}
                               />
                             </div>
                           </div>
-                          {!RETaxationValue.isValid && (
+                          {!REPurchaseDescription.isValid && (
                             <span className="validation-messsage">
-                              {RETaxationValue.eMessage}
+                              {REPurchaseDescription.eMessage}
                             </span>
                           )}
                         </div>
                       </div>
+                    </div>
+                    <br />
+                    <div className="userInputs">
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!REAreaIsValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("BL_REALESTATE_SIZE")}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="number"
+                                className="my-input"
+                                placeholder="Sqm"
+                                value={REArea}
+                                onChange={handleREAreaChange}
+                              />
+                            </div>
+                          </div>
+                          {!REAreaIsValid && (
+                            <span className="validation-messsage">
+                              {REAreaValidationMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                      <div
+                        className={
+                          "bl__input animated fadeIn " +
+                          (!RECity.isValid ? "--invalid" : "")
+                        }
+                      >
+                        <label className="bl__input__label">
+                          {t("BL_REALESTATE_CITY")}
+                        </label>
+                        <div className="bl__input__element">
+                          <div className="element-group">
+                            <div className="element-group__center">
+                              <input
+                                type="text"
+                                className="my-input"
+                                value={RECity.value}
+                                onChange={handleRECity}
+                              />
+                            </div>
+                          </div>
+                          {!RECity.isValid && (
+                            <span className="validation-messsage">
+                              {RECity.eMessage}
+                            </span>
+                          )}
+                        </div>
+                      </div>
+                    </div>
+                    <br />
+                    <div className="userInputs">
                       <div
                         className={
                           "bl__input animated fadeIn " +
@@ -2516,14 +2576,14 @@ export default function BusinessLoan(props) {
                     </div>
                     <br />
                     <div className="userInputs">
-                      <div
+                    <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!RECity.isValid ? "--invalid" : "")
+                          (!RETaxationValue.isValid ? "--invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
-                          {t("BL_REALESTATE_CITY")}
+                          {t("BL_REALESTATE_TAXATION_VALUE") + " (Kr)"}
                         </label>
                         <div className="bl__input__element">
                           <div className="element-group">
@@ -2531,44 +2591,15 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                value={RECity.value}
-                                onChange={handleRECity}
+                                placeholder="3 000 000"
+                                value={RETaxationValue.value.visualValue}
+                                onChange={handleRETaxationValue}
                               />
                             </div>
                           </div>
-                          {!RECity.isValid && (
+                          {!RETaxationValue.isValid && (
                             <span className="validation-messsage">
-                              {RECity.eMessage}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          "bl__input animated fadeIn " +
-                          (!RELink.isValid ? "--invalid" : "")
-                        }
-                      >
-                        <label
-                          className="bl__input__label"
-                          style={{ fontSize: "12px", lineHeight: "1.84" }}
-                        >
-                          {t("BL_REALESTATE_LINK")}
-                        </label>
-                        <div className="bl__input__element">
-                          <div className="element-group">
-                            <div className="element-group__center">
-                              <input
-                                type="text"
-                                className="my-input"
-                                value={RELink.value}
-                                onChange={handleRELink}
-                              />
-                            </div>
-                          </div>
-                          {!RELink.isValid && (
-                            <span className="validation-messsage">
-                              {RELink.eMessage}
+                              {RETaxationValue.eMessage}
                             </span>
                           )}
                         </div>
@@ -2615,11 +2646,13 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!REOwnInvestmentAmount.isValid ? "--invalid" : "")
+                          (!RELink.isValid ? "--invalid" : "")
                         }
                       >
-                        <label className="bl__input__label">
-                          {t("BL_OWN_INVESTMENT_AMOUNT") + " (Kr)"}
+                        <label
+                          className="bl__input__label"
+                        >
+                          {t("BL_REALESTATE_LINK")}
                         </label>
                         <div className="bl__input__element">
                           <div className="element-group">
@@ -2627,42 +2660,14 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="3 000 000"
-                                value={REOwnInvestmentAmount.value.visualValue}
-                                onChange={handleREOwnInvestmentAmount}
+                                value={RELink.value}
+                                onChange={handleRELink}
                               />
                             </div>
                           </div>
-                          {!REOwnInvestmentAmount.isValid && (
+                          {!RELink.isValid && (
                             <span className="validation-messsage">
-                              {REOwnInvestmentAmount.eMessage}
-                            </span>
-                          )}
-                        </div>
-                      </div>
-                      <div
-                        className={
-                          "bl__input animated fadeIn " +
-                          (!REPurchaseDescription.isValid ? "--invalid" : "")
-                        }
-                      >
-                        <label className="bl__input__label">
-                          {t("BL_PURCHASE_DESCRIPTION")}
-                        </label>
-                        <div className="bl__input__element">
-                          <div className="element-group">
-                            <div className="element-group__center">
-                              <input
-                                type="text"
-                                className="my-input"
-                                value={REPurchaseDescription.value}
-                                onChange={handleREPurchaseDescription}
-                              />
-                            </div>
-                          </div>
-                          {!REPurchaseDescription.isValid && (
-                            <span className="validation-messsage">
-                              {REPurchaseDescription.eMessage}
+                              {RELink.eMessage}
                             </span>
                           )}
                         </div>

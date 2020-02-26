@@ -89,6 +89,12 @@
           justify-content: center;
         }
       }
+      & .viewButton {
+        max-height: 40px;
+        align-self: center;
+        width: 126px;
+        background-color: rgb(121, 185, 209);
+      }
       & .headerBtn {
         border-radius: 50%;
         padding: 14px !important;
@@ -131,6 +137,9 @@
         padding: 0 4px;
         font-size: 11px;
       }
+    }
+    & .editButton {
+      background-color: #4472c4;
     }
   }
   &__bodyRow {

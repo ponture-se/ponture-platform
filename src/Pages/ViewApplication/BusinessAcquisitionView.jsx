@@ -121,7 +121,9 @@ const BusinessAcquisitionView = props => {
           <span className="icon-cross modal-close" onClick={props.close}></span>
         </div>
 
-        <span className="section-header">{t("APP_GENERAL_INFO")}</span>
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_1")}
+        </span>
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
@@ -141,6 +143,18 @@ const BusinessAcquisitionView = props => {
         <br />
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
+            <label
+              className="bl__input__label"
+              style={{ fontSize: "15px", marginBottom: "12px" }}
+            >
+              {t("APP_PURCHASE_OF_DESCRIPTION")}
+            </label>
+            <div className="bl__input__element">{description}</div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
               {t("APP_OWN_INVESTMENT_AMOUNT")}
             </label>
@@ -150,69 +164,6 @@ const BusinessAcquisitionView = props => {
               </div>
             </div>
           </div>
-          <div className="bl__input animated fadeIn ">
-            <label className="bl__input__label">
-              {t("APP_ADDITIONAL_DETAILS")}
-            </label>
-            <div className="bl__input__element">
-              <div className="element-group__center">{additionalDetails}</div>
-            </div>
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
-          <div className="bl__input animated fadeIn">
-            <label className="bl__input__label">
-              {t("APP_ADDITIONAL_FILES")}
-            </label>
-            {/* <div className="bl__input__element"> */}
-            <div className="element-group__center">
-              {additionalFiles.length > 0 ? (
-                <>
-                  {additionalFiles.map(name => (
-                    <>
-                      <i className="icon-file-plus-o"></i>&nbsp;
-                      <a
-                        href={downloadAppAsset.call(this, name)}
-                        target="_blank"
-                      >
-                        {name}
-                      </a>
-                      <br />
-                    </>
-                  ))}
-                  {console.log("SS FILES", additionalFiles)}
-                </>
-              ) : (
-                t("NOT_SPECIFIED")
-              )}
-            </div>
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
-          <div className="bl__input animated fadeIn">
-            <label className="bl__input__label">{t("APP_BUSINESS_PLAN")}</label>
-            {/* <div className="bl__input__element"> */}
-            <div className="element-group__center">
-              {businessPlan ? (
-                <>
-                  <i className="icon-file-plus-o"></i>&nbsp;
-                  <a
-                    href={downloadAppAsset.call(this, businessPlan)}
-                    target="_blank"
-                  >
-                    Attachment 1
-                  </a>
-                </>
-              ) : (
-                t("NOT_SPECIFIED")
-              )}
-            </div>
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
           <div className="bl__input animated fadeIn ">
             <label
               className="bl__input__label"
@@ -224,20 +175,10 @@ const BusinessAcquisitionView = props => {
           </div>
         </div>
         <br />
-        <div className="userInputs">
-          <div className="bl__input animated fadeIn ">
-            <label
-              className="bl__input__label"
-              style={{ fontSize: "15px", marginBottom: "12px" }}
-            >
-              {t("APP_PURCHASE_OF_DESCRIPTION")}
-            </label>
-            <div className="bl__input__element">{description}</div>
-          </div>
-        </div>
         <br />
-        <br />
-        <span className="section-header">{t("APP_BUSINESS_ACQ1")}</span>
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_2")}
+        </span>
         <div className="userInputs">
           <div className="bl__input animated fadeIn">
             <label className="bl__input__label">{t("APP_OBJECT_NAME")}</label>
@@ -288,28 +229,11 @@ const BusinessAcquisitionView = props => {
           </div>
         </div>
         <br />
+        <br />
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_3")}
+        </span>
         <div className="userInputs">
-          <div className="bl__input animated fadeIn ">
-            <label className="bl__input__label">
-              {t("APP_OBJECT_VALUATION_LETTER")}
-            </label>
-            {/* <div className="bl__input__element"> */}
-            <div className="element-group__center">
-              {objectValuationLetter ? (
-                <>
-                  <i className="icon-file-plus-o"></i>&nbsp;
-                  <a
-                    href={downloadAppAsset.call(this, objectValuationLetter)}
-                    target="_blank"
-                  >
-                    Attachment 1
-                  </a>
-                </>
-              ) : (
-                t("NOT_SPECIFIED")
-              )}
-            </div>
-          </div>
           <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
               {t("APP_OBJECT_ANNUAL_REPORT")}
@@ -331,10 +255,6 @@ const BusinessAcquisitionView = props => {
               )}
             </div>
           </div>
-        </div>
-        <br />
-        {/* // */}
-        <div className="userInputs">
           <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
               {t("APP_OBJECT_LATEST_BALANCE_SHEET")}
@@ -346,6 +266,31 @@ const BusinessAcquisitionView = props => {
                   <i className="icon-file-plus-o"></i>&nbsp;
                   <a
                     href={downloadAppAsset.call(this, objectLatestBalanceSheet)}
+                    target="_blank"
+                  >
+                    Attachment 1
+                  </a>
+                </>
+              ) : (
+                t("NOT_SPECIFIED")
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        {/* // */}
+        <div className="userInputs">
+          <div className="bl__input animated fadeIn ">
+            <label className="bl__input__label">
+              {t("APP_OBJECT_VALUATION_LETTER")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group__center">
+              {objectValuationLetter ? (
+                <>
+                  <i className="icon-file-plus-o"></i>&nbsp;
+                  <a
+                    href={downloadAppAsset.call(this, objectValuationLetter)}
                     target="_blank"
                   >
                     Attachment 1
@@ -384,7 +329,49 @@ const BusinessAcquisitionView = props => {
         <br />
         <br />
         {/* Purchaser */}
-        <span className="section-header">{t("APP_BUSINESS_ACQ2")}</span>
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_4")}
+        </span>
+        <br />
+        <div className="userInputs">
+          <div className="bl__input animated fadeIn ">
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_GUARANTEES_AVAILABLE")}
+            </label>
+            <div className="element-group__center">
+              {purchaserGuaranteesAvailable
+                ? purchaserGuaranteesAvailable.split(",").map((item, key) => (
+                    <span className="tag" key={key}>
+                      {item}
+                    </span>
+                  ))
+                : t("NOT_SPECIFIED")}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div className={"bl__input animated fadeIn "}>
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_GUARANTEES_DESCRIPTION")}
+            </label>
+            <div className="bl__input__element">
+              {purchaserGuaranteesDescription}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div className={"bl__input animated fadeIn "}>
+            <label className="bl__input__label">{t("APP_EXPERIENCE")}</label>
+            <div className="bl__input__element">{experience}</div>
+          </div>
+        </div>
+        <br />
+        <br />
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_5")}
+        </span>
         <div className="userInputs">
           <div className="bl__input animated fadeIn">
             <label className="bl__input__label">
@@ -434,42 +421,74 @@ const BusinessAcquisitionView = props => {
           </div>
         </div>
         <br />
+        <br />
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_6")}
+        </span>
         <div className="userInputs">
           <div className="bl__input animated fadeIn ">
             <label className="bl__input__label">
-              {t("APP_PURCHASER_GUARANTEES_AVAILABLE")}
-            </label>
-            <div className="element-group__center">
-              {purchaserGuaranteesAvailable
-                ? purchaserGuaranteesAvailable.split(",").map((item, key) => (
-                    <span className="tag" key={key}>
-                      {item}
-                    </span>
-                  ))
-                : t("NOT_SPECIFIED")}
-            </div>
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
-          <div className={"bl__input animated fadeIn "}>
-            <label className="bl__input__label">
-              {t("APP_PURCHASER_GUARANTEES_DESCRIPTION")}
+              {t("APP_ADDITIONAL_DETAILS")}
             </label>
             <div className="bl__input__element">
-              {purchaserGuaranteesDescription}
+              <div className="element-group__center">{additionalDetails}</div>
             </div>
           </div>
         </div>
         <br />
         <div className="userInputs">
-          <div className={"bl__input animated fadeIn "}>
-            <label className="bl__input__label">{t("APP_EXPERIENCE")}</label>
-            <div className="bl__input__element">{experience}</div>
+          <div className="bl__input animated fadeIn">
+            <label className="bl__input__label">{t("APP_BUSINESS_PLAN")}</label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group__center">
+              {businessPlan ? (
+                <>
+                  <i className="icon-file-plus-o"></i>&nbsp;
+                  <a
+                    href={downloadAppAsset.call(this, businessPlan)}
+                    target="_blank"
+                  >
+                    Attachment 1
+                  </a>
+                </>
+              ) : (
+                t("NOT_SPECIFIED")
+              )}
+            </div>
           </div>
         </div>
         <br />
+        <div className="userInputs">
+          <div className="bl__input animated fadeIn">
+            <label className="bl__input__label">
+              {t("APP_ADDITIONAL_FILES")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group__center">
+              {additionalFiles.length > 0 ? (
+                <>
+                  {additionalFiles.map(name => (
+                    <>
+                      <i className="icon-file-plus-o"></i>&nbsp;
+                      <a
+                        href={downloadAppAsset.call(this, name)}
+                        target="_blank"
+                      >
+                        {name}
+                      </a>
+                      <br />
+                    </>
+                  ))}
+                </>
+              ) : (
+                t("NOT_SPECIFIED")
+              )}
+            </div>
+          </div>
+        </div>
       </div>
+      <br />
+      <br />
       <div className="modal-footer">
         <button className="btn --success" onClick={props.close}>
           <span className="icon-cross"></span>

@@ -60,7 +60,7 @@ const MyApplications = props => {
       type: "ADD_NOTIFY",
       value: {
         type: "success",
-        message: "Application verified sucessfuly, Saving data ..." //T
+        message: "Application verified sucessfuly, Saving data ..."
       }
     });
     toggleVerifyModal(false);
@@ -456,7 +456,7 @@ const MyApplications = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Skicka misslyckades" //T
+                message: "Skicka misslyckades"
               }
             });
             if (

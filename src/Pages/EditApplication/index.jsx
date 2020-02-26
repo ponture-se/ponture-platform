@@ -17,6 +17,10 @@ const EditAppliation = props => {
   const data = props.data;
   const { toggleEditModal, loading } = props;
   const BA = props.data.acquisition;
+  const isNewCompany =
+    data.need[0].apiName === "purchase_of_business" &&
+    (!BA.object_organization_number ||
+      Number(BA.object_organization_number) === NaN);
   const validations =
     props.action === "submit"
       ? //false: Mandatory, true:Optional
@@ -983,7 +987,9 @@ const EditAppliation = props => {
           ></span>
         </div>
 
-        <span className="section-header">{t("APP_GENERAL_INFO")}</span>
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_1")}
+        </span>
         <div className="userInputs">
           <div
             className={
@@ -1041,6 +1047,43 @@ const EditAppliation = props => {
           <div
             className={
               "bl__input animated fadeIn " +
+              (!description.isValid ? "--invalid" : "")
+            }
+          >
+            <label
+              className="bl__input__label"
+              style={{ fontSize: "15px", marginBottom: "12px" }}
+            >
+              {t("APP_PURCHASE_OF_DESCRIPTION")}
+            </label>
+            <div className="bl__input__element">
+              {/* <div className="element-group">
+                             <div className="element-group__center"> */}
+              <textarea
+                className="my-input"
+                value={description.value}
+                onChange={handleDescription}
+                style={{
+                  maxWidth: "200px",
+                  minWidth: "100%",
+                  border: "1px solid lightgrey",
+                  minHeight: "100px",
+                  padding: "10px"
+                }}
+              ></textarea>
+              {!description.isValid && (
+                <span className="validation-messsage">
+                  {description.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
               (!ownInvestmentAmount.isValid ? "--invalid" : "")
             }
           >
@@ -1066,74 +1109,6 @@ const EditAppliation = props => {
               )}
             </div>
           </div>
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!additionalDetails.isValid ? "--invalid" : "")
-            }
-          >
-            <label className="bl__input__label">
-              {t("APP_ADDITIONAL_DETAILS")}
-            </label>
-            <div className="bl__input__element">
-              <div className="element-group">
-                <div className="element-group__center">
-                  <input
-                    type="text"
-                    className="my-input"
-                    placeholder=""
-                    value={additionalDetails.value}
-                    onChange={handleAdditionalDetails}
-                  />
-                </div>
-              </div>
-              {!additionalDetails.isValid && (
-                <span className="validation-messsage">
-                  {additionalDetails.eMessage}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!businessPlan.isValid ? "--invalid" : "")
-            }
-          >
-            <label className="bl__input__label">{t("APP_BUSINESS_PLAN")}</label>
-            {/* <div className="bl__input__element"> */}
-            <div className="element-group" style={{ margin: "auto -8px" }}>
-              <div className="element-group__center">
-                <SingleUploader
-                  name="File"
-                  innerText={t("UPLOAD_FILE")}
-                  defaultFile={businessPlan.value}
-                  onChange={(name, result) =>
-                    handleBusinessPlan({
-                      target: { value: result.id }
-                    })
-                  }
-                  onUploadEnds={res => {
-                    setActiveOperationsCount(activeOperationsCount - 1);
-                  }}
-                  onUploadStarts={res => {
-                    setActiveOperationsCount(activeOperationsCount + 1);
-                  }}
-                />
-              </div>
-            </div>
-            {!businessPlan.isValid && (
-              <span className="validation-messsage">
-                {businessPlan.eMessage}
-              </span>
-            )}
-          </div>
-        </div>
-        <br />
-        <div className="userInputs">
           <div
             className={
               "bl__input animated fadeIn " +
@@ -1170,45 +1145,10 @@ const EditAppliation = props => {
           </div>
         </div>
         <br />
-        <div className="userInputs">
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!description.isValid ? "--invalid" : "")
-            }
-          >
-            <label
-              className="bl__input__label"
-              style={{ fontSize: "15px", marginBottom: "12px" }}
-            >
-              {t("APP_PURCHASE_OF_DESCRIPTION")}
-            </label>
-            <div className="bl__input__element">
-              {/* <div className="element-group">
-                             <div className="element-group__center"> */}
-              <textarea
-                className="my-input"
-                value={description.value}
-                onChange={handleDescription}
-                style={{
-                  maxWidth: "200px",
-                  minWidth: "100%",
-                  border: "1px solid lightgrey",
-                  minHeight: "100px",
-                  padding: "10px"
-                }}
-              ></textarea>
-              {!description.isValid && (
-                <span className="validation-messsage">
-                  {description.eMessage}
-                </span>
-              )}
-            </div>
-          </div>
-        </div>
         <br />
-        <br />
-        <span className="section-header">{t("APP_BUSINESS_ACQ1")}</span>
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_2")}
+        </span>
         <div className="userInputs">
           <div
             className={
@@ -1382,43 +1322,11 @@ const EditAppliation = props => {
           </div>
         </div>
         <br />
+        <br />
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_3")}
+        </span>
         <div className="userInputs">
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!objectValuationLetter.isValid ? "--invalid" : "")
-            }
-          >
-            <label className="bl__input__label">
-              {t("APP_OBJECT_VALUATION_LETTER")}
-            </label>
-            {/* <div className="bl__input__element"> */}
-            <div className="element-group" style={{ margin: "auto -8px" }}>
-              <div className="element-group__center">
-                <SingleUploader
-                  name="File"
-                  innerText={t("UPLOAD_FILE")}
-                  defaultFile={objectValuationLetter.value}
-                  onChange={(name, result) =>
-                    handleObjectValuationLetter({
-                      target: { value: result.id }
-                    })
-                  }
-                  onUploadEnds={res => {
-                    setActiveOperationsCount(activeOperationsCount - 1);
-                  }}
-                  onUploadStarts={res => {
-                    setActiveOperationsCount(activeOperationsCount + 1);
-                  }}
-                />
-              </div>
-            </div>
-            {!objectValuationLetter.isValid && (
-              <span className="validation-messsage">
-                {objectValuationLetter.eMessage}
-              </span>
-            )}
-          </div>
           <div
             className={
               "bl__input animated fadeIn " +
@@ -1453,10 +1361,6 @@ const EditAppliation = props => {
               </span>
             )}
           </div>
-        </div>
-        <br />
-        {/* // */}
-        <div className="userInputs">
           <div
             className={
               "bl__input animated fadeIn " +
@@ -1490,6 +1394,46 @@ const EditAppliation = props => {
             {!objectLatestBalanceSheet.isValid && (
               <span className="validation-messsage">
                 {objectLatestBalanceSheet.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        {/* // */}
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!objectValuationLetter.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_OBJECT_VALUATION_LETTER")}
+            </label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <SingleUploader
+                  name="File"
+                  innerText={t("UPLOAD_FILE")}
+                  defaultFile={objectValuationLetter.value}
+                  onChange={(name, result) =>
+                    handleObjectValuationLetter({
+                      target: { value: result.id }
+                    })
+                  }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
+                />
+              </div>
+            </div>
+            {!objectValuationLetter.isValid && (
+              <span className="validation-messsage">
+                {objectValuationLetter.eMessage}
               </span>
             )}
           </div>
@@ -1537,83 +1481,10 @@ const EditAppliation = props => {
         {/* <div className="bl__infoBox__circleIcon">
          <i className="icon-info" />
        </div> */}
-        <span className="section-header">{t("APP_BUSINESS_ACQ2")}</span>
-        {/* </div> */}
-        <div className="userInputs">
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!purchaserCompanyLatestBalanceSheet.isValid ? "--invalid" : "")
-            }
-          >
-            <label className="bl__input__label">
-              {t("APP_PURCHASER_COMPANY_LATEST_BALANCE_SHEET")}
-            </label>
-            <div className="element-group" style={{ margin: "auto -8px" }}>
-              <div className="element-group__center">
-                <SingleUploader
-                  name="File"
-                  innerText={t("UPLOAD_FILE")}
-                  defaultFile={purchaserCompanyLatestBalanceSheet.value}
-                  onChange={(name, result) =>
-                    handlePurchaserCompanyLatestBalanceSheet({
-                      target: { value: result.id }
-                    })
-                  }
-                  onUploadEnds={res => {
-                    setActiveOperationsCount(activeOperationsCount - 1);
-                  }}
-                  onUploadStarts={res => {
-                    setActiveOperationsCount(activeOperationsCount + 1);
-                  }}
-                />
-              </div>
-            </div>
-            {!purchaserCompanyLatestBalanceSheet.isValid && (
-              <span className="validation-messsage">
-                {purchaserCompanyLatestBalanceSheet.eMessage}
-              </span>
-            )}
-          </div>
-          <div
-            className={
-              "bl__input animated fadeIn " +
-              (!purchaserCompanyLatestIncomeStatement.isValid
-                ? "--invalid"
-                : "")
-            }
-          >
-            <label className="bl__input__label">
-              {t("APP_PURCHASER_COMPANY_LATEST_INCOME_STATEMENT")}
-            </label>
-            <div className="element-group" style={{ margin: "auto -8px" }}>
-              <div className="element-group__center">
-                <SingleUploader
-                  name="File"
-                  innerText={t("UPLOAD_FILE")}
-                  defaultFile={purchaserCompanyLatestIncomeStatement.value}
-                  onChange={(name, result) =>
-                    handlePurchaserCompanyLatestIncomeStatement({
-                      target: { value: result.id }
-                    })
-                  }
-                  onUploadEnds={res => {
-                    setActiveOperationsCount(activeOperationsCount - 1);
-                  }}
-                  onUploadStarts={res => {
-                    setActiveOperationsCount(activeOperationsCount + 1);
-                  }}
-                />
-              </div>
-            </div>
-            {!purchaserCompanyLatestIncomeStatement.isValid && (
-              <span className="validation-messsage">
-                {purchaserCompanyLatestIncomeStatement.eMessage}
-              </span>
-            )}
-          </div>
-        </div>
-        <br />
+
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_4")}
+        </span>
         <div className="userInputs">
           <div
             className={
@@ -1730,6 +1601,158 @@ const EditAppliation = props => {
           </div>
         </div>
         <br />
+        <br />
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_5")}
+        </span>
+        {/* </div> */}
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaserCompanyLatestBalanceSheet.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_COMPANY_LATEST_BALANCE_SHEET")}
+            </label>
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <SingleUploader
+                  name="File"
+                  innerText={t("UPLOAD_FILE")}
+                  defaultFile={purchaserCompanyLatestBalanceSheet.value}
+                  onChange={(name, result) =>
+                    handlePurchaserCompanyLatestBalanceSheet({
+                      target: { value: result.id }
+                    })
+                  }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
+                />
+              </div>
+            </div>
+            {!purchaserCompanyLatestBalanceSheet.isValid && (
+              <span className="validation-messsage">
+                {purchaserCompanyLatestBalanceSheet.eMessage}
+              </span>
+            )}
+          </div>
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!purchaserCompanyLatestIncomeStatement.isValid
+                ? "--invalid"
+                : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_PURCHASER_COMPANY_LATEST_INCOME_STATEMENT")}
+            </label>
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <SingleUploader
+                  name="File"
+                  innerText={t("UPLOAD_FILE")}
+                  defaultFile={purchaserCompanyLatestIncomeStatement.value}
+                  onChange={(name, result) =>
+                    handlePurchaserCompanyLatestIncomeStatement({
+                      target: { value: result.id }
+                    })
+                  }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
+                />
+              </div>
+            </div>
+            {!purchaserCompanyLatestIncomeStatement.isValid && (
+              <span className="validation-messsage">
+                {purchaserCompanyLatestIncomeStatement.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
+        <br />
+        <span className="section-header">
+          {t("APP_BUSINESS_ACQ_SECTION_HEADER_6")}
+        </span>
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!additionalDetails.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">
+              {t("APP_ADDITIONAL_DETAILS")}
+            </label>
+            <div className="bl__input__element">
+              <div className="element-group">
+                <div className="element-group__center">
+                  <input
+                    type="text"
+                    className="my-input"
+                    placeholder=""
+                    value={additionalDetails.value}
+                    onChange={handleAdditionalDetails}
+                  />
+                </div>
+              </div>
+              {!additionalDetails.isValid && (
+                <span className="validation-messsage">
+                  {additionalDetails.eMessage}
+                </span>
+              )}
+            </div>
+          </div>
+        </div>
+        <br />
+        <div className="userInputs">
+          <div
+            className={
+              "bl__input animated fadeIn " +
+              (!businessPlan.isValid ? "--invalid" : "")
+            }
+          >
+            <label className="bl__input__label">{t("APP_BUSINESS_PLAN")}</label>
+            {/* <div className="bl__input__element"> */}
+            <div className="element-group" style={{ margin: "auto -8px" }}>
+              <div className="element-group__center">
+                <SingleUploader
+                  name="File"
+                  innerText={t("UPLOAD_FILE")}
+                  defaultFile={businessPlan.value}
+                  onChange={(name, result) =>
+                    handleBusinessPlan({
+                      target: { value: result.id }
+                    })
+                  }
+                  onUploadEnds={res => {
+                    setActiveOperationsCount(activeOperationsCount - 1);
+                  }}
+                  onUploadStarts={res => {
+                    setActiveOperationsCount(activeOperationsCount + 1);
+                  }}
+                />
+              </div>
+            </div>
+            {!businessPlan.isValid && (
+              <span className="validation-messsage">
+                {businessPlan.eMessage}
+              </span>
+            )}
+          </div>
+        </div>
+        <br />
         <div className="userInputs">
           <div
             className={
@@ -1792,7 +1815,7 @@ const EditAppliation = props => {
             <>
               <span className="icon-checkmark"></span>
               &nbsp;
-              {t("SUBMIT")}
+              {t("SAVE")}
             </>
           ) : (
             <CircleSpinner show={true} />

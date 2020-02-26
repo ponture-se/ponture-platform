@@ -95,9 +95,8 @@ const Item = props => {
       },
       onCancel: () => {},
       onSuccess: result => {
-        track("Cancel Offer", "Customer Portal", "Customer Portal", 0);
+        track("Cancel Application", "Customer Portal", "Customer Portal", 0);
         if (props.onCancelSuccess) props.onCancelSuccess();
-
         dispatch({
           type: "ADD_NOTIFY",
           value: {
@@ -197,7 +196,7 @@ const Item = props => {
                   stage === "submitted" ||
                   stage === "offer received" ||
                   stage === "offer accepted"
-                ? t("APP_STATUS_APPROVED_TITLE")
+                ? ( currentRole !== "agent" ? t("APP_STATUS_APPROVED_TITLE") : t("APP_STATUS_RECEIVED_TITLE") )
                 : stage === "not funded/ closed lost" &&
                   lostReason === "canceled by customer"
                 ? t("APP_STATUS_REJECTED_BY_USER_TITLE")
@@ -235,7 +234,7 @@ const Item = props => {
             stage === "submitted" ||
             stage === "offer received" ||
             stage === "offer accepted") &&
-            (currentRole !== "agent" ? (
+            (currentRole !== "agent" && (
               <Link
                 className="offers-button"
                 to={"/app/panel/viewOffers/" + item.opportunityID}
@@ -256,18 +255,20 @@ const Item = props => {
                   />
                 </div>
               </Link>
-            ) : (
-              <span className="offers-button">
-                <span className="linkTitle" style={{ textDecoration: "none" }}>
-                  {t("OFFERS_NUMBER")}{" "}
-                  {item.activeOffersCount || item.activeOffersCount === 0
-                    ? "(" + item.activeOffersCount + ")"
-                    : ""}
-                </span>
-              </span>
-            ))}
+            )
+            //  : (
+            //   <span className="offers-button">
+            //     <span className="linkTitle" style={{ textDecoration: "none" }}>
+            //       {t("OFFERS_NUMBER")}{" "}
+            //       {item.activeOffersCount || item.activeOffersCount === 0
+            //         ? "(" + item.activeOffersCount + ")"
+            //         : ""}
+            //     </span>
+            //   </span>
+            // )
+            )}
           {/* edit application */}
-          {stage === "created" && RecordType === "business acquisition loan" && (
+          {/* {stage === "created" && RecordType === "business acquisition loan" && (
             <button
               className="btn --light headerBtn"
               onClick={() => editItemModal(item)}
@@ -277,17 +278,29 @@ const Item = props => {
           )}
           &nbsp;
           {/* view application */}
-          {(RecordType === "real estate" ||
-            RecordType === "business acquisition loan") && (
-            <button
-              className="btn --light headerBtn"
-              onClick={() =>
-                viewItemModal(item, RecordType === "real estate" ? "RE" : "BA")
-              }
-            >
-              <span className="icon-more-h" />
-            </button>
-          )}
+          {currentRole !== "agent" &&
+            (RecordType === "real estate" ||
+              RecordType === "business acquisition loan") && (
+              <button
+                className="btn --primary viewButton"
+                onClick={() =>
+                  viewItemModal(
+                    item,
+                    RecordType === "real estate" ? "RE" : "BA"
+                  )
+                }
+              >
+                {t("APP_OPEN_APPLICATION")}
+              </button>
+              // <button
+              //   className="btn --light headerBtn"
+              //   onClick={() =>
+              //     viewItemModal(item, RecordType === "real estate" ? "RE" : "BA")
+              //   }
+              // >
+              //   <span className="icon-more-h" />
+              // </button>
+            )}
         </div>
       </div>
 
@@ -353,14 +366,16 @@ const Item = props => {
           <span>{t("APP_CLOSE_DATE")}</span>
           <span>{item.closeDate && item.closeDate.split(" ")[0]}</span>
         </div>
-        <div className="application__bodyRow">
-          <span>{t("APP_CREDIT_SAFE")}</span>
-          <span>{item.creditSafeScore}</span>
-        </div>
+        {currentRole !== "agent" && (
+          <div className="application__bodyRow">
+            <span>{t("APP_CREDIT_SAFE")}</span>
+            <span>{item.creditSafeScore}</span>
+          </div>
+        )}
       </div>
 
       {/* Application footer */}
-      {currentRole === "customer" &&
+      {currentRole !== "agent" &&
         stage !== "funded/closed won" &&
         stage !== "not funded/ closed lost" && (
           <div className="application__footer">
@@ -370,9 +385,16 @@ const Item = props => {
                 {t("CANCEL")}
               </button>
             </div>
+
             <div style={{ flexDirection: "row", display: "flex" }}>
               {stage === "created" && (
                 <>
+                  <button
+                    className="btn --primary editButton"
+                    onClick={() => editItemModal(item)}
+                  >
+                    {t("APP_COMPLETE_APPLICATION")}
+                  </button>
                   <button
                     className={classnames(
                       "btn verifyBtn",
@@ -414,7 +436,7 @@ const Item = props => {
           </div>
         )}
 
-      {currentRole === "agent" &&
+      {/* {currentRole === "agent" &&
         stage === "created" &&
         stage !== "funded/closed won" &&
         stage !== "not funded/ closed lost" && (
@@ -463,7 +485,7 @@ const Item = props => {
               )}
             </div>
           </div>
-        )}
+        )} */}
     </div>
   );
 };

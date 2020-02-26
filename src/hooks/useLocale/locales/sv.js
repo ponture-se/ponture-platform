@@ -3,6 +3,7 @@ export default {
   SUBMIT: "Ansök",
   SUBMIT_2: "Sticka", //T:Submit
   SUBMITTED: "Inskickat",
+  SAVE: "Spara",
   MON: "mån",
   MONTH: "månad",
   MONTHS: "månader",
@@ -44,7 +45,7 @@ export default {
   APP_STATUS_WON_TITLE: "Avslutat!",
   APP_STATUS_CREATED_TITLE: "Skapad!", //T:Created
   APP_EDIT: "Redigera applikationen", //T:Edit application
-  VERIFY: "Pröva", //T:Verify/identify
+  VERIFY: "Sök bolag", //T:Verify/identify
   VERIFIED: "Verified", //T: Verified
   MANDATORY_FIELD: "obligatoriskt fält", //T: Mandatory field
   UPLOAD_FILE: "Upload file", //T: upload file
@@ -55,7 +56,7 @@ export default {
   APP_STATUS_REJECTED_BY_USER_DESC: "Du avbröt din ansökan.",
   APP_STATUS_REJECTED_DESC: "Din ansökan är inte godkänd!",
   APP_STATUS_WON_DESC: "Din ansökan är avslutad!",
-  APP_STATUS_CREATED_DESC: "Din ansökan har skapats.", //T:Anything
+  APP_STATUS_CREATED_DESC: "Your application is created.", //T:Anything
 
   MONTH_S: "month(s)",
   ARE_YOU_SURE: "Are you sure?",
@@ -100,7 +101,9 @@ export default {
   OFFER_REJECTED: "Avslagen",
   MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
 
-  APP_NEEDS: "Dina anledningar till lån",
+  APP_OPEN_APPLICATION: "Öppna",
+  APP_COMPLETE_APPLICATION: "Komplettera ansökan",
+  APP_NEEDS: "Anledningar till lån",
   APP_COMPANY_NAME: "Företag",
   APP_ADDITIONAL_FILES: "Övrigt fil",
   APP_ADDITIONAL_DETAILS: "Ytterliggare detaljer",
@@ -121,7 +124,7 @@ export default {
   APP_OFFERS_ACCEPT_ALERT_INFO:
     "Choosing this offer as accepted for the application",
   APP_OBJECT_NAME: "Objektsnamn",
-  APP_OBJECT_COMPANY_NAME: "Företagsnamn",
+  APP_OBJECT_COMPANY_NAME: "Objekts företagsnamn",
   APP_OBJECT_ORG_NUMBER: "Organisationsnummer",
   APP_OBJECT_INDUSTRY_BRANCH: "Industribransch",
   APP_OBJECT_PRICE: "Köpspris",
@@ -138,12 +141,15 @@ export default {
   APP_PURCHASER_GUARANTEES_DESCRIPTION: "Tillgängliga säkerhetsditaljer",
   APP_PURCHASER_PERSONAL_NUMBER: "Köparens personnummer",
   APP_EXPERIENCE: "Köprens erfarenheter inom industribranschen",
-  APP_BUSINESS_ACQ1: "Köpobjekt",
-  APP_BUSINESS_ACQ2: "Köparens uppgifter",
+  APP_BUSINESS_ACQ_SECTION_HEADER_1: "Köpsinformation",
+  APP_BUSINESS_ACQ_SECTION_HEADER_2: "Köptobjekt",
+  APP_BUSINESS_ACQ_SECTION_HEADER_3: "Köpsobjekt billagor",
+  APP_BUSINESS_ACQ_SECTION_HEADER_4: "Köparens uppgifter",
+  APP_BUSINESS_ACQ_SECTION_HEADER_5: "Köparens billagor",
+  APP_BUSINESS_ACQ_SECTION_HEADER_6: "Komplettering",
   APP_EDIT_APPLICATION: "Edit Application", //T
   APP_VIEW_APPLICATION: "View Application", //T
   APP_BA_PURCHASE_TYPE: "Köpstyp",
-  APP_GENERAL_INFO: "General info", //t
   OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
   OFFER_LOAN_AMOUNT: "Godkänt belopp",
   OFFER_LOAN_PERIOD: "Låneperiod",
@@ -174,8 +180,9 @@ export default {
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
   BL_LOAN_PERIOD: "Önskad låneperiod",
   BL_REASON_LOAN: "Vad ska företagslånet användas till?",
-  BL_REASON_LOAN_INFO:
-    "Om du har mer än en anledning till företagslån får du välja flera alternativ",
+  BL_REASON_LOAN_INFO_1: "Välj din anledningar till lånet",
+  BL_REASON_LOAN_INFO_2:
+    "Om du har mer än en anledning till företagslån får du älja flera alternativ",
   BL_REASON_LOAN_OTHER: "Förklara vad?",
   BL_PERSONAL_NUMBER: "Personnummer",
   BL_PERSONAL_NUMBER_INFO:
@@ -191,14 +198,14 @@ export default {
   BL_ORG_NAME: "Företagsnamn",
   BL_COMPANY_INFO: "Köpobjekt",
   BL_LOANREASON_IS_REQUIRED: "Välj en anledning krävs",
-  BL_REALESTATE_TYPE: "Typ",
+  BL_REALESTATE_TYPE: "Type",
   BL_REALESTATE_INFO: "Fastighetsuppgifter",
   BL_REALESTATE_USAGE_CATEGORY: "Användningskategori",
   BL_REALESTATE_PRICE: "Fastighetspris",
   BL_REALESTATE_TAXATION_VALUE: "Taxeringsvärde",
   BL_REALESTATE_SIZE: "Yta/Storlek (sqm)",
   BL_REALESTATE_ADDRESS: "Plats/adress",
-  BL_REALESTATE_CITY: "City",
+  BL_REALESTATE_CITY: "Ort",
   BL_REALESTATE_LINK:
     "Länk till säljobjekts sida på mäklaren eller Objektvision.se",
   BL_REALESTATE_DESCRIPTION: "Fastighets utförlig beskrivning",
