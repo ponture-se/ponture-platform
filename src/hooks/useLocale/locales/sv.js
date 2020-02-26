@@ -43,7 +43,8 @@ export default {
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
   APP_STATUS_REJECTED_TITLE: "Avslagen!",
   APP_STATUS_WON_TITLE: "Avslutat!",
-  APP_STATUS_CREATED_TITLE: "Skapad!", //T:Created
+  APP_STATUS_CREATED_TITLE: "Skapad!",
+  APP_STATUS_CLOSED_TITLE: "Stängt!",
   APP_EDIT: "Redigera applikationen", //T:Edit application
   VERIFY: "Sök bolag", //T:Verify/identify
   VERIFIED: "Verified", //T: Verified

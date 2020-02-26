@@ -153,14 +153,14 @@ const Item = props => {
             className={
               "icon " +
               (stage === "app received" || stage === "app review"
-                ? "appReceivedIcon"
+                ?  ( currentRole !== "agent" ? "appReceivedIcon" :"approvedIcon" )
                 : stage === "approved" ||
                   stage === "submitted" ||
                   stage === "offer received" ||
                   stage === "offer accepted"
                 ? "approvedIcon"
                 : stage === "not funded/ closed lost"
-                ? "rejectedIcon"
+                ? ( currentRole !== "agent" ? "rejectedIcon" : "closedIcon")
                 : stage === "funded/closed won"
                 ? "closedIcon"
                 : stage === "created"
@@ -177,11 +177,11 @@ const Item = props => {
                     stage === "submitted" ||
                     stage === "offer received" ||
                     stage === "offer accepted"
-                  ? "checkmark"
+                  ? ( currentRole !== "agent" ? "checkmark" : "list" )
                   : stage === "not funded/ closed lost"
                   ? "cross"
                   : stage === "funded/closed won"
-                  ? "quote"
+                  ? ( currentRole !== "agent" ? "quote" : "cross" )
                   : "file-text")
               }
             />
@@ -199,12 +199,12 @@ const Item = props => {
                 ? ( currentRole !== "agent" ? t("APP_STATUS_APPROVED_TITLE") : t("APP_STATUS_RECEIVED_TITLE") )
                 : stage === "not funded/ closed lost" &&
                   lostReason === "canceled by customer"
-                ? t("APP_STATUS_REJECTED_BY_USER_TITLE")
+                ?  ( currentRole !== "agent" ? t("APP_STATUS_REJECTED_BY_USER_TITLE") : t("APP_STATUS_CLOSED_TITLE"))
                 : stage === "not funded/ closed lost" &&
                   lostReason !== "canceled by customer"
-                ? t("APP_STATUS_REJECTED_TITLE")
+                ? ( currentRole !== "agent" ? t("APP_STATUS_REJECTED_TITLE") : t("APP_STATUS_CLOSED_TITLE"))
                 : stage === "funded/closed won"
-                ? t("APP_STATUS_WON_TITLE")
+                ? ( currentRole !== "agent" ? t("APP_STATUS_WON_TITLE") : t("APP_STATUS_CLOSED_TITLE"))
                 : stage === "created"
                 ? t("APP_STATUS_CREATED_TITLE")
                 : ""}
