@@ -389,12 +389,14 @@ const Item = props => {
             <div style={{ flexDirection: "row", display: "flex" }}>
               {stage === "created" && (
                 <>
+                  {RecordType === "business acquisition loan" && (
                   <button
                     className="btn --primary editButton"
                     onClick={() => editItemModal(item)}
                   >
                     {t("APP_COMPLETE_APPLICATION")}
                   </button>
+                  )}
                   <button
                     className={classnames(
                       "btn verifyBtn",
