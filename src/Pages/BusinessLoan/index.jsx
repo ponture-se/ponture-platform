@@ -1635,9 +1635,9 @@ export default function BusinessLoan(props) {
             })
             .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
             .onServerError(res =>
-              Notif("error", "Server error, please try again")
+              Notif("error", "Serverfel, var god och försök igen")
             )
-            .onBadRequest(res => Notif("error", "Form inputs error"))
+            .onBadRequest(res => Notif("error", "Forminmatningsfel"))
             .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
         }else{
@@ -1669,9 +1669,9 @@ export default function BusinessLoan(props) {
             })
             .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
             .onServerError(res =>
-              Notif("error", "Server error, please try again")
+              Notif("error", "Serverfel, var god och försök igen")
             )
-            .onBadRequest(res => Notif("error", "Form inputs error"))
+            .onBadRequest(res => Notif("error", "Forminmatningsfel"))
             .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
         }

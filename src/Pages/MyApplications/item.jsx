@@ -196,7 +196,7 @@ const Item = props => {
                   stage === "submitted" ||
                   stage === "offer received" ||
                   stage === "offer accepted"
-                ? ( currentRole !== "agent" ? t("APP_STATUS_APPROVED_TITLE") : t("APP_STATUS_RECEIVED_TITLE") )
+                ? ( currentRole !== "agent" ? t("APP_STATUS_APPROVED_TITLE") :Form inputs error t("APP_STATUS_RECEIVED_TITLE") )
                 : stage === "not funded/ closed lost" &&
                   lostReason === "canceled by customer"
                 ?  ( currentRole !== "agent" ? t("APP_STATUS_REJECTED_BY_USER_TITLE") : t("APP_STATUS_CLOSED_TITLE"))

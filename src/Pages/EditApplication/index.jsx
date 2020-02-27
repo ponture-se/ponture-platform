@@ -1801,8 +1801,7 @@ const EditAppliation = props => {
          </button> */}
         {activeOperationsError && (
           <span className="form-error-box">
-            {`Please wait until ${activeOperationsCount} pending operation(s) to be
-              finish`}
+            {`Var god vänta medan ${activeOperationsCount} åtgärder i kö blir klara`}
             {/* //T */}
           </span>
         )}

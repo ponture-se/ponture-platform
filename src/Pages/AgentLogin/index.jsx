@@ -49,7 +49,7 @@ const AgentLogin = props => {
             type: "ADD_NOTIFY",
             value: {
               type: "error",
-              message: "Server Error"
+              message: "Internt Serverfel"
             }
           });
         }

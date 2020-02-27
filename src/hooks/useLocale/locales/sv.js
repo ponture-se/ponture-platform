@@ -1,7 +1,7 @@
 export default {
   CLOSE: "Stänga",
   SUBMIT: "Ansök",
-  SUBMIT_2: "Sticka", //T:Submit
+  SUBMIT_2: "Skicka in",
   SUBMITTED: "Inskickat",
   SAVE: "Spara",
   MON: "mån",
@@ -19,25 +19,25 @@ export default {
   WEBSITE: "Websida",
   DESCRIPTION: "Beskrivning",
   SIGN_OUT: "Logga ut",
-  INTERNAL_SERVER_ERROR: "Internal Server Error!",
-  INTERNAL_SERVER_ERROR_MSG: "Internal Server Error!",
-  BAD_REQUEST: "Bad Request",
-  BAD_REQUEST_MSG: "Bad Request",
-  UNKNOWN_ERROR: "Unknown Error",
-  UNKNOWN_ERROR_MSG: "Unknown Error",
-  NOT_FOUND: "Not Found",
-  NOT_FOUND_MSG: "Not Found",
-  ON_REQUEST_ERROR: "Request Error",
-  ON_REQUEST_ERROR_MSG: "Request Error",
-  CANCEL: "Avbryt", //T: Cancel
-  EDIT: "Redigera", //T: EDit
+  INTERNAL_SERVER_ERROR: "Internt Serverfel!",
+  INTERNAL_SERVER_ERROR_MSG: "Internt Serverfel!",
+  BAD_REQUEST: "Felaktig begäran",
+  BAD_REQUEST_MSG: "Felaktig begäran",
+  UNKNOWN_ERROR: "Okännt fel",
+  UNKNOWN_ERROR_MSG: "Okännt fel",
+  NOT_FOUND: "Hittades Inte",
+  NOT_FOUND_MSG: "Hittades Inte",
+  ON_REQUEST_ERROR: "Felaktig Begäran",
+  ON_REQUEST_ERROR_MSG: "Felaktig Begäran",
+  CANCEL: "Avbryt",
+  EDIT: "Redigera",
   REJECT: "Tacka Nej",
-  NOT_SPECIFIED: "Ej angivet", //t: Not specified
+  NOT_SPECIFIED: "Inte specifierat",
   VIEW_OFFERS: "Visa Erbjudanden",
   OFFERS_NUMBER: "Erbjudanden",
   BUSINESS_LOAN: "Företagslån",
   PRICE: "Köpspris",
-  INVALID_VALUE: "Ogiltigt värde", //T: Invalid value
+  INVALID_VALUE: "Ogiltligt värde",
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
@@ -45,11 +45,11 @@ export default {
   APP_STATUS_WON_TITLE: "Avslutat!",
   APP_STATUS_CREATED_TITLE: "Skapad!",
   APP_STATUS_CLOSED_TITLE: "Stängt!",
-  APP_EDIT: "Redigera applikationen", //T:Edit application
-  VERIFY: "Sök bolag", //T:Verify/identify
-  VERIFIED: "Verified", //T: Verified
-  MANDATORY_FIELD: "obligatoriskt fält", //T: Mandatory field
-  UPLOAD_FILE: "Upload file", //T: upload file
+  APP_EDIT: "Redigera applikationen",
+  VERIFY: "Sök bolag",
+  VERIFIED: "Varifierad",
+  MANDATORY_FIELD: "Obligatoriskt fält",
+  UPLOAD_FILE: "Ladda up fil",
 
   APP_STATUS_RECEIVED_DESC: "Din ansökan har tagits emot och behandlas.",
   APP_STATUS_APPROVED_DESC:
@@ -57,10 +57,10 @@ export default {
   APP_STATUS_REJECTED_BY_USER_DESC: "Du avbröt din ansökan.",
   APP_STATUS_REJECTED_DESC: "Din ansökan är inte godkänd!",
   APP_STATUS_WON_DESC: "Din ansökan är avslutad!",
-  APP_STATUS_CREATED_DESC: "Your application is created.", //T:Anything
+  APP_STATUS_CREATED_DESC: "Din ansökan är skapad.",
 
   MONTH_S: "month(s)",
-  ARE_YOU_SURE: "Are you sure?",
+  ARE_YOU_SURE: "Är du säker??",
   NO: "Nej!",
   YES_DO_IT: "Ja!",
   ERROR_MSG1: "Vi arbetar med att försöka lösa detta så fort som möjligt!",
@@ -68,8 +68,8 @@ export default {
     "Under tiden, prova gärna en gång till eller kontakta oss direkt så hjälper vi er vidare!",
   ERROR_MSG3: "Tack så mycket för ert tålamod!",
   VIEW_DETAIL: "Visa detalj",
-  OPEN_BANK_ID: "Öppna BankID-appen", //T:Open bankID
-  VERIFY_AND_SUBMIT: "Skicka",
+  OPEN_BANK_ID: "Öppna BankID-appen",
+  VERIFY_AND_SUBMIT: "Skicka in",
   ////////////////////////////////
   LOGIN_TITLE: "Logga in till Mina Sidor",
   LOGIN_TITLE1: "Vi använder BankID för att skydda din information.",
@@ -101,7 +101,6 @@ export default {
   OFFER_ACCEPTED: "Accepterat",
   OFFER_REJECTED: "Avslagen",
   MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
-
   APP_OPEN_APPLICATION: "Öppna",
   APP_COMPLETE_APPLICATION: "Komplettera ansökan",
   APP_NEEDS: "Anledningar till lån",
@@ -120,7 +119,7 @@ export default {
   APP_OFFERS_REJECT_ALERT_INFO: "Vill du avslå det här erbjudandet?",
   APP_CONTACT_NAME: "Kontaktnamn",
   APP_PERSONAL_NUMBER: "Personnummer",
-  APP_RECORD_TYPE: "Typ", //T: record type
+  APP_RECORD_TYPE: "Type",
   OFFER_REJECT_SUCCESS: "Offer was rejected successfully.",
   APP_OFFERS_ACCEPT_ALERT_INFO:
     "Choosing this offer as accepted for the application",
@@ -148,10 +147,10 @@ export default {
   APP_BUSINESS_ACQ_SECTION_HEADER_4: "Köparens uppgifter",
   APP_BUSINESS_ACQ_SECTION_HEADER_5: "Köparens billagor",
   APP_BUSINESS_ACQ_SECTION_HEADER_6: "Komplettering",
-  APP_EDIT_APPLICATION: "Edit Application", //T
-  APP_VIEW_APPLICATION: "View Application", //T
+  APP_EDIT_APPLICATION: "Redigera ansökan",
+  APP_VIEW_APPLICATION: "Visa ansökan",
   APP_BA_PURCHASE_TYPE: "Köpstyp",
-  OFFER_ACCEPTED_SUCCESS: "You accepted this offer for your application",
+  OFFER_ACCEPTED_SUCCESS: "Du har accepterat följande erbjudande",
   OFFER_LOAN_AMOUNT: "Godkänt belopp",
   OFFER_LOAN_PERIOD: "Låneperiod",
   OFFER_MONTHLY_FEE: "Månadskostnad",
@@ -169,13 +168,13 @@ export default {
   ///
   LOGIN_INFO:
     "Access to the most powerful tool in the entire design and web industry", //T
-  LOGIN_USERNAME: "Username", //T
-  LOGIN_USERNAME_INFO: "Try to enter valid username",
-  LOGIN_PASSWORD: "Password", //T
-  LOGIN_PASSWORD_INFO: "Password must be at least 6 characters", //T
-  LOGIN_USERNAME_INPUT_PLACEHOLDER: "Enter username", //T
-  LOGIN_PASSWORD_INPUT_PLACEHOLDER: "Password", //T
-  LOGIN_BTN_NAME: "Login", //T
+  LOGIN_USERNAME: "Användarnamn",
+  LOGIN_USERNAME_INFO: "Try to enter valid username", //T
+  LOGIN_PASSWORD: "lösenord",
+  LOGIN_PASSWORD_INFO: "Lösenordet måste innehålla minst 6 tecken",
+  LOGIN_USERNAME_INPUT_PLACEHOLDER: "Skriv användarnamn",
+  LOGIN_PASSWORD_INPUT_PLACEHOLDER: "Lösenord",
+  LOGIN_BTN_NAME: "Logga in",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
@@ -188,8 +187,8 @@ export default {
   BL_PERSONAL_NUMBER: "Personnummer",
   BL_PERSONAL_NUMBER_INFO:
     "Ange ditt svenska personnummer så att vi kan hitta ditt företag",
-  BL_COMPANY: "Välj ditt företag", //T
-  BL_NEW_COMPANY: "New company", //T
+  BL_COMPANY: "Välj ditt företag",
+  BL_NEW_COMPANY: "Nytt företag",
   BL_SELECT_COMPANY: "Välj ett företag", //T
   BL_CONTACT_BOX_TITLE: "Kontaktuppgifter:",
   BL_PHONE_NUMBER: "Telefon",
@@ -217,8 +216,8 @@ export default {
   BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
   BL_ADDITIONAL_DETAILS: "Ytterliggare detaljer",
   BL_REALESTATE_INFO: "Fastighetsuppgifter",
-  BL_AREA: "Area(sqm)", //T
-  BL_REALESTATE_AREA_IS_REQUIRED: "Område krävs", //T
+  BL_AREA: "Areal(sqm)",
+  BL_REALESTATE_AREA_IS_REQUIRED: "Areal krävs",
   BL_AGENT_NUMBER_PLACEHOLDER: "Ange ditt personnummer",
   BL_PURCHASE_DESCRIPTION: "Köpsbeskrivning",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",

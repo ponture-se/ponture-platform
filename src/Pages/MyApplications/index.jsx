@@ -60,7 +60,7 @@ const MyApplications = props => {
       type: "ADD_NOTIFY",
       value: {
         type: "success",
-        message: "Application verified sucessfuly, Saving data ..."
+        message: "Ansökan varifierades, Sparar data."
       }
     });
     toggleVerifyModal(false);
@@ -550,7 +550,7 @@ const MyApplications = props => {
             type: "ADD_NOTIFY",
             value: {
               type: "error",
-              message: "Un Athorized" //T
+              message: "Ogiltlig"
             }
           });
         }
@@ -639,7 +639,7 @@ const MyApplications = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Cannot save data, please try again"
+                message: "Kan inte spara data, var god försök igen"
               }
             });
             if (typeof _callback === "function") {
@@ -653,14 +653,14 @@ const MyApplications = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "success",
-                message: "Application saved successfully"
+                message: "Ansökan har sparats"
               }
             });
             // dispatch({
             //   type: "ADD_NOTIFY",
             //   value: {
             //     type: "success",
-            //     message: "Done" //T
+            //     message: "klart" //T
             //   }
             // });
             // if (window.analytics)
@@ -682,7 +682,7 @@ const MyApplications = props => {
             type: "ADD_NOTIFY",
             value: {
               type: "error",
-              message: "Cannot save data, please try again"
+              message: "Kan inte spara data, var god försök igen"
             }
           });
         }

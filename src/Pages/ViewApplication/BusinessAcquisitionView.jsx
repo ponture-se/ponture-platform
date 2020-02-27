@@ -247,7 +247,7 @@ const BusinessAcquisitionView = props => {
                     href={downloadAppAsset.call(this, objectAnnualReport)}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
@@ -268,7 +268,7 @@ const BusinessAcquisitionView = props => {
                     href={downloadAppAsset.call(this, objectLatestBalanceSheet)}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
@@ -293,7 +293,7 @@ const BusinessAcquisitionView = props => {
                     href={downloadAppAsset.call(this, objectValuationLetter)}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
@@ -317,7 +317,7 @@ const BusinessAcquisitionView = props => {
                     )}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
@@ -388,7 +388,7 @@ const BusinessAcquisitionView = props => {
                     )}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
@@ -411,7 +411,7 @@ const BusinessAcquisitionView = props => {
                     )}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
@@ -448,7 +448,7 @@ const BusinessAcquisitionView = props => {
                     href={downloadAppAsset.call(this, businessPlan)}
                     target="_blank"
                   >
-                    Attachment 1
+                    bifogad fil 1
                   </a>
                 </>
               ) : (
