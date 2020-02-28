@@ -53,6 +53,7 @@
       padding: 0 10px;
       display: flex;
       flex: 1;
+
       .info {
         flex: 1;
         display: flex;
@@ -64,6 +65,12 @@
         }
         & span:last-child {
           color: gray;
+        }
+      }
+      & > * {
+        &:last-child {
+          display: flex;
+          flex-direction: row;
         }
       }
       & .offers-button,
@@ -157,11 +164,36 @@
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .application {
+    &__header {
+      padding: 5px !important;
+      & .right {
+        & > * {
+          &:last-child {
+            a {
+              font-size: 14px;
+              & .icon {
+                min-width: 20px;
+              }
+            }
+            margin-left: 13px;
+            align-items: center;
+            justify-content: space-around;
+            display: flex;
+            margin-left: 12px;
+            flex-direction: column;
+          }
+        }
+      }
+    }
     &__body {
       padding: 10px 20px 0 20px;
     }
     &__footer {
-      padding: 0 20px;
+      height: auto;
+      padding: 10px;
+      & > *:last-child {
+        flex-direction: column !important;
+      }
     }
   }
   .application__header {

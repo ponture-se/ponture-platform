@@ -230,6 +230,7 @@ const Item = props => {
                 : ""}
             </span>
           </div>
+          <div>
           {(stage === "approved" ||
             stage === "submitted" ||
             stage === "offer received" ||
@@ -301,6 +302,7 @@ const Item = props => {
               //   <span className="icon-more-h" />
               // </button>
             )}
+        </div>
         </div>
       </div>
 
