@@ -286,7 +286,6 @@ export default function BusinessLoan(props) {
               callBack();
             } else toggleMainSpinner(false);
           } else {
-            track("Failure", "Loan Application", "/app/loan/ wizard", 0);
             toggleMainSpinner(false);
             changeTab(3);
             setError({
@@ -299,6 +298,7 @@ export default function BusinessLoan(props) {
       })
       .onServerError(result => {
         if (!didCancel) {
+          // track("Failure", "Loan Application", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -721,12 +721,6 @@ export default function BusinessLoan(props) {
           .onOk(result => {
             if (!didCancel) {
               if (result.errors) {
-                if (window.analytics)
-                  window.analytics.track("Failure", {
-                    category: "Loan Application",
-                    label: "/app/loan/ wizard",
-                    value: 0
-                  });
                 changeTab(3);
                 setError({
                   sender: "submitLoan"
@@ -741,6 +735,15 @@ export default function BusinessLoan(props) {
                   });
                 changeTab(2);
               }
+            }
+          })
+          .onServerError(result => {
+            if (!didCancel) {
+              toggleSubmitSpinner(false);
+              changeTab(3);
+              setError({
+                sender: "submitLoan"
+              });
             }
           })
           .unKnownError(result => {

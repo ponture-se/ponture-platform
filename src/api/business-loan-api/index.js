@@ -66,12 +66,6 @@ export function getNeedsList() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/wizard",
-            value: 0
-          });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -87,6 +81,12 @@ export function getNeedsList() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:
@@ -195,12 +195,6 @@ export function startBankId() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/wizard",
-            value: 0
-          });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -214,6 +208,12 @@ export function startBankId() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:
@@ -332,6 +332,12 @@ export function collect() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:
@@ -449,6 +455,12 @@ export function cancelVerify() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:
@@ -550,12 +562,6 @@ export function getCompanies() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/wizard",
-            value: 0
-          });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -571,6 +577,12 @@ export function getCompanies() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:
@@ -675,13 +687,36 @@ export function submitLoan() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/wizard",
-            value: 0
-          });
-        _unKnownError();
+        if (error.response) {
+          const status = error.response.status;
+          switch (status) {
+            case 200:
+              break;
+            case 400:
+              _onBadRequest();
+              break;
+            case 401:
+              _unAuthorized();
+              break;
+            case 404:
+              _notFound();
+              break;
+            case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
+              _onServerError();
+              break;
+            default:
+              _unKnownError();
+              break;
+          }
+        } else {
+          _unKnownError();
+        }
       });
   };
 
