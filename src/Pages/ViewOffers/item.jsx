@@ -11,7 +11,11 @@ const Item = props => {
   const { t } = useLocale();
   const { app, offer } = props;
   const [acceptSpinner, toggleAcceptSpinner] = useState();
-
+  const issueType =
+    offer.Product_Master_Name &&
+    offer.Product_Master_Name.includes("Checkkredit")
+      ? "checkcredit"
+      : "businessloan";
   useEffect(() => {
     return () => {
       didCancel = true;
@@ -94,7 +98,9 @@ const Item = props => {
           <div className="myOfferItem__bodyRow">
             <span>{t("OFFER_TITLE")}</span>
             <span>
-              {t("OFFER_TITLE_VALUE")}{" "}
+              {issueType === "checkcredit"
+                ? "Checkkredit"
+                : t("OFFER_TITLE_VALUE")}{" "}
               {offer.CreatedDate && offer.CreatedDate.split("T")[0]}
             </span>
           </div>
