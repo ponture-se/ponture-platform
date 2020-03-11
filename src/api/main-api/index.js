@@ -11,7 +11,7 @@ const offersUrl = baseUrl + config.REACT_APP_REQUEST_OFFERS;
 const rejectOfferUrl = baseUrl + config.REACT_APP_REJECT_OFFER;
 const acceptOfferUrl = baseUrl + config.REACT_APP_ACCEPT_OFFER;
 const openAppUrl = baseUrl + config.REACT_APP_OPEN_APP;
-const agentLoginUrl = baseUrl + config.REACT_APP_AGENT_LOGIN;
+const userLoginUrl = baseUrl + config.REACT_APP_USER_LOGIN;
 const uploadFileUrl = baseUrl + config.REACT_APP_UPLOAD_FILE;
 const getAppAttachmentUrl = baseUrl + config.REACT_APP_GET_APP_ATTACHMENT;
 
@@ -178,17 +178,30 @@ export function getMyApplications() {
     }
   }
 
-  const _call = (userInfo, role) => {
+  const _call = (userInfo, skip, limit) => {
     const { id, currentRole } = userInfo;
-    const paramName = currentRole === "agent" ? "broker_id" : "customerId";
-    const url = myAppsUrl + `?${paramName}=${id}`;
+    const params = {};
+    if (skip) params.skip = skip;
+    if (limit) params.limit = limit;
+    let url = myAppsUrl;
+    switch (currentRole) {
+      case "admin":
+        url += "";
+        break;
+      case "agent":
+        url += `?broker_id=${id}`;
+        break;
+      default:
+        url += `?customerId=${id}`;
+    }
     const token = Cookies.get("@ponture-customer-portal/token");
     axios
       .get(url, {
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${token}`
-        }
+        },
+        params: params
       })
       .then(response => {
         _onOk(
@@ -745,7 +758,7 @@ export function acceptOffer() {
     }
   };
 }
-export function agentLogin() {
+export function userLogin() {
   let _onOkCallBack;
   function _onOk(result) {
     if (_onOkCallBack) {
@@ -789,7 +802,7 @@ export function agentLogin() {
     }
   }
   const _call = (username, password) => {
-    const url = agentLoginUrl;
+    const url = userLoginUrl;
     axios({
       method: "post",
       url: url,

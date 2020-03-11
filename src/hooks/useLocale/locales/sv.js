@@ -169,7 +169,7 @@ export default {
   LOGIN_INFO:
     "Access to the most powerful tool in the entire design and web industry", //T
   LOGIN_USERNAME: "Användarnamn",
-  LOGIN_USERNAME_INFO: "Try to enter valid username", //T
+  LOGIN_USERNAME_INFO: "Försök att ange ett giltigt användarnamn", //T :Try to enter a valid username
   LOGIN_PASSWORD: "lösenord",
   LOGIN_PASSWORD_INFO: "Lösenordet måste innehålla minst 6 tecken",
   LOGIN_USERNAME_INPUT_PLACEHOLDER: "Skriv användarnamn",

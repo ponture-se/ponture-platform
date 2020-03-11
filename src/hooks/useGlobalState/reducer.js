@@ -13,7 +13,7 @@ let brokerSession = undefined;
 if (brokerParam) {
   currentRole = "agent";
   try {
-    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-user-info"));
     if (!brokerSession) {
       _isAuthenticated = false;
     } else {
@@ -31,7 +31,7 @@ if (brokerParam) {
     }
   } catch (error) {}
 } else {
-  sessionStorage.removeItem("@ponture-agent-info");
+  sessionStorage.removeItem("@ponture-user-info");
   try {
     bankIdInfo = JSON.parse(sessionStorage.getItem("@ponture-customer-bankid"));
     if (bankIdInfo) {
@@ -45,7 +45,7 @@ if (brokerParam) {
   } catch (error) {}
 
   try {
-    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-agent-info"));
+    brokerSession = JSON.parse(sessionStorage.getItem("@ponture-user-info"));
     if (brokerSession) {
       currentRole = "agent";
       if (!brokerSession) {

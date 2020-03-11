@@ -146,7 +146,7 @@ const Login = props => {
       type: "VERIFY_BANK_ID_SUCCESS",
       payload: result
     });
-    sessionStorage.removeItem("@ponture-agent-info");
+    sessionStorage.removeItem("@ponture-user-info");
     sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
     props.history.push("/app/panel/myApplications");
   }

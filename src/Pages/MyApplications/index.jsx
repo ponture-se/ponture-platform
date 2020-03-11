@@ -17,6 +17,8 @@ import Modal from "components/Modal";
 import EditAppliation from "../EditApplication";
 import BusinessAcquisitionView from "../ViewApplication/BusinessAcquisitionView";
 import RealEstateView from "../ViewApplication/RealEstateView";
+
+import "./pagination.scss";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -32,6 +34,12 @@ const MyApplications = props => {
   const [startResult, setStartResult] = useState(undefined);
   const [personalNumber, setPersonalNumber] = useState("");
   const [lastCallback, setLastCallback] = useState(undefined);
+  const [pagination, setPagination] = useState({
+    skip: 0,
+    limit: process.env.REACT_APP_MINASIDOR_RESULT_LIMIT,
+    totalPages: 0,
+    activePage: 1
+  });
   const [editModal, setEditModal] = useState({
     visibility: false,
     action: undefined,
@@ -89,7 +97,8 @@ const MyApplications = props => {
   //componentDidMount
   useEffect(() => {
     toggleLoading(true);
-    _getMyApplications(() => {
+    const { skip, limit } = pagination;
+    _getMyApplications(skip, limit, () => {
       toggleLoading(false);
     });
     return () => {
@@ -97,6 +106,13 @@ const MyApplications = props => {
     };
   }, []);
 
+  useEffect(() => {
+    const { skip, limit } = pagination;
+    toggleLoading(true);
+    _getMyApplications(skip, limit, () => {
+      toggleLoading(false);
+    });
+  }, [pagination.activePage]);
   // useEffect(() => {
   //   if (itemData) {
   //     setREPrice({
@@ -315,10 +331,15 @@ const MyApplications = props => {
   //Submit verification
   function handleSaveBankId() {}
 
-  function _getMyApplications(callback) {
+  function _getMyApplications(_skip, _limit, callback) {
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
+          if (result.total)
+            setPagination({
+              ...pagination,
+              totalPages: Math.ceil(result.total / pagination.limit)
+            });
           setData(result);
           if (typeof callback === "function") {
             callback(result);
@@ -391,18 +412,22 @@ const MyApplications = props => {
         userInfo &&
           (currentRole === "agent"
             ? { currentRole: "agent", id: userInfo.broker_id }
-            : { currentRole: "customer", id: userInfo.personalNumber })
+            : { currentRole: "customer", id: userInfo.personalNumber }),
+        _skip,
+        _limit
       );
   }
   function handleSuccessCancel() {
+    const { skip, limit } = pagination;
     toggleLoading(true);
-    _getMyApplications(() => {
+    _getMyApplications(skip, limit, () => {
       toggleLoading(false);
     });
   }
 
   //Submit application function
   function handleSubmitApplication(apiData, appData, callback) {
+    const { skip, limit } = pagination;
     // for (const key in obj) {
     //   if (itemData[key] === null) {
     //     itemData[key] = "";
@@ -477,7 +502,7 @@ const MyApplications = props => {
                 message: "Skicka har varit framgångsrikt"
               }
             });
-            _getMyApplications(() => {
+            _getMyApplications(skip, limit, () => {
               if (typeof callback === "function") {
                 callback(result);
               }
@@ -714,6 +739,31 @@ const MyApplications = props => {
       setViewModal({ visibility: true, data: data, type: type });
     }
   }
+  function triggerPagination(num, e) {
+    setPagination({
+      ...pagination,
+      activePage: num,
+      skip: (num - 1) * pagination.limit
+    });
+  }
+  function Pagination(props) {
+    const { totalPages, onChange, activePage } = props;
+    if (totalPages > 1) {
+      let paginationItems = [];
+      for (let num = 1; num <= totalPages; num++) {
+        paginationItems.push(
+          <a
+            key={num}
+            className={activePage === num ? "active" : ""}
+            onClick={e => onChange(num, e)}
+          >
+            {num}
+          </a>
+        );
+      }
+      return <div className="pagination">{paginationItems}</div>;
+    }
+  }
   return (
     <div className="myApps">
       {loading ? (
@@ -735,7 +785,7 @@ const MyApplications = props => {
         </div>
       ) : (
         <>
-          {data.map(app => (
+          {data.oppList.map(app => (
             <Item
               key={app.opportunityID}
               item={app}
@@ -746,6 +796,13 @@ const MyApplications = props => {
               view={toggleViewModal}
             />
           ))}
+          {/* pagination */}
+          <Pagination
+            totalPages={pagination.totalPages}
+            onChange={triggerPagination}
+            activePage={pagination.activePage}
+          />
+
           {verifyModal && (
             <VerifyBankIdModal
               startResult={startResult}
@@ -792,8 +849,9 @@ const MyApplications = props => {
                 loading: true
               });
               saveApplication(item, res => {
+                const { skip, limit } = pagination;
                 if (res && res.success) {
-                  _getMyApplications(() => {
+                  _getMyApplications(skip, limit, () => {
                     setEditModal({
                       visibility: false,
                       data: data,

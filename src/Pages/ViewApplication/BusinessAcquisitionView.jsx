@@ -13,7 +13,6 @@ const BusinessAcquisitionView = props => {
   const { t } = useLocale();
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
   const BA = props.data.acquisition;
-
   //fields
   const objectName = SafeValue(BA, "object_name", "string", t("NOT_SPECIFIED"));
   const objectCompanyName = SafeValue(

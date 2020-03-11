@@ -382,7 +382,7 @@ export default function BusinessLoan(props) {
       didCancel = true;
     };
     sessionStorage.removeItem("@ponture-customer-bankid");
-    sessionStorage.removeItem("@ponture-agent-info");
+    sessionStorage.removeItem("@ponture-user-info");
   }, []);
 
   //Conditional componentDidUpdate
@@ -692,11 +692,11 @@ export default function BusinessLoan(props) {
           INC = isNewCompany,
           ORM = loanReasonOtherMandatory;
         switch (cat) {
-          case "Purchase of Business":
+          case "Företagsförvärv":
             CTS = true;
             ORM = false;
             break;
-          case "Purchase of Real-Estate":
+          case "Köp av fastighet":
             RES = true;
             ORM = false;
             break;

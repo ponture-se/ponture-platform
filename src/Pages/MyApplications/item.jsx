@@ -8,7 +8,7 @@ import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
 import { CircleSpinner } from "components";
 import classnames from "classnames";
-
+import SafeValue from "utils/SafeValue";
 //
 const Item = props => {
   const [{ currentRole }, dispatch] = useGlobalState();
@@ -26,7 +26,7 @@ const Item = props => {
   const [isVerified, setIsVerified] = useState(item.bankVerified);
   const [isSubmitted, setIsSubmitted] = useState(item.bankVerified);
   const [loading, toggleLoading] = useState(false);
-
+  console.log("cRole: ",currentRole);
   //functions
   const submitApplication = appData => {
     const oppId = appData.opportunityID;
@@ -269,14 +269,14 @@ const Item = props => {
             // )
             )}
           {/* edit application */}
-          {/* {stage === "created" && RecordType === "business acquisition loan" && (
+          {/* {currentRole==="admin" && stage === "created" && RecordType === "business acquisition loan" && (
             <button
               className="btn --light headerBtn"
               onClick={() => editItemModal(item)}
             >
               <span className="icon-pencil" />
             </button>
-          )}
+          )} */}
           &nbsp;
           {/* view application */}
           {currentRole !== "agent" &&
@@ -312,7 +312,7 @@ const Item = props => {
           <span>
             {RecordType === "real estate" ||
             RecordType === "business acquisition loan"
-              ? need[0].title
+              ? SafeValue(need,"0.title","string"," - ")
               : t("BUSINESS_LOAN")}
           </span>
           <span className="loanAmount">

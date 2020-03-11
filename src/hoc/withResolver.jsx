@@ -102,7 +102,7 @@ const withResolver = WrappedComponent => {
           //if Agent refreshed the page
           //Or user has logged in before but there is a problem with its userInfo data
           const cachedUserInfo = JSON.parse(
-            sessionStorage.getItem("@ponture-agent-info")
+            sessionStorage.getItem("@ponture-user-info")
           );
           dispatch({
             type: "SET_USER_INFO",
@@ -115,7 +115,7 @@ const withResolver = WrappedComponent => {
           toggleLoading(false);
         } else if (!token && !userInfo) {
           //if both userInfo and token not found, then agent authentication not established before
-          props.history.push("/app/agentlogin");
+          props.history.push("/app/userlogin");
         } else {
           //Agent is valid and authentication passed successfully
           toggleLoading(false);
@@ -125,7 +125,7 @@ const withResolver = WrappedComponent => {
     return !isAuthenticated ? (
       <Redirect
         to={{
-          pathname: lastRole === "agent" ? "/app/agentlogin" : "/app/login",
+          pathname: lastRole === "agent" ? "/app/userlogin" : "/app/login",
           state: { from: props.location }
         }}
       />

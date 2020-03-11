@@ -800,7 +800,9 @@ export function saveLoan(permission) {
       ? Cookies.get("@ponture-customer-portal/token")
       : Cookies.get("@pontrue-wizard/token");
     const additionalHeaders =
-      permission === "customer" ? { Authorization: `Bearer ${token}` } : {};
+      permission === "customer" || permission === "admin"
+        ? { Authorization: `Bearer ${token}` }
+        : {};
     axios({
       method: "post",
       url: url,

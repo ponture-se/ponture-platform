@@ -1,13 +1,11 @@
 import React, { useState, useEffect } from "react";
-// import { connect } from "react-redux";
 //
 import { useGlobalState, useLocale } from "hooks";
 import { CircleSpinner } from "components";
-import { agentLogin } from "../../api/main-api";
+import { userLogin } from "../../api/main-api";
 import "./styles.scss";
-// import { login } from "services/redux/auth/actions";
 
-const AgentLogin = props => {
+const UserLogin = props => {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   let didCancel = false;
@@ -25,21 +23,25 @@ const AgentLogin = props => {
   function handleLoginClicked(e) {
     e.preventDefault();
     toggleLoading(true);
-    agentLogin()
+    userLogin()
       .onOk(info => {
         if (!didCancel) {
           toggleLoading(false);
           sessionStorage.removeItem("@ponture-customer-bankid");
-          sessionStorage.setItem("@ponture-agent-info", JSON.stringify(info));
+          sessionStorage.setItem("@ponture-user-info", JSON.stringify(info));
           dispatch({
             type: "SET_USER_INFO",
             payload: {
               userInfo: info,
-              currentRole: "agent",
+              currentRole: info.role ? info.role : "agent",
               isAuthenticated: true
             }
           });
-          props.history.push("/app/panel/myapplications?brokerid=" + username);
+          if (info.role !== "admin")
+            props.history.push(
+              "/app/panel/myapplications?brokerid=" + username
+            );
+          else props.history.push("/app/panel/myapplications");
         }
       })
       .onServerError(result => {
@@ -174,4 +176,4 @@ const AgentLogin = props => {
   );
 };
 
-export default AgentLogin;
+export default UserLogin;

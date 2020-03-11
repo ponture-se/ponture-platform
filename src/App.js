@@ -12,7 +12,7 @@ import AxiosInitializer from "utils/AxiosInitializer";
 //
 import BusinessLoan from "./Pages/BusinessLoan";
 import Login from "./Pages/Login";
-import UserPassLogin from "./Pages/AgentLogin";
+import UserLogin from "./Pages/UserLogin";
 import MainPage from "./Pages/MainPage";
 import NotFound from "./Pages/NotFound";
 const Main = withResolver(MainPage);
@@ -32,8 +32,8 @@ const App = () => {
               />
               <Route
                 key="appLoan"
-                path="/app/agentlogin"
-                render={props => <UserPassLogin {...props} />}
+                path="/app/userlogin"
+                render={props => <UserLogin {...props} />}
               />
               <Route
                 key="appLoan"

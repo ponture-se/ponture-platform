@@ -17,7 +17,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
             to={{
               pathname:
                 lastRole === "agent" || currentRole === "agent"
-                  ? "/app/agentlogin"
+                  ? "/app/userlogin"
                   : "/app/login",
               state: { from: props.location }
             }}
