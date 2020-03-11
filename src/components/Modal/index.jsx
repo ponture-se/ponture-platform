@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import "./styles.scss";
-
+import classnames from "classnames";
 export default function Modal(props) {
   const { size } = props;
   const { style } = props;
@@ -21,7 +21,11 @@ export default function Modal(props) {
     <React.Fragment>
       <div className="modal-back" onClick={closeModal}>
         <div
-          className={"modal animated fadeIn " + (size ? size : "md")}
+          className={classnames(
+            "modal animated fadeIn ",
+            size ? size : "md",
+            props.className ? props.className : ""
+          )}
           style={style}
         >
           {props.children}

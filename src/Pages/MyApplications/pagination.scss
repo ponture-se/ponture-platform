@@ -6,7 +6,12 @@
   align-items: start;
   flex-wrap: wrap;
   margin-top: -10px;
-  a {
+  padding-left: 0;
+  li {
+    a {
+      color: black;
+      text-decoration: none;
+    }
     cursor: pointer;
     font-size: 18px;
     margin: 5px;

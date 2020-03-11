@@ -23,7 +23,7 @@ const withResolver = WrappedComponent => {
     }
 
     useEffect(() => {
-      if (currentRole !== "agent") {
+      if (!currentRole || currentRole === "customer") {
         //If token or userInfo missed after bankId process before getting into component do login again
         if (!token || !userInfo) {
           //creating object to pass to API for further authentications
@@ -97,18 +97,22 @@ const withResolver = WrappedComponent => {
             .call(obj);
         }
       }
-      if (currentRole === "agent") {
+      if (["agent", "admin"].indexOf(currentRole) > -1) {
         if (token && !userInfo) {
           //if Agent refreshed the page
           //Or user has logged in before but there is a problem with its userInfo data
           const cachedUserInfo = JSON.parse(
             sessionStorage.getItem("@ponture-user-info")
           );
+          const name =
+            currentRole === "admin"
+              ? cachedUserInfo.admin_id
+              : cachedUserInfo.name;
           dispatch({
             type: "SET_USER_INFO",
             payload: {
-              userInfo: cachedUserInfo,
-              currentRole: "agent",
+              userInfo: { ...cachedUserInfo, name: name },
+              currentRole: currentRole,
               isAuthenticated: true
             }
           });
@@ -125,7 +129,10 @@ const withResolver = WrappedComponent => {
     return !isAuthenticated ? (
       <Redirect
         to={{
-          pathname: lastRole === "agent" ? "/app/userlogin" : "/app/login",
+          pathname:
+            ["agent", "admin"].indexOf(lastRole) > -1
+              ? "/app/userlogin"
+              : "/app/login",
           state: { from: props.location }
         }}
       />

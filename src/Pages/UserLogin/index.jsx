@@ -29,10 +29,11 @@ const UserLogin = props => {
           toggleLoading(false);
           sessionStorage.removeItem("@ponture-customer-bankid");
           sessionStorage.setItem("@ponture-user-info", JSON.stringify(info));
+          const name = info.role === "admin" ? info.admin_id : info.name;
           dispatch({
             type: "SET_USER_INFO",
             payload: {
-              userInfo: info,
+              userInfo: { ...info, name: name },
               currentRole: info.role ? info.role : "agent",
               isAuthenticated: true
             }

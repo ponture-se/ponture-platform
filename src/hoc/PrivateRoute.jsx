@@ -16,7 +16,8 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
           <Redirect
             to={{
               pathname:
-                lastRole === "agent" || currentRole === "agent"
+                ["agent", "admin"].indexOf(lastRole) > -1 ||
+                ["agent", "admin"].indexOf(currentRole) > -1
                   ? "/app/userlogin"
                   : "/app/login",
               state: { from: props.location }

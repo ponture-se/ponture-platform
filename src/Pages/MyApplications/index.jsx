@@ -17,7 +17,7 @@ import Modal from "components/Modal";
 import EditAppliation from "../EditApplication";
 import BusinessAcquisitionView from "../ViewApplication/BusinessAcquisitionView";
 import RealEstateView from "../ViewApplication/RealEstateView";
-
+import Pagination from "react-js-pagination";
 import "./pagination.scss";
 //
 const MyApplications = props => {
@@ -37,7 +37,7 @@ const MyApplications = props => {
   const [pagination, setPagination] = useState({
     skip: 0,
     limit: process.env.REACT_APP_MINASIDOR_RESULT_LIMIT,
-    totalPages: 0,
+    totalRecords: 0,
     activePage: 1
   });
   const [editModal, setEditModal] = useState({
@@ -338,7 +338,7 @@ const MyApplications = props => {
           if (result.total)
             setPagination({
               ...pagination,
-              totalPages: Math.ceil(result.total / pagination.limit)
+              totalRecords: result.total
             });
           setData(result);
           if (typeof callback === "function") {
@@ -746,24 +746,24 @@ const MyApplications = props => {
       skip: (num - 1) * pagination.limit
     });
   }
-  function Pagination(props) {
-    const { totalPages, onChange, activePage } = props;
-    if (totalPages > 1) {
-      let paginationItems = [];
-      for (let num = 1; num <= totalPages; num++) {
-        paginationItems.push(
-          <a
-            key={num}
-            className={activePage === num ? "active" : ""}
-            onClick={e => onChange(num, e)}
-          >
-            {num}
-          </a>
-        );
-      }
-      return <div className="pagination">{paginationItems}</div>;
-    }
-  }
+  // function Pagination(props) {
+  //   const { totalPages, onChange, activePage } = props;
+  //   if (totalPages > 1) {
+  //     let paginationItems = [];
+  //     for (let num = 1; num <= totalPages; num++) {
+  //       paginationItems.push(
+  //         <a
+  //           key={num}
+  //           className={activePage === num ? "active" : ""}
+  //           onClick={e => onChange(num, e)}
+  //         >
+  //           {num}
+  //         </a>
+  //       );
+  //     }
+  //     return <div className="pagination">{paginationItems}</div>;
+  //   }
+  // }
   return (
     <div className="myApps">
       {loading ? (
@@ -798,8 +798,10 @@ const MyApplications = props => {
           ))}
           {/* pagination */}
           <Pagination
-            totalPages={pagination.totalPages}
+            pageRangeDisplayed={8}
             onChange={triggerPagination}
+            itemsCountPerPage={parseInt(pagination.limit)}
+            totalItemsCount={pagination.totalRecords}
             activePage={pagination.activePage}
           />
 
@@ -815,13 +817,13 @@ const MyApplications = props => {
                 companyList: false,
                 isLogin: true
               }}
-              style={{ maxWidth: "500px" }}
             />
           )}
         </>
       )}
       {editModal.visibility && (
         <Modal
+          className="minasidor-modals"
           style={{
             display: "flex",
             flexDirection: "column",
@@ -872,6 +874,7 @@ const MyApplications = props => {
       )}
       {viewModal.visibility && (
         <Modal
+          className="minasidor-modals"
           style={{
             display: "flex",
             flexDirection: "column",

@@ -26,7 +26,7 @@ const Item = props => {
   const [isVerified, setIsVerified] = useState(item.bankVerified);
   const [isSubmitted, setIsSubmitted] = useState(item.bankVerified);
   const [loading, toggleLoading] = useState(false);
-  console.log("cRole: ",currentRole);
+  console.log(currentRole+" logged in.");
   //functions
   const submitApplication = appData => {
     const oppId = appData.opportunityID;

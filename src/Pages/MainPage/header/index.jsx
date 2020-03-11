@@ -28,7 +28,7 @@ const Header = props => {
         <div className="right">
           <div className="mainHeader__userInfo">
             {userInfo &&
-              (currentRole === "agent"
+              (["admin", "agent"].indexOf(currentRole) > -1
                 ? userInfo.name
                 : userInfo.firstName + " " + userInfo.lastName)}
           </div>
