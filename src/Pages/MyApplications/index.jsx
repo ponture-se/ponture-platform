@@ -5,7 +5,7 @@ import "../BusinessLoan/styles.scss";
 import Item from "./item";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
-import { getMyApplications } from "api/main-api";
+import { getMyApplications, getMatchMakingPartners } from "api/main-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import {
   startBankId,
@@ -77,6 +77,10 @@ const MyApplications = props => {
     visibility: false,
     data: undefined,
     type: undefined
+  });
+  const [matchMakingModal, setMatchMakingModal] = useState({
+    visibility: false,
+    data: undefined
   });
   const [itemData, setItemData] = useState(undefined);
   //pNum: personalNumber
@@ -760,6 +764,16 @@ const MyApplications = props => {
       });
     }
   }
+  function toggleMatchMakingModal(data) {
+    if (matchMakingModal.visibility) {
+      setMatchMakingModal({
+        visibility: false,
+        data: undefined
+      });
+    } else {
+      setMatchMakingModal({ visibility: true, data: data });
+    }
+  }
   function toggleViewModal(data, type) {
     if (viewModal.visibility) {
       setViewModal({ visibility: false, data: undefined, type: undefined });
@@ -834,13 +848,13 @@ const MyApplications = props => {
           errorMessage = "";
         }
         break;
-      case "opp_number":
-        if (value.length > 0 && !isNumber(value)) {
-          errorMessage = t("INVALID_VALUE");
-        } else {
-          errorMessage = "";
-        }
-        break;
+      // case "opp_number":
+      //   if (value.length > 0 && !isNumber(value)) {
+      //     errorMessage = t("INVALID_VALUE");
+      //   } else {
+      //     errorMessage = "";
+      //   }
+      //   break;
       case "contact_name":
         break;
       case "personal_number":
@@ -888,151 +902,166 @@ const MyApplications = props => {
       ) : (
         <>
           {currentRole === "admin" && (
-            <div className="search">
-              <div className="search__header">
-                <h3>{t("FILTER")}</h3>
-              </div>
-              <div className="search__items-box" key={"contact_name"}>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("Contact name")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    // key={"contact_name"}
-                    name="contact_name"
-                    onChange={updateFilters}
-                    value={filter.contact_name}
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.contact_name}
-                  </span>
+            <div className="search application animated fadeIn">
+              {/* Application header info */}
+              <div className="application__header">
+                <div className="left">
+                  <div className="icon">
+                    <i className="icon-filter"></i>
+                  </div>
                 </div>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("Organization number")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    name="org_number"
-                    onChange={updateFilters}
-                    value={filter.org_number}
-                    placeholder={t("ORGNUMBER_PLACEHOLDER")}
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.org_number}
-                  </span>
-                </div>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("Personal number")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    name="personal_number"
-                    onChange={updateFilters}
-                    type="number"
-                    value={filter.personal_number}
-                    placeholder="i,e: 193701301111"
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.personal_number}
-                  </span>
-                </div>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("Opportunity number")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    name="opp_number"
-                    onChange={updateFilters}
-                    value={filter.opp_number}
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.opp_number}
-                  </span>
-                </div>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("Organization name")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    name="org_name"
-                    value={filter.org_name}
-                    onChange={updateFilters}
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.org_name}
-                  </span>
-                </div>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("E-Mail")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    name="email"
-                    value={filter.email}
-                    onChange={updateFilters}
-                    placeholder="i,e: example@mail.com"
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.email}
-                  </span>
-                </div>
-                <div className="search__items-box__search-item">
-                  <label
-                    htmlFor=""
-                    className="search__items-box__search-item__label"
-                  >
-                    {t("Phone number")}
-                    {/* //T */}
-                  </label>
-                  <input
-                    name="phone"
-                    placeholder="i,e: 0790266255"
-                    value={filter.phone}
-                    onChange={updateFilters}
-                    className="search__items-box__search-item__input my-input"
-                  />
-                  <span className="validation-messsage">
-                    {filterErrorMessage.phone}
-                  </span>
+                <div className="right">
+                  <div className="info">
+                    <span>{t("FILTER")}</span>
+                    <span></span>
+                  </div>
                 </div>
               </div>
-              <div className="search__footer">
-                <button
-                  className="search__footer__apply-filters btn --primary"
-                  onClick={applyFilter}
-                >
-                  {t("APPLY")}
-                </button>
+              <div className="application__body">
+                <div className="search__items-box" key={"contact_name"}>
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("Contact name")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      // key={"contact_name"}
+                      name="contact_name"
+                      onChange={updateFilters}
+                      value={filter.contact_name}
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.contact_name}
+                    </span>
+                  </div>
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("Organization name")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      name="org_name"
+                      value={filter.org_name}
+                      onChange={updateFilters}
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.org_name}
+                    </span>
+                  </div>
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("Organization number")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      name="org_number"
+                      onChange={updateFilters}
+                      value={filter.org_number}
+                      placeholder={t("ORGNUMBER_PLACEHOLDER")}
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.org_number}
+                    </span>
+                  </div>
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("Personal number")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      name="personal_number"
+                      onChange={updateFilters}
+                      type="number"
+                      value={filter.personal_number}
+                      placeholder="i,e: 193701301111"
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.personal_number}
+                    </span>
+                  </div>
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("Opportunity number")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      name="opp_number"
+                      onChange={updateFilters}
+                      value={filter.opp_number}
+                      placeholder="i,e: LO0000000601"
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.opp_number}
+                    </span>
+                  </div>
+
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("E-Mail")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      name="email"
+                      value={filter.email}
+                      onChange={updateFilters}
+                      placeholder="i,e: example@mail.com"
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.email}
+                    </span>
+                  </div>
+                  <div className="search__items-box__search-item">
+                    <label
+                      htmlFor=""
+                      className="search__items-box__search-item__label"
+                    >
+                      {t("Phone number")}
+                      {/* //T */}
+                    </label>
+                    <input
+                      name="phone"
+                      placeholder="i,e: 0790266255"
+                      value={filter.phone}
+                      onChange={updateFilters}
+                      className="search__items-box__search-item__input my-input"
+                    />
+                    <span className="validation-messsage">
+                      {filterErrorMessage.phone}
+                    </span>
+                  </div>
+                </div>
+                <div className="search__footer">
+                  <button
+                    className="search__footer__apply-filters btn --success"
+                    onClick={applyFilter}
+                  >
+                    {t("APPLY")}
+                  </button>
+                </div>
               </div>
             </div>
           )}
@@ -1046,6 +1075,7 @@ const MyApplications = props => {
                 submit={handleSubmitApplication}
                 edit={toggleEditModal}
                 view={toggleViewModal}
+                matchMaking={toggleMatchMakingModal}
               />
             ))
           ) : (
@@ -1153,6 +1183,35 @@ const MyApplications = props => {
               data={viewModal.data}
             />
           )}
+        </Modal>
+      )}
+      {matchMakingModal.visibility && (
+        <Modal
+          className="minasidor-modals"
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "space-between",
+            borderRadius: "0"
+          }}
+        >
+          <div className="bl editApplication bl__infoBox ">
+            <div className="bl__infoBox__header">
+              {/* <div className="bl__infoBox__circleIcon">
+         <i className="icon-info" />
+       </div> */}
+              <span>{t("Manual match making")}</span>
+              <span
+                className="icon-cross modal-close"
+                onClick={toggleMatchMakingModal}
+              ></span>
+            </div>
+          </div>
+          <div className="page-empty-list animated fadeIn">
+            <Empty />
+            <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
+            <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
+          </div>
         </Modal>
       )}
     </div>

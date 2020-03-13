@@ -1,16 +1,14 @@
 @import "./../../styles/mixins.scss";
 .search {
   width: 100%;
-  background-color: rgba(0, 0, 0, 0.2);
+  // background-color: rgba(0, 0, 0, 0.2);
   margin-bottom: 30px;
-  padding: 20px;
+  // padding: 20px;
   display: flex;
   flex-direction: column;
-  &__header {
-    font-family: OpenSanceBold;
-    h3 {
-      margin: 0;
-      padding: 0;
+  & .application__header {
+    & .icon {
+      background-color: gray;
     }
   }
   &__items-box {
@@ -18,6 +16,7 @@
     flex-wrap: wrap;
     flex-direction: row;
     justify-content: space-between;
+    margin: 0 -1.5%;
     &__search-item {
       flex-grow: 1;
       width: 30%;
@@ -26,12 +25,14 @@
       & input {
         margin-top: 5px;
         font-size: 15px;
+        border: 1px solid lightgray;
       }
     }
   }
   &__footer {
     display: flex;
     justify-content: flex-end;
+    margin: 10px 0;
   }
   & .validation-messsage {
     color: red;
@@ -43,6 +44,19 @@
 }
 @media (max-width: 768px) {
   .search {
+    & .application__header {
+      & .right {
+        & .info {
+          margin-left: 0;
+          & span:first-child {
+            width: 100%;
+          }
+        }
+      }
+      & .icon {
+        background-color: gray;
+      }
+    }
     &__items-box {
       &__search-item {
         width: 46%;

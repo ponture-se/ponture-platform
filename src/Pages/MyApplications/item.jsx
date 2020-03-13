@@ -77,6 +77,9 @@ const Item = props => {
       );
     }
   };
+  function matchMakingModal(item){
+    props.matchMaking(item)
+  }
   function editItemModal(item) {
     props.edit(item, "edit");
   }
@@ -389,7 +392,17 @@ const Item = props => {
               </button>
             </div>
           {currentRole ==="admin" && 
+          
             <div style={{ flexDirection: "row", display: "flex" }}>
+              {stage !=="created" && 
+                <button
+                className="btn --light matchMakingButton"
+                onClick={() => matchMakingModal(item)}
+              >
+                {t("Manual match making") }
+                {/* T */}
+              </button>
+              }
               {stage === "created" && (
                 <>
                   {RecordType === "business acquisition loan" && (
