@@ -66,12 +66,6 @@ export function getNeedsList() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/wizard",
-            value: 0
-          });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -87,6 +81,12 @@ export function getNeedsList() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:
@@ -195,12 +195,6 @@ export function startBankId() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
-        if (window.analytics)
-          window.analytics.track("Failure", {
-            category: "Loan Application",
-            label: "/app/loan/wizard",
-            value: 0
-          });
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -214,6 +208,12 @@ export function startBankId() {
               _notFound();
               break;
             case 500:
+              if (window.analytics)
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/wizard",
+                  value: 0
+                });
               _onServerError();
               break;
             default:

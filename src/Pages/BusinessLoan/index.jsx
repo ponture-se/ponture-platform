@@ -484,7 +484,7 @@ export default function BusinessLoan(props) {
               toggleMainSpinner(false);
             }
           } else {
-            track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+            
             toggleMainSpinner(false);
             changeTab(3);
             setError({
@@ -498,6 +498,7 @@ export default function BusinessLoan(props) {
       .onServerError(result => {
         if (!didCancel) {
           toggleMainSpinner(false);
+          track("Failure", "Loan Application", "/app/loan/ wizard", 0);
           changeTab(3);
           setError({
             sender: "needs",
@@ -1612,11 +1613,6 @@ export default function BusinessLoan(props) {
               if (!didCancel) {
                 if (result.errors && result.length > 0) {
                   if (window.analytics)
-                    window.analytics.track("Failure", {
-                      category: "Loan Application",
-                      label: "/app/loan/ wizard",
-                      value: 0
-                    });
                   changeTab(3);
                   setError({
                     sender: "saveLoan"
@@ -1645,12 +1641,6 @@ export default function BusinessLoan(props) {
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors) {
-                  if (window.analytics)
-                    window.analytics.track("Failure", {
-                      category: "Loan Application",
-                      label: "/app/loan/ wizard",
-                      value: 0
-                    });
                   changeTab(3);
                   setError({
                     sender: "submitLoan"
@@ -1668,8 +1658,15 @@ export default function BusinessLoan(props) {
               }
             })
             .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
-            .onServerError(res =>
-              Notif("error", "Serverfel, var god och försök igen")
+            .onServerError(res =>{
+              if (window.analytics)
+              window.analytics.track("Failure", {
+                category: "Loan Application",
+                label: "/app/loan/ wizard",
+                value: 0
+              });
+              return Notif("error", "Serverfel, var god och försök igen")
+            }
             )
             .onBadRequest(res => Notif("error", "Forminmatningsfel"))
             .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
