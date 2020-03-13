@@ -19,6 +19,7 @@ import BusinessAcquisitionView from "../ViewApplication/BusinessAcquisitionView"
 import RealEstateView from "../ViewApplication/RealEstateView";
 import Pagination from "react-js-pagination";
 import "./pagination.scss";
+import "./search.scss";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -39,6 +40,15 @@ const MyApplications = props => {
     limit: process.env.REACT_APP_MINASIDOR_RESULT_LIMIT,
     totalRecords: 0,
     activePage: 1
+  });
+  const [filter, setFilter] = useState({
+    org_number: "",
+    org_name: "",
+    email: "",
+    phone: "",
+    opp_number: "",
+    contact_name: "",
+    personal_number: ""
   });
   const [editModal, setEditModal] = useState({
     visibility: false,
@@ -98,7 +108,7 @@ const MyApplications = props => {
   useEffect(() => {
     toggleLoading(true);
     const { skip, limit } = pagination;
-    _getMyApplications(skip, limit, () => {
+    _getMyApplications(skip, limit, filter, () => {
       toggleLoading(false);
     });
     return () => {
@@ -109,7 +119,7 @@ const MyApplications = props => {
   useEffect(() => {
     const { skip, limit } = pagination;
     toggleLoading(true);
-    _getMyApplications(skip, limit, () => {
+    _getMyApplications(skip, limit, filter, () => {
       toggleLoading(false);
     });
   }, [pagination.activePage]);
@@ -331,7 +341,7 @@ const MyApplications = props => {
   //Submit verification
   function handleSaveBankId() {}
 
-  function _getMyApplications(_skip, _limit, callback) {
+  function _getMyApplications(_skip, _limit, _filterParams, callback) {
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
@@ -414,13 +424,14 @@ const MyApplications = props => {
             ? { currentRole: "agent", id: userInfo.broker_id }
             : { currentRole: "customer", id: userInfo.personalNumber }),
         _skip,
-        _limit
+        _limit,
+        _filterParams
       );
   }
   function handleSuccessCancel() {
     const { skip, limit } = pagination;
     toggleLoading(true);
-    _getMyApplications(skip, limit, () => {
+    _getMyApplications(skip, limit, filter, () => {
       toggleLoading(false);
     });
   }
@@ -502,7 +513,7 @@ const MyApplications = props => {
                 message: "Skicka har varit framgångsrikt"
               }
             });
-            _getMyApplications(skip, limit, () => {
+            _getMyApplications(skip, limit, filter, () => {
               if (typeof callback === "function") {
                 callback(result);
               }
@@ -764,6 +775,26 @@ const MyApplications = props => {
   //     return <div className="pagination">{paginationItems}</div>;
   //   }
   // }
+  function applyFilter() {
+    const { skip, limit } = pagination;
+    toggleLoading(true);
+    _getMyApplications(skip, limit, filter, () => {
+      toggleLoading(false);
+    });
+  }
+  function updateFilters(e) {
+    e.persist();
+    const { name, value } = e.target;
+    setFilter({
+      ...filter,
+      [name]: value
+    });
+  }
+  // function Search() {
+  //   return (
+
+  //   );
+  // }
   return (
     <div className="myApps">
       {loading ? (
@@ -777,7 +808,7 @@ const MyApplications = props => {
           <h2>{error && error.title}</h2>
           <span>{error && error.message}</span>
         </div>
-      ) : !data || data.length === 0 ? (
+      ) : !data ? (
         <div className="page-empty-list animated fadeIn">
           <Empty />
           <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
@@ -785,25 +816,150 @@ const MyApplications = props => {
         </div>
       ) : (
         <>
-          {data.oppList.map(app => (
-            <Item
-              key={app.opportunityID}
-              item={app}
-              onCancelSuccess={handleSuccessCancel}
-              verify={handleVerifyApplication}
-              submit={handleSubmitApplication}
-              edit={toggleEditModal}
-              view={toggleViewModal}
-            />
-          ))}
+          <div className="search">
+            <div className="search__header">
+              <h3>{t("FILTER")}</h3>
+            </div>
+            <div className="search__items-box" key={"contact_name"}>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("APP_CONTACT_NAME")}
+                </label>
+                <input
+                  // key={"contact_name"}
+                  name="contact_name"
+                  onChange={updateFilters}
+                  value={filter.contact_name}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("APP_OBJECT_ORG_NUMBER")}
+                </label>
+                <input
+                  name="org_number"
+                  onChange={updateFilters}
+                  value={filter.org_number}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("APP_PERSONAL_NUMBER")}
+                </label>
+                <input
+                  name="personal_number"
+                  onChange={updateFilters}
+                  value={filter.personal_number}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("OPPORTUNITY_NUMBER")}
+                </label>
+                <input
+                  name="opp_number"
+                  onChange={updateFilters}
+                  value={filter.opp_number}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("APP_COMPANY_NAME")}
+                </label>
+                <input
+                  name="org_name"
+                  value={filter.org_name}
+                  onChange={updateFilters}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("EMAIL")}
+                </label>
+                <input
+                  name="email"
+                  value={filter.email}
+                  onChange={updateFilters}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+              <div className="search__items-box__search-item">
+                <label
+                  htmlFor=""
+                  className="search__items-box__search-item__label"
+                >
+                  {t("TELEPHONE")}
+                </label>
+                <input
+                  name="phone"
+                  value={filter.phone}
+                  onChange={updateFilters}
+                  className="search__items-box__search-item__input my-input"
+                />
+              </div>
+            </div>
+            <div className="search__footer">
+              <button
+                className="search__footer__apply-filters btn --primary"
+                onClick={applyFilter}
+              >
+                {t("APPLY")}
+              </button>
+            </div>
+          </div>
+          {data.oppList.length ? (
+            data.oppList.map(app => (
+              <Item
+                key={app.opportunityID}
+                item={app}
+                onCancelSuccess={handleSuccessCancel}
+                verify={handleVerifyApplication}
+                submit={handleSubmitApplication}
+                edit={toggleEditModal}
+                view={toggleViewModal}
+              />
+            ))
+          ) : (
+            <div className="page-empty-list animated fadeIn">
+              <Empty />
+              <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
+              <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
+            </div>
+          )}
           {/* pagination */}
-          <Pagination
-            pageRangeDisplayed={8}
-            onChange={triggerPagination}
-            itemsCountPerPage={parseInt(pagination.limit)}
-            totalItemsCount={pagination.totalRecords}
-            activePage={pagination.activePage}
-          />
+          {pagination.totalRecords > pagination.limit &&
+            data.oppList.length > 0 && (
+              <Pagination
+                pageRangeDisplayed={8}
+                onChange={triggerPagination}
+                itemsCountPerPage={parseInt(pagination.limit)}
+                totalItemsCount={pagination.totalRecords}
+                activePage={pagination.activePage}
+              />
+            )}
 
           {verifyModal && (
             <VerifyBankIdModal

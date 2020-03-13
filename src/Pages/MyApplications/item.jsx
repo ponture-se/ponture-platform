@@ -324,7 +324,7 @@ const Item = props => {
           <span>{t("APP_RECORD_TYPE")}</span>
           <span>{item.RecordType}</span>
         </div>
-        {currentRole === "agent" && (
+        {currentRole === "agent" || currentRole === "admin" && (
           <>
             <div className="application__bodyRow">
               <span>{t("APP_CONTACT_NAME")}</span>

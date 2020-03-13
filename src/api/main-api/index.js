@@ -178,9 +178,15 @@ export function getMyApplications() {
     }
   }
 
-  const _call = (userInfo, skip, limit) => {
+  const _call = (userInfo, skip, limit, filterParams) => {
     const { id, currentRole } = userInfo;
-    const params = {};
+    const newFilterParams = {};
+    for (const filterName in filterParams) {
+      if (filterParams[filterName].trim()) {
+        newFilterParams[filterName] = filterParams[filterName];
+      }
+    }
+    const params = { ...newFilterParams };
     if (skip) params.skip = skip;
     if (limit) params.limit = limit;
     let url = myAppsUrl;
