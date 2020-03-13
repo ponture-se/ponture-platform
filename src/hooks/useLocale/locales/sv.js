@@ -41,6 +41,8 @@ export default {
   BUSINESS_LOAN: "Företagslån",
   PRICE: "Köpspris",
   INVALID_VALUE: "Ogiltligt värde",
+  INVALID_ORGNUMBER: "Invalid organization number", //T
+  ORGNUMBER_PLACEHOLDER: "i,e: 1234561234 or 123456-1234",
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",

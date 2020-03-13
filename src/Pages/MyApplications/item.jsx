@@ -279,7 +279,7 @@ const Item = props => {
           )} */}
           &nbsp;
           {/* view application */}
-          {currentRole !== "agent" &&
+          {currentRole === "admin" &&
             (RecordType === "real estate" ||
               RecordType === "business acquisition loan") && (
               <button
@@ -381,13 +381,14 @@ const Item = props => {
         stage !== "funded/closed won" &&
         stage !== "not funded/ closed lost" && (
           <div className="application__footer">
+            
             <div>
               <button className="btn --light" onClick={handleCancelClicked}>
                 <span className="icon-cross" />
                 {t("CANCEL")}
               </button>
             </div>
-
+          {currentRole ==="admin" && 
             <div style={{ flexDirection: "row", display: "flex" }}>
               {stage === "created" && (
                 <>
@@ -436,7 +437,7 @@ const Item = props => {
                   )}
                 </>
               )}
-            </div>
+            </div>}
           </div>
         )}
 
