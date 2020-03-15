@@ -1,0 +1,112 @@
+.MatchMaking {
+  margin: 20px 40px 0 40px;
+  box-shadow: none !important;
+  & .section-header {
+    font-size: 18px;
+    font-family: OpenSanceBold;
+    padding: none !important;
+    border-bottom: 1px solid lightgray;
+    height: 32px;
+    margin-bottom: 25px;
+  }
+  & .bl__infoBox {
+    box-shadow: none !important;
+  }
+  & .modal-footer {
+    padding: 10px 11px;
+  }
+  & .partner-list {
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: var(--flex-direction);
+    &__partner-item {
+      background-color: whitesmoke;
+      padding: 10px;
+      margin: 1.5%;
+      border: 2px solid lightgray;
+      cursor: pointer;
+      width: 47%;
+      &__company-name {
+        margin: 5px 0 15px 0;
+        font-family: OpenSanceBold;
+        font-size: 18px;
+      }
+      &__company-status {
+      }
+      &:hover {
+        outline: 1px solid lightgray;
+        // border-color: gray;
+      }
+      &.--active {
+        border-color: rgb(66, 204, 173);
+        outline: 1px solid rgb(66, 204, 173);
+        // background-color: lightgray;
+      }
+      &.--disabled {
+        border: none;
+        background-color: rgb(210, 210, 210);
+        cursor: not-allowed;
+        outline: none !important;
+      }
+    }
+  }
+}
+@media (max-width: 576px) {
+  .MatchMaking {
+    margin: 10px 20px 0 20px;
+    box-shadow: none !important;
+    & .section-header {
+      font-size: 18px;
+      font-family: OpenSanceBold;
+      padding: none !important;
+      border-bottom: 1px solid lightgray;
+      height: 32px;
+      margin-bottom: 25px;
+    }
+    & .bl__infoBox {
+      box-shadow: none !important;
+      &__header {
+        .modal-close {
+          top: 10px;
+        }
+      }
+    }
+    & .modal-footer {
+      padding: 10px 11px;
+    }
+    & .partner-list {
+      display: flex;
+      flex-wrap: wrap;
+      flex-direction: var(--flex-direction);
+      &__partner-item {
+        background-color: whitesmoke;
+        padding: 5px;
+        margin: 1%;
+        border: 2px solid lightgray;
+        cursor: pointer;
+        width: 47%;
+        &__company-name {
+          margin: 5px 0 15px 0;
+          font-family: OpenSanceBold;
+          font-size: 15px;
+        }
+        &__company-status {
+          font-size: 13px;
+        }
+        &:hover {
+          outline: 1px solid lightgray;
+          // border-color: gray;
+        }
+        &.--active {
+          border-width: 3px solid gray;
+          background-color: lightgray;
+        }
+        &.--disbabled {
+          border: none;
+          background-color: gray;
+          cursor: not-allowed;
+        }
+      }
+    }
+  }
+}

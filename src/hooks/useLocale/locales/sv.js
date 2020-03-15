@@ -320,5 +320,11 @@ export default {
   CUSTOMER_LOGIN_NO_APP_BTN_LOAN: "Företagslån",
   CUSTOMER_LOGIN_NO_APP_BTN_F: "Fakturaköp",
   CUSTOMER_LOGIN_NO_APP_INFO3:
-    "Visste du att genom oss skickar du bara en ansökan och får erbjudanden från upp till 15 banker och finansiella institut - helt kostnadsfritt"
+    "Visste du att genom oss skickar du bara en ansökan och får erbjudanden från upp till 15 banker och finansiella institut - helt kostnadsfritt",
+
+  ///
+  //MATCH MAKING
+  MATCHMAKING_LOADING_TEXT: "Loading partners ...", //T
+  MATCHMAKING_EMPTY_LIST_TITLE: "Empty list", //T
+  MATCHMAKING_EMPTY_LIST_MSG: "Partners list is empty."
 };

@@ -13,6 +13,7 @@ import {
   submitLoan,
   saveLoan
 } from "api/business-loan-api";
+
 import Modal from "components/Modal";
 import EditAppliation from "../EditApplication";
 import BusinessAcquisitionView from "../ViewApplication/BusinessAcquisitionView";
@@ -25,6 +26,8 @@ import {
   isPhoneNumber,
   validateEmail
 } from "./../../utils";
+import SafeValue from "utils/SafeValue";
+import MatchMaking from "../MatchMaking";
 import "./pagination.scss";
 import "./search.scss";
 //
@@ -771,7 +774,10 @@ const MyApplications = props => {
         data: undefined
       });
     } else {
-      setMatchMakingModal({ visibility: true, data: data });
+      setMatchMakingModal({
+        visibility: true,
+        data: SafeValue(data, "opportunityID", "string", 0)
+      });
     }
   }
   function toggleViewModal(data, type) {
@@ -1195,23 +1201,10 @@ const MyApplications = props => {
             borderRadius: "0"
           }}
         >
-          <div className="bl editApplication bl__infoBox ">
-            <div className="bl__infoBox__header">
-              {/* <div className="bl__infoBox__circleIcon">
-         <i className="icon-info" />
-       </div> */}
-              <span>{t("Manual match making")}</span>
-              <span
-                className="icon-cross modal-close"
-                onClick={toggleMatchMakingModal}
-              ></span>
-            </div>
-          </div>
-          <div className="page-empty-list animated fadeIn">
-            <Empty />
-            <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
-            <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
-          </div>
+          <MatchMaking
+            oppId={matchMakingModal.data}
+            onClose={toggleMatchMakingModal}
+          />
         </Modal>
       )}
     </div>
