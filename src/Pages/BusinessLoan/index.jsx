@@ -53,7 +53,6 @@ const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
 const activeOperationsError = false;
 export default function BusinessLoan(props) {
   let didCancel = false;
-
   //Global state and locales(translation)
   const [{ b_loan_moreInfo_visibility }, dispatch] = useGlobalState();
   const { t, appLocale, currentLang } = useLocale();
@@ -137,6 +136,8 @@ export default function BusinessLoan(props) {
     loanReasonsCategories: []
   };
 
+  //Permission
+  const [activeSections,setActiveSections] = useState(null);
   //Identifications
   const [userIsVerified, setUserIsVerified] = useState(false);
 
@@ -302,7 +303,7 @@ export default function BusinessLoan(props) {
     eMessage: ""
   });
   const [RETaxationValue, setRETaxationValue] = useState({
-    value: "",
+    value: {visualValue:"",realValue:"0"},
     isValid: true,
     eMessage: ""
   });
@@ -484,7 +485,6 @@ export default function BusinessLoan(props) {
               toggleMainSpinner(false);
             }
           } else {
-            
             toggleMainSpinner(false);
             changeTab(3);
             setError({
@@ -1359,18 +1359,18 @@ export default function BusinessLoan(props) {
         toggleTermValidation(!form["terms"]);
       }
       if (activeCompanyTypeSelection) {
-        if (!orgName || orgName.length === 0) {
-          isValid = false;
-          handleOrgNameChanged({
-            target: { value: orgName ? orgName : "" }
-          });
-        }
-        if (!newOrgPrice.realValue || newOrgPrice.realValue.length === 0) {
-          isValid = false;
-          handleNewOrgPriceChanged({
-            target: { value: newOrgPrice ? newOrgPrice.realValue : 0 }
-          });
-        }
+        // if (!orgName || orgName.length === 0) {
+        //   isValid = false;
+        //   handleOrgNameChanged({
+        //     target: { value: orgName ? orgName : "" }
+        //   });
+        // }
+        // if (!newOrgPrice.realValue || newOrgPrice.realValue.length === 0) {
+        //   isValid = false;
+        //   handleNewOrgPriceChanged({
+        //     target: { value: newOrgPrice ? newOrgPrice.realValue : 0 }
+        //   });
+        // }
         obj = {
           ...obj,
           acquisition: {
@@ -1405,106 +1405,106 @@ export default function BusinessLoan(props) {
 
       //Company acquisition fields
       if (activeRealEstateSection) {
-        if (!REArea || REArea.length === 0) {
-          isValid = false;
-          handleREAreaChange({
-            target: { value: REArea ? REArea : "" }
-          });
-        }
-        if (!REPrice.realValue || REPrice.realValue.length === 0) {
-          isValid = false;
-          handleREPriceChanged({
-            target: { value: REPrice ? REPrice.realValue : 0 }
-          });
-        }
-        if (!selectedREType.value || selectedREType.value.length === 0) {
-          isValid = false;
-          setSelectedREType({
-            value: "",
-            isValid: false,
-            eMessage: t("MANDATORY_FIELD")
-          });
-          // handleREType({
-          //   target: { value: selectedREType.value ? selectedREType.value : "" }
-          // });
-        }
-        if (
-          !selectedREUsageCategory.value ||
-          selectedREUsageCategory.value.length === 0
-        ) {
-          isValid = false;
-          setSelectedREUsageCategory({
-            value: [],
-            isValid: false,
-            eMessage: t("MANDATORY_FIELD")
-          });
-          // handleREUsageCategory({
-          //   target: {
-          //     value: selectedREUsageCategory.value.length
-          //       ? selectedREUsageCategory.value
-          //       : []
-          //   }
-          // });
-        }
-        if (!RETaxationValue.value || RETaxationValue.value.length === 0) {
-          isValid = false;
-          handleRETaxationValue({
-            target: {
-              value: RETaxationValue.value ? RETaxationValue.value : ""
-            }
-          });
-        }
-        if (!REAddress.value || REAddress.value.length === 0) {
-          isValid = false;
-          handleREAddress({
-            target: { value: REAddress.value ? REAddress.value : "" }
-          });
-        }
-        if (!RECity.value || RECity.value.length === 0) {
-          isValid = false;
-          handleRECity({
-            target: { value: RECity.value ? RECity.value : "" }
-          });
-        }
-        // if (!RELink.value || RELink.value.length === 0) {
+        // if (!REArea || REArea.length === 0) {
         //   isValid = false;
-        //   handleREAddress({
-        //     target: { value: RELink.value ? RELink.value : "" }
+        //   handleREAreaChange({
+        //     target: { value: REArea ? REArea : "" }
         //   });
         // }
-        if (!REDescription.value || REDescription.value.length === 0) {
-          isValid = false;
-          handleREDescription({
-            target: { value: REDescription.value ? REDescription.value : "" }
-          });
-        }
+        // if (!REPrice.realValue || REPrice.realValue.length === 0) {
+        //   isValid = false;
+        //   handleREPriceChanged({
+        //     target: { value: REPrice ? REPrice.realValue : 0 }
+        //   });
+        // }
+        // if (!selectedREType.value || selectedREType.value.length === 0) {
+        //   isValid = false;
+        //   setSelectedREType({
+        //     value: "",
+        //     isValid: false,
+        //     eMessage: t("MANDATORY_FIELD")
+        //   });
+        //   // handleREType({
+        //   //   target: { value: selectedREType.value ? selectedREType.value : "" }
+        //   // });
+        // }
+        // if (
+        //   !selectedREUsageCategory.value ||
+        //   selectedREUsageCategory.value.length === 0
+        // ) {
+        //   isValid = false;
+        //   setSelectedREUsageCategory({
+        //     value: [],
+        //     isValid: false,
+        //     eMessage: t("MANDATORY_FIELD")
+        //   });
+        //   // handleREUsageCategory({
+        //   //   target: {
+        //   //     value: selectedREUsageCategory.value.length
+        //   //       ? selectedREUsageCategory.value
+        //   //       : []
+        //   //   }
+        //   // });
+        // }
+        // if (!RETaxationValue.value || RETaxationValue.value.length === 0) {
+        //   isValid = false;
+        //   handleRETaxationValue({
+        //     target: {
+        //       value: RETaxationValue.value ? RETaxationValue.value : ""
+        //     }
+        //   });
+        // }
+        // if (!REAddress.value || REAddress.value.length === 0) {
+        //   isValid = false;
+        //   handleREAddress({
+        //     target: { value: REAddress.value ? REAddress.value : "" }
+        //   });
+        // }
+        // if (!RECity.value || RECity.value.length === 0) {
+        //   isValid = false;
+        //   handleRECity({
+        //     target: { value: RECity.value ? RECity.value : "" }
+        //   });
+        // }
+        // // if (!RELink.value || RELink.value.length === 0) {
+        // //   isValid = false;
+        // //   handleREAddress({
+        // //     target: { value: RELink.value ? RELink.value : "" }
+        // //   });
+        // // }
+        // if (!REDescription.value || REDescription.value.length === 0) {
+        //   isValid = false;
+        //   handleREDescription({
+        //     target: { value: REDescription.value ? REDescription.value : "" }
+        //   });
+        // }
 
-        if (
-          !REOwnInvestmentAmount.value.realValue ||
-          REOwnInvestmentAmount.value.realValue.length === 0
-        ) {
-          isValid = false;
-          handleREOwnInvestmentAmount({
-            target: {
-              value: REOwnInvestmentAmount.value.realValue
-                ? REOwnInvestmentAmount.value.realValue
-                : ""
-            }
-          });
-        }
-        if (
-          !REPurchaseDescription.value ||
-          REPurchaseDescription.value.length === 0
-        ) {
-          isValid = false;
-          handleREPurchaseDescription({
-            target: {
-              value: REPurchaseDescription.value
-                ? REPurchaseDescription.value
-                : ""
-            }
-          });
-        }
+        // if (
+        //   !REOwnInvestmentAmount.value.realValue ||
+        //   REOwnInvestmentAmount.value.realValue.length === 0
+        // ) {
+        //   isValid = false;
+        //   handleREOwnInvestmentAmount({
+        //     target: {
+        //       value: REOwnInvestmentAmount.value.realValue
+        //         ? REOwnInvestmentAmount.value.realValue
+        //         : ""
+        //     }
+        //   });
+        // }
+        // if (
+        //   !REPurchaseDescription.value ||
+        //   REPurchaseDescription.value.length === 0
+        // ) {
+        //   isValid = false;
+        //   handleREPurchaseDescription({
+        //     target: {
+        //       value: REPurchaseDescription.value
+        //         ? REPurchaseDescription.value
+        //         : ""
+        //     }
+        //   });
+        // }
         // if (!REFile.value || REFile.value.lengt === 0) {
         //   isValid = false;
         //   handleREFile({
@@ -1562,7 +1562,6 @@ export default function BusinessLoan(props) {
             broker_id: brokerId
           };
         }
-
         try {
           const r = JSON.parse(referral_params);
           if (r.utm_source) {
@@ -1605,15 +1604,14 @@ export default function BusinessLoan(props) {
           }
         };
         if (
-          (p_userRole === "agent") ||
+          p_userRole === "agent" ||
           (p_userRole === "customer" && activeCompanyTypeSelection)
         ) {
           saveLoan(p_userRole)
             .onOk(result => {
               if (!didCancel) {
                 if (result.errors && result.length > 0) {
-                  if (window.analytics)
-                  changeTab(3);
+                  if (window.analytics) changeTab(3);
                   setError({
                     sender: "saveLoan"
                   });
@@ -1636,7 +1634,7 @@ export default function BusinessLoan(props) {
             .onBadRequest(res => Notif("error", "Forminmatningsfel"))
             .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
-        }else{
+        } else {
           submitLoan()
             .onOk(result => {
               if (!didCancel) {
@@ -1658,16 +1656,15 @@ export default function BusinessLoan(props) {
               }
             })
             .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
-            .onServerError(res =>{
+            .onServerError(res => {
               if (window.analytics)
-              window.analytics.track("Failure", {
-                category: "Loan Application",
-                label: "/app/loan/ wizard",
-                value: 0
-              });
-              return Notif("error", "Serverfel, var god och försök igen")
-            }
-            )
+                window.analytics.track("Failure", {
+                  category: "Loan Application",
+                  label: "/app/loan/ wizard",
+                  value: 0
+                });
+              return Notif("error", "Serverfel, var god och försök igen");
+            })
             .onBadRequest(res => Notif("error", "Forminmatningsfel"))
             .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
             .call(obj);
@@ -1931,8 +1928,12 @@ export default function BusinessLoan(props) {
                           );
                         })}
                     </div>
-                    <div style={{fontSize:"13px"}}>{t("BL_REASON_LOAN_INFO_1")}</div>
-                    <div style={{fontSize:"13px"}}>{t("BL_REASON_LOAN_INFO_2")}</div>
+                    <div style={{ fontSize: "13px" }}>
+                      {t("BL_REASON_LOAN_INFO_1")}
+                    </div>
+                    <div style={{ fontSize: "13px" }}>
+                      {t("BL_REASON_LOAN_INFO_2")}
+                    </div>
                     {selectedLoanReasonsCat && (
                       <div className="options" style={{ margin: "auto -8px" }}>
                         {loanReasons &&
@@ -2129,7 +2130,7 @@ export default function BusinessLoan(props) {
                         {t("BL_COMPANY")}
                       </label>
                       <div className="options" style={{ margin: "auto -8px" }}>
-                        {activeCompanyTypeSelection && (
+                        {/* {activeCompanyTypeSelection && (
                           <div className="newCompanyRadioBox">
                             <label className="customCheckbox">
                               <input
@@ -2155,7 +2156,7 @@ export default function BusinessLoan(props) {
                               </span>
                             </label>
                           </div>
-                        )}
+                        )} */}
                         {companies.map(c => (
                           <div
                             key={c.companyId}
@@ -2199,7 +2200,7 @@ export default function BusinessLoan(props) {
                 {/* End: apply loan section */}
 
                 {/* Start: new company info section*/}
-                {userIsVerified && activeCompanyTypeSelection && (
+                {/* { userIsVerified && activeCompanyTypeSelection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
                       <div className="bl__infoBox__circleIcon">
@@ -2268,11 +2269,12 @@ export default function BusinessLoan(props) {
                     <br />
                     <br />
                   </div>
-                )}
+                )} */}
                 {/* End:  new company info */}
 
                 {/* Start: Real estate section */}
-                {userIsVerified && activeRealEstateSection && (
+                
+                {/* { userIsVerified && activeRealEstateSection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">
                       <div className="bl__infoBox__circleIcon">
@@ -2294,7 +2296,6 @@ export default function BusinessLoan(props) {
                           {t("BL_REALESTATE_TYPE")}
                         </label>
                         <div style={{ margin: "auto -8px" }}>
-                          {/* <div className="element-group"> */}
                           <div className="element-group__center">
                             <div className="options">
                               {RETypeOpts.length > 0 &&
@@ -2324,7 +2325,6 @@ export default function BusinessLoan(props) {
                                   );
                                 })}
                             </div>
-                            {/* </div> */}
                           </div>
                           {!selectedREType.isValid && (
                             <span
@@ -2411,7 +2411,6 @@ export default function BusinessLoan(props) {
                           {t("BL_REALESTATE_USAGE_CATEGORY")}
                         </label>
                         <div style={{ margin: "auto -8px" }}>
-                          {/* <div className="element-group"> */}
                           <div className="element-group__center">
                             <div className="options">
                               {REUsageCategoryOpts.length > 0 &&
@@ -2440,7 +2439,6 @@ export default function BusinessLoan(props) {
                                   );
                                 })}
                             </div>
-                            {/* </div> */}
                           </div>
                           {!selectedREUsageCategory.isValid && (
                             <span
@@ -2573,7 +2571,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <br />
                     <div className="userInputs">
-                    <div
+                      <div
                         className={
                           "bl__input animated fadeIn " +
                           (!RETaxationValue.isValid ? "--invalid" : "")
@@ -2614,8 +2612,7 @@ export default function BusinessLoan(props) {
                           {t("BL_REALESTATE_DESCRIPTION")}
                         </label>
                         <div className="bl__input__element">
-                          {/* <div className="element-group">
-                             <div className="element-group__center"> */}
+                        
                           <textarea
                             className="my-input"
                             value={REDescription.value}
@@ -2628,8 +2625,7 @@ export default function BusinessLoan(props) {
                               padding: "10px"
                             }}
                           ></textarea>
-                          {/* </div>
-                          </div> */}
+                   
                           {!REDescription.isValid && (
                             <span className="validation-messsage">
                               {REDescription.eMessage}
@@ -2646,9 +2642,7 @@ export default function BusinessLoan(props) {
                           (!RELink.isValid ? "--invalid" : "")
                         }
                       >
-                        <label
-                          className="bl__input__label"
-                        >
+                        <label className="bl__input__label">
                           {t("BL_REALESTATE_LINK")}
                         </label>
                         <div className="bl__input__element">
@@ -2681,7 +2675,6 @@ export default function BusinessLoan(props) {
                         <label className="bl__input__label">
                           {t("BL_REALESTATE_FILE")}
                         </label>
-                        {/* <div className="bl__input__element"> */}
                         <div
                           className="element-group"
                           style={{ margin: "auto -8px" }}
@@ -2703,11 +2696,10 @@ export default function BusinessLoan(props) {
                         )}
                       </div>
                     </div>
-                    {/* </div> */}
                     <br />
                     <br />
                   </div>
-                )}
+                )} */}
                 {/* End: Real estate section */}
 
                 {/* Start: Contact info section */}
