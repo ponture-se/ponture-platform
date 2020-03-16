@@ -79,6 +79,9 @@ typings/
 .env.test.local
 .env.production.local
 
+# other
+.txt
+.text
 
 yarn.lock
 /__mock__
