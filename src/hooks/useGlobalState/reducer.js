@@ -9,7 +9,6 @@ let _isAuthenticated = false;
 let brokerParam = getParameterByName("brokerid", window.location.href);
 let customerParam = getParameterByName("customerid", window.location.href);
 let userSession = undefined;
-debugger;
 //first check URL params to determine user role, then if any params aren't set check cookies for role specifying
 if (brokerParam) {
   currentRole = "agent";

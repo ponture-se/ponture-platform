@@ -14,7 +14,6 @@ const UserLogin = props => {
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
   const { role } = props.match.params;
-  console.log("role: ", role);
   function handleUsernameChanged(e) {
     setUsername(e.target.value);
   }
