@@ -1371,36 +1371,36 @@ export default function BusinessLoan(props) {
         //     target: { value: newOrgPrice ? newOrgPrice.realValue : 0 }
         //   });
         // }
-        obj = {
-          ...obj,
-          acquisition: {
-            object_price: String(newOrgPrice.realValue),
-            object_company_name: orgName,
-            object_name: orgName,
-            object_organization_number: selectedCompany
-              ? selectedCompany.companyId
-              : "",
-            object_industry: "",
-            object_annual_report: "",
-            object_balance_sheet: "",
-            object_income_statement: "",
-            object_valuation_letter: "",
-            account_balance_sheet: "",
-            account_income_statement: "",
-            available_guarantees: "",
-            available_guarantees_description: "",
-            purchaser_profile: "",
-            own_investment_amount: "0",
-            own_investment_details: "",
-            additional_files: [],
-            business_plan: [],
-            additional_details: "",
-            purchase_type: "",
-            description: loanReasons.filter(
-              loan => loan.API_Name === selectedLoanReasons[0]
-            )[0].Label //needs change
-          }
-        };
+        // obj = {
+        //   ...obj,
+        //   acquisition: {
+        //     object_price: String(newOrgPrice.realValue),
+        //     object_company_name: orgName,
+        //     object_name: orgName,
+        //     object_organization_number: selectedCompany
+        //       ? selectedCompany.companyId
+        //       : "",
+        //     object_industry: "",
+        //     object_annual_report: "",
+        //     object_balance_sheet: "",
+        //     object_income_statement: "",
+        //     object_valuation_letter: "",
+        //     account_balance_sheet: "",
+        //     account_income_statement: "",
+        //     available_guarantees: "",
+        //     available_guarantees_description: "",
+        //     purchaser_profile: "",
+        //     own_investment_amount: "0",
+        //     own_investment_details: "",
+        //     additional_files: [],
+        //     business_plan: [],
+        //     additional_details: "",
+        //     purchase_type: "",
+        //     description: loanReasons.filter(
+        //       loan => loan.API_Name === selectedLoanReasons[0]
+        //     )[0].Label //needs change
+        //   }
+        // };
       }
 
       //Company acquisition fields
@@ -1511,24 +1511,24 @@ export default function BusinessLoan(props) {
         //     target: { value: REFile.value ? REFile.value : "" }
         //   });
         // }
-        obj = {
-          ...obj,
-          real_estate: {
-            real_estate_size: REArea,
-            real_estate_price: String(REPrice.realValue),
-            real_estate_type: selectedREType.value,
-            real_estate_usage_category: selectedREUsageCategory.value,
-            real_estate_taxation_value: String(RETaxationValue.value.realValue),
-            real_estate_address: REAddress.value,
-            real_estate_city: RECity.value,
-            real_estate_link: RELink.value,
-            real_estate_description: REDescription.value,
-            real_estate_document: REFile.value,
-            description: REPurchaseDescription.value,
-            additional_details: "",
-            own_investment_amount: String(REOwnInvestmentAmount.value.realValue)
-          }
-        };
+        // obj = {
+        //   ...obj,
+        //   real_estate: {
+        //     real_estate_size: REArea,
+        //     real_estate_price: String(REPrice.realValue),
+        //     real_estate_type: selectedREType.value,
+        //     real_estate_usage_category: selectedREUsageCategory.value,
+        //     real_estate_taxation_value: String(RETaxationValue.value.realValue),
+        //     real_estate_address: REAddress.value,
+        //     real_estate_city: RECity.value,
+        //     real_estate_link: RELink.value,
+        //     real_estate_description: REDescription.value,
+        //     real_estate_document: REFile.value,
+        //     description: REPurchaseDescription.value,
+        //     additional_details: "",
+        //     own_investment_amount: String(REOwnInvestmentAmount.value.realValue)
+        //   }
+        // };
       }
       if (isValid) {
         toggleSubmitSpinner(true);
