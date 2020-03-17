@@ -137,7 +137,7 @@ export default function BusinessLoan(props) {
   };
 
   //Permission
-  const [activeSections,setActiveSections] = useState(null);
+  const [activeSections, setActiveSections] = useState(null);
   //Identifications
   const [userIsVerified, setUserIsVerified] = useState(false);
 
@@ -303,7 +303,7 @@ export default function BusinessLoan(props) {
     eMessage: ""
   });
   const [RETaxationValue, setRETaxationValue] = useState({
-    value: {visualValue:"",realValue:"0"},
+    value: { visualValue: "", realValue: "0" },
     isValid: true,
     eMessage: ""
   });
@@ -1478,7 +1478,6 @@ export default function BusinessLoan(props) {
         //     target: { value: REDescription.value ? REDescription.value : "" }
         //   });
         // }
-
         // if (
         //   !REOwnInvestmentAmount.value.realValue ||
         //   REOwnInvestmentAmount.value.realValue.length === 0
@@ -1604,37 +1603,39 @@ export default function BusinessLoan(props) {
           }
         };
         if (
-          p_userRole === "agent" ||
-          (p_userRole === "customer" && activeCompanyTypeSelection)
+          true
+          // p_userRole === "agent" ||
+          // p_userRole === "customer"
+          // && activeCompanyTypeSelection
         ) {
-          saveLoan(p_userRole)
-            .onOk(result => {
-              if (!didCancel) {
-                if (result.errors && result.length > 0) {
-                  if (window.analytics) changeTab(3);
-                  setError({
-                    sender: "saveLoan"
-                  });
-                } else {
-                  resetForm();
-                  if (window.analytics)
-                    window.analytics.track("Create", {
-                      category: "Loan Application",
-                      label: "/app/loan/ wizard",
-                      value: loanAmount
-                    });
-                  changeTab(2);
-                }
-              }
-            })
-            .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
-            .onServerError(res =>
-              Notif("error", "Serverfel, var god och försök igen")
-            )
-            .onBadRequest(res => Notif("error", "Forminmatningsfel"))
-            .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
-            .call(obj);
-        } else {
+          //   saveLoan(p_userRole)
+          //     .onOk(result => {
+          //       if (!didCancel) {
+          //         if (result.errors && result.length > 0) {
+          //           if (window.analytics) changeTab(3);
+          //           setError({
+          //             sender: "saveLoan"
+          //           });
+          //         } else {
+          //           resetForm();
+          //           if (window.analytics)
+          //             window.analytics.track("Create", {
+          //               category: "Loan Application",
+          //               label: "/app/loan/ wizard",
+          //               value: loanAmount
+          //             });
+          //           changeTab(2);
+          //         }
+          //       }
+          //     })
+          //     .unAuthorized(res => ApiErrorCallback(res, "saveLoan"))
+          //     .onServerError(res =>
+          //       Notif("error", "Serverfel, var god och försök igen")
+          //     )
+          //     .onBadRequest(res => Notif("error", "Forminmatningsfel"))
+          //     .unKnownError(res => ApiErrorCallback(res, "saveLoan"))
+          //     .call(obj);
+          // } else {
           submitLoan()
             .onOk(result => {
               if (!didCancel) {
@@ -2272,7 +2273,7 @@ export default function BusinessLoan(props) {
                 {/* End:  new company info */}
 
                 {/* Start: Real estate section */}
-                
+
                 {/* { userIsVerified && activeRealEstateSection && (
                   <div className="bl__infoBox">
                     <div className="bl__infoBox__header">

@@ -992,7 +992,7 @@ const MyApplications = props => {
                     <input
                       name="personal_number"
                       onChange={updateFilters}
-                      type="number"
+                      type="text"
                       value={filter.personal_number}
                       placeholder="i,e: 193701301111"
                       className="search__items-box__search-item__input my-input"
