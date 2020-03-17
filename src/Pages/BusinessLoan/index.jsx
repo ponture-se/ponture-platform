@@ -1697,7 +1697,6 @@ export default function BusinessLoan(props) {
       props.history.push("/app/panel/myApplications?customerid=" + pId);
     }
   }
-
   //After bankId
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);

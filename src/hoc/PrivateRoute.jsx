@@ -18,7 +18,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
               pathname:
                 ["agent", "admin"].indexOf(lastRole) > -1 ||
                 ["agent", "admin"].indexOf(currentRole) > -1
-                  ? "/app/userlogin"
+                  ? "/app/userlogin/" + (lastRole || currentRole)
                   : "/app/login",
               state: { from: props.location }
             }}

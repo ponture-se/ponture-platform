@@ -11,7 +11,8 @@ const offersUrl = baseUrl + config.REACT_APP_REQUEST_OFFERS;
 const rejectOfferUrl = baseUrl + config.REACT_APP_REJECT_OFFER;
 const acceptOfferUrl = baseUrl + config.REACT_APP_ACCEPT_OFFER;
 const openAppUrl = baseUrl + config.REACT_APP_OPEN_APP;
-const userLoginUrl = baseUrl + config.REACT_APP_USER_LOGIN;
+const agentLoginUrl = baseUrl + config.REACT_APP_AGENT_LOGIN;
+const adminLoginUrl = baseUrl + config.REACT_APP_ADMIN_LOGIN;
 const uploadFileUrl = baseUrl + config.REACT_APP_UPLOAD_FILE;
 const getAppAttachmentUrl = baseUrl + config.REACT_APP_GET_APP_ATTACHMENT;
 const getPartnersForMatchMaking =
@@ -1068,8 +1069,11 @@ export function userLogin() {
       _unKnownErrorCallBack(result);
     }
   }
-  const _call = (username, password) => {
-    const url = userLoginUrl;
+  const _call = (username, password, role) => {
+    let url = agentLoginUrl;
+    if (role === "admin") {
+      url = adminLoginUrl;
+    }
     axios({
       method: "post",
       url: url,

@@ -271,12 +271,13 @@ export default function MatchMaking(props) {
                 >
                   <h4 className="partner-list__partner-item__company-name">
                     {partner.partner_name}
-                    {console.log(selectedPartners)}
                   </h4>
                   <span className="partner-list__partner-item__company-status">
                     {t("Status:")}{" "}
                     {!partner.spo_list.length
                       ? "Not assigned"
+                      : partner.spo_list[0].spo_stage === "New"
+                      ? "Assgined"
                       : partner.spo_list[0].spo_stage}
                   </span>
                 </div>

@@ -32,8 +32,14 @@ const App = () => {
               />
               <Route
                 key="appLoan"
-                path="/app/userlogin"
-                render={props => <UserLogin {...props} />}
+                path="/app/userlogin/:role"
+                render={props =>
+                  ["admin", "agent"].indexOf(props.match.params.role) > -1 ? (
+                    <UserLogin {...props} />
+                  ) : (
+                    <Route component={NotFound} />
+                  )
+                }
               />
               <Route
                 key="appLoan"

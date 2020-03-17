@@ -13,7 +13,8 @@ const UserLogin = props => {
   const [{}, dispatch] = useGlobalState();
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
-
+  const { role } = props.match.params;
+  console.log("role: ", role);
   function handleUsernameChanged(e) {
     setUsername(e.target.value);
   }
@@ -29,16 +30,16 @@ const UserLogin = props => {
           toggleLoading(false);
           sessionStorage.removeItem("@ponture-customer-bankid");
           sessionStorage.setItem("@ponture-user-info", JSON.stringify(info));
-          const name = info.role === "admin" ? info.admin_id : info.name;
+          const name = role === "admin" ? info.admin_id : info.name;
           dispatch({
             type: "SET_USER_INFO",
             payload: {
               userInfo: { ...info, name: name },
-              currentRole: info.role ? info.role : "agent",
+              currentRole: role ? role : "agent",
               isAuthenticated: true
             }
           });
-          if (info.role !== "admin")
+          if (role !== "admin")
             props.history.push(
               "/app/panel/myapplications?brokerid=" + username
             );
@@ -103,7 +104,7 @@ const UserLogin = props => {
           });
         }
       })
-      .call(username, password);
+      .call(username, password, role);
   }
   return (
     <div className="loginContainer">

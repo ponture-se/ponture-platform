@@ -119,7 +119,7 @@ const withResolver = WrappedComponent => {
           toggleLoading(false);
         } else if (!token && !userInfo) {
           //if both userInfo and token not found, then agent authentication not established before
-          props.history.push("/app/userlogin");
+          props.history.push("/app/userlogin/" + currentRole);
         } else {
           //Agent is valid and authentication passed successfully
           toggleLoading(false);
@@ -131,7 +131,7 @@ const withResolver = WrappedComponent => {
         to={{
           pathname:
             ["agent", "admin"].indexOf(lastRole) > -1
-              ? "/app/userlogin"
+              ? "/app/userlogin/" + lastRole
               : "/app/login",
           state: { from: props.location }
         }}
