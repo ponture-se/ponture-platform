@@ -393,7 +393,7 @@ const Item = props => {
           {currentRole ==="admin" && 
           
             <div style={{ flexDirection: "row", display: "flex" }}>
-              {stage !=="created" && 
+              {stage ==="created" && 
                 <button
                 className="btn --light matchMakingButton"
                 onClick={() => matchMakingModal(item)}
