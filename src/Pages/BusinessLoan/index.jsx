@@ -1538,7 +1538,7 @@ export default function BusinessLoan(props) {
           ...obj,
           orgNumber: selectedCompany ? selectedCompany.companyId : "",
           orgName: selectedCompany ? selectedCompany.companyName : "",
-          personalNumber: pId,
+          personalNumber: pId.replace("-",""),
           amount: parseInt(loanAmount),
           amourtizationPeriod: parseInt(loanPeriod),
           need: needs,

@@ -813,7 +813,7 @@ const MyApplications = props => {
   //   }
   // }
   function applyFilter() {
-    const { skip, limit } = pagination;
+    let { skip, limit } = pagination;
     let isFormValid = true;
     for (const vMessage in filterErrorMessage) {
       if (filterErrorMessage[vMessage]) {
@@ -822,7 +822,11 @@ const MyApplications = props => {
     }
     if (isFormValid) {
       toggleLoading(true);
-      _getMyApplications(skip, limit, filter, () => {
+      const _filter = {
+        ...filter,
+        personal_number: filter.personal_number.replace("-", "")
+      };
+      _getMyApplications(skip, limit, _filter, () => {
         toggleLoading(false);
       });
     }
