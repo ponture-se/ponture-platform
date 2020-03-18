@@ -17,7 +17,7 @@ export default function AxiosInitializer({ children }) {
   React.useEffect(() => {
     axios.interceptors.response.use(
       function(response) {
-        return response;
+        return { ...response, __retry: () => axios.request(response.config) };
       },
       function(error) {
         if (!axios.isCancel(error)) {

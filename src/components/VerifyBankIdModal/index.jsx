@@ -52,7 +52,6 @@ export default function VerifyBankIdModal(props) {
                     toggleMainSpinner(false);
                     setSuccess(true);
                     setSuccessResult(result);
-
                     if (window.analytics) {
                       window.analytics.identify(
                         result.userInfo.personalNumber,
