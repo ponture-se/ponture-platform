@@ -314,7 +314,7 @@ export function collect() {
         }
       })
       .then(response => {
-        if (!response.data.userInfo.personalNumber) {
+        if (response.data.userInfo && !response.data.userInfo.personalNumber) {
           return response.__retry();
         }
         _onOk(response.data ? response.data : undefined);
