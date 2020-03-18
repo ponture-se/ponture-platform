@@ -50,11 +50,13 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   : 1;
 const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
 // ===============================================================
-const activeOperationsError = false;
 export default function BusinessLoan(props) {
   let didCancel = false;
   //Global state and locales(translation)
-  const [{ b_loan_moreInfo_visibility,userInfo,currentRole,isAuthenticated }, dispatch] = useGlobalState();
+  const [
+    { b_loan_moreInfo_visibility, userInfo, currentRole, isAuthenticated },
+    dispatch
+  ] = useGlobalState();
   const { t, appLocale, currentLang } = useLocale();
 
   //Fill data from Cookies
@@ -1688,14 +1690,14 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href; //.split("?")[0];
   }
   function openMyApps() {
-    // dispatch({
-    //   type: "SET_USER_INFO",
-    //   payload: {
-    //     userInfo: userInfo,
-    //     currentRole: brokerId ? "agent" : "customer",
-    //     isAuthenticated: isAuthenticated
-    //   }
-    // });
+    dispatch({
+      type: "SET_USER_INFO",
+      payload: {
+        userInfo: userInfo,
+        currentRole: brokerId ? "agent" : "customer",
+        isAuthenticated: isAuthenticated
+      }
+    });
     if (brokerId) {
       props.history.push({
         pathname: "/app/panel/myApplications",
