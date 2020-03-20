@@ -17,6 +17,9 @@ export default function AxiosInitializer({ children }) {
   React.useEffect(() => {
     axios.interceptors.response.use(
       function(response) {
+        // response.status = 500;
+        // response.success = false;
+        // return Promise.reject(error);
         return { ...response, __retry: () => axios.request(response.config) };
       },
       function(error) {

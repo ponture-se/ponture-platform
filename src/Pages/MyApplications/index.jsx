@@ -885,11 +885,6 @@ const MyApplications = props => {
       [name]: errorMessage
     });
   }
-  // function Search() {
-  //   return (
-
-  //   );
-  // }
   return (
     <div className="myApps">
       {loading ? (
@@ -1010,7 +1005,7 @@ const MyApplications = props => {
                       htmlFor=""
                       className="search__items-box__search-item__label"
                     >
-                      {t("Opportunity number")}
+                      {t("SEARCH_OPP_NUMBER")}
                       {/* //T */}
                     </label>
                     <input

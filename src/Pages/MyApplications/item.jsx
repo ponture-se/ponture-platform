@@ -322,6 +322,12 @@ const Item = props => {
             <span>{separateNumberByChar(item.amount)} Kr</span>
           </span>
         </div>
+        {currentRole === "admin" &&
+          <div className="application__bodyRow">
+            <span>{t("SEARCH_OPP_NUMBER")}</span>
+            <span>{item.opportunityNumber}</span>
+          </div>
+        }
         <div className="application__bodyRow">
           <span>{t("APP_RECORD_TYPE")}</span>
           <span>{item.RecordType}</span>
@@ -383,13 +389,14 @@ const Item = props => {
         stage !== "funded/closed won" &&
         stage !== "not funded/ closed lost" && (
           <div className="application__footer">
-            
-            <div>
-              <button className="btn --light" onClick={handleCancelClicked}>
-                <span className="icon-cross" />
-                {t("CANCEL")}
-              </button>
-            </div>
+              <div>
+            {currentRole !== "admin" && 
+                <button className="btn --light" onClick={handleCancelClicked}>
+                  <span className="icon-cross" />
+                  {t("CANCEL")}
+                </button>
+            }
+              </div>
           {currentRole ==="admin" && 
           
             <div style={{ flexDirection: "row", display: "flex" }}>
