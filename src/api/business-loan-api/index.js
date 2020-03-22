@@ -314,6 +314,9 @@ export function collect() {
         }
       })
       .then(response => {
+        if (response.userInfo && !response.userInfo.personalNumber) {
+          return response.__retry();
+        }
         _onOk(response.data ? response.data : undefined);
       })
       .catch(error => {
