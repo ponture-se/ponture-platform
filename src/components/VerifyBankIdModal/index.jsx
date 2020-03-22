@@ -78,7 +78,7 @@ export default function VerifyBankIdModal(props) {
                     } else {
                       if (window.analytics)
                         window.analytics.track("BankID Verified", {
-                          category: "Customer Portal",
+                          category: " ",
                           label: "Customer Portal login bankid popup",
                           value: 0
                         });

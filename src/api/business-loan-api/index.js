@@ -550,6 +550,7 @@ export function getCompanies() {
       .catch(error => {
         if (error.response) {
           const status = error.response.status;
+          debugger;
           switch (status) {
             case 200:
               break;
