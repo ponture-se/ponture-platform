@@ -10,7 +10,7 @@ const UserLogin = props => {
   const [password, setPassword] = useState("");
   let didCancel = false;
   const { t } = useLocale();
-  const [{}, dispatch] = useGlobalState();
+  const [{}, dispatch, currentRole] = useGlobalState();
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
   const { role } = props.match.params;
@@ -63,7 +63,7 @@ const UserLogin = props => {
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: "Agent not found"
+            message: `${currentRole} not found`
           }
         });
       })
