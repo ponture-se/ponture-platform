@@ -2,11 +2,15 @@ import React, { useEffect, useState, useCallback } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
-import { getMatchMakingPartners, doManualMatchMaking } from "api/main-api";
+import {
+  getMatchMakingPartners,
+  doManualMatchMaking,
+  closeSPO
+} from "api/main-api";
 import SafeValue from "utils/SafeValue";
 import "./index.scss";
 import classnames from "classnames";
-import { CircleSpinner } from "components";
+import { CircleSpinner, InlineCancelButton } from "components";
 export default function MatchMaking(props) {
   let didCancel = false;
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
@@ -16,14 +20,15 @@ export default function MatchMaking(props) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState();
   const { t } = useLocale();
+  const [pendingSPOs, setPendingSPOs] = useState([]);
   useEffect(() => {
     getPartnersList(props.oppId, () => {
       setIsLoading(false);
     });
   }, []);
-  useEffect(() => {
-    console.log("updated");
-  }, [selectedPartners]);
+  // useEffect(() => {
+  //   console.log("updated");
+  // }, [selectedPartners]);
   const getPartnersList = (oppId, callback) => {
     getMatchMakingPartners()
       .onOk(result => {
@@ -97,6 +102,16 @@ export default function MatchMaking(props) {
       .call(oppId);
   };
   function choosePartner(partnerId, e) {
+    const partnerIdIndex = selectedPartners.indexOf(partnerId);
+    const selectedPartnerList = Array.from(selectedPartners);
+    if (partnerIdIndex > -1) {
+      selectedPartnerList.splice(partnerIdIndex, 1);
+    } else {
+      selectedPartnerList.push(partnerId);
+    }
+    setSelectedPartners(() => selectedPartnerList);
+  }
+  function dropPartner(partnerId, e) {
     const partnerIdIndex = selectedPartners.indexOf(partnerId);
     const selectedPartnerList = Array.from(selectedPartners);
     if (partnerIdIndex > -1) {
@@ -220,6 +235,115 @@ export default function MatchMaking(props) {
       })
       .call(oppId, selectedPartners);
   };
+  const closeSPObyId = spoId => {
+    // setIsLoading(true);
+    setPendingSPOs(() => [...pendingSPOs, spoId]);
+    const _removeThisSPOFromPendingList = () => {
+      const _pendingSPOs = pendingSPOs;
+      _pendingSPOs.splice(pendingSPOs.indexOf(spoId), 1);
+      setPendingSPOs(() => [..._pendingSPOs]);
+    };
+    closeSPO()
+      .onOk(result => {
+        if (!didCancel) {
+          if (result && result.errors && result.errors.length > 0) {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "error",
+                message: "SPO canceled successfuly" //T
+              }
+            });
+          } else {
+            dispatch({
+              type: "ADD_NOTIFY",
+              value: {
+                type: "success",
+                message: "SPO canceled successfuly." //T
+              }
+            });
+            // _getMyApplications(skip, limit, filter, () => {
+            //   if (typeof callback === "function") {
+            //     callback(result);
+            //   }
+            // });
+            //success
+            // if (window.analytics)
+            //   window.analytics.track("Submit", {
+            //     category: "Loan Application",
+            //     label: "/app/loan/ wizard",
+            //     value: loanAmount
+            //   });
+          }
+          getPartnersList(props.oppId, () => {
+            _removeThisSPOFromPendingList();
+          });
+        }
+      })
+      .unKnownError(result => {
+        _removeThisSPOFromPendingList();
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Unknown error happened" //T
+            }
+          });
+        }
+      })
+      //   .onInvalidRequest(result => {
+      //     if (!didCancel) {
+      //       if (typeof callback === "function") {
+      //         callback(false);
+      //       }
+      //       dispatch({
+      //         type: "ADD_NOTIFY",
+      //         value: {
+      //           type: "error",
+      //           message: "Invalid request for manual match making"
+      //         }
+      //       });
+      //     }
+      //   })
+      .unAuthorized(result => {
+        _removeThisSPOFromPendingList();
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Unauthorized" //T
+            }
+          });
+        }
+      })
+      .onBadRequest(result => {
+        _removeThisSPOFromPendingList();
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Canceling SPO error, Bad request." //T
+            }
+          });
+        }
+      })
+      .notFound(result => {
+        _removeThisSPOFromPendingList();
+        if (!didCancel) {
+          dispatch({
+            type: "ADD_NOTIFY",
+            value: {
+              type: "error",
+              message: "Canceling SPO error." //T
+            }
+          });
+        }
+      })
+      .call(spoId);
+  };
   return (
     <>
       <div className="MatchMaking">
@@ -260,25 +384,47 @@ export default function MatchMaking(props) {
                   key={idx}
                   className={classnames(
                     "partner-list__partner-item",
-                    partner.spo_list.length && "--disabled",
+                    partner.spo_list.length
+                      ? partner.spo_list[0].spo_stage !== "Closed"
+                        ? "--assgined"
+                        : partner.spo_list[0].spo_stage === "Closed" &&
+                          "--closed"
+                      : "",
                     selectedPartners.indexOf(partner.partner_id) > -1 &&
-                      "--active"
+                      "--not-assgined"
                   )}
                   onClick={() =>
-                    !partner.spo_list.length &&
-                    choosePartner(partner.partner_id)
+                    !partner.spo_list.length ||
+                    (partner.spo_list.length &&
+                      partner.spo_list[0].spo_stage === "Closed" &&
+                      choosePartner(partner.partner_id))
                   }
                 >
-                  <h4 className="partner-list__partner-item__company-name">
-                    {partner.partner_name}
-                  </h4>
-                  <span className="partner-list__partner-item__company-status">
-                    {t("Status:")}{" "}
-                    {!partner.spo_list.length
-                      ? "Not assigned"
-                      : partner.spo_list[0].spo_stage === "New"
-                      ? "Assgined"
-                      : partner.spo_list[0].spo_stage}
+                  <h4 className="company-name">{partner.partner_name}</h4>
+                  <span className="company-status-box">
+                    <span className="company-status-box__title">
+                      {t("Status:") /* //T */}
+                    </span>{" "}
+                    <span className="company-status-box__status">
+                      {!partner.spo_list.length
+                        ? "Not assigned"
+                        : partner.spo_list[0].spo_stage === "New"
+                        ? "Assgined"
+                        : partner.spo_list[0].spo_stage}
+                    </span>
+                    {partner.spo_list.length
+                      ? partner.spo_list[0].spo_stage !== "Closed" && (
+                          <InlineCancelButton
+                            onClick={() =>
+                              closeSPObyId(partner.spo_list[0].spo_id)
+                            }
+                            spinner={
+                              pendingSPOs.indexOf(partner.spo_list[0].spo_id) >
+                              -1
+                            }
+                          />
+                        )
+                      : ""}
                   </span>
                 </div>
               ))}

@@ -1,6 +1,7 @@
 .MatchMaking {
   margin: 20px 40px 0 40px;
   box-shadow: none !important;
+
   & .section-header {
     font-size: 18px;
     font-family: OpenSanceBold;
@@ -26,27 +27,46 @@
       border: 2px solid lightgray;
       cursor: pointer;
       width: 47%;
-      &__company-name {
+      & .company-name {
         margin: 5px 0 15px 0;
         font-family: OpenSanceBold;
         font-size: 18px;
       }
-      &__company-status {
+      & .company-status-box {
+        &__status {
+          font-family: OpenSanceBold;
+        }
       }
       &:hover {
         outline: 1px solid lightgray;
-        // border-color: gray;
       }
-      &.--active {
+      &.--not-assgined {
         border-color: rgb(66, 204, 173);
         outline: 1px solid rgb(66, 204, 173);
-        // background-color: lightgray;
+        & .company-status-box {
+          &__status {
+            color: #333;
+          }
+        }
       }
-      &.--disabled {
-        border: none;
-        background-color: rgb(210, 210, 210);
+      &.--assgined {
+        border-color: #42ccad;
+        outline: 1px solid #42ccad;
+        & .company-status-box {
+          &__status {
+            color: #42ccad;
+          }
+        }
+        // background-color: rgb(210, 210, 210);
         cursor: not-allowed;
-        outline: none !important;
+      }
+      &.--closed {
+        & .company-status-box {
+          &__status {
+            color: rgb(204, 66, 66);
+          }
+        }
+        // outline: 1px solid rgb(204, 66, 66);
       }
     }
   }
