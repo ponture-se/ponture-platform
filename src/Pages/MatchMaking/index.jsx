@@ -394,10 +394,10 @@ export default function MatchMaking(props) {
                       "--not-assgined"
                   )}
                   onClick={() =>
-                    !partner.spo_list.length ||
-                    (partner.spo_list.length &&
-                      partner.spo_list[0].spo_stage === "Closed" &&
-                      choosePartner(partner.partner_id))
+                    (!partner.spo_list.length ||
+                      (partner.spo_list.length &&
+                        partner.spo_list[0].spo_stage === "Closed")) &&
+                    choosePartner(partner.partner_id)
                   }
                 >
                   <h4 className="company-name">{partner.partner_name}</h4>
