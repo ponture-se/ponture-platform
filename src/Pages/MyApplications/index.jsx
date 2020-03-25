@@ -1203,6 +1203,13 @@ const MyApplications = props => {
           <MatchMaking
             oppId={matchMakingModal.data}
             onClose={toggleMatchMakingModal}
+            onSubmit={() => {
+              const { skip, limit } = pagination;
+              toggleLoading(true);
+              _getMyApplications(skip, limit, filter, () => {
+                toggleLoading(false);
+              });
+            }}
           />
         </Modal>
       )}

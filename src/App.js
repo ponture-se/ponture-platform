@@ -18,6 +18,7 @@ import NotFound from "./Pages/NotFound";
 const Main = withResolver(MainPage);
 //
 const App = () => {
+  console.log("type: ", process.env.REACT_APP_ENABLE_ANALYTICS === "false");
   useTheme("theme1");
   return (
     <StateProvider>

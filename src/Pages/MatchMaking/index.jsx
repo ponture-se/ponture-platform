@@ -144,6 +144,7 @@ export default function MatchMaking(props) {
               }
             });
             props.onClose();
+            props.onSubmit();
             // _getMyApplications(skip, limit, filter, () => {
             //   if (typeof callback === "function") {
             //     callback(result);
@@ -251,7 +252,7 @@ export default function MatchMaking(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "SPO canceled successfuly" //T
+                message: "An error happend while closing SPO, Please try again." //T
               }
             });
           } else {
@@ -259,7 +260,7 @@ export default function MatchMaking(props) {
               type: "ADD_NOTIFY",
               value: {
                 type: "success",
-                message: "SPO canceled successfuly." //T
+                message: "SPO closed successfuly." //T
               }
             });
             // _getMyApplications(skip, limit, filter, () => {
@@ -325,7 +326,7 @@ export default function MatchMaking(props) {
             type: "ADD_NOTIFY",
             value: {
               type: "error",
-              message: "Canceling SPO error, Bad request." //T
+              message: "Closing SPO error, Bad request." //T
             }
           });
         }
@@ -337,7 +338,7 @@ export default function MatchMaking(props) {
             type: "ADD_NOTIFY",
             value: {
               type: "error",
-              message: "Canceling SPO error." //T
+              message: "Closing SPO error." //T
             }
           });
         }
