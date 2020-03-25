@@ -3,7 +3,11 @@ import "./style.scss";
 import CircleSpinner from "../CircleSpinner";
 const InlineCancelButton = props => {
   return (
-    <span className="inline-cancel-button" {...props}>
+    <button
+      className="inline-cancel-button"
+      {...props}
+      disabled={props.disableFeature && props.spinner}
+    >
       {props.spinner ? (
         // <CircleSpinner show={true} size="small" />
         "Canceling ..."
@@ -13,7 +17,7 @@ const InlineCancelButton = props => {
           {" Cancel"}
         </>
       )}
-    </span>
+    </button>
   );
 };
 export default InlineCancelButton;

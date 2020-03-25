@@ -418,6 +418,7 @@ export default function MatchMaking(props) {
                             onClick={() =>
                               closeSPObyId(partner.spo_list[0].spo_id)
                             }
+                            disableFeature={true}
                             spinner={
                               pendingSPOs.indexOf(partner.spo_list[0].spo_id) >
                               -1
