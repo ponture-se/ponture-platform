@@ -1,0 +1,18 @@
+.inline-cancel-button {
+  font-size: 13px;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 15px;
+  padding: 2px 9px;
+  display: inline-block;
+  margin: 0 6px;
+  border: none;
+  color: black;
+  outline: none;
+  & i.icon-cross {
+    font-size: 10px;
+  }
+  &:hover {
+    cursor: pointer;
+    background-color: rgba(0, 0, 0, 0.3);
+  }
+}
