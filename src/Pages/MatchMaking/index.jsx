@@ -448,7 +448,7 @@ export default function MatchMaking(props) {
                           >
                             {unAssignedPartners.indexOf(partner.partner_id) > -1
                               ? " Undo"
-                              : " Cancel"}
+                              : " Close" /* //T */}
                           </InlineButton>
                         )
                       : ""}
