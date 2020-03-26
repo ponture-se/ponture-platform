@@ -327,7 +327,8 @@ export default {
   MATCHMAKING_LOADING_TEXT: "Loading partners ...", //T
   MATCHMAKING_EMPTY_LIST_TITLE: "Empty list", //T
   MATCHMAKING_EMPTY_LIST_MSG: "Partners list is empty.",
-
+  MATCHMAKING_APPLY_BUTTON: "Assign and submit",
+  MATCHMAKING_ASSIGN_BUTTON: "Just assign, don't submit",
   //Search
   SEARCH_OPP_NUMBER: "Lead number"
 };

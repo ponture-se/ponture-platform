@@ -1,5 +1,5 @@
 import CircleSpinner from "./CircleSpinner";
 import SquareSpinner from "./SquareSpinner";
-import InlineCancelButton from "./InlineCancelButton";
+import InlineButton from "./InlineButton";
 
-export { CircleSpinner, SquareSpinner, InlineCancelButton };
+export { CircleSpinner, SquareSpinner, InlineButton };

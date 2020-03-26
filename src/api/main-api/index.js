@@ -575,7 +575,7 @@ export function doManualMatchMaking() {
     }
   }
 
-  const _call = (oppId, selectedPartners) => {
+  const _call = (oppId, data, doSubmit) => {
     const url = manualMatchMaking;
     let token = Cookies.get("@ponture-customer-portal/token");
     try {
@@ -590,8 +590,9 @@ export function doManualMatchMaking() {
         Authorization: `Bearer ${token}`
       },
       data: {
+        ...data,
         opp_id: oppId,
-        partners_id: selectedPartners
+        with_submit: doSubmit
       }
     })
       .then(response => {
