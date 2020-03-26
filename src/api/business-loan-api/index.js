@@ -208,12 +208,6 @@ export function startBankId() {
               _notFound();
               break;
             case 500:
-              if (window.analytics)
-                window.analytics.track("Failure", {
-                  category: "Loan Application",
-                  label: "/app/loan/wizard",
-                  value: 0
-                });
               _onServerError();
               break;
             default:
