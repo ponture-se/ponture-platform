@@ -568,6 +568,12 @@ export function doManualMatchMaking() {
       _onRequestErrorCallBack(result);
     }
   }
+  let _cancelCallBack;
+  function _cancel(result) {
+    if (_cancelCallBack) {
+      _cancelCallBack(result);
+    }
+  }
   let _unKnownErrorCallBack;
   function _unKnownError(result) {
     if (_unKnownErrorCallBack) {
@@ -576,6 +582,7 @@ export function doManualMatchMaking() {
   }
 
   const _call = (oppId, data, doSubmit) => {
+    const CancelToken = axios.CancelToken;
     const url = manualMatchMaking;
     let token = Cookies.get("@ponture-customer-portal/token");
     try {
@@ -593,7 +600,10 @@ export function doManualMatchMaking() {
         ...data,
         opp_id: oppId,
         with_submit: doSubmit
-      }
+      },
+      cancelToken: new CancelToken(function executor(c) {
+        _cancel(c);
+      })
     })
       .then(response => {
         _onOk(
@@ -634,6 +644,10 @@ export function doManualMatchMaking() {
     call: _call,
     onOk: function(callback) {
       _onOkCallBack = callback;
+      return this;
+    },
+    cancel: function(callback) {
+      _cancelCallBack = callback;
       return this;
     },
     onServerError: function(callback) {
