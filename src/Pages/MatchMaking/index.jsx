@@ -20,6 +20,7 @@ export default function MatchMaking(props) {
   const [isLoading, setIsLoading] = useState(true);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState();
+  const [cancelAPIFunc, setCancelAPIFunc] = useState(function() {});
   const { t } = useLocale();
   const [pendingSPOs, setPendingSPOs] = useState([]);
   useEffect(() => {
@@ -34,6 +35,30 @@ export default function MatchMaking(props) {
     getMatchMakingPartners()
       .onOk(result => {
         if (!didCancel) {
+          if (result) {
+            result.forEach(partner => {
+              if (SafeValue(partner, "spo_list", "array", []).length > 0) {
+                partner.status = "Assgined";
+                partner.stage = "";
+                for (let i = 0; partner.spo_list.length > i; i++) {
+                  const SPO = partner.spo_list[i];
+                  if (
+                    SafeValue(SPO, "spo_stage", "string", "") === "Opened" ||
+                    SafeValue(SPO, "spo_stage", "string", "") === "New"
+                  ) {
+                    partner.stage = SPO.spo_stage;
+                    break;
+                  }
+                }
+                if (partner.stage === "") {
+                  partner.stage = "Closed";
+                }
+              } else {
+                partner.status = "Not assgined";
+                partner.stage = "";
+              }
+            });
+          }
           setPartnerList(result);
           if (typeof callback === "function") callback();
         }
@@ -89,6 +114,23 @@ export default function MatchMaking(props) {
           });
         }
       })
+      // .onCancel(() => {
+      //   // _this.setState(
+      //   //   {
+      //   //     ...this.initialStates
+      //   //   },
+      //   //   () => {
+      //   //     this.fileRef.current.value = "";
+      //   //     if (typeof _this.props.onUploadEnds === "function")
+      //   //       _this.props.onUploadEnds({ success: false, status: "canceled" });
+      //   //   }
+      //   // );
+      // })
+      // .cancel(func => {
+      //   if (typeof func === "function") {
+      //     setCancelAPIFunc(func);
+      //   }
+      // })
       .onRequestError(result => {
         if (!didCancel) {
           if (typeof callback === "function") {
@@ -370,7 +412,11 @@ export default function MatchMaking(props) {
             </span>
             <span
               className="icon-cross modal-close"
-              onClick={props.onClose}
+              onClick={() => {
+                if (typeof cancelAPIFunc === "function") cancelAPIFunc();
+                didCancel = true; //Don't have any idea about sideEffect!
+                props.onClose();
+              }}
             ></span>
           </div>
         </div>
@@ -423,11 +469,8 @@ export default function MatchMaking(props) {
                       {t("Status:") /* //T */}
                     </span>{" "}
                     <span className="company-status-box__status">
-                      {!partner.spo_list.length
-                        ? "Not assigned"
-                        : partner.spo_list[0].spo_stage === "New"
-                        ? "Assgined"
-                        : partner.spo_list[0].spo_stage}
+                      {partner.status}
+                      {partner.stage ? ` (${partner.stage})` : ""}
                     </span>
                     {partner.spo_list.length
                       ? partner.spo_list[0].spo_stage !== "Closed" && (
