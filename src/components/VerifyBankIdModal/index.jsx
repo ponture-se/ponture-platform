@@ -125,6 +125,12 @@ export default function VerifyBankIdModal(props) {
         })
         .onServerError(result => {
           clearInterval(fetchInterval);
+          // if (window.analytics)
+          //   window.analytics.track("BankID Failed", {
+          //     category: "Customer Portal",
+          //     label: "Customer Portal login bankid popup",
+          //     value: 0
+          //   });
           if (!didCancel) {
             toggleMainSpinner(false);
             setError({
@@ -135,6 +141,12 @@ export default function VerifyBankIdModal(props) {
         })
         .onBadRequest(result => {
           clearInterval(fetchInterval);
+          // if (window.analytics)
+          //   window.analytics.track("BankID Failed", {
+          //     category: "Customer Portal",
+          //     label: "Customer Portal login bankid popup",
+          //     value: 0
+          //   });
           if (!didCancel) {
             toggleMainSpinner(false);
             setError({
@@ -145,6 +157,12 @@ export default function VerifyBankIdModal(props) {
         })
         .unAuthorized(result => {
           clearInterval(fetchInterval);
+          // if (window.analytics)
+          //   window.analytics.track("BankID Failed", {
+          //     category: "Customer Portal",
+          //     label: "Customer Portal login bankid popup",
+          //     value: 0
+          //   });
           if (!didCancel) {
             toggleMainSpinner(false);
             setError({
@@ -155,6 +173,12 @@ export default function VerifyBankIdModal(props) {
         })
         .unKnownError(result => {
           clearInterval(fetchInterval);
+          // if (window.analytics)
+          //   window.analytics.track("BankID Failed", {
+          //     category: "Customer Portal",
+          //     label: "Customer Portal login bankid popup",
+          //     value: 0
+          //   });
           if (!didCancel) {
             toggleMainSpinner(false);
             setError({
@@ -165,6 +189,12 @@ export default function VerifyBankIdModal(props) {
         })
         .onRequestError(result => {
           clearInterval(fetchInterval);
+          // if (window.analytics)
+          //   window.analytics.track("BankID Failed", {
+          //     category: "Customer Portal",
+          //     label: "Customer Portal login bankid popup",
+          //     value: 0
+          //   });
           if (!didCancel) {
             toggleMainSpinner(false);
             setError({

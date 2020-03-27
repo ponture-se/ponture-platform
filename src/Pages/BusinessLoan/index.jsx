@@ -596,6 +596,12 @@ export default function BusinessLoan(props) {
               }
             })
             .onServerError(result => {
+              if (window.analytics)
+                window.analytics.track("BankID Failed", {
+                  category: "app/loan",
+                  label: "app/loan customer BankID popup",
+                  value: 0
+                });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
@@ -605,6 +611,12 @@ export default function BusinessLoan(props) {
               }
             })
             .onBadRequest(result => {
+              if (window.analytics)
+                window.analytics.track("BankID Failed", {
+                  category: "app/loan",
+                  label: "app/loan customer BankID popup",
+                  value: 0
+                });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
@@ -614,6 +626,12 @@ export default function BusinessLoan(props) {
               }
             })
             .unAuthorized(result => {
+              if (window.analytics)
+                window.analytics.track("BankID Failed", {
+                  category: "app/loan",
+                  label: "app/loan customer BankID popup",
+                  value: 0
+                });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
@@ -623,6 +641,12 @@ export default function BusinessLoan(props) {
               }
             })
             .unKnownError(result => {
+              if (window.analytics)
+                window.analytics.track("BankID Failed", {
+                  category: "app/loan",
+                  label: "app/loan customer BankID popup",
+                  value: 0
+                });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);

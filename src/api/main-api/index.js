@@ -313,7 +313,7 @@ export function getOffers() {
         );
       })
       .catch(error => {
-        return _onOk();
+        // return _onOk();
         if (error.response) {
           const status = error.response.status;
           switch (status) {
