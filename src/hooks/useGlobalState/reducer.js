@@ -1,7 +1,6 @@
 import { getParameterByName } from "./../../utils";
 //
 //Initial actions and global states while application loading for the first time
-//IMPORTANT: Role handling must be improved.
 let bankIdInfo = null;
 let brokerId = null;
 let currentRole = "customer"; //default role is customer

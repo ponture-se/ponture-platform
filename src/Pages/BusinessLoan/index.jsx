@@ -381,11 +381,11 @@ export default function BusinessLoan(props) {
   //componentDidMount
   useEffect(() => {
     _loadNeeds();
+    sessionStorage.removeItem("@ponture-customer-bankid");
+    sessionStorage.removeItem("@ponture-user-info");
     return () => {
       didCancel = true;
     };
-    sessionStorage.removeItem("@ponture-customer-bankid");
-    sessionStorage.removeItem("@ponture-user-info");
   }, []);
 
   //Conditional componentDidUpdate
