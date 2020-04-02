@@ -1,35 +1,33 @@
-import React, { useEffect, useState, useCallback } from "react";
+//Mains
+import React, { useEffect, useState } from "react";
 import { useGlobalState, useLocale } from "hooks";
+//Styles
 import "./styles.scss";
 import "../BusinessLoan/styles.scss";
-import Item from "./item";
+//Local Components
 import SquareSpinner from "components/SquareSpinner";
 import { Empty, Wrong } from "components/Commons/ErrorsComponent";
-import { getMyApplications, getMatchMakingPartners } from "api/main-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
+import Pagination from "components/Pagination";
+import Modal from "components/Modal";
+import Item from "./item";
+import Filter from "components/Filter";
+//APIs
+import { getMyApplications } from "api/main-api";
 import {
   startBankId,
   cancelVerify,
   submitLoan,
   saveLoan
 } from "api/business-loan-api";
-
-import Modal from "components/Modal";
+//Pages
 import EditAppliation from "../EditApplication";
 import BusinessAcquisitionView from "../ViewApplication/BusinessAcquisitionView";
 import RealEstateView from "../ViewApplication/RealEstateView";
-import Pagination from "react-js-pagination";
-import {
-  isBankId,
-  isNumber,
-  isPersonalNumber,
-  isPhoneNumber,
-  validateEmail
-} from "./../../utils";
-import SafeValue from "utils/SafeValue";
 import MatchMaking from "../MatchMaking";
-import "./pagination.scss";
-import "./search.scss";
+//Utils
+import { isPersonalNumber, isPhoneNumber, validateEmail } from "./../../utils";
+import SafeValue from "utils/SafeValue";
 //
 const MyApplications = props => {
   let didCancel = false;
@@ -885,250 +883,95 @@ const MyApplications = props => {
       [name]: errorMessage
     });
   }
+  function handleFilterFunc(filtersObj) {
+    const { skip, limit } = pagination;
+    toggleLoading(true);
+    _getMyApplications(skip, limit, filtersObj, () => {
+      toggleLoading(false);
+    });
+  }
   return (
-    <div className="myApps">
-      {loading ? (
-        <div className="page-loading">
-          <SquareSpinner />
-          <h2>{t("MY_APPS_LOADING_TEXT")}</h2>
-        </div>
-      ) : error ? (
-        <div className="page-list-error animated fadeIn">
-          <Wrong />
-          <h2>{error && error.title}</h2>
-          <span>{error && error.message}</span>
-        </div>
-      ) : !data ? (
-        <div className="page-empty-list animated fadeIn">
-          <Empty />
-          <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
-          <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
-        </div>
-      ) : (
-        <>
-          {currentRole === "admin" && (
-            <div className="search application animated fadeIn">
-              {/* Application header info */}
-              <div className="application__header">
-                <div className="left">
-                  <div className="icon">
-                    <i className="icon-filter"></i>
-                  </div>
-                </div>
-                <div className="right">
-                  <div className="info">
-                    <span>{t("FILTER")}</span>
-                    <span></span>
-                  </div>
-                </div>
+    <>
+      {currentRole === "admin" && <Filter searchFunc={handleFilterFunc} />}
+      <div className="myApps">
+        {loading ? (
+          <div className="page-loading">
+            <SquareSpinner />
+            <h2>{t("MY_APPS_LOADING_TEXT")}</h2>
+          </div>
+        ) : error ? (
+          <div className="page-list-error animated fadeIn">
+            <Wrong />
+            <h2>{error && error.title}</h2>
+            <span>{error && error.message}</span>
+          </div>
+        ) : !data ? (
+          <div className="page-empty-list animated fadeIn">
+            <Empty />
+            <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
+            <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
+          </div>
+        ) : (
+          <>
+            {data.oppList.length ? (
+              data.oppList.map(app => (
+                <Item
+                  key={app.opportunityID}
+                  item={app}
+                  onCancelSuccess={handleSuccessCancel}
+                  verify={handleVerifyApplication}
+                  submit={handleSubmitApplication}
+                  edit={toggleEditModal}
+                  view={toggleViewModal}
+                  matchMaking={toggleMatchMakingModal}
+                />
+              ))
+            ) : (
+              <div className="page-empty-list animated fadeIn">
+                <Empty />
+                <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
+                <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
               </div>
-              <div className="application__body">
-                <div className="search__items-box" key={"contact_name"}>
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("Contact name")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      // key={"contact_name"}
-                      name="contact_name"
-                      onChange={updateFilters}
-                      value={filter.contact_name}
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.contact_name}
-                    </span>
-                  </div>
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("Organization name")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      name="org_name"
-                      value={filter.org_name}
-                      onChange={updateFilters}
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.org_name}
-                    </span>
-                  </div>
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("Organization number")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      name="org_number"
-                      onChange={updateFilters}
-                      value={filter.org_number}
-                      placeholder={t("ORGNUMBER_PLACEHOLDER")}
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.org_number}
-                    </span>
-                  </div>
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("Personal number")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      name="personal_number"
-                      onChange={updateFilters}
-                      type="text"
-                      value={filter.personal_number}
-                      placeholder="i,e: 193701301111"
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.personal_number}
-                    </span>
-                  </div>
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("SEARCH_OPP_NUMBER")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      name="opp_number"
-                      onChange={updateFilters}
-                      value={filter.opp_number}
-                      placeholder="i,e: LO0000000601"
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.opp_number}
-                    </span>
-                  </div>
+            )}
+            {/* pagination */}
+            {pagination.totalRecords > pagination.limit &&
+              data.oppList.length > 0 && (
+                <Pagination
+                  pageRangeDisplayed={8}
+                  onChange={triggerPagination}
+                  itemsCountPerPage={parseInt(pagination.limit)}
+                  totalItemsCount={pagination.totalRecords}
+                  activePage={pagination.activePage}
+                />
+              )}
 
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("E-Mail")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      name="email"
-                      value={filter.email}
-                      onChange={updateFilters}
-                      placeholder="i,e: example@mail.com"
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.email}
-                    </span>
-                  </div>
-                  <div className="search__items-box__search-item">
-                    <label
-                      htmlFor=""
-                      className="search__items-box__search-item__label"
-                    >
-                      {t("Phone number")}
-                      {/* //T */}
-                    </label>
-                    <input
-                      name="phone"
-                      placeholder="i,e: 0790266255"
-                      value={filter.phone}
-                      onChange={updateFilters}
-                      className="search__items-box__search-item__input my-input"
-                    />
-                    <span className="validation-messsage">
-                      {filterErrorMessage.phone}
-                    </span>
-                  </div>
-                </div>
-                <div className="search__footer">
-                  <button
-                    className="search__footer__apply-filters btn --success"
-                    onClick={applyFilter}
-                  >
-                    {t("APPLY")}
-                  </button>
-                </div>
-              </div>
-            </div>
-          )}
-          {data.oppList.length ? (
-            data.oppList.map(app => (
-              <Item
-                key={app.opportunityID}
-                item={app}
-                onCancelSuccess={handleSuccessCancel}
-                verify={handleVerifyApplication}
-                submit={handleSubmitApplication}
-                edit={toggleEditModal}
-                view={toggleViewModal}
-                matchMaking={toggleMatchMakingModal}
-              />
-            ))
-          ) : (
-            <div className="page-empty-list animated fadeIn">
-              <Empty />
-              <h2>{t("MY_APPS_EMPTY_LIST_TITLE")}</h2>
-              <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
-            </div>
-          )}
-          {/* pagination */}
-          {pagination.totalRecords > pagination.limit &&
-            data.oppList.length > 0 && (
-              <Pagination
-                pageRangeDisplayed={8}
-                onChange={triggerPagination}
-                itemsCountPerPage={parseInt(pagination.limit)}
-                totalItemsCount={pagination.totalRecords}
-                activePage={pagination.activePage}
+            {verifyModal && (
+              <VerifyBankIdModal
+                startResult={startResult}
+                personalNumber={personalNumber}
+                onClose={handleCloseVerifyModal}
+                // onVerified={handleSuccessBankId}
+                onSuccess={handleSuccessBankId}
+                onCancelVerify={handleCancelVerify}
+                config={{
+                  companyList: false,
+                  isLogin: true
+                }}
               />
             )}
-
-          {verifyModal && (
-            <VerifyBankIdModal
-              startResult={startResult}
-              personalNumber={personalNumber}
-              onClose={handleCloseVerifyModal}
-              // onVerified={handleSuccessBankId}
-              onSuccess={handleSuccessBankId}
-              onCancelVerify={handleCancelVerify}
-              config={{
-                companyList: false,
-                isLogin: true
-              }}
-            />
-          )}
-        </>
-      )}
-      {editModal.visibility && (
-        <Modal
-          className="minasidor-modals"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            borderRadius: "0"
-          }}
-        >
-          {/* <div className="bl__infoBox__header">
+          </>
+        )}
+        {editModal.visibility && (
+          <Modal
+            className="minasidor-modals"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              borderRadius: "0"
+            }}
+          >
+            {/* <div className="bl__infoBox__header">
             <span style={{ fontSize: "15px" }}>
               {t("EDIT") + " " + t("BL_COMPANY_INFO")}
             </span>
@@ -1137,83 +980,84 @@ const MyApplications = props => {
               onClick={toggleEditModal}
             ></span>
           </div> */}
-          <EditAppliation
-            cancelEdit={toggleEditModal}
-            action={editModal.action}
-            data={editModal.data}
-            loading={editModal.loading}
-            onEdit={item => {
-              setEditModal({
-                ...editModal,
-                loading: true
-              });
-              saveApplication(item, res => {
-                const { skip, limit } = pagination;
-                if (res && res.success) {
-                  _getMyApplications(skip, limit, () => {
+            <EditAppliation
+              cancelEdit={toggleEditModal}
+              action={editModal.action}
+              data={editModal.data}
+              loading={editModal.loading}
+              onEdit={item => {
+                setEditModal({
+                  ...editModal,
+                  loading: true
+                });
+                saveApplication(item, res => {
+                  const { skip, limit } = pagination;
+                  if (res && res.success) {
+                    _getMyApplications(skip, limit, () => {
+                      setEditModal({
+                        visibility: false,
+                        data: data,
+                        action: undefined,
+                        loading: false
+                      });
+                    });
+                  } else {
                     setEditModal({
-                      visibility: false,
-                      data: data,
-                      action: undefined,
+                      ...editModal,
                       loading: false
                     });
-                  });
-                } else {
-                  setEditModal({
-                    ...editModal,
-                    loading: false
-                  });
-                }
-              });
-            }}
-          />
-        </Modal>
-      )}
-      {viewModal.visibility && (
-        <Modal
-          className="minasidor-modals"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            borderRadius: "0"
-          }}
-        >
-          {viewModal.type === "RE" && (
-            <RealEstateView close={toggleViewModal} data={viewModal.data} />
-          )}
-          {viewModal.type === "BA" && (
-            <BusinessAcquisitionView
-              close={toggleViewModal}
-              data={viewModal.data}
+                  }
+                });
+              }}
             />
-          )}
-        </Modal>
-      )}
-      {matchMakingModal.visibility && (
-        <Modal
-          className="minasidor-modals"
-          style={{
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-            borderRadius: "0"
-          }}
-        >
-          <MatchMaking
-            oppId={matchMakingModal.data}
-            onClose={toggleMatchMakingModal}
-            onSubmit={() => {
-              const { skip, limit } = pagination;
-              toggleLoading(true);
-              _getMyApplications(skip, limit, filter, () => {
-                toggleLoading(false);
-              });
+          </Modal>
+        )}
+        {viewModal.visibility && (
+          <Modal
+            className="minasidor-modals"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              borderRadius: "0"
             }}
-          />
-        </Modal>
-      )}
-    </div>
+          >
+            {viewModal.type === "RE" && (
+              <RealEstateView close={toggleViewModal} data={viewModal.data} />
+            )}
+            {viewModal.type === "BA" && (
+              <BusinessAcquisitionView
+                close={toggleViewModal}
+                data={viewModal.data}
+              />
+            )}
+          </Modal>
+        )}
+        {matchMakingModal.visibility && (
+          <Modal
+            className="minasidor-modals"
+            style={{
+              display: "flex",
+              flexDirection: "column",
+              justifyContent: "space-between",
+              borderRadius: "0"
+            }}
+          >
+            <MatchMaking
+              oppId={matchMakingModal.data}
+              onClose={toggleMatchMakingModal}
+              onSubmit={() => {
+                const { skip, limit } = pagination;
+                toggleLoading(true);
+                _getMyApplications(skip, limit, filter, () => {
+                  toggleLoading(false);
+                });
+              }}
+            />
+          </Modal>
+        )}
+      </div>
+    </>
   );
 };
 
