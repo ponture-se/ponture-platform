@@ -360,10 +360,22 @@ const MyApplications = props => {
       });
     }
   }
-  //Submit verification
-  function handleSaveBankId() {}
 
   function _getMyApplications(_skip, _limit, _filterParams, callback) {
+    try {
+      if (sessionStorage.getItem("@ponture-admin-panel-filters")) {
+        _filterParams = JSON.parse(
+          sessionStorage.getItem("@ponture-admin-panel-filters")
+        );
+      }
+      if (sessionStorage.getItem("@ponture-minasidor-pagination")) {
+        const _pagination = JSON.parse(
+          sessionStorage.getItem("@ponture-minasidor-pagination")
+        );
+        _skip = _pagination.skip;
+        _limit = _pagination.limit;
+      }
+    } catch (err) {}
     getMyApplications()
       .onOk(result => {
         if (!didCancel) {
@@ -786,6 +798,10 @@ const MyApplications = props => {
     }
   }
   function triggerPagination(num, e) {
+    sessionStorage.setItem(
+      "@ponture-minasidor-pagination",
+      JSON.stringify(pagination)
+    );
     setPagination({
       ...pagination,
       activePage: num,

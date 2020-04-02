@@ -42,7 +42,11 @@ export default {
   PRICE: "Köpspris",
   INVALID_VALUE: "Ogiltligt värde",
   INVALID_ORGNUMBER: "Invalid organization number", //T
-  ORGNUMBER_PLACEHOLDER: "i,e: 1234561234 or 123456-1234",
+  ORGNUMBER_PLACEHOLDER: "t ex: 1234561234, 123456-1234",
+  OPP_NUMBER_PLACE_HOLDER: "t ex: LO0000000601",
+  EMAIL_PLACE_HOLDER: "t ex: example@mail.com",
+  PHONE_NUMBER_PLACE_HOLDER: "t ex: 0790266255",
+  PERSONAL_NUMBER_PLACEHOLDER: "t ex: 19800101-1234, 198001011234",
   APP_STATUS_RECEIVED_TITLE: "Mottagen!",
   APP_STATUS_APPROVED_TITLE: "Godkänd!",
   APP_STATUS_REJECTED_BY_USER_TITLE: "Avbröt!",
@@ -233,7 +237,6 @@ export default {
   PERSONAL_NUMBER_IS_REQUIRED: "Personligt nummer krävs",
   PERSONAL_NUMBER_IN_CORRECT:
     "Ange ditt korrekta personnummer exampel : 19806101-1234)",
-  PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
   PRICE_IS_REQUIRED: "price är felaktigt",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
@@ -329,6 +332,8 @@ export default {
   MATCHMAKING_EMPTY_LIST_MSG: "Partners list is empty.",
   MATCHMAKING_APPLY_BUTTON: "Assign and submit",
   MATCHMAKING_ASSIGN_BUTTON: "Just assign, don't submit",
-  //Search
-  SEARCH_OPP_NUMBER: "Lead number"
+  //Filter
+  FILTER_OPP_NUMBER: "Lead number",
+  FILTER_RESET_FILTERS: "Reset filters",
+  FILTER_PERSONAL_NUMBER_IN_CORRECT: "Ange ditt korrekta personnummer"
 };

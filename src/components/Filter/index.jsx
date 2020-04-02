@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState, useCallback } from "react";
 import { useLocale } from "hooks";
 import { isPersonalNumber, isPhoneNumber, validateEmail } from "../../utils";
 import "./style.scss";
@@ -7,7 +7,7 @@ const Filter = props => {
   const orgNumberFormatRegex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
   //state initialization
   const { t } = useLocale();
-  const [filter, setFilter] = useState({
+  const initialFilter = {
     org_number: "",
     org_name: "",
     email: "",
@@ -15,33 +15,52 @@ const Filter = props => {
     opp_number: "",
     contact_name: "",
     personal_number: ""
-  });
-  const [filterErrorMessage, setFilterErrorMessage] = useState({
-    org_number: "",
-    org_name: "",
-    email: "",
-    phone: "",
-    opp_number: "",
-    contact_name: "",
-    personal_number: ""
-  });
+  };
+  const [filter, setFilter] = useState(initialFilter);
+  const [filterErrorMessage, setFilterErrorMessage] = useState(initialFilter);
+  const [appliedFilter, setAppliedFilter] = useState();
+  useEffect(() => {
+    try {
+      if (sessionStorage.getItem("@ponture-admin-panel-filters")) {
+        const lastFilters = JSON.parse(
+          sessionStorage.getItem("@ponture-admin-panel-filters")
+        );
+        setFilter(lastFilters);
+      }
+    } catch (err) {}
+  }, []);
+  useEffect(() => {
+    if (appliedFilter) {
+      let _appliedFilter = Object.assign({}, appliedFilter);
+      _appliedFilter = {
+        ..._appliedFilter,
+        personal_number: _appliedFilter.personal_number.replace("-", "")
+      };
+      if (typeof props.searchFunc === "function") {
+        props.searchFunc(_appliedFilter);
+      }
+    }
+  }, [appliedFilter]);
   //pNum: personalNumber
   //BankId function
   function applyFilter() {
     let isFormValid = true;
+    let _filter = Object.assign({}, filter); //Avoid changing the referrence obj
     for (const vMessage in filterErrorMessage) {
       if (filterErrorMessage[vMessage]) {
         isFormValid = false;
       }
     }
+    for (const f in filter) {
+      _filter[f] = _filter[f].trim();
+    }
     if (isFormValid) {
-      const _filter = {
-        ...filter,
-        personal_number: filter.personal_number.replace("-", "")
-      };
-      if (typeof props.searchFunc === "function") {
-        props.searchFunc(_filter);
-      }
+      setFilter(_filter);
+      sessionStorage.setItem(
+        "@ponture-admin-panel-filters",
+        JSON.stringify(_filter)
+      );
+      setAppliedFilter(_filter);
     }
   }
   function updateFilters(e) {
@@ -82,7 +101,7 @@ const Filter = props => {
         break;
       case "personal_number":
         if (value.length > 0 && !isPersonalNumber(value)) {
-          errorMessage = t("PERSONAL_NUMBER_IN_CORRECT");
+          errorMessage = t("FILTER_PERSONAL_NUMBER_IN_CORRECT");
         } else {
           errorMessage = "";
         }
@@ -97,6 +116,12 @@ const Filter = props => {
       ...filterErrorMessage,
       [name]: errorMessage
     });
+  }
+  function resetFilters() {
+    setFilterErrorMessage(initialFilter);
+    setFilter(initialFilter);
+    sessionStorage.removeItem("@ponture-admin-panel-filters");
+    setAppliedFilter(initialFilter);
   }
   return (
     <div className="filter application animated fadeIn">
@@ -173,7 +198,7 @@ const Filter = props => {
               onChange={updateFilters}
               type="text"
               value={filter.personal_number}
-              placeholder="i,e: 193701301111"
+              placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
               className="filter__items-box__search-item__input my-input"
             />
             <span className="validation-messsage">
@@ -182,14 +207,14 @@ const Filter = props => {
           </div>
           <div className="filter__items-box__search-item">
             <label htmlFor="" className="filter__items-box__search-item__label">
-              {t("SEARCH_OPP_NUMBER")}
+              {t("FILTER_OPP_NUMBER")}
               {/* //T */}
             </label>
             <input
               name="opp_number"
               onChange={updateFilters}
               value={filter.opp_number}
-              placeholder="i,e: LO0000000601"
+              placeholder={t("OPP_NUMBER_PLACE_HOLDER")}
               className="filter__items-box__search-item__input my-input"
             />
             <span className="validation-messsage">
@@ -206,7 +231,7 @@ const Filter = props => {
               name="email"
               value={filter.email}
               onChange={updateFilters}
-              placeholder="i,e: example@mail.com"
+              placeholder={t("EMAIL_PLACE_HOLDER")}
               className="filter__items-box__search-item__input my-input"
             />
             <span className="validation-messsage">
@@ -220,7 +245,7 @@ const Filter = props => {
             </label>
             <input
               name="phone"
-              placeholder="i,e: 0790266255"
+              placeholder={t("PHONE_NUMBER_PLACE_HOLDER")}
               value={filter.phone}
               onChange={updateFilters}
               className="filter__items-box__search-item__input my-input"
@@ -231,6 +256,13 @@ const Filter = props => {
           </div>
         </div>
         <div className="filter__footer">
+          <button
+            className="filter__footer__apply-filters btn --light"
+            onClick={resetFilters}
+          >
+            {t("FILTER_RESET_FILTERS")}
+          </button>
+          &nbsp;
           <button
             className="filter__footer__apply-filters btn --success"
             onClick={applyFilter}
