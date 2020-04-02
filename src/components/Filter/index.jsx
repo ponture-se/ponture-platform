@@ -19,6 +19,7 @@ const Filter = props => {
   const [filter, setFilter] = useState(initialFilter);
   const [filterErrorMessage, setFilterErrorMessage] = useState(initialFilter);
   const [appliedFilter, setAppliedFilter] = useState();
+  const [disableFilterButton, setDisableFilterButton] = useState(false);
   useEffect(() => {
     try {
       if (sessionStorage.getItem("@ponture-admin-panel-filters")) {
@@ -37,7 +38,10 @@ const Filter = props => {
         personal_number: _appliedFilter.personal_number.replace("-", "")
       };
       if (typeof props.searchFunc === "function") {
-        props.searchFunc(_appliedFilter);
+        setDisableFilterButton(true);
+        props.searchFunc(_appliedFilter, () => {
+          setDisableFilterButton(false);
+        });
       }
     }
   }, [appliedFilter]);
@@ -259,6 +263,7 @@ const Filter = props => {
           <button
             className="filter__footer__apply-filters btn --light"
             onClick={resetFilters}
+            disabled={disableFilterButton}
           >
             {t("FILTER_RESET_FILTERS")}
           </button>
@@ -266,6 +271,7 @@ const Filter = props => {
           <button
             className="filter__footer__apply-filters btn --success"
             onClick={applyFilter}
+            disabled={disableFilterButton}
           >
             {t("APPLY")}
           </button>

@@ -808,102 +808,12 @@ const MyApplications = props => {
       skip: (num - 1) * pagination.limit
     });
   }
-  // function Pagination(props) {
-  //   const { totalPages, onChange, activePage } = props;
-  //   if (totalPages > 1) {
-  //     let paginationItems = [];
-  //     for (let num = 1; num <= totalPages; num++) {
-  //       paginationItems.push(
-  //         <a
-  //           key={num}
-  //           className={activePage === num ? "active" : ""}
-  //           onClick={e => onChange(num, e)}
-  //         >
-  //           {num}
-  //         </a>
-  //       );
-  //     }
-  //     return <div className="pagination">{paginationItems}</div>;
-  //   }
-  // }
-  function applyFilter() {
-    let { skip, limit } = pagination;
-    let isFormValid = true;
-    for (const vMessage in filterErrorMessage) {
-      if (filterErrorMessage[vMessage]) {
-        isFormValid = false;
-      }
-    }
-    if (isFormValid) {
-      toggleLoading(true);
-      const _filter = {
-        ...filter,
-        personal_number: filter.personal_number.replace("-", "")
-      };
-      _getMyApplications(skip, limit, _filter, () => {
-        toggleLoading(false);
-      });
-    }
-  }
-  function updateFilters(e) {
-    let errorMessage = "";
-    const { name, value } = e.target;
-    switch (name) {
-      case "org_number":
-        if (value.length > 0 && !orgNumberFormatRegex.test(value)) {
-          errorMessage = t("INVALID_ORGNUMBER");
-        } else {
-          errorMessage = "";
-        }
-        break;
-      case "org_name":
-        break;
-      case "email":
-        if (value.length > 0 && !validateEmail(value)) {
-          errorMessage = t("EMAIL_IN_CORRECT");
-        } else {
-          errorMessage = "";
-        }
-        break;
-      case "phone":
-        if (value.length > 0 && !isPhoneNumber(value)) {
-          errorMessage = t("PHONE_NUMBER_IN_CORRECT");
-        } else {
-          errorMessage = "";
-        }
-        break;
-      // case "opp_number":
-      //   if (value.length > 0 && !isNumber(value)) {
-      //     errorMessage = t("INVALID_VALUE");
-      //   } else {
-      //     errorMessage = "";
-      //   }
-      //   break;
-      case "contact_name":
-        break;
-      case "personal_number":
-        if (value.length > 0 && !isPersonalNumber(value)) {
-          errorMessage = t("PERSONAL_NUMBER_IN_CORRECT");
-        } else {
-          errorMessage = "";
-        }
-        break;
-      default:
-    }
-    setFilter({
-      ...filter,
-      [name]: value
-    });
-    setFilterErrorMessage({
-      ...filterErrorMessage,
-      [name]: errorMessage
-    });
-  }
-  function handleFilterFunc(filtersObj) {
+  function handleFilterFunc(filtersObj, callback) {
     const { skip, limit } = pagination;
     toggleLoading(true);
     _getMyApplications(skip, limit, filtersObj, () => {
       toggleLoading(false);
+      if (typeof callback === "function") callback();
     });
   }
   return (
