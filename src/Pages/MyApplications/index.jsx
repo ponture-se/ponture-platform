@@ -31,6 +31,12 @@ import SafeValue from "utils/SafeValue";
 //
 const MyApplications = props => {
   let didCancel = false;
+  const initialPagination = {
+    skip: 0,
+    limit: process.env.REACT_APP_MINASIDOR_RESULT_LIMIT,
+    totalRecords: 0,
+    activePage: 1
+  };
   const numberFormatRegex = /(\d)(?=(\d{3})+(?!\d))/g;
   const orgNumberFormatRegex = new RegExp(/^([0-9]){6}-?([0-9]){4}$/);
   //state initialization
@@ -44,11 +50,18 @@ const MyApplications = props => {
   const [startResult, setStartResult] = useState(undefined);
   const [personalNumber, setPersonalNumber] = useState("");
   const [lastCallback, setLastCallback] = useState(undefined);
-  const [pagination, setPagination] = useState({
-    skip: 0,
-    limit: process.env.REACT_APP_MINASIDOR_RESULT_LIMIT,
-    totalRecords: 0,
-    activePage: 1
+  const [pagination, setPagination] = useState(() => {
+    if (sessionStorage.getItem("@ponture-minasidor-pagination")) {
+      try {
+        return JSON.parse(
+          sessionStorage.getItem("@ponture-minasidor-pagination")
+        );
+      } catch (err) {
+        return initialPagination;
+      }
+    } else {
+      return initialPagination;
+    }
   });
   const [filter, setFilter] = useState({
     org_number: "",
@@ -129,7 +142,7 @@ const MyApplications = props => {
   //componentDidMount
   useEffect(() => {
     toggleLoading(true);
-    const { skip, limit } = pagination;
+    let { skip, limit } = pagination;
     _getMyApplications(skip, limit, filter, () => {
       toggleLoading(false);
     });
@@ -142,6 +155,10 @@ const MyApplications = props => {
     const { skip, limit } = pagination;
     toggleLoading(true);
     _getMyApplications(skip, limit, filter, () => {
+      sessionStorage.setItem(
+        "@ponture-minasidor-pagination",
+        JSON.stringify(pagination)
+      );
       toggleLoading(false);
     });
   }, [pagination.activePage]);
@@ -367,13 +384,6 @@ const MyApplications = props => {
         _filterParams = JSON.parse(
           sessionStorage.getItem("@ponture-admin-panel-filters")
         );
-      }
-      if (sessionStorage.getItem("@ponture-minasidor-pagination")) {
-        const _pagination = JSON.parse(
-          sessionStorage.getItem("@ponture-minasidor-pagination")
-        );
-        _skip = _pagination.skip;
-        _limit = _pagination.limit;
       }
     } catch (err) {}
     getMyApplications()
@@ -798,10 +808,6 @@ const MyApplications = props => {
     }
   }
   function triggerPagination(num, e) {
-    sessionStorage.setItem(
-      "@ponture-minasidor-pagination",
-      JSON.stringify(pagination)
-    );
     setPagination({
       ...pagination,
       activePage: num,

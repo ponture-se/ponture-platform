@@ -324,7 +324,7 @@ const Item = props => {
         </div>
         {currentRole === "admin" &&
           <div className="application__bodyRow">
-            <span>{t("SEARCH_OPP_NUMBER")}</span>
+            <span>{t("FILTER_OPP_NUMBER")}</span>
             <span>{item.opportunityNumber}</span>
           </div>
         }
