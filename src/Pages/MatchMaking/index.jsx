@@ -38,8 +38,8 @@ export default function MatchMaking(props) {
           if (result) {
             result.forEach(partner => {
               if (SafeValue(partner, "spo_list", "array", []).length > 0) {
-                partner.status = "Assgined";
-                partner.stage = "";
+                partner.status = "Assigned";
+                partner.stage = "Closed";
                 for (let i = 0; partner.spo_list.length > i; i++) {
                   const SPO = partner.spo_list[i];
                   if (
@@ -50,11 +50,8 @@ export default function MatchMaking(props) {
                     break;
                   }
                 }
-                if (partner.stage === "") {
-                  partner.stage = "Closed";
-                }
               } else {
-                partner.status = "Not assgined";
+                partner.status = "Not assigned";
                 partner.stage = "";
               }
             });
@@ -403,6 +400,7 @@ export default function MatchMaking(props) {
   };
   return (
     <>
+      {console.log(partnerList)}
       <div className="MatchMaking">
         <div className="bl section-header matchMaking bl__infoBox ">
           <div className="bl__infoBox__header">
@@ -414,7 +412,7 @@ export default function MatchMaking(props) {
               className="icon-cross modal-close"
               onClick={() => {
                 if (typeof cancelAPIFunc === "function") cancelAPIFunc();
-                didCancel = true; //Don't have any idea about sideEffect!
+                didCancel = true; //There isn't any idea about sideEffect!
                 props.onClose();
               }}
             ></span>
@@ -445,21 +443,19 @@ export default function MatchMaking(props) {
                   key={idx}
                   className={classnames(
                     "partner-list__partner-item",
-                    partner.spo_list.length
-                      ? partner.spo_list[0].spo_stage !== "Closed"
-                        ? "--assgined"
-                        : partner.spo_list[0].spo_stage === "Closed" &&
-                          "--closed"
+                    partner.status === "Assigned"
+                      ? partner.stage !== "Closed"
+                        ? "--assigned"
+                        : partner.stage === "Closed" && "--closed"
                       : "",
                     assignedPartners.indexOf(partner.partner_id) > -1 &&
-                      "--not-assgined",
+                      "--not-assigned",
                     unAssignedPartners.indexOf(partner.partner_id) > -1 &&
                       "--to-be-close"
                   )}
                   onClick={() =>
-                    (!partner.spo_list.length ||
-                      (partner.spo_list.length &&
-                        partner.spo_list[0].spo_stage === "Closed")) &&
+                    (partner.status === "Not assigned" ||
+                      partner.stage === "Closed") &&
                     choosePartner(partner.partner_id)
                   }
                 >
@@ -472,8 +468,8 @@ export default function MatchMaking(props) {
                       {partner.status}
                       {partner.stage ? ` (${partner.stage})` : ""}
                     </span>
-                    {partner.spo_list.length
-                      ? partner.spo_list[0].spo_stage !== "Closed" && (
+                    {partner.status === "Assigned"
+                      ? partner.stage !== "Closed" && (
                           <InlineButton
                             onClick={() =>
                               unAssignPartnerById(partner.partner_id)
