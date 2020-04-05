@@ -69,7 +69,11 @@ export default function BusinessLoan(props) {
   const [_personalNumber, _setPersonalNumber] = useCookie("_personalNumber");
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
   const [_email, _setEmail] = useCookie("_email");
-  const [referral_params] = useCookie("affiliate_referral_params"); // extra params
+  const [referral_params, setReferral_params] = useState(() =>
+    Cookies.get("affiliate_referral_params_v2")
+      ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
+      : Cookies.get("affiliate_referral_params")
+  ); // extra params
 
   //Get parameters from URL to use form default selection in form if applicable
   //Url parameters start with p_
