@@ -41,7 +41,7 @@
       &:hover {
         outline: 1px solid lightgray;
       }
-      &.--not-assgined {
+      &.--not-assigned {
         border-color: rgb(66, 204, 173);
         outline: 1px solid rgb(66, 204, 173);
         & .company-status-box {
@@ -50,7 +50,7 @@
           }
         }
       }
-      &.--assgined {
+      &.--assigned {
         border-color: #42ccad;
         outline: 1px solid #42ccad;
         & .company-status-box {
