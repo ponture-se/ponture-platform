@@ -504,7 +504,7 @@ export default function MatchMaking(props) {
                   size="small"
                 />
               )}
-              &nbsp;
+              {/* &nbsp;
               <button
                 className="btn --warning"
                 onClick={() => submitMatchMaking(props.oppId, false)}
@@ -514,11 +514,8 @@ export default function MatchMaking(props) {
                   isSubmitting
                 }
               >
-                <>
-                  {/* <span className="icon-checkmark"></span>&nbsp; */}
-                  {t("MATCHMAKING_ASSIGN_BUTTON")}
-                </>
-              </button>
+                {t("MATCHMAKING_ASSIGN_BUTTON")}
+              </button> */}
               &nbsp;
               <button
                 className="btn --success"
