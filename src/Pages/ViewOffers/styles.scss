@@ -1,16 +1,29 @@
 @import "./../../styles/mixins.scss";
+$boxMargin: 0 40px;
+$boxMargin_phone: 0 5px;
+$borderColor: #ff7c6a;
+$redButtonColor: #ff8383;
+$greenButtonColor: #6df8be;
+$itemBtnColor: #44b3c2;
+@include respond(phone) {
+  $boxMargin: 0 10px;
+}
 .appOffers {
   display: flex;
   flex-direction: column;
   .offersEmpty {
-    padding-top: 10px;
+    padding-top: 40px;
     margin: auto;
     max-width: 700px;
+    h2 {
+      font-weight: bold;
+    }
     .msg3 {
       margin-top: 20px;
       color: gray;
     }
-    .msg4 {
+    .msg4,
+    .msg5 {
       color: gray;
     }
   }
@@ -35,103 +48,6 @@
         display: flex;
         align-items: center;
         justify-content: center;
-      }
-    }
-  }
-}
-.myOfferItem {
-  background: white;
-  box-shadow: 0 0 2px lightgray;
-  margin-top: 20px;
-  display: flex;
-  flex-direction: column;
-  &__header {
-    display: flex;
-    border-bottom: 1px solid lightgray;
-    height: 80px;
-    align-items: center;
-    font-family: OpenSanceBold;
-    font-size: 25px;
-  }
-  &__title {
-    font-size: 20px;
-    font-family: OpenSanceBold;
-    margin-bottom: 10px;
-  }
-
-  &__body {
-    flex: 1;
-    display: flex;
-    &__header {
-      font-family: OpenSanceBold;
-      font-size: 15px;
-      display: flex;
-      margin-bottom: 30px;
-      span {
-        margin-right: 10px;
-        display: flex;
-        align-items: center;
-      }
-      div {
-        cursor: pointer;
-        display: flex;
-        align-items: center;
-        font-family: OpenSanceBold;
-        text-decoration: none;
-        @include variable(app-item-footer-link-color, color, blue);
-        span {
-          text-decoration: underline;
-          font-size: 13px;
-        }
-        i {
-          margin-top: 3px;
-        }
-      }
-   
-    }
-    .left{
-      flex: 1;
-    }
-    .right{
-      flex: 1;
-    }
-  }
-  &__bodyRow {
-    flex: 1;
-    display: flex;
-    font-size: 13px;
-    flex-grow: 0;
-    padding: 10px 0;
-    span:first-child {
-      font-family: OpenSanceBold;
-      font-size: 14px;
-    }
-    span:last-child {
-      flex: 1;
-    }
-  }
-  &__footer {
-    background: whitesmoke;
-    height: 60px;
-    display: flex;
-    align-items: center;
-    .icon-checkmark {
-      font-size: 15px;
-    }
-    .icon-cross {
-      font-size: 13px;
-    }
-    &__left {
-      display: flex;
-      align-items: center;
-      flex: 1;
-    }
-    button {
-      // min-width: 150px;
-      margin-right: 10px;
-      span {
-        font-size: 10px;
-        margin: 0 5px;
       }
     }
   }
@@ -200,6 +116,569 @@
   }
 }
 
+.oppInfo {
+  display: flex;
+  justify-content: space-between;
+  margin-right: 50px;
+  @include respond(phone) {
+    margin-right: 0px;
+    align-items: flex-end;
+  }
+  span {
+    width: auto;
+    font-size: 20px;
+    @include respond(phone) {
+      width: 42%;
+      font-size: 13px;
+      padding-right: 10px;
+    }
+  }
+
+  &__detail {
+    @include respond(phone) {
+      flex: 1;
+    }
+    h4 {
+      padding: 3px 0;
+      margin: 0;
+      font-size: 18px;
+      @include respond(phone) {
+        font-size: 12px;
+      }
+    }
+  }
+}
+.notAcceptedOfferAlert {
+  @include variable(color1, background, color1);
+  margin: $boxMargin;
+  padding: 20px 40px;
+  margin-top: 30px;
+  border-radius: 5px;
+  border: solid 3px $borderColor;
+  @include respond(phone) {
+    margin: $boxMargin_phone;
+    margin-top: 15px;
+    padding: 10px 15px;
+  }
+
+  &__title {
+    display: block;
+    font-size: 21px;
+    margin-bottom: 10px;
+    @include respond(phone) {
+      font-size: 1rem;
+    }
+  }
+  &__description {
+    font-size: 12px;
+    display: flex;
+    flex-direction: row;
+    @include respond(phone) {
+      font-size: 0.8rem;
+      flex-direction: column;
+    }
+    span {
+      margin-right: 20px;
+      @include respond(phone) {
+        margin-bottom: 5px;
+      }
+      i {
+        margin-right: 5px;
+      }
+    }
+  }
+}
+.uiActions {
+  margin-top: 30px;
+  &__btns {
+    margin: $boxMargin;
+    margin-top: 30px;
+    display: block;
+    @include respond(phone) {
+      margin: $boxMargin_phone;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      display: flex;
+    }
+    button {
+      height: 50px;
+      border: none;
+      padding: 0 20px;
+      cursor: pointer;
+      transition: all 0.2s;
+      border-radius: 5px;
+      &:hover {
+        transform: scale(0.95);
+      }
+      @include respond(phone) {
+        padding: 0 10px;
+        height: 40px;
+        flex: 1;
+      }
+    }
+    .redbutton {
+      margin-right: 10px;
+      background-color: #ff8383;
+    }
+    .greenbutton {
+      background-color: #6df8be;
+    }
+  }
+}
+.OffersCategory {
+  &__list {
+    display: flex;
+    flex-direction: column;
+  }
+  h5 {
+    @include respond(phone) {
+      margin: 10px;
+    }
+  }
+}
+.offerItem {
+  margin: $boxMargin;
+  transition: all 0.2s;
+  &.accepted {
+    opacity: 0.5;
+  }
+  &.cheapest {
+    .offerItem__content {
+      border: 6px solid $redButtonColor;
+      transition-duration: 0.2s;
+    }
+  }
+  &.biggest {
+    .offerItem__content {
+      border: 6px solid $greenButtonColor;
+      transition-duration: 0.2s;
+    }
+  }
+  &:not(:last-child) {
+    margin-bottom: 20px;
+    @include respond(phone) {
+      margin: $boxMargin_phone;
+      margin-bottom: 10px;
+    }
+  }
+  &:last-child {
+    margin-bottom: 10px;
+    @include respond(phone) {
+      margin: $boxMargin_phone;
+      margin-bottom: 5px;
+    }
+  }
+  &__alerts {
+  }
+  &__cheapest {
+    display: inline;
+    background-color: $redButtonColor;
+    border-radius: 10px;
+    padding: 2px 50px;
+    margin-right: 5px;
+    @include respond(phone) {
+      padding: 2px 10px;
+      font-size: 13px;
+    }
+  }
+  &__mostBenefit {
+    display: inline;
+    background-color: $greenButtonColor;
+    border-radius: 10px;
+    padding: 2px 50px;
+    @include respond(phone) {
+      padding: 2px 10px;
+      font-size: 13px;
+    }
+  }
+  &__content {
+    background-color: white;
+    box-shadow: 0 0 5px lightgray;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    padding: 20px;
+    flex-direction: row;
+    @include respond(phone) {
+      padding: 10px;
+      flex-direction: column;
+      align-items: stretch;
+    }
+  }
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  &__img {
+    width: 95px;
+    margin-right: 30px;
+    img {
+      object-fit: contain;
+      width: 100%;
+      height: 100%;
+    }
+    @include respond(tab-port) {
+      margin-right: 15px;
+      width: 65px;
+      height: 50px;
+    }
+    @include respond(phone) {
+      margin-right: 0px;
+      width: 60px;
+      height: 40px;
+    }
+  }
+  &__info {
+    flex: 1;
+    display: flex;
+    padding: 0;
+    @include respond(phone) {
+      padding: 5px 0;
+    }
+  }
+
+  &__value {
+    flex: 1;
+    h4 {
+      text-align: center;
+      font-size: 16px;
+      margin: 0;
+      @include respond(tab-port) {
+        font-size: calc(0.35rem + 1vw);
+      }
+      @include respond(phone) {
+        font-size: calc(0.5rem + 1.5vw);
+      }
+    }
+    span {
+      display: block;
+      text-align: center;
+      font-size: 13px;
+      color: gray;
+      @include respond(tab-port) {
+        font-size: calc(0.2rem + 1vw);
+      }
+      @include respond(phone) {
+        font-size: calc(0.4rem + 1.5vw);
+      }
+    }
+  }
+  &__action {
+    display: flex;
+    flex-direction: column;
+    width: 110px;
+    @include respond(phone) {
+      width: auto;
+    }
+  }
+  &__acceptBtn {
+    background-color: $itemBtnColor;
+    color: white;
+    padding: 10px 0;
+    border: none;
+    border-radius: 5px;
+    margin-bottom: 20px;
+    cursor: pointer;
+    @include respond(tab-port) {
+      padding: 8px;
+      margin-bottom: 10px;
+    }
+    @include respond(phone) {
+      padding: 5px;
+      margin-bottom: 0px;
+    }
+  }
+  &__moreBtn {
+    cursor: pointer;
+    background-color: transparent;
+    color: $itemBtnColor;
+    border: none;
+    display: flex;
+    justify-content: center;
+    @include respond(phone) {
+    }
+    span {
+      margin: 1px 2px;
+    }
+    &:hover {
+      text-decoration: underline;
+    }
+    &:focus {
+      outline: none;
+    }
+  }
+  &__details {
+    background-color: #f7f7f8;
+    border-radius: 10px;
+    padding: 20px;
+    margin-top: 2px;
+    @include respond(phone) {
+      padding: 5px 10px;
+    }
+  }
+  &__detailRow {
+    margin-top: 10px;
+    display: flex;
+    flex-direction: row;
+    @include respond(phone) {
+      flex-direction: column;
+      margin-top: 5px;
+    }
+    div {
+      width: 300px;
+      color: black;
+      @include respond(phone) {
+        width: auto;
+        font-size: 13px;
+      }
+    }
+    span {
+      color: gray;
+      font-size: 14px;
+      width: 170px;
+      @include respond(phone) {
+        width: auto;
+        font-size: 12px;
+      }
+    }
+  }
+}
+.row-title {
+  font-size: 18px;
+}
+.acceptModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 100;
+  &__bg {
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    height: 100%;
+    width: 100%;
+  }
+  &__content {
+    width: 768px;
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 102;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: white;
+    outline: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    @include respond(tab-port) {
+      width: 96%;
+      margin: 2%;
+      top: 10px;
+    }
+    @include respond(phone) {
+      width: 96%;
+      margin: 2%;
+      top: 10px;
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    .title {
+      flex: 1;
+      font-family: OpenSanceBold;
+      font-size: 20px;
+    }
+    .closeIcn {
+      color: gray;
+      font-size: 14px;
+      cursor: pointer;
+      transition-duration: 0.2s;
+      width: 40px;
+      height: 20px;
+      text-align: center;
+      &:hover {
+        transition-duration: 0.2s;
+        color: black;
+      }
+    }
+  }
+  &__body {
+    flex: 1;
+    font-size: 14px;
+    padding: 15px 0;
+  }
+  &__title {
+    font-size: 20px;
+    display: block;
+    text-align: center;
+    position: static;
+    @include respond(phone) {
+      position: absolute;
+      width: 100%;
+      top: 20px;
+      text-align: left;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 20px 0;
+    @include respond(phone) {
+      flex-direction: column;
+      padding-top: 10px;
+    }
+    button {
+      width: 200px;
+      margin: 0 5px;
+      @include respond(phone) {
+        width: auto;
+      }
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:first-child {
+        @include respond(phone) {
+          order: 2;
+          margin-top: 10px;
+        }
+      }
+    }
+    .--success1 {
+      background-color: $itemBtnColor;
+      color: white;
+      &:hover {
+        background-color: darken($itemBtnColor, 10);
+      }
+    }
+    .--light1 {
+      background-color: transparent;
+      border: 1px solid $itemBtnColor;
+      color: $itemBtnColor;
+      &:hover {
+        border-color: darken($itemBtnColor, 10);
+        color: darken($itemBtnColor, 10);
+      }
+    }
+  }
+}
+
+.personalInfo {
+  display: flex;
+  flex-direction: row;
+  @include respond(phone) {
+    flex-direction: column;
+  }
+  &__left {
+    flex: 1;
+    @include respond(phone) {
+      order: 2;
+    }
+  }
+  &__right {
+    padding-top: 30px;
+    @include respond(phone) {
+      padding-top: 15px;
+    }
+  }
+  .personalInfoForm {
+    padding-top: 30px;
+    @include respond(phone) {
+      padding-top: 15px;
+    }
+    &__title {
+      display: block;
+      font-size: 13px;
+      margin-bottom: 20px;
+    }
+    .form-inputgroup {
+      display: flex;
+      margin-bottom: 10px;
+      align-items: center;
+      flex-direction: row;
+      @include respond(phone) {
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: 5px;
+      }
+      label {
+        margin-right: 20px;
+        min-width: 150px;
+        @include respond(phone) {
+          margin-right: 0;
+          min-width: auto;
+          margin-bottom: 10px;
+        }
+      }
+      input {
+        padding: 7px 10px;
+        min-width: 250px;
+        border: 1px solid $itemBtnColor;
+        border-radius: 4px;
+        @include respond(phone) {
+          min-width: 100%;
+        }
+        &:focus {
+          outline: none;
+          box-shadow: 0 0 5px lightgray;
+        }
+        &.input-error {
+          border: 1px solid $borderColor;
+        }
+      }
+    }
+  }
+  &__desc {
+    margin: 25px 0 15px 0;
+    font-size: 13px;
+    @include respond(phone) {
+      margin: 15px 0 0px 0;
+    }
+  }
+  .rowInfo {
+    &__icon {
+      display: inline-block;
+      width: 20px;
+      margin: 0 10px;
+      height: 20px;
+      border-radius: 50%;
+      background-color: #1abc9c;
+      color: white;
+      text-align: center;
+      font-size: 11px;
+      line-height: 20px;
+      margin-bottom: 10px;
+    }
+    &__text {
+      font-size: 12px;
+    }
+  }
+}
+.acceptedOffer {
+  background-color: white;
+  margin-top: 30px;
+  padding: 20px 0;
+  border-radius: 10px;
+  @include respond(phone) {
+      padding: 10px 0;
+    }
+  &__title {
+    margin: $boxMargin;
+    margin-bottom: 10px;
+     @include respond(phone) {
+      margin: $boxMargin_phone;
+      margin-bottom: 10px;
+    }
+  }
+}
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .myOfferItem {
@@ -210,7 +689,7 @@
       padding: 10px 20px 0 20px;
     }
     &__footer {
-      padding: 0 20px;
+      padding: 0px 10px;
     }
   }
   .myOfferItem__bodyRow {

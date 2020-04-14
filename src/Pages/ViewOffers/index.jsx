@@ -1,257 +1,168 @@
-import React, { useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useEffect, useState, useRef } from "react";
 import { useGlobalState, useLocale } from "hooks";
 import "./styles.scss";
-import Item from "./item";
+import OppInfo from "./components/OppInfo";
+import Loading from "./components/Loading";
+import EmptyOffers from "./components/EmptyOffers";
+import Error from "./components/FailedFetch";
+import NotAcceptedAlert from "./components/NotAcceptedAlert";
+import AcceptedAlert from "./components/AcceptedAlert";
+import UiActions from "./components/UiActions";
+import OffersCategory from "./components/OffersCategory";
+import AcceptedOffer from "./components/AcceptedOffer";
 // import OfferModal from "./OfferModal";
-import SquareSpinner from "components/SquareSpinner";
-import { Empty, Wrong } from "components/Commons/ErrorsComponent";
-import { getOffers, rejectOffer } from "api/main-api";
+import { getLatestOffers, rejectOffer } from "api/main-api";
 import { toggleAlert } from "components/Alert";
+import {
+  getCategorizedOffers,
+  checkIsAcceptedOffer,
+  checkIsSameUiAction,
+} from "./helper";
+
 import track from "utils/trackAnalytic";
 //
-const AllOffers = props => {
-  let didCancel = false;
-  const [{}, dispatch] = useGlobalState();
-  const { t, direction } = useLocale();
-  const [viewOfferModal, toggleViewOffer] = useState();
-  const [selectedOffer, setOffer] = useState();
-  const [loading, toggleLoading] = useState(true);
-  const [offers, setOffers] = useState();
-  const [app, setApp] = useState();
-  const [error, setError] = useState();
+const AllOffers = ({ match }) => {
+  const didCancel = useRef(false);
+  const [{ verifyInfo }] = useGlobalState();
+  const { t } = useLocale();
 
-  useEffect(() => {
-    _getOffers();
-    return () => {
-      didCancel = true;
-    };
-  }, []);
-  function _getOffers() {
-    const id = props.match.params.id;
-    getOffers()
-      .onOk(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          if (result) {
-            setApp(result.opportunityDetail);
-            setOffers(result.offers);
-          } else
-            setError({
-              title: t("INTERNAL_SERVER_ERROR"),
-              message: t("INTERNAL_SERVER_ERROR_MSG")
-            });
+  const [state, setState] = useState({
+    loading: true,
+    error: false,
+    opportunity: null,
+    acceptedOffer: null,
+    isAccepted: false,
+    hasUiActionsSame: false,
+    offers: [],
+  });
+
+  const updateState = (...changes) =>
+    setState((prevState) => ({ ...prevState, ...changes }));
+
+  const init = (result, errorTitle, errorMsg) => {
+    if (!didCancel.current) {
+      if (result) {
+        if (result.length === 0) {
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+          }));
+        } else {
+          const categorizedOffers = getCategorizedOffers(result.offers);
+          const acceptedOffer = checkIsAcceptedOffer(result.offers);
+          const hasUiActionsSame = checkIsSameUiAction(result.offers);
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            opportunity: result.opportunityDetail,
+            offers: categorizedOffers,
+            isAccepted: acceptedOffer ? true : false,
+            acceptedOffer,
+            hasUiActionsSame,
+          }));
         }
-      })
-      .onServerError(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("INTERNAL_SERVER_ERROR"),
-            message: t("INTERNAL_SERVER_ERROR_MSG")
-          });
-        }
-      })
-      .onBadRequest(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("BAD_REQUEST"),
-            message: t("BAD_REQUEST_MSG")
-          });
-        }
-      })
-      .unAuthorized(result => {
-        if (!didCancel) {
-        }
-      })
-      .notFound(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("NOT_FOUND"),
-            message: t("NOT_FOUND_MSG")
-          });
-        }
-      })
-      .unKnownError(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("UNKNOWN_ERROR"),
-            message: t("UNKNOWN_ERROR_MSG")
-          });
-        }
-      })
-      .onRequestError(result => {
-        if (!didCancel) {
-          toggleLoading(false);
-          setError({
-            title: t("ON_REQUEST_ERROR"),
-            message: t("ON_REQUEST_ERROR_MSG")
-          });
-        }
-      })
-      .call(id);
-  }
-  function handleViewOffer(offer) {
-    setOffer(offer);
-    toggleViewOffer(true);
-  }
-  function handleCloseViewOffer() {
-    toggleViewOffer(false);
-  }
-  function handleSuccessAccept(result) {
-    if (result) {
-      let off = offers.map(item => {
-        if (item.Id === result.Id) item = result;
-        return item;
-      });
-      setOffers(off);
+      } else
+        updateState({
+          loading: false,
+          error: {
+            title: t(errorTitle),
+            message: t(errorMsg),
+          },
+        });
     }
-  }
-  function handleRejectClicked(offer) {
-    toggleAlert({
-      title: t("APP_OFFERS_REJECT_ALERT_INFO"),
-      // description: t("APP_OFFERS_REJECT_ALER T_INFO"),
-      cancelBtnText: t("NO"),
-      okBtnText: t("YES_DO_IT"),
-      isAjaxCall: true,
-      func: rejectOffer,
-      data: {
-        offerId: offer.Id
-      },
-      onCancel: () => {},
-      onSuccess: result => {
-        track("Reject Offer", "Customer Portal", "Customer Portal", 0);
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "success",
-            message: t("OFFER_REJECT_SUCCESS")
-          }
-        });
-        if (result) {
-          let off = offers.map(item => {
-            if (item.Id === offer.Id) item = result;
-            return item;
-          });
-          setOffers(off);
+  };
+  function _getLatestOffers() {
+    getLatestOffers()
+      .onOk((result) => {
+        init(result);
+      })
+      .onServerError((result) => {
+        init(null, "INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR_MSG");
+      })
+      .onBadRequest((result) => {
+        init(null, "BAD_REQUEST", "BAD_REQUEST_MSG");
+      })
+      .unAuthorized((result) => {
+        if (!didCancel.current) {
         }
-      },
-      onServerError: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("INTERNAL_SERVER_ERROR")
-          }
-        });
-      },
-      onBadRequest: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("BAD_REQUEST")
-          }
-        });
-      },
-      unAuthorized: error => {},
-      notFound: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("NOT_FOUND")
-          }
-        });
-      },
-      unKnownError: error => {
-        dispatch({
-          type: "ADD_NOTIFY",
-          value: {
-            type: "error",
-            message: t("UNKNOWN_ERROR")
-          }
-        });
-      }
-    });
+      })
+      .notFound((result) => {
+        init(null, "NOT_FOUND", "NOT_FOUND_MSG");
+      })
+      .unKnownError((result) => {
+        init(null, "UNKNOWN_ERROR", "UNKNOWN_ERROR_MSG");
+      })
+      .onRequestError((result) => {
+        init(null, "ON_REQUEST_ERROR", "ON_REQUEST_ERROR_MSG");
+      })
+      .call(verifyInfo.userInfo.personalNumber);
+    return () => {
+      didCancel.current = true;
+    };
+  }
+  const {
+    loading,
+    error,
+    opportunity,
+    offers,
+    isAccepted,
+    acceptedOffer,
+    hasUiActionsSame,
+  } = state;
+  useEffect(_getLatestOffers, []);
+
+  function handleAcceptedOffer() {
+    setState((prevState) => ({ ...prevState, loading: true }));
+    _getLatestOffers();
+    // window.scrollTo({
+    //   top: 0,
+    //   left: 0,
+    //   behavior: "smooth",
+    // });
   }
   return (
-    <div className="appOffers">
-      {loading ? (
-        <div className="page-loading">
-          <SquareSpinner />
-          <h2>{t("OFFERS_LOADING_TEXT")}</h2>
-        </div>
-      ) : error ? (
-        <div className="page-list-error animated fadeIn">
-          <Wrong />
-          <h2>{error && error.title}</h2>
-          <span>{error && error.message}</span>
-        </div>
-      ) : !offers || offers.length === 0 ? (
-        <>
-          <div className="appOffers__header">
-            <Link to={"/app/panel/myApplications"}>
-              <div className="icon">
-                <i
-                  className={
-                    direction === "ltr"
-                      ? "icon-arrow-left2"
-                      : "icon-arrow-right2"
-                  }
-                />
-              </div>
-              <span>{t("OFFERS_HEADER_BACK")}</span>
-            </Link>
-          </div>
-          <div className="page-empty-list offersEmpty animated fadeIn">
-            <Empty />
-            <h2>{t("OFFERS_EMPTY_LIST_TITLE")}</h2>
-            <span className="msg1">{t("OFFERS_EMPTY_LIST_MSG1")}</span>
-            <span className="msg2">{t("OFFERS_EMPTY_LIST_MSG2")}</span>
-            <span className="msg3">{t("OFFERS_EMPTY_LIST_MSG3")}</span>
-            <span className="msg4">{t("OFFERS_EMPTY_LIST_MSG4")}</span>
-          </div>
-        </>
-      ) : (
-        <>
-          <div className="appOffers__header">
-            <Link to={"/app/panel/myApplications"}>
-              <div className="icon">
-                <i
-                  className={
-                    direction === "ltr"
-                      ? "icon-arrow-left2"
-                      : "icon-arrow-right2"
-                  }
-                />
-              </div>
-              <span>{t("OFFERS_HEADER_BACK")}</span>
-            </Link>
-          </div>
-          {offers.map(offer => (
-            <Item
-              key={offer.Id}
-              app={app}
-              offer={offer}
-              onViewOffersClicked={handleViewOffer}
-              onSuccessAccept={handleSuccessAccept}
-              onRejectClicked={handleRejectClicked}
-            />
-          ))}
-        </>
-      )}
-      {/* {viewOfferModal && (
+    <>
+      <div className="appOffers">
+        {loading ? (
+          <Loading />
+        ) : error ? (
+          <Error />
+        ) : !offers || offers.length === 0 ? (
+          <EmptyOffers />
+        ) : (
+          <>
+            <OppInfo opportunity={opportunity} />
+            {!isAccepted ? (
+              <>
+                <NotAcceptedAlert />
+                <UiActions hasUiActionsSame={hasUiActionsSame} />
+              </>
+            ) : (
+              <>
+                <AcceptedAlert acceptedOffer={acceptedOffer} />
+                <AcceptedOffer acceptedOffer={acceptedOffer} />
+              </>
+            )}
+            {offers.map((category, index) => (
+              <OffersCategory
+                key={index}
+                opportunity={opportunity}
+                category={category}
+                isAccepted={isAccepted}
+                onEndAccepting={handleAcceptedOffer}
+              />
+            ))}
+          </>
+        )}
+        {/* {viewOfferModal && (
         <OfferModal
           offer={selectedOffer}
           app={app}
           onClose={handleCloseViewOffer}
         />
       )} */}
-    </div>
+      </div>
+    </>
   );
 };
 

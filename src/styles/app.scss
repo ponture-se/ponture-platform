@@ -19,10 +19,48 @@
   src: url("./../assets/fonts/OpenSans-Semibold.ttf");
   font-weight: bold;
 }
+// ========================
+.hidden-xs {
+  @include respond(big-desktop) {
+    display: block !important ;
+  }
+  @include respond(tab-land) {
+    display: block !important ;
+  }
+  @include respond(tab-port) {
+    display: block !important ;
+  }
+  display: block !important ;
+  @include respond(phone) {
+    display: none !important ;
+  }
+}
+.visible-f-xs {
+  display: none !important ;
+  @include respond(big-desktop) {
+    display: none !important;
+  }
+  @include respond(tab-land) {
+    display: none !important;
+  }
+  @include respond(tab-port) {
+    display: none !important ;
+  }
+  @include respond(phone) {
+    display: flex !important ;
+  }
+}
 * {
   box-sizing: border-box;
 }
+html {
+  font-size: 100%;
+}
+.font-bold {
+  font-family: openSanceBold;
+}
 body {
+  font-size: 100%;
   padding: 0;
   margin: 0;
   font-family: OpenSance;

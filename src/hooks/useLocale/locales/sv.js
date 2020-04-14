@@ -68,7 +68,9 @@ export default {
   LOGIN_BTN_NAME: "Identifiera med BankID",
   LOGIN_TERMS_TEXT: "Jag godkänner Ponture:s användarvillkoren",
   LOGIN_TERMS_LINK: "Läs Ponture:s användarvillkor...",
-  HEADER_TITLE: "Mina Sidor",
+  HEADER_TITLE_MY: "Mina",
+  HEADER_TITLE_OFFERS: "Erbjudanden",
+  HEADER_TITLE_PAGES: "Sidor",
   HEADER_TABS_FIRST: "Mina Ansökningar",
   MY_APPS_LOADING_TEXT: "Laddar mina applikationer...",
   MY_APPS_EMPTY_LIST_TITLE: "Tom lista!",
@@ -79,11 +81,45 @@ export default {
   OFFERS_EMPTY_LIST_MSG1: "Din ansökan behandlas av våra långivare.",
   OFFERS_EMPTY_LIST_MSG2: "Våra långivare svarar normalt inom 24 timmar.",
   OFFERS_EMPTY_LIST_MSG3:
-    "Du kommer att få epostmeddelanden och SMS från oss när du får nya erbjudanden, vänligen titta i din inkorg och mobil.",
-  OFFERS_EMPTY_LIST_MSG4: "Tack för ditt tålamod. Återkom senare.",
+    "Du kommer att få epostmeddelanden och SMS från oss när du får nya erbjudanden",
+  OFFERS_EMPTY_LIST_MSG4: "vänligen titta i din inkorg och mobil.",
+  OFFERS_EMPTY_LIST_MSG5: "Tack för ditt tålamod. Återkom senare.",
   ACCEPT_OFFER: "Acceptera Erbjudandet",
   OFFER_ACCEPTED: "Accepterat",
   OFFER_REJECTED: "Avslagen",
+  OFFER_ACCEPTED_ALERT_EXT:
+    "Kontakta {name} direkt för att gå vidare om det är akut.",
+  OFFER_NOT_ACCEPTED_TITLE:
+    "Välj det erbjudande nedanför som passar dig bäst för att gå vidare.",
+  OFFER_NOT_ACCEPTED_DESCRIPTION:
+    "Erbjudanden nedan är ej bindande. När du accepterar ett erbjudande kommer banken att kontakta dig för att slutföra din finansiering med dig.",
+  OFFER_NOT_ACCEPTED_TITLE_XS:
+    "Välj ett erbjudande som passar dig bäst för att gå vidare.",
+  OFFER_NOT_ACCEPTED_DESCRIPTION_XS: "Våra erbjudanden är ej binande.",
+  OFFER_ITEM_CHEAPEST_TITLE: "Billigaste lånet",
+  OFFER_ITEM_BIGGEST_TITLE: "Storte belopp",
+  OFFER_ITEM_ACCEPT_BTN: "Gå vidare",
+  OFFER_ITEM_MORE_BTN: "andra villkor",
+  OFFERS_ACTIONS_TITLE: "Klaka val",
+  OFFERS_ACTIONS_CHEAPEST_BTN: "billigaste erbjudandet",
+  OFFERS_ACTIONS_BIGGEST_BTN: "största lånebeloppet",
+  OFFER_ACCEPT_MODAL_TITLE: "Godkänn för att gå vidare",
+  OFFER_ACCEPT_MODAL_FORM_TITLE: "Uppdatarea dina kontaktsuppgifter",
+  OFFER_ACCEPT_MODAL_FORM_PHONE_TITLE: "Ditt telefonnummer:",
+  OFFER_ACCEPT_MODAL_FORM_PHONE_PLACEHOLDER: "+47 70 986 54 32",
+  OFFER_ACCEPT_MODAL_FORM_EMAIL_TITLE: "Ditt e-postadress:",
+  OFFER_ACCEPT_MODAL_FORM_EMAIL_PLACEHOLDER: "example@mail.com",
+  OFFER_ACCEPT_MODAL_FORM_DESCRIPTION:
+    "Efter ditt godkännande kommer {partnerName} att kontakta dig för att ta dig genom sista steget kontakta dig inom kort",
+  OFFER_ACCEPT_MODAL_INFO_FIRST: "Erbjudandet är kostnadsfritt",
+  OFFER_ACCEPT_MODAL_INFO_SECOND:
+    "Din kreditvärdighet kommer inte att påverkas",
+  OFFER_ACCEPT_MODAL_INFO_THIRD: "Du binder dig inte till något",
+  OFFER_ACCEPT_MODAL_CANCEL_BTN: "Godkänn senare",
+  OFFER_ACCEPT_MODAL_SUBMIT_BTN: "Godkänn",
+  PARTNER_NAME: "Långivare namn:",
+  OFFER_ACCEPTED_ITEM_TITLE: "Ditt valt erbjudande",
+
   MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
   APP_NEEDS: "Dina anledningar till lån",
   APP_COMPANY_NAME: "Företag",
@@ -110,6 +146,12 @@ export default {
   OFFER_COMPANY: "Företag",
   OFFER_AMORTIZATION_PERIOD: "Låneperiod",
   OFFER_INTEREST_RATE: "Ränta",
+  OFFERS_OPP_HI: "Hej",
+  OFFERS_OPP_YOUR_INFORMATION: "Dina uppgifter",
+  OFFERS_OPP_APPLICATION_DATE: "Ansökningsdatum",
+  COMPANY: "Företag",
+  OFFERS_CATEGORY_TITLE: "Dina låneerbjudande",
+  OFFERS_CATEGORY_TITLE_CHECK_CREDIT: "Dina erbjudanden för checkkredit",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
@@ -220,5 +262,5 @@ export default {
   CUSTOMER_LOGIN_NO_APP_BTN_LOAN: "Företagslån",
   CUSTOMER_LOGIN_NO_APP_BTN_F: "Fakturaköp",
   CUSTOMER_LOGIN_NO_APP_INFO3:
-    "Visste du att genom oss skickar du bara en ansökan och får erbjudanden från upp till 15 banker och finansiella institut - helt kostnadsfritt"
+    "Visste du att genom oss skickar du bara en ansökan och får erbjudanden från upp till 15 banker och finansiella institut - helt kostnadsfritt",
 };

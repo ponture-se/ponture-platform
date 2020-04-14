@@ -13,3 +13,31 @@
   #{$property}: $fallback;
   #{$property}: var(--#{$variable});
 }
+
+@mixin respond($breakpoint) {
+  @if $breakpoint == phone {
+    @media only screen and (max-width: 37.5em) {
+      // alan ke browser font-size 16px hast , 37.5 mishe 600px , hala age user maslan font-size browser ro
+      // taghiir dad(1em mishe un addade) ya zoom kard , harchi kolan zarbdare 37.5 mishe
+      @content;
+    }
+  }
+  @if $breakpoint == tab-port {
+    @media only screen and (max-width: 56.25em) {
+      // 900px
+      @content;
+    }
+  }
+  @if $breakpoint == tab-land {
+    @media only screen and (max-width: 75em) {
+      // 1200px
+      @content;
+    }
+  }
+  @if $breakpoint == big-desktop {
+    @media only screen and (min-width: 112.5em) {
+      // 1800px
+      @content;
+    }
+  }
+}

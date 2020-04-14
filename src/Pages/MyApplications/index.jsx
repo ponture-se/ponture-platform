@@ -26,7 +26,7 @@ const MyApplications = props => {
       .onOk(result => {
         if (!didCancel) {
           toggleLoading(false);
-          setData(result);
+          setData(result.oppList);
         }
       })
       .onServerError(result => {

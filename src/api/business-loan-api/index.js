@@ -59,13 +59,13 @@ export function getNeedsList() {
     axios
       .get(url, {
         headers: {
-          "Content-Type": "application/json"
-        }
+          "Content-Type": "application/json",
+        },
       })
-      .then(response => {
+      .then((response) => {
         _onOk(response.data ? response.data : undefined);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -85,7 +85,7 @@ export function getNeedsList() {
                 window.analytics.track("Failure", {
                   category: "Loan Application",
                   label: "/app/loan/ wizard",
-                  value: 0
+                  value: 0,
                 });
               _onServerError();
               break;
@@ -101,34 +101,34 @@ export function getNeedsList() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function startBankId() {
@@ -175,26 +175,26 @@ export function startBankId() {
     }
   }
 
-  const _call = personalNumber => {
+  const _call = (personalNumber) => {
     const url = startUrl;
     axios({
       method: "post",
       url: url,
       headers: {
-        Accept: "application/json"
+        Accept: "application/json",
       },
       data: {
-        personalNumber: personalNumber
-      }
+        personalNumber: personalNumber,
+      },
     })
-      .then(response => {
+      .then((response) => {
         Cookies.set(
           "@pontrue-wizard/token",
           response.data ? response.data.access_token : null
         );
         _onOk(response.data ? response.data : undefined);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -222,34 +222,34 @@ export function startBankId() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function collect() {
@@ -304,16 +304,16 @@ export function collect() {
         timeout: 300000,
         headers: {
           Accept: "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         if (response.data.userInfo && !response.data.userInfo.personalNumber) {
           return response.__retry();
         }
         _onOk(response.data ? response.data : undefined);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -343,34 +343,34 @@ export function collect() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function cancelVerify() {
@@ -425,14 +425,14 @@ export function cancelVerify() {
       url: url,
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: "application/json"
+        Accept: "application/json",
       },
-      data: {}
+      data: {},
     })
-      .then(response => {
+      .then((response) => {
         _onOk(response.data ? response.data : undefined);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -460,34 +460,34 @@ export function cancelVerify() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function getCompanies() {
@@ -534,19 +534,24 @@ export function getCompanies() {
     }
   }
 
-  const _call = personalNumber => {
+  const _call = (personalNumber) => {
     const url = companiesUrl + "?personalNumber=" + personalNumber;
-    const token = Cookies.get("@pontrue-wizard/token");
+    // const token = Cookies.get("@pontrue-wizard/token");
+    // headers: {
+    //   Authorization: `Bearer ${token}`;
+    // }
     axios
-      .get(url, {
-        headers: {
-          Authorization: `Bearer ${token}`
-        }
+      .get(url)
+      .then((response) => {
+        _onOk(
+          response.data
+            ? response.data.data
+              ? response.data.data.companies
+              : undefined
+            : undefined
+        );
       })
-      .then(response => {
-        _onOk(response.data ? response.data : undefined);
-      })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -566,7 +571,7 @@ export function getCompanies() {
                 window.analytics.track("Failure", {
                   category: "Loan Application",
                   label: "/app/loan/ wizard",
-                  value: 0
+                  value: 0,
                 });
               _onServerError();
               break;
@@ -582,34 +587,34 @@ export function getCompanies() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function submitLoan() {
@@ -656,7 +661,7 @@ export function submitLoan() {
     }
   }
 
-  const _call = loan => {
+  const _call = (loan) => {
     const url = submitUrl;
     const token = Cookies.get("@pontrue-wizard/token");
     axios({
@@ -664,14 +669,14 @@ export function submitLoan() {
       url: url,
       headers: {
         Authorization: `Bearer ${token}`,
-        Accept: "application/json"
+        Accept: "application/json",
       },
-      data: loan
+      data: loan,
     })
-      .then(response => {
+      .then((response) => {
         _onOk(response.data ? response.data : undefined);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -691,7 +696,7 @@ export function submitLoan() {
                 window.analytics.track("Failure", {
                   category: "Loan Application",
                   label: "/app/loan/ wizard",
-                  value: 0
+                  value: 0,
                 });
               _onServerError();
               break;
@@ -707,33 +712,33 @@ export function submitLoan() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }

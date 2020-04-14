@@ -9,22 +9,17 @@ import {
   isNumber,
   isPersonalNumber,
   isPhoneNumber,
-  validateEmail
-} from "./../../utils";
-import CircleSpinner from "./../../components/CircleSpinner";
-import {
-  useGlobalState,
-  useLocale,
-  useCookie,
-  useNumberRegex
-} from "./../../hooks";
+  validateEmail,
+} from "utils";
+import CircleSpinner from "components/CircleSpinner";
+import { useGlobalState, useLocale, useCookie, useNumberRegex } from "hooks";
 import "./styles.scss";
 import {
   startBankId,
   cancelVerify,
   submitLoan,
-  getNeedsList
-} from "./../../api/business-loan-api";
+  getNeedsList,
+} from "api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import track from "utils/trackAnalytic";
 //
@@ -57,10 +52,10 @@ export default function BusinessLoan(props) {
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
   const [_email, _setEmail] = useCookie("_email");
   const [referral_params, setReferral_params] = useState(() =>
-  Cookies.get("affiliate_referral_params_v2")
-    ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
-    : Cookies.get("affiliate_referral_params")
-); // extra params
+    Cookies.get("affiliate_referral_params_v2")
+      ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
+      : Cookies.get("affiliate_referral_params")
+  ); // extra params
 
   const p_loanAmount = getParameterByName("amount");
   const __loanAmount = p_loanAmount ? p_loanAmount : _loanAmount;
@@ -111,7 +106,7 @@ export default function BusinessLoan(props) {
         : "",
     email:
       __email && __email.length > 0 && validateEmail(__email) ? __email : "",
-    terms: false
+    terms: false,
   };
   if (_loanReasons && _loanReasons.length > 0) {
     try {
@@ -181,7 +176,7 @@ export default function BusinessLoan(props) {
   const [otherReasonIsValid, toggleOtherReasonValidation] = useState(true);
   const [
     otherReasonValidationMessage,
-    setOtherReasonValidationMessage
+    setOtherReasonValidationMessage,
   ] = useState();
   const [personalNumber, setPersonalNumber] = useState(
     formInitValues.personalNumber ? formInitValues.personalNumber : ""
@@ -191,7 +186,7 @@ export default function BusinessLoan(props) {
   );
   const [
     personalNumberValidationMessage,
-    setPersonalNumberValidationMessage
+    setPersonalNumberValidationMessage,
   ] = useState();
   const [companies, setCompanies] = useState();
   const [selectedCompany, setCompany] = useState();
@@ -202,7 +197,7 @@ export default function BusinessLoan(props) {
   const [phoneNumberIsValid, togglePhoneNumberValidation] = useState(true);
   const [
     phoneNumberValidationMessage,
-    setPhoneNumberValidationMessage
+    setPhoneNumberValidationMessage,
   ] = useState();
   const [email, setEmail] = useState(formInitValues.email);
   const [emailIsValid, toggleEmailValidation] = useState(true);
@@ -230,7 +225,7 @@ export default function BusinessLoan(props) {
   }, [loanAmount]);
   function _loadNeeds(callBack) {
     getNeedsList()
-      .onOk(result => {
+      .onOk((result) => {
         if (!didCancel) {
           if (result) {
             if (result.length > 0) {
@@ -295,12 +290,12 @@ export default function BusinessLoan(props) {
             setError({
               sender: "needs",
               type: "resultError",
-              message: t("NEEDS_RESULT_ERROR")
+              message: t("NEEDS_RESULT_ERROR"),
             });
           }
         }
       })
-      .onServerError(result => {
+      .onServerError((result) => {
         if (!didCancel) {
           // track("Failure", "Loan Application", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
@@ -308,58 +303,58 @@ export default function BusinessLoan(props) {
           setError({
             sender: "needs",
             type: "serverError",
-            message: t("NEEDS_ERROR_500")
+            message: t("NEEDS_ERROR_500"),
           });
         }
       })
-      .onBadRequest(result => {
+      .onBadRequest((result) => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
           setError({
             sender: "needs",
             type: "Bad Request",
-            message: t("NEEDS_ERROR_400")
+            message: t("NEEDS_ERROR_400"),
           });
         }
       })
-      .unAuthorized(result => {
+      .unAuthorized((result) => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
           setError({
             sender: "needs",
             type: "unAuthorized",
-            message: t("NEEDS_ERROR_401")
+            message: t("NEEDS_ERROR_401"),
           });
         }
       })
-      .notFound(result => {
+      .notFound((result) => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
           setError({
             sender: "needs",
             type: "notFound",
-            message: t("NEEDS_ERROR_404")
+            message: t("NEEDS_ERROR_404"),
           });
         }
       })
-      .unKnownError(result => {
+      .unKnownError((result) => {
         if (!didCancel) {
           toggleMainSpinner(false);
           changeTab(3);
           setError({
             sender: "needs",
             type: "unKnownError",
-            message: t("NEEDS_ERROR_UNKNOWN")
+            message: t("NEEDS_ERROR_UNKNOWN"),
           });
         }
       })
       .call(currentLang);
   }
   const handleLoanAmount = useCallback(
-    val => {
+    (val) => {
       setLoanAmount(val);
       _setLoanAmount(val);
       if (val <= 100000) {
@@ -376,7 +371,7 @@ export default function BusinessLoan(props) {
   );
 
   const handleLoanPeriod = useCallback(
-    val => {
+    (val) => {
       setLoanPeriod(val);
       _setLoanPeriod(val);
     },
@@ -384,8 +379,8 @@ export default function BusinessLoan(props) {
   );
 
   const handleMinusLoanAmount = useCallback(
-    val => {
-      setLoanAmount(step => {
+    (val) => {
+      setLoanAmount((step) => {
         let result;
         if (step - loanAmountStep >= loanAmountMin)
           result = step - loanAmountStep;
@@ -397,8 +392,8 @@ export default function BusinessLoan(props) {
     [loanAmount]
   );
   const handleAddLoanAmount = useCallback(
-    val => {
-      setLoanAmount(step => {
+    (val) => {
+      setLoanAmount((step) => {
         let result;
         if (step + loanAmountStep <= loanAmountMax)
           result = step + loanAmountStep;
@@ -410,8 +405,8 @@ export default function BusinessLoan(props) {
     [loanAmount]
   );
   const handleMinusLoanPeriod = useCallback(
-    val => {
-      setLoanPeriod(step => {
+    (val) => {
+      setLoanPeriod((step) => {
         let result;
         if (step - loanPeriodStep >= loanPeriodMin)
           result = step - loanPeriodStep;
@@ -423,8 +418,8 @@ export default function BusinessLoan(props) {
     [loanPeriod]
   );
   const handleAddLoanPeriod = useCallback(
-    val => {
-      setLoanPeriod(step => {
+    (val) => {
+      setLoanPeriod((step) => {
         let result;
         if (step + loanPeriodStep <= loanPeriodMax)
           result = step + loanPeriodStep;
@@ -436,8 +431,8 @@ export default function BusinessLoan(props) {
     [loanPeriod]
   );
   const handleReasonSelect = useCallback(
-    reason => {
-      const rList = loanReasons.map(item => {
+    (reason) => {
+      const rList = loanReasons.map((item) => {
         if (item.API_Name === reason.API_Name) {
           item.selected = !item.selected;
           if (reason.API_Name === "other") {
@@ -450,7 +445,7 @@ export default function BusinessLoan(props) {
         }
         return item;
       });
-      const selected = loanReasons.find(l => l.selected);
+      const selected = loanReasons.find((l) => l.selected);
       if (!selected) {
         let isDefault = false;
         for (let i = 0; i < rList.length; i++) {
@@ -475,7 +470,7 @@ export default function BusinessLoan(props) {
     [loanReasons]
   );
   const handleOtherReasonChanged = useCallback(
-    e => {
+    (e) => {
       if (e.target.value.length === 0) {
         toggleOtherReasonValidation(false);
         setOtherReasonValidationMessage(t("OTHER_REASON_IS_REQUIRED"));
@@ -506,24 +501,27 @@ export default function BusinessLoan(props) {
     const key = e.which || e.key;
     if (key === 13) handleBankIdClicked();
   }
-  const handlePhoneNumberChanged = useCallback(
-    e => {
-      if (e.target.value.length === 0) {
-        togglePhoneNumberValidation(false);
-        setPhoneNumberValidationMessage(t("PHONE_NUMBER_IS_REQUIRED"));
-      } else {
-        if (e.target.value.length < 9) {
-          togglePhoneNumberValidation(false);
-          setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
-        } else togglePhoneNumberValidation(true);
-      }
-      setPhoneNumber(e.target.value);
-      _setPhoneNumber(e.target.value);
-    },
-    [phoneNumber, appLocale]
-  );
+  const handlePhoneNumberChanged = (e) => {
+    const value = e.target.value;
+    if (!isPhoneNumber(value)) {
+      togglePhoneNumberValidation(false);
+      setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
+    } else togglePhoneNumberValidation(true);
+
+    // if (value.length === 0) {
+    //   togglePhoneNumberValidation(false);
+    //   setPhoneNumberValidationMessage(t("PHONE_NUMBER_IS_REQUIRED"));
+    // } else {
+    //   if (value.length < 9) {
+    //     togglePhoneNumberValidation(false);
+    //     setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
+    //   } else togglePhoneNumberValidation(true);
+    // }
+    setPhoneNumber(value);
+    _setPhoneNumber(value);
+  };
   const handleEmailChanged = useCallback(
-    e => {
+    (e) => {
       if (e.target.value.length === 0) {
         toggleEmailValidation(false);
         setEmailValidationMessage(t("EMAIL_IS_REQUIRED"));
@@ -540,10 +538,10 @@ export default function BusinessLoan(props) {
   );
   let chk;
   const handleTermChanged = useCallback(
-    e => {
+    (e) => {
       toggleTermsChecked(e.target.checked);
       chk = e.target.checked;
-      setForm(f => {
+      setForm((f) => {
         const newForm = { ...f, terms: chk };
         return newForm;
       });
@@ -552,7 +550,7 @@ export default function BusinessLoan(props) {
     [terms]
   );
   const handleSelectCompany = useCallback(
-    c => {
+    (c) => {
       setCompany(c);
       if (!companyIsValid) {
         toggleCompanyValidation(true);
@@ -568,14 +566,14 @@ export default function BusinessLoan(props) {
         if (!loanReasonOther || loanReasonOther.length === 0) {
           isValid = false;
           handleOtherReasonChanged({
-            target: { value: "" }
+            target: { value: "" },
           });
         }
       }
       if (!personalNumber) {
         isValid = false;
         handlePersonalNumberChanged({
-          target: { value: personalNumber ? personalNumber : "" }
+          target: { value: personalNumber ? personalNumber : "" },
         });
       }
       if (isValid) {
@@ -584,7 +582,7 @@ export default function BusinessLoan(props) {
           let pId = personalNumber.replace("-", "");
           if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
           startBankId()
-            .onOk(result => {
+            .onOk((result) => {
               if (!didCancel) {
                 // save result in session storage to use in customer portal
                 Cookies.set("@ponture-customer-portal/token", result);
@@ -592,70 +590,70 @@ export default function BusinessLoan(props) {
                   window.analytics.track("BankID Verification", {
                     category: "Loan Application",
                     label: "/app/loan/ bankid popup",
-                    value: 0
+                    value: 0,
                   });
                 toggleVerifyingSpinner(false);
                 setStartResult(result);
                 toggleVerifyModal(true);
               }
             })
-            .onServerError(result => {
+            .onServerError((result) => {
               if (window.analytics)
                 window.analytics.track("BankID Failed", {
                   category: "app/loan",
                   label: "app/loan customer BankID popup",
-                  value: 0
+                  value: 0,
                 });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
                 setError({
-                  sender: "verifyBankId"
+                  sender: "verifyBankId",
                 });
               }
             })
-            .onBadRequest(result => {
+            .onBadRequest((result) => {
               if (window.analytics)
                 window.analytics.track("BankID Failed", {
                   category: "app/loan",
                   label: "app/loan customer BankID popup",
-                  value: 0
+                  value: 0,
                 });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
                 setError({
-                  sender: "verifyBankId"
+                  sender: "verifyBankId",
                 });
               }
             })
-            .unAuthorized(result => {
+            .unAuthorized((result) => {
               if (window.analytics)
                 window.analytics.track("BankID Failed", {
                   category: "app/loan",
                   label: "app/loan customer BankID popup",
-                  value: 0
+                  value: 0,
                 });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
                 setError({
-                  sender: "verifyBankId"
+                  sender: "verifyBankId",
                 });
               }
             })
-            .unKnownError(result => {
+            .unKnownError((result) => {
               if (window.analytics)
                 window.analytics.track("BankID Failed", {
                   category: "app/loan",
                   label: "app/loan customer BankID popup",
-                  value: 0
+                  value: 0,
                 });
               if (!didCancel) {
                 toggleVerifyingSpinner(false);
                 changeTab(3);
                 setError({
-                  sender: "verifyBankId"
+                  sender: "verifyBankId",
                 });
               }
             })
@@ -670,7 +668,7 @@ export default function BusinessLoan(props) {
       if (!personalNumber || personalNumber.length < 9) {
         isValid = false;
         handlePersonalNumberChanged({
-          target: { value: personalNumber ? personalNumber : "" }
+          target: { value: personalNumber ? personalNumber : "" },
         });
       }
       if (
@@ -679,19 +677,19 @@ export default function BusinessLoan(props) {
       ) {
         isValid = false;
         handleOtherReasonChanged({
-          target: { value: loanReasonOther ? loanReasonOther : "" }
+          target: { value: loanReasonOther ? loanReasonOther : "" },
         });
       }
       if (!phoneNumber || phoneNumber.length < 9) {
         isValid = false;
         handlePhoneNumberChanged({
-          target: { value: phoneNumber ? phoneNumber : "" }
+          target: { value: phoneNumber ? phoneNumber : "" },
         });
       }
       if (!email || email.length === 0 || !validateEmail(email)) {
         isValid = false;
         handleEmailChanged({
-          target: { value: email ? email : "" }
+          target: { value: email ? email : "" },
         });
       }
       if (companies && companies.length > 0 && !selectedCompany) {
@@ -724,7 +722,7 @@ export default function BusinessLoan(props) {
           needDescription: loanReasonOther,
           email: email,
           phoneNumber: phoneNumber,
-          bankid: bankIdResult
+          bankid: bankIdResult,
         };
         try {
           const r = JSON.parse(referral_params);
@@ -746,12 +744,12 @@ export default function BusinessLoan(props) {
         } catch (error) {}
 
         submitLoan()
-          .onOk(result => {
+          .onOk((result) => {
             if (!didCancel) {
               if (result.errors) {
                 changeTab(3);
                 setError({
-                  sender: "submitLoan"
+                  sender: "submitLoan",
                 });
               } else {
                 resetForm();
@@ -759,27 +757,27 @@ export default function BusinessLoan(props) {
                   window.analytics.track("Submit", {
                     category: "Loan Application",
                     label: "/app/loan/ wizard",
-                    value: loanAmount
+                    value: loanAmount,
                   });
                 changeTab(2);
               }
             }
           })
-          .onServerError(result => {
+          .onServerError((result) => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
               changeTab(3);
               setError({
-                sender: "submitLoan"
+                sender: "submitLoan",
               });
             }
           })
-          .unKnownError(result => {
+          .unKnownError((result) => {
             if (!didCancel) {
               toggleSubmitSpinner(false);
               changeTab(3);
               setError({
-                sender: "submitLoan"
+                sender: "submitLoan",
               });
             }
           })
@@ -810,12 +808,12 @@ export default function BusinessLoan(props) {
       if (result && result.length > 0) {
         dispatch({
           type: "TOGGLE_B_L_MORE_INFO",
-          value: true
+          value: true,
         });
         // save bank id result to us ein customer
         dispatch({
           type: "VERIFY_BANK_ID_SUCCESS",
-          payload: bIdResult
+          payload: bIdResult,
         });
         sessionStorage.setItem(
           "@ponture-customer-bankid",
@@ -829,13 +827,13 @@ export default function BusinessLoan(props) {
         setError({
           sender: "companies",
           type: "loadData",
-          message: t("COMPANIES_IN_VALID_DATA")
+          message: t("COMPANIES_IN_VALID_DATA"),
         });
       }
     } else if (isSuccess === false) {
       changeTab(3);
       setError({
-        sender: "submitLoan"
+        sender: "submitLoan",
       });
     }
   }
@@ -845,23 +843,23 @@ export default function BusinessLoan(props) {
       window.analytics.track("BankID Failed", {
         category: "Loan Application",
         label: "/app/loan/ bankid popup",
-        value: 0
+        value: 0,
       });
     cancelVerify()
-      .onOk(result => {})
-      .onServerError(result => {
+      .onOk((result) => {})
+      .onServerError((result) => {
         if (!didCancel) {
         }
       })
-      .onBadRequest(result => {
+      .onBadRequest((result) => {
         if (!didCancel) {
         }
       })
-      .unAuthorized(result => {
+      .unAuthorized((result) => {
         if (!didCancel) {
         }
       })
-      .unKnownError(result => {
+      .unKnownError((result) => {
         if (!didCancel) {
         }
       })
@@ -922,7 +920,7 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
-                          formatLabel={value => `${value} kr`}
+                          formatLabel={(value) => `${value} kr`}
                           step={loanAmountStep}
                           track="slider"
                           maxValue={loanAmountMax}
@@ -961,7 +959,7 @@ export default function BusinessLoan(props) {
                       </div>
                       <div className="rangeElement__center">
                         <InputRange
-                          formatLabel={value => {
+                          formatLabel={(value) => {
                             return `${
                               value === loanPeriodMax ? "+" + value : value
                             } 
@@ -989,7 +987,7 @@ export default function BusinessLoan(props) {
                     </label>
                     <div className="options">
                       {loanReasons &&
-                        loanReasons.map(r => (
+                        loanReasons.map((r) => (
                           <div
                             key={r.API_Name}
                             className={
@@ -1087,7 +1085,7 @@ export default function BusinessLoan(props) {
                         {t("BL_COMPANY")}
                       </label>
                       <div className="options">
-                        {companies.map(c => (
+                        {companies.map((c) => (
                           <div
                             key={c.companyId}
                             className={
