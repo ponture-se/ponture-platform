@@ -126,7 +126,7 @@ $itemBtnColor: #44b3c2;
   }
   span {
     width: auto;
-    font-size: 20px;
+    font-size: 19px;
     @include respond(phone) {
       width: 42%;
       font-size: 13px;
@@ -139,9 +139,10 @@ $itemBtnColor: #44b3c2;
       flex: 1;
     }
     h4 {
+      font-weight: normal;
       padding: 3px 0;
       margin: 0;
-      font-size: 18px;
+      font-size: 17px;
       @include respond(phone) {
         font-size: 12px;
       }
@@ -231,6 +232,7 @@ $itemBtnColor: #44b3c2;
     flex-direction: column;
   }
   h5 {
+    font-weight: normal;
     @include respond(phone) {
       margin: 10px;
     }

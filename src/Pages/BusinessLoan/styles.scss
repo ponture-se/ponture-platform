@@ -479,7 +479,7 @@
         }
       }
     }
-    &.--invalid {
+    &.input-invalid {
       .my-input {
         outline: none;
         border: 1px solid red;
@@ -640,7 +640,7 @@
         margin-right: 10px;
       }
     }
-    .btnMyApps{
+    .btnMyApps {
       margin-top: 10px;
     }
     .shortInfo {

@@ -202,7 +202,7 @@ const Login = (props) => {
               (error &&
               error["personalNumber"] &&
               error["personalNumber"].isError
-                ? "--invalid"
+                ? "input-invalid"
                 : "")
             }
           >

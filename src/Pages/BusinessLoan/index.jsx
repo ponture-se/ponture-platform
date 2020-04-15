@@ -1009,7 +1009,7 @@ export default function BusinessLoan(props) {
                     <div
                       className={
                         "bl__input animated fadeIn " +
-                        (!otherReasonIsValid ? "--invalid" : "")
+                        (!otherReasonIsValid ? "input-invalid" : "")
                       }
                     >
                       <label className="bl__input__label">
@@ -1037,7 +1037,7 @@ export default function BusinessLoan(props) {
                   <div
                     className={
                       "bl__input animated fadeIn " +
-                      (!personalNumberIsValid ? "--invalid" : "")
+                      (!personalNumberIsValid ? "input-invalid" : "")
                     }
                   >
                     <label className="bl__input__label">
@@ -1133,7 +1133,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!phoneNumberIsValid ? "--invalid" : "")
+                          (!phoneNumberIsValid ? "input-invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -1164,7 +1164,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!emailIsValid ? "--invalid" : "")
+                          (!emailIsValid ? "input-invalid" : "")
                         }
                       >
                         <label className="bl__input__label">

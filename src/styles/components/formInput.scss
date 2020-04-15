@@ -55,7 +55,7 @@
 //       flex: 1;
 //     }
 //   }
-//   &.--invalid {
+//   &.input-invalid {
 //     .elementTitle {
 //       color: red;
 //     }
@@ -153,18 +153,18 @@
       flex: 1;
     }
   }
-  &.--invalid {
-    .elementTitle {
-      color: red !important;
-    }
-    .element {
-      outline: none;
-      box-shadow: none;
-      border: 1px solid red !important;
-    }
-    .elementInfo {
-      color: red !important;
-    }
+}
+.input-invalid {
+  .elementTitle {
+    color: red !important;
+  }
+  .element {
+    outline: none;
+    box-shadow: none;
+    border: 1px solid red !important;
+  }
+  .elementInfo {
+    color: red !important;
   }
 }
 .element {
@@ -182,15 +182,15 @@
   &[readOnly] {
     background: whitesmoke;
   }
-  &.btn-large {
+  &.input-large {
     height: 45px !important;
     font-size: 16px;
   }
-  &.--medium {
+  &.input-medium {
     height: 38px !important;
     font-size: 15px;
   }
-  &.--small {
+  &.input-small {
     height: 35px !important;
     font-size: 13px;
   }
