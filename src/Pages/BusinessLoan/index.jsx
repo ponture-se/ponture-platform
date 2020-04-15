@@ -367,7 +367,7 @@ export default function BusinessLoan(props) {
         setLoanAmountStep(125000);
       }
     },
-    [loanAmount]
+    [_setLoanAmount]
   );
 
   const handleLoanPeriod = useCallback(
@@ -375,7 +375,7 @@ export default function BusinessLoan(props) {
       setLoanPeriod(val);
       _setLoanPeriod(val);
     },
-    [loanPeriod]
+    [_setLoanPeriod]
   );
 
   const handleMinusLoanAmount = useCallback(
@@ -389,7 +389,7 @@ export default function BusinessLoan(props) {
         return result;
       });
     },
-    [loanAmount]
+    [_setLoanAmount, loanAmountStep]
   );
   const handleAddLoanAmount = useCallback(
     (val) => {
@@ -402,7 +402,7 @@ export default function BusinessLoan(props) {
         return result;
       });
     },
-    [loanAmount]
+    [_setLoanAmount, loanAmountStep]
   );
   const handleMinusLoanPeriod = useCallback(
     (val) => {
@@ -415,7 +415,7 @@ export default function BusinessLoan(props) {
         return result;
       });
     },
-    [loanPeriod]
+    [_setLoanPeriod]
   );
   const handleAddLoanPeriod = useCallback(
     (val) => {
@@ -428,7 +428,7 @@ export default function BusinessLoan(props) {
         return result;
       });
     },
-    [loanPeriod]
+    [_setLoanPeriod]
   );
   const handleReasonSelect = useCallback(
     (reason) => {
@@ -467,7 +467,7 @@ export default function BusinessLoan(props) {
       setLoanReasons(rList);
       _setLoanReasons(JSON.stringify(rList));
     },
-    [loanReasons]
+    [_setLoanReasonOther, _setLoanReasons, loanReasons]
   );
   const handleOtherReasonChanged = useCallback(
     (e) => {
@@ -480,7 +480,7 @@ export default function BusinessLoan(props) {
       setLoanReasonOther(e.target.value);
       _setLoanReasonOther(e.target.value);
     },
-    [loanReasonOther, appLocale]
+    [_setLoanReasonOther, t]
   );
   function handlePersonalNumberChanged(e) {
     if (e.target.value.length === 0) {
@@ -534,7 +534,7 @@ export default function BusinessLoan(props) {
       setEmail(e.target.value);
       _setEmail(e.target.value);
     },
-    [email, appLocale]
+    [_setEmail, t]
   );
   let chk;
   const handleTermChanged = useCallback(
@@ -556,7 +556,7 @@ export default function BusinessLoan(props) {
         toggleCompanyValidation(true);
       }
     },
-    [selectedCompany, companyIsValid]
+    [companyIsValid]
   );
 
   function handleBankIdClicked(e) {
@@ -1068,7 +1068,7 @@ export default function BusinessLoan(props) {
                   </div>
                   {!b_loan_moreInfo_visibility && (
                     <button
-                      className="btn --success --large bankIdBtn"
+                      className="btn btn-success btn-large bankIdBtn"
                       onClick={handleBankIdClicked}
                     >
                       {verifyingSpinner && (
@@ -1222,7 +1222,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <div className="bl__actions">
                       <button
-                        className="btn --warning --large"
+                        className="btn --warning btn-large"
                         onClick={handleSubmitClicked}
                       >
                         {submitSpinner && (
@@ -1268,7 +1268,7 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="bl__successBox__actions">
                   <button
-                    className="btn --warning --large"
+                    className="btn --warning btn-large"
                     onClick={openMyApps}
                   >
                     {t("MY_APPLICATIONS")}

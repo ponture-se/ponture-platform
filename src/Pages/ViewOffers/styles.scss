@@ -552,14 +552,14 @@ $itemBtnColor: #44b3c2;
         }
       }
     }
-    .--success1 {
+    .btn-success1 {
       background-color: $itemBtnColor;
       color: white;
       &:hover {
         background-color: darken($itemBtnColor, 10);
       }
     }
-    .--light1 {
+    .btn-light1 {
       background-color: transparent;
       border: 1px solid $itemBtnColor;
       color: $itemBtnColor;
@@ -668,12 +668,12 @@ $itemBtnColor: #44b3c2;
   padding: 20px 0;
   border-radius: 10px;
   @include respond(phone) {
-      padding: 10px 0;
-    }
+    padding: 10px 0;
+  }
   &__title {
     margin: $boxMargin;
     margin-bottom: 10px;
-     @include respond(phone) {
+    @include respond(phone) {
       margin: $boxMargin_phone;
       margin-bottom: 10px;
     }

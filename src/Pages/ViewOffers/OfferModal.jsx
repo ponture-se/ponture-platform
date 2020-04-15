@@ -4,7 +4,7 @@ import Modal from "components/Modal";
 import separateNumberByChar from "utils/separateNumberByChar";
 import { useLocale } from "hooks";
 
-const IssueOffer = props => {
+const IssueOffer = (props) => {
   const { t } = useLocale();
   const { offer, app } = props;
   function closeModal() {
@@ -65,7 +65,7 @@ const IssueOffer = props => {
         </div>
       </div>
       <div className="offerDetail__footer">
-        <button className="btn --success" onClick={closeModal}>
+        <button className="btn btn-success" onClick={closeModal}>
           {t("CLOSE")}
         </button>
       </div>

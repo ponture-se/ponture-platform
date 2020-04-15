@@ -259,7 +259,7 @@ const Login = (props) => {
             </label>
           </div>
           <button
-            className="btn --success"
+            className="btn btn-success"
             disabled={!terms || !personalNumber || personalNumber.length === 0}
           >
             {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}

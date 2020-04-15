@@ -3,9 +3,9 @@ import ReactDOM from "react-dom";
 import CircleSpinner from "./../CircleSpinner";
 import "./styles.scss";
 
-let toggleAlert = props => [props];
+let toggleAlert = (props) => [props];
 
-const Alert = props => {
+const Alert = (props) => {
   const [show, _toggleAlert] = useState(false);
   const [info, setInfo] = useState();
   const [ajaxSpinner, toggleSpinner] = useState(false);
@@ -15,66 +15,66 @@ const Alert = props => {
     else document.body.style.overflowY = "auto";
   }, [show]);
 
-  toggleAlert = props => {
+  toggleAlert = (props) => {
     setInfo(props);
-    _toggleAlert(prev => !prev);
+    _toggleAlert((prev) => !prev);
   };
   function handleCloseModal() {
-    if (!ajaxSpinner) _toggleAlert(prev => !prev);
+    if (!ajaxSpinner) _toggleAlert((prev) => !prev);
   }
   function handleOkBtnClicked() {
     if (!info.func) {
-      _toggleAlert(prev => !prev);
+      _toggleAlert((prev) => !prev);
     } else {
       toggleSpinner(true);
       let f = info.func();
       if (f.onOk)
-        f.onOk(result => {
+        f.onOk((result) => {
           toggleSpinner(false);
           if (info.onSuccess) {
             info.onSuccess(result);
           }
-          _toggleAlert(prev => !prev);
+          _toggleAlert((prev) => !prev);
         });
       if (f.onServerError)
-        f.onServerError(result => {
+        f.onServerError((result) => {
           toggleSpinner(false);
           if (info.onServerError) {
             info.onServerError();
           }
-          _toggleAlert(prev => !prev);
+          _toggleAlert((prev) => !prev);
         });
       if (f.onBadRequest)
-        f.onBadRequest(result => {
+        f.onBadRequest((result) => {
           toggleSpinner(false);
           if (info.onServerError) {
             info.onServerError();
           }
-          _toggleAlert(prev => !prev);
+          _toggleAlert((prev) => !prev);
         });
       if (f.notFound)
-        f.notFound(result => {
+        f.notFound((result) => {
           toggleSpinner(false);
           if (info.onServerError) {
             info.onServerError();
           }
-          _toggleAlert(prev => !prev);
+          _toggleAlert((prev) => !prev);
         });
       if (f.unAuthorized)
-        f.unAuthorized(result => {
+        f.unAuthorized((result) => {
           toggleSpinner(false);
           if (info.unAuthorized) {
             info.unAuthorized();
           }
-          _toggleAlert(prev => !prev);
+          _toggleAlert((prev) => !prev);
         });
       if (f.unKnownError)
-        f.unKnownError(result => {
+        f.unKnownError((result) => {
           toggleSpinner(false);
           if (info.unKnownError) {
             info.unKnownError();
           }
-          _toggleAlert(prev => !prev);
+          _toggleAlert((prev) => !prev);
         });
       if (f.call) f.call(info.data);
     }
@@ -96,11 +96,11 @@ const Alert = props => {
                 <span>{info.description}</span>
               </div>
               <div className="alert__footer">
-                <button className="btn --light" onClick={handleCloseModal}>
+                <button className="btn btn-light" onClick={handleCloseModal}>
                   {info.cancelBtnText}
                 </button>
                 <button
-                  className="btn --success"
+                  className="btn btn-success"
                   onClick={handleOkBtnClicked}
                   autoFocus
                 >

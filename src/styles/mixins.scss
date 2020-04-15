@@ -13,6 +13,12 @@
   #{$property}: $fallback;
   #{$property}: var(--#{$variable});
 }
+@mixin ie-only {
+  @media screen and (min-width: 0\0) and (min-resolution: +72dpi) {
+    // IE9+ CSS
+    @content;
+  }
+}
 
 @mixin respond($breakpoint) {
   @if $breakpoint == phone {

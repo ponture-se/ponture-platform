@@ -173,11 +173,11 @@ const AcceptModal = ({
             </div>
           </div>
           <div className="acceptModal__footer">
-            <button className="btn --light1" onClick={close}>
+            <button className="btn btn-light1" onClick={close}>
               {t("OFFER_ACCEPT_MODAL_CANCEL_BTN")}
             </button>
             <button
-              className="btn --success1 font-bold"
+              className="btn btn-success1 font-bold"
               onClick={handleAccept}
               disabled={Object.keys(formError).some((k) => formError[k])}
             >

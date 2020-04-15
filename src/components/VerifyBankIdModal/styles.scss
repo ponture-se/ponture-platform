@@ -1,3 +1,5 @@
+@import "./../../styles/hack";
+@import "./../../styles/mixins.scss";
 .modal-back {
   position: fixed;
   top: 0;
@@ -73,7 +75,12 @@
     }
   }
 }
-
+@include only_ie10_above(
+  ".bankId__centerBox",
+  (
+    height: 500px,
+  )
+);
 .bankId__centerBox {
   min-height: 500px;
   width: 100%;
