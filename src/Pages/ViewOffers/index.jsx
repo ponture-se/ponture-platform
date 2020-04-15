@@ -42,7 +42,7 @@ const AllOffers = ({ match }) => {
   const init = (result, errorTitle, errorMsg) => {
     if (!didCancel.current) {
       if (result) {
-        if (result.length === 0) {
+        if (!result.offers || result.offers.length === 0) {
           setState((prevState) => ({
             ...prevState,
             loading: false,
