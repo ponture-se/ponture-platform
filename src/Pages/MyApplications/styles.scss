@@ -4,6 +4,7 @@
   flex-direction: column;
 }
 .application {
+  min-height: 420px;
   background: white;
   box-shadow: 0 0 2px lightgray;
   margin-bottom: 20px;
@@ -14,6 +15,10 @@
     display: flex;
     background: whitesmoke;
     align-items: center;
+    padding: 0 40px;
+    @include respond(phone) {
+      padding: 10px;
+    }
     .left {
       display: flex;
       align-items: center;
@@ -44,6 +49,10 @@
       padding: 0 10px;
       display: flex;
       flex: 1;
+      flex-direction: row;
+      @include respond(phone) {
+        flex-direction: column;
+      }
       .info {
         flex: 1;
         display: flex;
@@ -86,6 +95,10 @@
     flex: 1;
     display: flex;
     flex-direction: column;
+    padding: 10px 40px 0 40px;
+    @include respond(tab-port) {
+      padding: 10px 20px 0 20px;
+    }
     &__header {
       border-bottom: 0.5px solid lightgray;
       display: flex;
@@ -107,7 +120,12 @@
     display: flex;
     align-items: center;
     height: 60px;
+    margin-top: 10px;
     border-top: 0.5px solid lightgray;
+    padding: 0 40px;
+    @include respond(phone) {
+      padding: 0 20px;
+    }
     button {
       span {
         padding: 0 4px;
@@ -117,161 +135,37 @@
   }
   &__bodyRow {
     flex: 1;
-    display: flex;
     font-size: 13px;
     padding: 8px 0;
-    span:first-child {
-      font-family: OpenSanceBold;
-    }
-  }
-}
-
-// Small devices (landscape phones, 576px and up)
-@media (max-width: 576px) {
-  .application {
-    &__body {
-      padding: 10px 20px 0 20px;
-    }
-    &__footer {
-      padding: 0 20px;
-    }
-  }
-  .application__header {
+    display: flex;
     flex-direction: row;
-    padding: 10px;
-    .right {
+    height: 100px;
+    @include respond(tab-port) {
       flex-direction: column;
     }
-  }
-  .application__bodyRow {
-    flex-direction: column;
     span:first-child {
-      width: auto;
-    }
-  }
-  .linkTitle {
-    // display: none;
-  }
-  .loanAmount {
-    flex-direction: column;
-  }
-}
-@media (min-width: 576px) {
-  .application {
-    &__body {
-      padding: 10px 20px 0 20px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .application__header {
-    flex-direction: row;
-    padding: 0 40px;
-    .right {
-      flex-direction: row;
-    }
-  }
-  .application__bodyRow {
-    flex-direction: column;
-    span:first-child {
-      width: auto;
-    }
-  }
-  .linkTitle {
-    display: block;
-  }
-  .loanAmount {
-    flex-direction: row;
-  }
-}
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
-  .application {
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .application__header {
-    flex-direction: row;
-    padding: 0 40px;
-    .right {
-      flex-direction: row;
-    }
-  }
-  .application__bodyRow {
-    flex-direction: row;
-    span:first-child {
+      display: inline-block;
       width: 250px;
       flex-shrink: 0;
+      font-family: OpenSanceBold;
+      @include respond(tab-port) {
+        width: auto;
+      }
       .right {
         flex-direction: column;
       }
     }
   }
-  .linkTitle {
-    display: block;
+}
+.linkTitle {
+  display: block;
+  @include respond(tab-port) {
+    display: none;
   }
 }
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
-  .application {
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .application__header {
-    flex-direction: row;
-    padding: 0 40px;
-    .right {
-      flex-direction: row;
-    }
-  }
-  .application__bodyRow {
-    flex-direction: row;
-    span:first-child {
-      width: 250px;
-      flex-shrink: 0;
-    }
-  }
-  .linkTitle {
-    display: block;
-  }
-}
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
-  .application {
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .application__header {
-    flex-direction: row;
-    padding: 0 40px;
-    .right {
-      flex-direction: row;
-    }
-  }
-  .application__bodyRow {
-    flex-direction: row;
-    span:first-child {
-      width: 250px;
-      flex-shrink: 0;
-    }
-  }
-  .linkTitle {
-    display: block;
+.loanAmount {
+  flex-direction: row;
+  @include respond(tab-port) {
+    flex-direction: column;
   }
 }

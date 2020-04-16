@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-//
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
@@ -62,6 +61,7 @@ const Login = (props) => {
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       startBankId()
         .onOk((result) => {
+          console.log("start bank id", result);
           if (!didCancel) {
             track(
               "BankID Verification",

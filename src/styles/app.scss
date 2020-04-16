@@ -341,7 +341,7 @@ div::-moz-scrollbar-thumb:hover {
     width: 200px;
     height: 4px;
     animation: loading 2s linear infinite;
-    @include variable(main-spinner-bg, background-color, blue);
+    @include variable(main-spinner-bg, background-color, rgb(66, 204, 173));
   }
 }
 @keyframes loading {

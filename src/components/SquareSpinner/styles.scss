@@ -11,7 +11,7 @@
   position: absolute;
   height: 40px;
   width: 40px;
-  @include variable(page-loading-bg, background, green);
+  @include variable(page-loading-bg, background-color, rgb(66, 204, 173));
   opacity: 0.2;
 }
 
