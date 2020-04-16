@@ -46,7 +46,7 @@
     font-size: 20px;
     font-family: OpenSanceBold;
     span:last-child {
-      @include variable(mainColor1, color, mainColor1);
+      @include variable(mainColor1, color, #44b3c2);
     }
     @include respond(phone) {
       position: absolute;

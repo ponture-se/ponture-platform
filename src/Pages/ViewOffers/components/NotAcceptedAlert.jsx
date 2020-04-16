@@ -14,7 +14,7 @@ const NotAcceptedAlert = () => {
         {t("OFFER_NOT_ACCEPTED_TITLE_XS")}
       </span>
       <span className="notAcceptedOfferAlert__description visible-f-xs">
-        {t("OFFER_NOT_ACCEPTED_DESCRIPTION_SX")}
+        {t("OFFER_NOT_ACCEPTED_DESCRIPTION_XS")}
       </span>
     </div>
   );

@@ -115,7 +115,6 @@ $itemBtnColor: #44b3c2;
     justify-content: flex-end;
   }
 }
-
 .oppInfo {
   display: flex;
   justify-content: space-between;
@@ -150,7 +149,7 @@ $itemBtnColor: #44b3c2;
   }
 }
 .notAcceptedOfferAlert {
-  @include variable(color1, background, color1);
+  @include variable(color1, background-color, white);
   margin: $boxMargin;
   padding: 20px 40px;
   margin-top: 30px;
@@ -478,6 +477,9 @@ $itemBtnColor: #44b3c2;
     display: flex;
     flex-direction: column;
     padding: 20px;
+    @include ie-only {
+      height: 400px;
+    }
     @include respond(tab-port) {
       width: 96%;
       margin: 2%;
@@ -681,110 +683,6 @@ $itemBtnColor: #44b3c2;
     }
   }
 }
-// Small devices (landscape phones, 576px and up)
-@media (max-width: 576px) {
-  .myOfferItem {
-    &__header {
-      margin: 0px 20px;
-    }
-    &__body {
-      padding: 10px 20px 0 20px;
-    }
-    &__footer {
-      padding: 0px 10px;
-    }
-  }
-  .myOfferItem__bodyRow {
-    flex-direction: column;
-    span:first-child {
-      width: auto;
-    }
-  }
-}
-@media (min-width: 576px) {
-  .myOfferItem {
-    &__header {
-      margin: 0px 40px;
-    }
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .myOfferItem__bodyRow {
-    flex-direction: row;
-    span:first-child {
-      width: 220px;
-      flex-shrink: 0;
-    }
-  }
-}
-
-// Medium devices (tablets, 768px and up)
-@media (min-width: 768px) {
-  .myOfferItem {
-    &__header {
-      margin: 0px 40px;
-    }
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .myOfferItem__bodyRow {
-    flex-direction: row;
-    span:first-child {
-      width: 220px;
-      flex-shrink: 0;
-    }
-  }
-}
-
-// Large devices (desktops, 992px and up)
-@media (min-width: 992px) {
-  .myOfferItem {
-    &__header {
-      margin: 0px 40px;
-    }
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-  .myOfferItem__bodyRow {
-    flex-direction: row;
-    span:first-child {
-      width: 220px;
-      flex-shrink: 0;
-    }
-  }
-}
-
-// Extra large devices (large desktops, 1200px and up)
-@media (min-width: 1200px) {
-  .myOfferItem {
-    &__header {
-      margin: 0px 40px;
-    }
-    &__body {
-      padding: 10px 40px 0 40px;
-    }
-    &__footer {
-      padding: 0 40px;
-    }
-  }
-
-  .myOfferItem__bodyRow {
-    flex-direction: row;
-    span:first-child {
-      width: 220px;
-      flex-shrink: 0;
-    }
-  }
+.page-empty-list {
+  width: 100%;
 }
