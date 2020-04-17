@@ -39,47 +39,8 @@ const AllOffers = ({ match }) => {
   const updateState = (...changes) =>
     setState((prevState) => ({ ...prevState, ...changes }));
 
-  const init = (rsult, errorTitle, errorMsg) => {
+  const init = (result, errorTitle, errorMsg) => {
     if (!didCancel.current) {
-      const result = {
-        opportunityDetail: {
-          opportunityID: "0061X00000AgPTFQA3",
-          opportunityNumber: "LO0000000694",
-          Name: "CFA International AB",
-          orgNumber: "5569979734",
-          opportunityStage: "Not Funded/ Closed lost",
-          createdAt: "2020-04-10 17:23:08",
-          RecordType: "Business Loan",
-          amortizationPeriod: 12,
-          amount: 800000,
-          closeDate: "2020-04-10 00:00:00",
-          CompanyRegistrationDate: "2014-12-22",
-          need: [
-            {
-              apiName: "general_liquidity",
-              title: "Generell likviditet",
-            },
-          ],
-          needDescription: "null",
-          lastAvailableRevenue: 6000,
-          lostReason: "KYC",
-          creditSafeScore: 2,
-          bankVerified: true,
-          activeCompany: true,
-          companyVerified: true,
-          industryText: "Konsultbyråer avseende företags organisation",
-          industryCode: "70220",
-          description: "null",
-          contactInfo: {
-            email: "padyabsaeed@gmail.com",
-            phone: "+46790266255",
-            name: "Saeed Padyab",
-            lastName: "Padyab",
-            personalNumber: "192907304766",
-          },
-        },
-        offers: [{}, {}],
-      };
       if (result) {
         if (!result.offers || result.offers.length === 0) {
           setState((prevState) => ({

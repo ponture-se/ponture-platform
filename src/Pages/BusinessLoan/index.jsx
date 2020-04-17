@@ -901,7 +901,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <span>{t("BISINUSS_LOAN")}</span>
                   </div>
-                  <div className="bl__input --sliderInput animated fadeIn">
+                  <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
                       <label className="bl__input__label bl__input__sliderLabel">
                         {t("BL_LOAN_AMOUNT")}
@@ -937,7 +937,7 @@ export default function BusinessLoan(props) {
                       </div>
                     </div>
                   </div>
-                  <div className="bl__input --sliderInput animated fadeIn">
+                  <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
                       <label className="bl__input__label bl__input__sliderLabel">
                         {t("BL_LOAN_PERIOD")}
@@ -947,7 +947,7 @@ export default function BusinessLoan(props) {
                           ? "+" + loanPeriod
                           : loanPeriod) +
                           " " +
-                          (loanPeriod == 1 ? t("MONTH") : t("MONTHS"))}
+                          (loanPeriod === 1 ? t("MONTH") : t("MONTHS"))}
                       </span>
                     </div>
                     <div className="bl__rangeElement">
@@ -991,7 +991,7 @@ export default function BusinessLoan(props) {
                           <div
                             key={r.API_Name}
                             className={
-                              "btnReason " + (r.selected ? "--active" : "")
+                              "btnReason " + (r.selected ? "activeReason" : "")
                             }
                             onClick={() => handleReasonSelect(r)}
                           >
