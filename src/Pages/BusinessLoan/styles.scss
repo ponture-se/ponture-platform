@@ -385,7 +385,7 @@
     }
     &__label {
     }
-    &.--sliderInput {
+    &.sliderInput {
       margin-bottom: 50px;
       direction: ltr;
       .bl__rangeElement {
@@ -401,7 +401,11 @@
           );
         }
         .input-range__slider {
-          @include variable(input-range-bg, background, rgb(66, 204, 173));
+          @include variable(
+            input-range-bg,
+            background-color,
+            rgb(66, 204, 173) !important
+          );
           border: 1px solid gray;
           width: 27px !important;
           height: 27px !important;
@@ -522,7 +526,7 @@
         border-width: 2px;
         transition-duration: 0.2s;
       }
-      &.--active {
+      &.activeReason {
         border: 2px solid rgb(66, 204, 173);
       }
       &__active {
