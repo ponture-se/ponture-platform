@@ -10,7 +10,7 @@ import { CircleSpinner } from "components";
 import classnames from "classnames";
 import SafeValue from "utils/SafeValue";
 //
-const Item = props => {
+const Item = (props) => {
   const [{ currentRole }, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
   const { item } = props;
@@ -27,7 +27,7 @@ const Item = props => {
   const [isSubmitted, setIsSubmitted] = useState(item.bankVerified);
   const [loading, toggleLoading] = useState(false);
   //functions
-  const submitApplication = appData => {
+  const submitApplication = (appData) => {
     const oppId = appData.opportunityID;
     const phone = appData.contactInfo.phone;
     const email = appData.contactInfo.email;
@@ -35,14 +35,14 @@ const Item = props => {
     const apiData = {
       oppId: oppId,
       phoneNumber: phone,
-      email: email
+      email: email,
     };
 
     if (typeof parent_submit === "function") {
       if (typeof parent_verify === "function") {
         toggleLoading(true);
         //
-        parent_submit(apiData, appData, res => {
+        parent_submit(apiData, appData, (res) => {
           if (res && res.success) {
             setIsSubmitted(true);
             toggleLoading(false);
@@ -53,7 +53,7 @@ const Item = props => {
       }
     }
   };
-  const verifyApplication = item => {
+  const verifyApplication = (item) => {
     if (typeof parent_verify === "function") {
       toggleLoading(true);
       //
@@ -76,8 +76,8 @@ const Item = props => {
       );
     }
   };
-  function matchMakingModal(item){
-    props.matchMaking(item)
+  function matchMakingModal(item) {
+    props.matchMaking(item);
   }
   function editItemModal(item) {
     props.edit(item, "edit");
@@ -93,57 +93,57 @@ const Item = props => {
       isAjaxCall: true,
       func: cancelApplication,
       data: {
-        appId: item.opportunityID
+        appId: item.opportunityID,
       },
       onCancel: () => {},
-      onSuccess: result => {
+      onSuccess: (result) => {
         track("Cancel Application", "Customer Portal", "Customer Portal", 0);
         if (props.onCancelSuccess) props.onCancelSuccess();
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "success",
-            message: t("APP_CANCELED_SUCCESS")
-          }
+            message: t("APP_CANCELED_SUCCESS"),
+          },
         });
       },
-      onServerError: error => {
+      onServerError: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("INTERNAL_SERVER_ERROR")
-          }
+            message: t("INTERNAL_SERVER_ERROR"),
+          },
         });
       },
-      onBadRequest: error => {
+      onBadRequest: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("BAD_REQUEST")
-          }
+            message: t("BAD_REQUEST"),
+          },
         });
       },
-      unAuthorized: error => {},
-      notFound: error => {
+      unAuthorized: (error) => {},
+      notFound: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("NOT_FOUND")
-          }
+            message: t("NOT_FOUND"),
+          },
         });
       },
-      unKnownError: error => {
+      unKnownError: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("UNKNOWN_ERROR")
-          }
+            message: t("UNKNOWN_ERROR"),
+          },
         });
-      }
+      },
     });
   }
   return (
@@ -155,14 +155,18 @@ const Item = props => {
             className={
               "icon " +
               (stage === "app received" || stage === "app review"
-                ?  ( currentRole !== "agent" ? "appReceivedIcon" :"approvedIcon" )
+                ? currentRole !== "agent"
+                  ? "appReceivedIcon"
+                  : "approvedIcon"
                 : stage === "approved" ||
                   stage === "submitted" ||
                   stage === "offer received" ||
                   stage === "offer accepted"
                 ? "approvedIcon"
                 : stage === "not funded/ closed lost"
-                ? ( currentRole !== "agent" ? "rejectedIcon" : "closedIcon")
+                ? currentRole !== "agent"
+                  ? "rejectedIcon"
+                  : "closedIcon"
                 : stage === "funded/closed won"
                 ? "closedIcon"
                 : stage === "created"
@@ -179,11 +183,15 @@ const Item = props => {
                     stage === "submitted" ||
                     stage === "offer received" ||
                     stage === "offer accepted"
-                  ? ( currentRole !== "agent" ? "checkmark" : "list" )
+                  ? currentRole !== "agent"
+                    ? "checkmark"
+                    : "list"
                   : stage === "not funded/ closed lost"
                   ? "cross"
                   : stage === "funded/closed won"
-                  ? ( currentRole !== "agent" ? "quote" : "cross" )
+                  ? currentRole !== "agent"
+                    ? "quote"
+                    : "cross"
                   : "file-text")
               }
             />
@@ -198,15 +206,23 @@ const Item = props => {
                   stage === "submitted" ||
                   stage === "offer received" ||
                   stage === "offer accepted"
-                ? ( currentRole !== "agent" ? t("APP_STATUS_APPROVED_TITLE") :t("APP_STATUS_RECEIVED_TITLE") )
+                ? currentRole !== "agent"
+                  ? t("APP_STATUS_APPROVED_TITLE")
+                  : t("APP_STATUS_RECEIVED_TITLE")
                 : stage === "not funded/ closed lost" &&
                   lostReason === "canceled by customer"
-                ?  ( currentRole !== "agent" ? t("APP_STATUS_REJECTED_BY_USER_TITLE") : t("APP_STATUS_CLOSED_TITLE"))
+                ? currentRole !== "agent"
+                  ? t("APP_STATUS_REJECTED_BY_USER_TITLE")
+                  : t("APP_STATUS_CLOSED_TITLE")
                 : stage === "not funded/ closed lost" &&
                   lostReason !== "canceled by customer"
-                ? ( currentRole !== "agent" ? t("APP_STATUS_REJECTED_TITLE") : t("APP_STATUS_CLOSED_TITLE"))
+                ? currentRole !== "agent"
+                  ? t("APP_STATUS_REJECTED_TITLE")
+                  : t("APP_STATUS_CLOSED_TITLE")
                 : stage === "funded/closed won"
-                ? ( currentRole !== "agent" ? t("APP_STATUS_WON_TITLE") : t("APP_STATUS_CLOSED_TITLE"))
+                ? currentRole !== "agent"
+                  ? t("APP_STATUS_WON_TITLE")
+                  : t("APP_STATUS_CLOSED_TITLE")
                 : stage === "created"
                 ? t("APP_STATUS_CREATED_TITLE")
                 : ""}
@@ -233,45 +249,44 @@ const Item = props => {
             </span>
           </div>
           <div>
-          {(stage === "approved" ||
-            stage === "submitted" ||
-            stage === "offer received" ||
-            stage === "offer accepted") &&
-            (currentRole !== "agent" && (
-              <Link
-                className="offers-button"
-                to={"/app/panel/viewOffers/" + item.opportunityID}
-              >
-                <span className="linkTitle">
-                  {t("VIEW_OFFERS")}{" "}
-                  {item.activeOffersCount || item.activeOffersCount === 0
-                    ? "(" + item.activeOffersCount + ")"
-                    : ""}
-                </span>
-                <div className="icon">
-                  <i
-                    className={
-                      direction === "ltr"
-                        ? "icon-arrow-right2"
-                        : "icon-arrow-left2"
-                    }
-                  />
-                </div>
-              </Link>
-            )
-            //  : (
-            //   <span className="offers-button">
-            //     <span className="linkTitle" style={{ textDecoration: "none" }}>
-            //       {t("OFFERS_NUMBER")}{" "}
-            //       {item.activeOffersCount || item.activeOffersCount === 0
-            //         ? "(" + item.activeOffersCount + ")"
-            //         : ""}
-            //     </span>
-            //   </span>
-            // )
-            )}
-          {/* edit application */}
-          {/* {currentRole==="admin" && stage === "created" && RecordType === "business acquisition loan" && (
+            {(stage === "approved" ||
+              stage === "submitted" ||
+              stage === "offer received" ||
+              stage === "offer accepted") &&
+              currentRole !== "agent" && (
+                <Link
+                  className="offers-button"
+                  to={"/app/panel/viewOffers/" + item.opportunityID}
+                >
+                  <span className="linkTitle">
+                    {t("VIEW_OFFERS")}{" "}
+                    {item.activeOffersCount || item.activeOffersCount === 0
+                      ? "(" + item.activeOffersCount + ")"
+                      : ""}
+                  </span>
+                  <div className="icon">
+                    <i
+                      className={
+                        direction === "ltr"
+                          ? "icon-arrow-right2"
+                          : "icon-arrow-left2"
+                      }
+                    />
+                  </div>
+                </Link>
+                //  : (
+                //   <span className="offers-button">
+                //     <span className="linkTitle" style={{ textDecoration: "none" }}>
+                //       {t("OFFERS_NUMBER")}{" "}
+                //       {item.activeOffersCount || item.activeOffersCount === 0
+                //         ? "(" + item.activeOffersCount + ")"
+                //         : ""}
+                //     </span>
+                //   </span>
+                // )
+               /*: (*/)}
+            {/* edit application */}
+            {/* {currentRole==="admin" && stage === "created" && RecordType === "business acquisition loan" && (
             <button
               className="btn --light headerBtn"
               onClick={() => editItemModal(item)}
@@ -279,32 +294,32 @@ const Item = props => {
               <span className="icon-pencil" />
             </button>
           )} */}
-          &nbsp;
-          {/* view application */}
-          {currentRole === "admin" &&
-            (RecordType === "real estate" ||
-              RecordType === "business acquisition loan") && (
-              <button
-                className="btn --primary viewButton"
-                onClick={() =>
-                  viewItemModal(
-                    item,
-                    RecordType === "real estate" ? "RE" : "BA"
-                  )
-                }
-              >
-                {t("APP_OPEN_APPLICATION")}
-              </button>
-              // <button
-              //   className="btn --light headerBtn"
-              //   onClick={() =>
-              //     viewItemModal(item, RecordType === "real estate" ? "RE" : "BA")
-              //   }
-              // >
-              //   <span className="icon-more-h" />
-              // </button>
-            )}
-        </div>
+            &nbsp;
+            {/* view application */}
+            {currentRole === "admin" &&
+              (RecordType === "real estate" ||
+                RecordType === "business acquisition loan") && (
+                <button
+                  className="btn --primary viewButton"
+                  onClick={() =>
+                    viewItemModal(
+                      item,
+                      RecordType === "real estate" ? "RE" : "BA"
+                    )
+                  }
+                >
+                  {t("APP_OPEN_APPLICATION")}
+                </button>
+                // <button
+                //   className="btn --light headerBtn"
+                //   onClick={() =>
+                //     viewItemModal(item, RecordType === "real estate" ? "RE" : "BA")
+                //   }
+                // >
+                //   <span className="icon-more-h" />
+                // </button>
+              )}
+          </div>
         </div>
       </div>
 
@@ -314,7 +329,7 @@ const Item = props => {
           <span>
             {RecordType === "real estate" ||
             RecordType === "business acquisition loan"
-              ? SafeValue(need,"0.title","string"," - ")
+              ? SafeValue(need, "0.title", "string", " - ")
               : t("BUSINESS_LOAN")}
           </span>
           <span className="loanAmount">
@@ -322,28 +337,29 @@ const Item = props => {
             <span>{separateNumberByChar(item.amount)} Kr</span>
           </span>
         </div>
-        {currentRole === "admin" &&
+        {currentRole === "admin" && (
           <div className="application__bodyRow">
             <span>{t("FILTER_OPP_NUMBER")}</span>
             <span>{item.opportunityNumber}</span>
           </div>
-        }
+        )}
         <div className="application__bodyRow">
           <span>{t("APP_RECORD_TYPE")}</span>
           <span>{item.RecordType}</span>
         </div>
-        {currentRole === "agent" || currentRole === "admin" && (
-          <>
-            <div className="application__bodyRow">
-              <span>{t("APP_CONTACT_NAME")}</span>
-              <span>{item.contactInfo.name}</span>
-            </div>
-            <div className="application__bodyRow">
-              <span>{t("BL_PERSONAL_NUMBER")}</span>
-              <span>{item.contactInfo.personalNumber}</span>
-            </div>
-          </>
-        )}
+        {currentRole === "agent" ||
+          (currentRole === "admin" && (
+            <>
+              <div className="application__bodyRow">
+                <span>{t("APP_CONTACT_NAME")}</span>
+                <span>{item.contactInfo.name}</span>
+              </div>
+              <div className="application__bodyRow">
+                <span>{t("BL_PERSONAL_NUMBER")}</span>
+                <span>{item.contactInfo.personalNumber}</span>
+              </div>
+            </>
+          ))}
         <div className="application__bodyRow">
           <span>{t("APP_COMPANY_NAME")}</span>
           <span>
@@ -374,7 +390,7 @@ const Item = props => {
         </div>
         <div className="application__bodyRow">
           <span>{t("APP_CLOSE_DATE")}</span>
-          <span>{item.closeDate && item.closeDate.split(" ")[0]}</span>
+          <span>{item.createdAt && item.createdAt.split(" ")[0]}</span>
         </div>
         {currentRole !== "agent" && (
           <div className="application__bodyRow">
@@ -389,72 +405,72 @@ const Item = props => {
         stage !== "funded/closed won" &&
         stage !== "not funded/ closed lost" && (
           <div className="application__footer">
-              <div>
-            {currentRole !== "admin" && 
+            <div>
+              {currentRole !== "admin" && (
                 <button className="btn --light" onClick={handleCancelClicked}>
                   <span className="icon-cross" />
                   {t("CANCEL")}
                 </button>
-            }
-              </div>
-          {currentRole ==="admin" && 
-          
-            <div style={{ flexDirection: "row", display: "flex" }}>
+              )}
+            </div>
+            {currentRole === "admin" && (
+              <div style={{ flexDirection: "row", display: "flex" }}>
                 <button
-                className="btn --light matchMakingButton"
-                onClick={() => matchMakingModal(item)}
-              >
-                {t("Manual match making") }
-                {/* T */}
-              </button>
-              {stage === "created" && (
-                <>
-                  {RecordType === "business acquisition loan" && (
-                  <button
-                    className="btn --primary editButton"
-                    onClick={() => editItemModal(item)}
-                  >
-                    {t("APP_COMPLETE_APPLICATION")}
-                  </button>
-                  )}
-                  <button
-                    className={classnames(
-                      "btn verifyBtn",
-                      isVerified ? "--verified" : "--success"
+                  className="btn --light matchMakingButton"
+                  onClick={() => matchMakingModal(item)}
+                >
+                  {t("Manual match making")}
+                  {/* T */}
+                </button>
+                {stage === "created" && (
+                  <>
+                    {RecordType === "business acquisition loan" && (
+                      <button
+                        className="btn --primary editButton"
+                        onClick={() => editItemModal(item)}
+                      >
+                        {t("APP_COMPLETE_APPLICATION")}
+                      </button>
                     )}
-                    onClick={() => verifyApplication(item)}
-                    disabled={loading || isVerified}
-                  >
-                    {isVerified ? (
-                      <>
-                        <span
-                          className="icon-checkmark"
-                          style={{ fontSize: "14px", color: "#42ccad" }}
-                        />
-                        {t("VERIFIED")}
-                      </>
-                    ) : loading ? (
-                      <CircleSpinner show={true} />
-                    ) : (
-                      <>{t("VERIFY")}</>
-                    )}
-                  </button>
-                  {isVerified && (
                     <button
-                      className="btn --warning"
-                      onClick={() => submitApplication(item)}
-                      disabled={loading}
+                      className={classnames(
+                        "btn verifyBtn",
+                        isVerified ? "--verified" : "--success"
+                      )}
+                      onClick={() => verifyApplication(item)}
+                      disabled={loading || isVerified}
                     >
-                      {loading ? (
+                      {isVerified ? (
+                        <>
+                          <span
+                            className="icon-checkmark"
+                            style={{ fontSize: "14px", color: "#42ccad" }}
+                          />
+                          {t("VERIFIED")}
+                        </>
+                      ) : loading ? (
                         <CircleSpinner show={true} />
                       ) : (
-                        <>{t("SUBMIT_2")}</>
+                        <>{t("VERIFY")}</>
                       )}
                     </button>
-                  )}
-                </>
-              )}
-            </div>}
+                    {isVerified && (
+                      <button
+                        className="btn --warning"
+                        onClick={() => submitApplication(item)}
+                        disabled={loading}
+                      >
+                        {loading ? (
+                          <CircleSpinner show={true} />
+                        ) : (
+                          <>{t("SUBMIT_2")}</>
+                        )}
+                      </button>
+                    )}
+                  </>
+                )}
+              </div>
+            )}
           </div>
         )}
 
@@ -514,8 +530,8 @@ const Item = props => {
 export default Item;
 
 Item.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 };
 Item.defaultProps = {
-  item: {}
+  item: {},
 };
