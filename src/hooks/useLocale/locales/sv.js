@@ -115,6 +115,8 @@ export default {
   OFFER_ACCEPT_MODAL_INFO_SECOND:
     "Din kreditvärdighet kommer inte att påverkas",
   OFFER_ACCEPT_MODAL_INFO_THIRD: "Du binder dig inte till något",
+  OFFER_ACCEPT_MODAL_INFO_FOURTH:
+    "Alla redan mottagna erbjudanden förblir kvar",
   OFFER_ACCEPT_MODAL_CANCEL_BTN: "Godkänn senare",
   OFFER_ACCEPT_MODAL_SUBMIT_BTN: "Godkänn",
   PARTNER_NAME: "Långivare namn:",

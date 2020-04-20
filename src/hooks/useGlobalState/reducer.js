@@ -27,6 +27,7 @@ export const reducer = (state, action) => {
         isAuthenticated: false,
         verifyInfo: null,
         userInfo: null,
+        offerUiAction: null,
       };
       return logout;
     case "TOGGLE_B_L_MORE_INFO":

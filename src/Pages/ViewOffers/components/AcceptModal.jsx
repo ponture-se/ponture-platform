@@ -169,6 +169,14 @@ const AcceptModal = ({
                     {t("OFFER_ACCEPT_MODAL_INFO_THIRD")}
                   </span>
                 </div>
+                <div className="rowInfo">
+                  <div className="rowInfo__icon">
+                    <i className="icon-checkmark" />
+                  </div>
+                  <span className="rowInfo__text">
+                    {t("OFFER_ACCEPT_MODAL_INFO_FOURTH")}
+                  </span>
+                </div>
               </div>
             </div>
           </div>
