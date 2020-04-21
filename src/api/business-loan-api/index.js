@@ -544,11 +544,9 @@ export function getCompanies() {
       .get(url)
       .then((response) => {
         _onOk(
-          response.data
-            ? response.data.data
-              ? response.data.data.companies
-              : undefined
-            : undefined
+          ((response.data && response.data.data
+            ? response.data.data.companies
+            : response.data): undefined)
         );
       })
       .catch((error) => {
