@@ -136,7 +136,7 @@
     @include variable(my-btn-success-hover-bg, background, rgb(66, 204, 173));
   }
 }
-.--warning {
+.btn-warning {
   @include variable(my-btn-warning-bg, background, rgb(66, 204, 173));
   @include variable(my-btn-warning-color, color, white);
 

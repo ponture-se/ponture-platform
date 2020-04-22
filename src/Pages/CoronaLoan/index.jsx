@@ -833,7 +833,7 @@ export default function BusinessLoan(props) {
                               "companyWidget " +
                               (selectedCompany &&
                               selectedCompany.companyId === c.companyId
-                                ? "--active"
+                                ? "companyActive"
                                 : "")
                             }
                             onClick={() => handleSelectCompany(c)}

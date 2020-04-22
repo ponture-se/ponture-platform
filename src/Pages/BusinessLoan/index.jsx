@@ -1092,7 +1092,7 @@ export default function BusinessLoan(props) {
                               "companyWidget " +
                               (selectedCompany &&
                               selectedCompany.companyId === c.companyId
-                                ? "--active"
+                                ? "companyActive"
                                 : "")
                             }
                             onClick={() => handleSelectCompany(c)}
@@ -1222,7 +1222,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <div className="bl__actions">
                       <button
-                        className="btn --warning btn-large"
+                        className="btn btn-warning btn-large"
                         onClick={handleSubmitClicked}
                       >
                         {submitSpinner && (
