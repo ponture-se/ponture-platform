@@ -548,7 +548,7 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href.split("?")[0];
   }
   function openMyApps() {
-    props.history.push("/app/panel/myApplications");
+    props.history.push("/app/panel/viewOffers");
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
@@ -649,7 +649,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <span>{t("CORONA_LOAN_HEADER_TITLE")}</span>
                   </div>
-                  <div className="bl__input --sliderInput animated fadeIn">
+                  <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
                       <label className="bl__input__label bl__input__sliderLabel">
                         {t("BL_LOAN_AMOUNT")}
@@ -685,7 +685,7 @@ export default function BusinessLoan(props) {
                       </div>
                     </div>
                   </div>
-                  <div className="bl__input --sliderInput animated fadeIn">
+                  <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
                       <label className="bl__input__label bl__input__sliderLabel">
                         {t("BL_LOAN_PERIOD")}
@@ -745,7 +745,7 @@ export default function BusinessLoan(props) {
                   <div
                     className={
                       "pandeminInput bl__input animated fadeIn " +
-                      (!pandeminInputIsValid ? "--invalid" : "")
+                      (!pandeminInputIsValid ? "input-invalid" : "")
                     }
                   >
                     <label className="bl__input__label">
@@ -777,7 +777,7 @@ export default function BusinessLoan(props) {
                   <div
                     className={
                       "bl__input animated fadeIn " +
-                      (!personalNumberIsValid ? "--invalid" : "")
+                      (!personalNumberIsValid ? "input-invalid" : "")
                     }
                   >
                     <label className="bl__input__label">
@@ -808,7 +808,7 @@ export default function BusinessLoan(props) {
                   </div>
                   {!b_loan_moreInfo_visibility && (
                     <button
-                      className="btn --success --large bankIdBtn"
+                      className="btn btn-success btn-large bankIdBtn"
                       onClick={handleBankIdClicked}
                       disabled={!pandeminChk}
                     >
@@ -874,7 +874,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!phoneNumberIsValid ? "--invalid" : "")
+                          (!phoneNumberIsValid ? "input-invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -905,7 +905,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!emailIsValid ? "--invalid" : "")
+                          (!emailIsValid ? "input-invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -963,7 +963,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <div className="bl__actions">
                       <button
-                        className="btn --warning --large"
+                        className="btn btn-warning btn-large"
                         onClick={handleSubmitClicked}
                       >
                         {submitSpinner && (
@@ -1009,7 +1009,7 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="bl__successBox__actions">
                   <button
-                    className="btn --warning --large"
+                    className="btn btn-warning btn-large"
                     onClick={openMyApps}
                   >
                     {t("MY_APPLICATIONS")}
@@ -1081,7 +1081,7 @@ export default function BusinessLoan(props) {
                   )}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn --warning" onClick={refreshPage}>
+                  <button className="btn btn-warning" onClick={refreshPage}>
                     {t("REFRESH")}
                   </button>
                 </div>
