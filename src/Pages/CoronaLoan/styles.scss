@@ -1,0 +1,843 @@
+@import "./../../styles/mixins.scss";
+.input-range * {
+  direction: ltr;
+  text-align: left;
+}
+.input-range__track,
+.input-range__slider-container {
+  transition: none;
+}
+.bl {
+  &__loading {
+    height: calc(100vh - 85px);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    @include variable(header, margin-top, 75px);
+
+    .loading {
+      position: relative;
+      height: 90px;
+      width: 90px;
+      margin: 20px auto;
+      border: none;
+    }
+
+    .square {
+      position: absolute;
+      height: 40px;
+      width: 40px;
+      background: rgb(66, 204, 173);
+      opacity: 0.2;
+    }
+
+    .square-a {
+      -webkit-animation: fadeIn 2s infinite;
+      -moz-animation: fadeIn 2s infinite;
+      animation: fadeIn 2s infinite;
+    }
+
+    .state1a {
+      top: 0;
+      left: 0;
+    }
+
+    .state2a {
+      top: 0;
+      left: 50px;
+      -webkit-animation-delay: 500ms;
+      -moz-animation-delay: 500ms;
+      animation-delay: 500ms;
+    }
+
+    .state3a {
+      top: 50px;
+      left: 50px;
+      -webkit-animation-delay: 1000ms;
+      -moz-animation-delay: 1000ms;
+      animation-delay: 1000ms;
+    }
+
+    .state4a {
+      top: 50px;
+      left: 0;
+      -webkit-animation-delay: 1500ms;
+      -moz-animation-delay: 1500ms;
+      animation-delay: 1500ms;
+    }
+
+    /*Square a blink blink*/
+    @-webkit-keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+    }
+    @-moz-keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+    }
+    @keyframes fadeIn {
+      0% {
+        opacity: 0.2;
+      }
+      10% {
+        opacity: 1;
+      }
+    }
+
+    @-webkit-keyframes state1-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state1-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state1-animation {
+      0% {
+        opacity: 0;
+      }
+      50% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes state2-animation {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state2-animation {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state2-animation {
+      0% {
+        opacity: 0;
+      }
+      10% {
+        opacity: 0;
+      }
+      60% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes state3-animation {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state3-animation {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state3-animation {
+      0% {
+        opacity: 0;
+      }
+      20% {
+        opacity: 0;
+      }
+      70% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-webkit-keyframes state4-animation {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 0;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @-moz-keyframes state4-animation {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 0;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+    @keyframes state4-animation {
+      0% {
+        opacity: 0;
+      }
+      30% {
+        opacity: 0;
+      }
+      80% {
+        opacity: 1;
+      }
+      100% {
+        opacity: 0;
+      }
+    }
+  }
+  &__header {
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    padding: 0 10%;
+    position: fixed;
+    width: 100%;
+    top: 0;
+    left: 0;
+    @include variable(header, height, 75px);
+    @include variable(header-bg, background, white);
+    @include variable(header-box-shadow, box-shadow, 0 0 3px lightgray);
+  }
+  &__logo {
+    width: 150px;
+    left: 20px;
+    top: 20px;
+    img {
+      width: 100%;
+    }
+  }
+  &__content {
+    flex: 1;
+    overflow: auto;
+    @include variable(header, margin-top, 75px);
+  }
+  &__form {
+    padding-bottom: 0px;
+    margin: auto;
+    display: flex;
+    flex-direction: column;
+    p {
+      margin-bottom: 50px;
+    }
+    &__header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      @include variable(flex-direction, flex-direction, row);
+      @include variable(
+        bl-mainform-header-borderBottom,
+        border-bottom,
+        1px solid whitesmoke
+      );
+      span {
+        @include variable(bl-mainform-header-fontSize, font-size, 23px);
+        padding: 0 10px;
+      }
+    }
+    &__circleIcon {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include variable(
+        bl-mainform-header-circle-bg,
+        background,
+        rgb(66, 204, 173)
+      );
+      @include variable(bl-mainform-header-circle-fontSize, font-size, 25px);
+      @include variable(bl-mainform-header-circle-color, color, white);
+      @include variable(flex-direction, flex-direction, row);
+    }
+  }
+  &__mainform {
+    padding: 0 6%;
+    padding-bottom: 6%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+  }
+  &__contactInfo {
+    border-radius: 3px;
+    margin-top: 20px;
+    padding: 0 6%;
+    display: flex;
+    flex-direction: column;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+    &__header {
+      height: 100px;
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      @include variable(flex-direction, flex-direction, row);
+      @include variable(
+        bl-mainform-header-borderBottom,
+        border-bottom,
+        1px solid whitesmoke
+      );
+      span {
+        @include variable(bl-mainform-header-fontSize, font-size, 23px);
+        padding: 0 10px;
+      }
+    }
+    &__circleIcon {
+      width: 50px;
+      height: 50px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include variable(
+        bl-mainform-header-circle-bg,
+        background,
+        rgb(66, 204, 173)
+      );
+      @include variable(bl-mainform-header-circle-fontSize, font-size, 25px);
+      @include variable(bl-mainform-header-circle-color, color, white);
+      @include variable(flex-direction, flex-direction, row);
+    }
+  }
+  &__input {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+    &__header {
+      display: flex;
+      justify-content: space-between;
+      .loanAmountValue {
+        font-weight: bold;
+        font-size: 20px;
+        font-family: OpenSanceBold;
+      }
+    }
+    &__label {
+    }
+    &.--sliderInput {
+      margin-bottom: 50px;
+      direction: ltr;
+      .bl__rangeElement {
+        display: flex;
+        align-items: center;
+        // padding: 20px 0;
+        border-radius: 3px;
+        .input-range__track--active {
+          @include variable(
+            input-range-active-bg,
+            background,
+            rgb(66, 204, 173)
+          );
+        }
+        .input-range__slider {
+          @include variable(input-range-bg, background, rgb(66, 204, 173));
+          border: 1px solid gray;
+          width: 27px !important;
+          height: 27px !important;
+          margin-top: -0.9rem;
+        }
+        .input-range__label--value {
+          top: -2.2rem;
+        }
+        .input-range__label--min {
+          left: 2%;
+        }
+        .input-range__label--max {
+          right: 2%;
+        }
+        .rangeElement__left {
+          width: 30px;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
+        .rangeElement__center {
+          flex: 1;
+        }
+        .rangeElement__right {
+          width: 30px;
+          display: flex;
+          align-items: center;
+          font-weight: bolder;
+          cursor: pointer;
+          flex-direction: row-reverse;
+        }
+      }
+    }
+    &__label {
+      margin-bottom: 10px;
+    }
+    &__sliderLabel {
+      margin-bottom: 25px;
+    }
+    &__element {
+      .options-items {
+        padding: 6px;
+        cursor: pointer;
+        &:hover {
+          background: rgb(250, 250, 250);
+        }
+      }
+      .element-group {
+        display: flex;
+        border: 1px solid lightgray;
+        height: 38px;
+        border-radius: 5px;
+        @include variable(flex-direction, flex-direction, row);
+        &__left {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+          span {
+            color: gray;
+          }
+        }
+        &__center {
+          flex: 1;
+          .my-input {
+            border: none;
+            height: 100%;
+          }
+        }
+        &__right {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: 35px;
+        }
+      }
+    }
+    &.--invalid {
+      .my-input {
+        outline: none;
+        border: 1px solid red;
+      }
+    }
+    .validation-messsage {
+      color: red;
+      font-size: 12px;
+      display: block;
+      @include variable(text-align, text-align, left);
+    }
+  }
+  .options {
+    display: flex;
+    flex-wrap: wrap;
+    .btnReason {
+      border: 1px solid lightgray;
+      color: black;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin: 10px;
+      cursor: pointer;
+      font-weight: normal;
+      height: 60px;
+      transition-duration: 0.2s;
+      position: relative;
+      font-family: OpenSanceBold;
+      &__title {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        font-family: OpenSanceBold;
+        text-align: center;
+      }
+      &:hover {
+        border-width: 2px;
+        transition-duration: 0.2s;
+      }
+      &.--active {
+        border: 2px solid rgb(66, 204, 173);
+      }
+      &__active {
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        background: rgb(66, 204, 173);
+        color: white;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 100%;
+      }
+    }
+    .companyWidget {
+      border: 1px solid lightgray;
+      color: black;
+      padding: 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px;
+      margin: 10px;
+      cursor: pointer;
+      font-weight: normal;
+      height: 70px;
+      transition-duration: 0.2s;
+      position: relative;
+      background: whitesmoke;
+      &__cName {
+        text-overflow: ellipsis;
+        overflow: hidden;
+        white-space: nowrap;
+        width: 100%;
+        font-family: OpenSanceBold;
+        text-align: center;
+      }
+      &__orgNumber {
+        font-size: 11px;
+        color: gray;
+      }
+      &:hover {
+        border-width: 2px;
+        transition-duration: 0.2s;
+      }
+      &.--active {
+        border: 2px solid rgb(66, 204, 173);
+      }
+      &__active {
+        position: absolute;
+        left: -10px;
+        top: -10px;
+        background: rgb(66, 204, 173);
+        color: white;
+        font-size: 15px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 27px;
+        height: 27px;
+        border-radius: 100%;
+      }
+    }
+  }
+  .bankIdBtn {
+    margin: 20px 0;
+  }
+  &__actions {
+    @include variable(bl-actions-border, border-top, 0.5px solid lightgray);
+    // padding: 6% 0;
+    height: 120px;
+    align-items: center;
+    display: flex;
+    @include variable(flex-direction, flex-direction, row);
+    button {
+      width: 100%;
+    }
+  }
+  &__successBox {
+    padding: 3% 6%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+    &__top {
+      display: flex;
+      align-items: center;
+      @include variable(flex-direction, flex-direction, row);
+      .submitIcon {
+        margin-right: 10px;
+        width: 60px;
+        height: 60px;
+        border-radius: 100%;
+        background-color: rgb(66, 204, 173);
+        color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 32px;
+        &.error {
+          background-color: transparent;
+          color: red;
+          font-size: 42px;
+        }
+      }
+      .text {
+        font-family: OpenSanceBold;
+        font-size: 20px;
+        margin-left: 10px;
+        margin-right: 10px;
+      }
+    }
+    .btnMyApps {
+      margin-top: 10px;
+    }
+    .shortInfo {
+      margin: 0;
+      margin: 0;
+      padding: 10px 0;
+      font-size: 15px;
+    }
+    .longDesc {
+      font-size: 14px;
+      line-height: 2;
+      padding-bottom: 20px;
+      text-align: justify;
+      @include variable(direction, direction, ltr);
+      .companiesEmpty {
+        .phone {
+          margin: 10px 0;
+          span:first-child {
+          }
+        }
+
+        span {
+          font-size: 13px;
+          padding-top: 10px !important;
+        }
+      }
+      .allErrorMsg {
+        div:last-child {
+          font-family: OpenSanceBold;
+        }
+      }
+    }
+    hr {
+      background: transparent;
+      width: 100%;
+      opacity: 0.5;
+    }
+    &__actions {
+      display: flex;
+      @include variable(flex-direction, flex-direction, row);
+    }
+  }
+  &__errorBox {
+    padding: 3% 6%;
+    display: flex;
+    flex-direction: column;
+    border-radius: 3px;
+    @include variable(bl-mainform-bg, background, white);
+    @include variable(bl-mainform-box-shadow, box-shadow, 0 0 3px lightgray);
+  }
+}
+select {
+  @include variable(direction, direction, ltr);
+}
+.input-range__label--value {
+  display: none;
+}
+.bl__input__label {
+  display: flex;
+  flex-direction: column;
+  span {
+    font-size: 12.5px;
+    padding-top: 3px;
+    color: gray;
+  }
+}
+.userInputs {
+  display: flex;
+  .bl__input {
+    width: 100%;
+    margin: 0 0px;
+    &:nth-child(even) {
+      @include variable(input-even-margin, margin, 0 10px);
+      @media (max-width: 576px) {
+        margin: 0;
+      }
+    }
+  }
+}
+.termChk {
+  .validation-messsage {
+    margin-top: 10px;
+  }
+}
+.pandeminChk {
+  margin: 20px 0;
+}
+.pandeminInput {
+  margin-top: 30px;
+}
+.my-input {
+  width: 100%;
+  height: 38px;
+  border-radius: 5px;
+  padding: 0 5px;
+  @include variable(input-border-color, border, 1px solid lightgray);
+  font-size: 13px;
+  &:focus {
+    @include variable(input-outline-color, outline-color, rgb(66, 204, 173));
+    @include variable(
+      my-input-focus-box-shadow,
+      box-shadow,
+      0 0 4px rgb(66, 204, 173)
+    );
+  }
+}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 576px) {
+  .bl__form {
+    width: calc(100%);
+    margin: 7px 0;
+  }
+  .btnReason {
+    width: calc(50% - 20px);
+  }
+  .companyWidget {
+    width: calc(100% - 20px);
+  }
+  .userInputs {
+    flex-direction: column;
+    .bl__input {
+      margin: 0;
+      margin-bottom: 10px;
+    }
+  }
+}
+@media (min-width: 576px) {
+  .bl__form {
+    width: 92%;
+    margin: 4%;
+  }
+  .btnReason {
+    width: calc(33.33% - 20px);
+  }
+
+  .companyWidget {
+    width: calc(50% - 20px);
+  }
+  .userInputs {
+    flex-direction: column;
+  }
+}
+
+// Medium devices (tablets, 768px and up)
+@media (min-width: 768px) {
+  .bl__form {
+    width: 768px;
+    margin: 40px auto;
+  }
+  .btnReason {
+    width: calc(33.33% - 20px);
+  }
+
+  .companyWidget {
+    width: calc(33.33% - 20px);
+  }
+  .userInputs {
+    @include variable(flex-direction, flex-direction, row);
+  }
+}
+
+// Large devices (desktops, 992px and up)
+@media (min-width: 992px) {
+  .bl__form {
+    width: 768px;
+    margin: 40px auto;
+  }
+  .btnReason {
+    width: calc(25% - 20px);
+  }
+  .companyWidget {
+    width: calc(33.33% - 20px);
+  }
+  .userInputs {
+    @include variable(flex-direction, flex-direction, row);
+  }
+}
+
+// Extra large devices (large desktops, 1200px and up)
+@media (min-width: 1200px) {
+  .bl__form {
+    width: 768px;
+    margin: 40px auto;
+  }
+  .btnReason {
+    width: calc(25% - 20px);
+  }
+
+  .companyWidget {
+    width: calc(33.33% - 20px);
+  }
+  .bl__successBox {
+    min-height: 200px;
+    background: white;
+  }
+  .userInputs {
+    @include variable(flex-direction, flex-direction, row);
+  }
+}

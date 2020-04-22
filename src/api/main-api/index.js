@@ -54,23 +54,23 @@ export function customerLogin() {
     }
   }
 
-  const _call = data => {
+  const _call = (data) => {
     const url = loginUrl;
     axios({
       method: "post",
       url: url,
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
       },
-      data: data
+      data: data,
     })
-      .then(response => {
+      .then((response) => {
         const data = response.data ? response.data : {};
         const { userInfo, access_token } = data;
         Cookies.set("@ponture-customer-portal/token", access_token);
         _onOk(userInfo);
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -98,34 +98,34 @@ export function customerLogin() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function getMyApplications() {
@@ -172,17 +172,17 @@ export function getMyApplications() {
     }
   }
 
-  const _call = customerId => {
+  const _call = (customerId) => {
     const url = myAppsUrl + `?customerId=${customerId}`;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios
       .get(url, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         _onOk(
           response.data
             ? response.data.data
@@ -191,7 +191,7 @@ export function getMyApplications() {
             : undefined
         );
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -219,34 +219,34 @@ export function getMyApplications() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function getOffers() {
@@ -293,17 +293,17 @@ export function getOffers() {
     }
   }
 
-  const _call = appId => {
+  const _call = (appId) => {
     const url = offersUrl.replace("_id", appId);
     const token = Cookies.get("@ponture-customer-portal/token");
     axios
       .get(url, {
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`
-        }
+          Authorization: `Bearer ${token}`,
+        },
       })
-      .then(response => {
+      .then((response) => {
         _onOk(
           response.data
             ? response.data.data
@@ -312,7 +312,7 @@ export function getOffers() {
             : undefined
         );
       })
-      .catch(error => {
+      .catch((error) => {
         // return _onOk();
         if (error.response) {
           const status = error.response.status;
@@ -341,34 +341,34 @@ export function getOffers() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function cancelApplication() {
@@ -423,10 +423,10 @@ export function cancelApplication() {
       url: url,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then(response => {
+      .then((response) => {
         _onOk(
           response.data
             ? response.data.data
@@ -435,7 +435,7 @@ export function cancelApplication() {
             : undefined
         );
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -463,34 +463,34 @@ export function cancelApplication() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function rejectOffer() {
@@ -545,10 +545,10 @@ export function rejectOffer() {
       url: url,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then(response => {
+      .then((response) => {
         _onOk(
           response.data
             ? response.data.data
@@ -557,7 +557,7 @@ export function rejectOffer() {
             : undefined
         );
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -585,34 +585,34 @@ export function rejectOffer() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }
 export function acceptOffer() {
@@ -659,7 +659,7 @@ export function acceptOffer() {
     }
   }
 
-  const _call = offerId => {
+  const _call = (offerId) => {
     const url = acceptOfferUrl + "?offerId=" + offerId;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios({
@@ -667,10 +667,10 @@ export function acceptOffer() {
       url: url,
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`
-      }
+        Authorization: `Bearer ${token}`,
+      },
     })
-      .then(response => {
+      .then((response) => {
         _onOk(
           response.data
             ? response.data.data
@@ -679,7 +679,7 @@ export function acceptOffer() {
             : undefined
         );
       })
-      .catch(error => {
+      .catch((error) => {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
@@ -707,33 +707,33 @@ export function acceptOffer() {
 
   return {
     call: _call,
-    onOk: function(callback) {
+    onOk: function (callback) {
       _onOkCallBack = callback;
       return this;
     },
-    onServerError: function(callback) {
+    onServerError: function (callback) {
       _onServerErrorCallBack = callback;
       return this;
     },
-    onBadRequest: function(callback) {
+    onBadRequest: function (callback) {
       _onBadRequestCallBack = callback;
       return this;
     },
-    notFound: function(callback) {
+    notFound: function (callback) {
       _notFoundCallBack = callback;
       return this;
     },
-    unAuthorized: function(callback) {
+    unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
       return this;
     },
-    onRequestError: function(callback) {
+    onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
       return this;
     },
-    unKnownError: function(callback) {
+    unKnownError: function (callback) {
       _unKnownErrorCallBack = callback;
       return this;
-    }
+    },
   };
 }

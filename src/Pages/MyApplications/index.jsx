@@ -7,7 +7,7 @@ import { Empty, Wrong } from "components/Commons/ErrorsComponent";
 import { getMyApplications } from "api/main-api";
 
 //
-const MyApplications = props => {
+const MyApplications = (props) => {
   let didCancel = false;
   const [{ userInfo }] = useGlobalState();
   const { t } = useLocale();
@@ -23,58 +23,58 @@ const MyApplications = props => {
   }, []);
   function _getMyApplications() {
     getMyApplications()
-      .onOk(result => {
+      .onOk((result) => {
         if (!didCancel) {
           toggleLoading(false);
-          setData(result);
+          setData(result && result.oppList ? result.oppList : result);
         }
       })
-      .onServerError(result => {
+      .onServerError((result) => {
         if (!didCancel) {
           toggleLoading(false);
           setError({
             title: t("INTERNAL_SERVER_ERROR"),
-            message: t("INTERNAL_SERVER_ERROR_MSG")
+            message: t("INTERNAL_SERVER_ERROR_MSG"),
           });
         }
       })
-      .onBadRequest(result => {
+      .onBadRequest((result) => {
         if (!didCancel) {
           toggleLoading(false);
           setError({
             title: t("BAD_REQUEST"),
-            message: t("BAD_REQUEST_MSG")
+            message: t("BAD_REQUEST_MSG"),
           });
         }
       })
-      .unAuthorized(result => {
+      .unAuthorized((result) => {
         if (!didCancel) {
         }
       })
-      .notFound(result => {
+      .notFound((result) => {
         if (!didCancel) {
           toggleLoading(false);
           setError({
             title: t("NOT_FOUND"),
-            message: t("NOT_FOUND_MSG")
+            message: t("NOT_FOUND_MSG"),
           });
         }
       })
-      .unKnownError(result => {
+      .unKnownError((result) => {
         if (!didCancel) {
           toggleLoading(false);
           setError({
             title: t("UNKNOWN_ERROR"),
-            message: t("UNKNOWN_ERROR_MSG")
+            message: t("UNKNOWN_ERROR_MSG"),
           });
         }
       })
-      .onRequestError(result => {
+      .onRequestError((result) => {
         if (!didCancel) {
           toggleLoading(false);
           setError({
             title: t("ON_REQUEST_ERROR"),
-            message: t("ON_REQUEST_ERROR_MSG")
+            message: t("ON_REQUEST_ERROR_MSG"),
           });
         }
       })
@@ -104,7 +104,7 @@ const MyApplications = props => {
           <span>{t("MY_APPS_EMPTY_LIST_MSG")}</span>
         </div>
       ) : (
-        data.map(app => (
+        data.map((app) => (
           <Item
             key={app.opportunityID}
             item={app}
