@@ -156,6 +156,10 @@ export default {
   OFFERS_CATEGORY_TITLE_CHECK_CREDIT: "Dina erbjudanden för checkkredit",
 
   BISINUSS_LOAN: "Ansök om företagslån",
+  CORONA_LOAN_HEADER_TITLE: "Ansök om brygglån",
+  CORONA_LOAN_PANDEMIN_CHK:
+    "Företaget har tappat minst 20% av omsättningen p.g.a Corona-pandemin",
+  CORONA_LOAN_PANDEMIN_INPUT: "Hur har corona-pandemin påverkat ditt företag?",
   BL_LOAN_AMOUNT: "Önskat Lånebelopp",
   BL_LOAN_PERIOD: "Önskad låneperiod",
   BL_REASON_LOAN: "Vad ska företagslånet användas till?",
@@ -172,6 +176,7 @@ export default {
   BL_TERMS: "Härmed godkänner jag användarvillkoren.",
   BL_TERMS_LINK: "läs våra användarvillkor",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
+  PANADEMIN_IS_REQUIRED: "Detta är obligatoriskt",
   PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
   EMAIL_IN_CORRECT: "email är felaktigt",

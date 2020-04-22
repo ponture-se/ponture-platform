@@ -12,6 +12,7 @@ import AxiosInitializer from "utils/AxiosInitializer";
 
 //
 import BusinessLoan from "./Pages/BusinessLoan";
+import CoronaLoan from "./Pages/CoronaLoan";
 import Login from "./Pages/Login";
 import MainPage from "./Pages/MainPage";
 import NotFound from "./Pages/NotFound";
@@ -28,17 +29,22 @@ const App = () => {
               <Route
                 key="appLoan"
                 path="/app/login"
-                render={props => <Login {...props} />}
+                render={(props) => <Login {...props} />}
               />
               <Route
                 key="appLoan"
                 path="/app/loan"
-                render={props => <BusinessLoan {...props} />}
+                render={(props) => <BusinessLoan {...props} />}
+              />
+              <Route
+                key="coronaLoan"
+                path="/app/coronabrygglan"
+                render={(props) => <CoronaLoan {...props} />}
               />
               <PrivateRoute
                 key="mainPage"
                 path="/app/panel"
-                render={props => <Main {...props} />}
+                render={(props) => <Main {...props} />}
               />
               <Redirect exact from="/app" to="/app/loan" />
               <Route component={NotFound} />

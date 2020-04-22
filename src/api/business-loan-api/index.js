@@ -537,17 +537,10 @@ export function getCompanies() {
   const _call = (personalNumber) => {
     const url = companiesUrl + "?personalNumber=" + personalNumber;
     // const token = Cookies.get("@pontrue-wizard/token");
-    // headers: {
-    //   Authorization: `Bearer ${token}`;
-    // }
     axios
       .get(url)
       .then((response) => {
-        _onOk(
-          ((response.data && response.data.data
-            ? response.data.data.companies
-            : response.data): undefined)
-        );
+        _onOk(response.data ? response.data : undefined);
       })
       .catch((error) => {
         if (error.response) {
