@@ -46,9 +46,15 @@ const OfferItem = (
       )}
       <div className="offerItem__content">
         <div className="offerItem__top visible-f-xs">
-          <div className="offerItem__img">
-            <img src={offer.partnerLogo} alt="" />
-          </div>
+          {offer.partnerLogo ? (
+            <div className="offerItem__img">
+              <img src={offer.partnerLogo} alt="" />
+            </div>
+          ) : (
+            <div className="offerItem__noImage">
+              <span>{offer.partnerName}</span>
+            </div>
+          )}
           {!isAccepted && (
             <button
               className="offerItem__acceptBtn"
@@ -58,9 +64,15 @@ const OfferItem = (
             </button>
           )}
         </div>
-        <div className="offerItem__img hidden-xs">
-          <img src={offer.partnerLogo} alt="" />
-        </div>
+        {offer.partnerLogo ? (
+          <div className="offerItem__img hidden-xs">
+            <img src={offer.partnerLogo} alt="" />
+          </div>
+        ) : (
+          <div className="offerItem__noImage hidden-xs">
+            <span>{offer.partnerName}</span>
+          </div>
+        )}
         <div className="offerItem__info">
           {offer.inListProps.map((item, index) => (
             <div key={index} className="offerItem__value">
