@@ -11,15 +11,13 @@ import UiActions from "./components/UiActions";
 import OffersCategory from "./components/OffersCategory";
 import AcceptedOffer from "./components/AcceptedOffer";
 // import OfferModal from "./OfferModal";
-import { getLatestOffers, rejectOffer } from "api/main-api";
-import { toggleAlert } from "components/Alert";
+import { getLatestOffers } from "api/main-api";
 import {
   getCategorizedOffers,
   checkIsAcceptedOffer,
   checkIsSameUiAction,
 } from "./helper";
 
-import track from "utils/trackAnalytic";
 //
 const AllOffers = ({ match }) => {
   const didCancel = useRef(false);
@@ -46,6 +44,7 @@ const AllOffers = ({ match }) => {
           setState((prevState) => ({
             ...prevState,
             loading: false,
+            opportunity: result.opportunityDetail,
           }));
         } else {
           const categorizedOffers = getCategorizedOffers(result.offers);
@@ -129,7 +128,10 @@ const AllOffers = ({ match }) => {
         ) : error ? (
           <Error />
         ) : !offers || offers.length === 0 ? (
-          <EmptyOffers />
+          <>
+            <OppInfo opportunity={opportunity} />
+            <EmptyOffers />
+          </>
         ) : (
           <>
             <OppInfo opportunity={opportunity} />

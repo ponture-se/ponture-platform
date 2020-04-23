@@ -781,8 +781,15 @@ export function acceptOffer() {
     }
   }
 
-  const _call = (offerId) => {
-    const url = acceptOfferUrl + "?offerId=" + offerId;
+  const _call = (offerId, phoneNumber, email) => {
+    const url =
+      acceptOfferUrl +
+      "?offerId=" +
+      offerId +
+      "&email=" +
+      email +
+      "&phoneNumber=" +
+      phoneNumber;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios({
       method: "put",
@@ -805,8 +812,6 @@ export function acceptOffer() {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
-            case 200:
-              break;
             case 400:
               _onBadRequest();
               break;
@@ -826,7 +831,6 @@ export function acceptOffer() {
         }
       });
   };
-
   return {
     call: _call,
     onOk: function (callback) {
