@@ -4,12 +4,14 @@ const OppInfo = ({ opportunity = {} }) => {
   const { t } = useLocale();
   return (
     <div className="oppInfo">
-      <span>
-        {t("OFFERS_OPP_HI")}{" "}
-        {opportunity.contactInfo &&
-          opportunity.contactInfo.name &&
-          opportunity.contactInfo.name}
-        {"!"}
+      <span className="oppInfo__name">
+        <span>{t("OFFERS_OPP_HI")} </span>
+        <span>
+          {opportunity.contactInfo &&
+            opportunity.contactInfo.name &&
+            opportunity.contactInfo.name}
+          {"!"}
+        </span>
       </span>
       <div className="oppInfo__detail">
         <h4>{t("OFFERS_OPP_YOUR_INFORMATION")}</h4>

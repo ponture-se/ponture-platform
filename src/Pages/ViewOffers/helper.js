@@ -12,6 +12,7 @@ export const Tags = {
   both: "cheapest,biggest",
 };
 export const BothTagsId = "sameAction";
+// ============================================================
 export const getCategorizedOffers = (offers) => {
   if (!offers || offers.length === 0) return [];
 
@@ -130,6 +131,18 @@ export const getCategorizedOffers = (offers) => {
         } else {
           offer.inDetailProps.push(obj);
         }
+      }
+    }
+    if (offer.inListProps.length === 0) {
+      if (offer.inDetailProps.length > 5) {
+        offer.inListProps = offer.inDetailProps.slice(0, 5);
+        offer.inDetailProps = offer.inDetailProps.slice(
+          5,
+          offer.inDetailProps.length
+        );
+      } else {
+        offer.inListProps = offer.inDetailProps;
+        offer.inDetailProps = [];
       }
     }
     return offer;
