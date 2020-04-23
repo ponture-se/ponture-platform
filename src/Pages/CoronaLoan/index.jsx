@@ -735,6 +735,7 @@ export default function BusinessLoan(props) {
                         id="terms"
                         checked={pandeminChk}
                         onChange={(e) => togglePandeminChk(e.target.checked)}
+                        disabled={b_loan_moreInfo_visibility}
                       />
                       <span className="checkmark" />
                       <span className="customCheckbox__text">
