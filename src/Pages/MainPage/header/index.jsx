@@ -16,11 +16,14 @@ const Header = (props) => {
       payload: { lastRole: currentRole },
     });
   }
+  function openPonturSite() {
+    window.open("https://www.ponture.com", "_blank");
+  }
   return (
     <div className="mainHeader">
       <div className="mainHeader__top">
         <div className="left">
-          <div className="mainHeader__img">
+          <div className="mainHeader__img" onClick={openPonturSite}>
             <img src={require("assets/logo-c.png")} alt="logo" />
           </div>
           <div className="mainHeader__title">

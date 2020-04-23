@@ -33,6 +33,7 @@
     }
   }
   &__img {
+    cursor: pointer;
     img {
       width: 120px;
       @include respond(phone) {

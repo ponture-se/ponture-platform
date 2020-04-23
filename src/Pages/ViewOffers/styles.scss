@@ -123,10 +123,16 @@ $itemBtnColor: #44b3c2;
     margin-right: 0px;
     align-items: flex-end;
   }
-  span {
+  &__name {
     width: auto;
     font-size: 19px;
+    display: flex;
+    flex-direction: row;
+    span:first-child {
+      margin-right: 7px;
+    }
     @include respond(phone) {
+      flex-direction: column;
       width: 42%;
       font-size: 13px;
       padding-right: 10px;
