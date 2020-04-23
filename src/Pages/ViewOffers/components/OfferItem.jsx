@@ -64,7 +64,7 @@ const OfferItem = (
             </button>
           )}
         </div>
-        {offer.partnerLogo ? (
+        {!offer.partnerLogo ? (
           <div className="offerItem__img hidden-xs">
             <img src={offer.partnerLogo} alt="" />
           </div>

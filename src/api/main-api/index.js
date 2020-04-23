@@ -812,8 +812,6 @@ export function acceptOffer() {
         if (error.response) {
           const status = error.response.status;
           switch (status) {
-            case 200:
-              break;
             case 400:
               _onBadRequest();
               break;
@@ -832,5 +830,36 @@ export function acceptOffer() {
           }
         }
       });
+  };
+  return {
+    call: _call,
+    onOk: function (callback) {
+      _onOkCallBack = callback;
+      return this;
+    },
+    onServerError: function (callback) {
+      _onServerErrorCallBack = callback;
+      return this;
+    },
+    onBadRequest: function (callback) {
+      _onBadRequestCallBack = callback;
+      return this;
+    },
+    notFound: function (callback) {
+      _notFoundCallBack = callback;
+      return this;
+    },
+    unAuthorized: function (callback) {
+      _unAuthorizedCallBack = callback;
+      return this;
+    },
+    onRequestError: function (callback) {
+      _onRequestErrorCallBack = callback;
+      return this;
+    },
+    unKnownError: function (callback) {
+      _unKnownErrorCallBack = callback;
+      return this;
+    },
   };
 }
