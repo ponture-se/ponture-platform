@@ -14,20 +14,11 @@ import {
 import CircleSpinner from "components/CircleSpinner";
 import { useGlobalState, useLocale, useCookie, useNumberRegex } from "hooks";
 import "./styles.scss";
-import {
-  startBankId,
-  cancelVerify,
-  submitLoan,
-  getNeedsList,
-} from "api/business-loan-api";
+import { startBankId, cancelVerify, submitLoan } from "api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 //
-const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
-  ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
-  : 10000000;
-const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
-  ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MIN)
-  : 100000;
+const loanAmountMax = 5000000;
+const loanAmountMin = 100000;
 const loanPeriodStep = 1;
 const loanPeriodMax = process.env.REACT_APP_LOAN_PERIOD_MAX
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MAX)
