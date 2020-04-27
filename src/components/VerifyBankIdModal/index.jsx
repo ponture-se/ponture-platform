@@ -6,7 +6,15 @@ import isMobileDevice from "utils/isMobileDevice";
 import "./styles.scss";
 const isMobile = isMobileDevice();
 //
-export default function VerifyBankIdModal(props) {
+export default function VerifyBankIdModal({
+  personalNumber,
+  startResult,
+  isLogin,
+  onSuccess,
+  onClose,
+  onFailedBankId,
+  onCancelVerify,
+}) {
   let didCancel = false;
   const { t } = useLocale();
   const [mainSpinner, toggleMainSpinner] = useState(true);
@@ -18,7 +26,7 @@ export default function VerifyBankIdModal(props) {
     let didCancel = false;
     let fetchInterval = setInterval(() => {
       collect()
-        .onOk(result => {
+        .onOk((result) => {
           if (!didCancel) {
             if (result) {
               if (result.progressStatus) {
@@ -33,28 +41,12 @@ export default function VerifyBankIdModal(props) {
                           name: result.userInfo.name,
                           email: result.userInfo.email,
                           plan: result.userInfo.plan,
-                          logins: result.userInfo.logins
+                          logins: result.userInfo.logins,
                         }
                       );
                     }
-                    if (!props.isLogin) {
-                      if (window.analytics)
-                        window.analytics.track("BankID Verified", {
-                          category: "Loan Application",
-                          label: "/app/loan/ bankid popup",
-                          value: 0
-                        });
-                      _getCompanies(result);
-                    } else {
-                      if (window.analytics)
-                        window.analytics.track("BankID Verified", {
-                          category: "Customer Portal",
-                          label: "Customer Portal login bankid popup",
-                          value: 0
-                        });
-
-                      if (props.onSuccess) props.onSuccess(result);
-                    }
+                    if (onSuccess) onSuccess(result);
+                    if (!isLogin) _getCompanies(result);
                     break;
                   case "no_client":
                     // check is mobile
@@ -68,21 +60,7 @@ export default function VerifyBankIdModal(props) {
                     break;
                 }
               } else {
-                if (!props.isLogin) {
-                  if (window.analytics)
-                    window.analytics.track("BankID Failed", {
-                      category: "Loan Application",
-                      label: "/app/loan/ bankid popup",
-                      value: 0
-                    });
-                } else {
-                  if (window.analytics)
-                    window.analytics.track("BankID Failed", {
-                      category: "Customer Portal",
-                      label: "Customer Portal login bankid popup",
-                      value: 0
-                    });
-                }
+                if (onFailedBankId) onFailedBankId();
                 clearInterval(fetchInterval);
                 toggleMainSpinner(false);
                 // check for example user_cancel
@@ -103,27 +81,27 @@ export default function VerifyBankIdModal(props) {
                 if (userCanceled) {
                   setError({
                     type: "user_cancel",
-                    message: t("VERIFY_USER_CANCEL")
+                    message: t("VERIFY_USER_CANCEL"),
                   });
-                  if (props.onClose)
+                  if (onClose)
                     setTimeout(() => {
-                      props.onClose();
+                      onClose();
                     }, 1000);
                 } else if (expired) {
                   setError({
                     type: "",
-                    message: t("VERIFY_EXPIRED")
+                    message: t("VERIFY_EXPIRED"),
                   });
                 } else
                   setError({
                     type: "",
-                    message: t("VERIFY_ERROR")
+                    message: t("VERIFY_ERROR"),
                   });
               }
             }
           }
         })
-        .onServerError(result => {
+        .onServerError((result) => {
           clearInterval(fetchInterval);
           // if (window.analytics)
           //   window.analytics.track("BankID Failed", {
@@ -135,11 +113,11 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("INTERNAL_SERVER_ERROR")
+              message: t("INTERNAL_SERVER_ERROR"),
             });
           }
         })
-        .onBadRequest(result => {
+        .onBadRequest((result) => {
           clearInterval(fetchInterval);
           // if (window.analytics)
           //   window.analytics.track("BankID Failed", {
@@ -151,11 +129,11 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("BAD_REQUEST")
+              message: t("BAD_REQUEST"),
             });
           }
         })
-        .unAuthorized(result => {
+        .unAuthorized((result) => {
           clearInterval(fetchInterval);
           // if (window.analytics)
           //   window.analytics.track("BankID Failed", {
@@ -167,11 +145,11 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("UN_AUTHORIZED")
+              message: t("UN_AUTHORIZED"),
             });
           }
         })
-        .unKnownError(result => {
+        .unKnownError((result) => {
           clearInterval(fetchInterval);
           // if (window.analytics)
           //   window.analytics.track("BankID Failed", {
@@ -183,11 +161,11 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("UNKNOWN_ERROR")
+              message: t("UNKNOWN_ERROR"),
             });
           }
         })
-        .onRequestError(result => {
+        .onRequestError((result) => {
           clearInterval(fetchInterval);
           // if (window.analytics)
           //   window.analytics.track("BankID Failed", {
@@ -199,7 +177,7 @@ export default function VerifyBankIdModal(props) {
             toggleMainSpinner(false);
             setError({
               type: "",
-              message: t("ON_REQUEST_ERROR")
+              message: t("ON_REQUEST_ERROR"),
             });
           }
         })
@@ -209,91 +187,86 @@ export default function VerifyBankIdModal(props) {
       clearInterval(fetchInterval);
       didCancel = true;
     };
-  }, []);
+  }, [_getCompanies, isLogin, onClose, onFailedBankId, onSuccess, t]);
   function _getCompanies(completedResult) {
-    let pId = props.personalNumber;
+    let pId = personalNumber;
     if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
     // const access_token = process.env.REACT_APP_TOEKN
     //   ? process.env.REACT_APP_TOEKN
     //   : token;
     const pNumber = pId.replace("-", "");
     getCompanies()
-      .onOk(result => {
+      .onOk((result) => {
         if (!didCancel) {
-          if (Array.isArray(result))
-            props.onClose(true, result, completedResult);
-          else props.onClose(false, []);
+          if (Array.isArray(result)) onClose(true, result, completedResult);
+          else onClose(false, []);
         }
       })
-      .onServerError(result => {
+      .onServerError((result) => {
         if (!didCancel) {
-          props.onClose(false, {
+          onClose(false, {
             sender: "companies",
             type: "serverError",
-            message: t("COMPANIES_ERROR_500")
+            message: t("COMPANIES_ERROR_500"),
           });
         }
       })
-      .onBadRequest(result => {
+      .onBadRequest((result) => {
         if (!didCancel) {
-          props.onClose(false, {
+          onClose(false, {
             sender: "companies",
             type: "Bad Request",
-            message: t("COMPANIES_ERROR_400")
+            message: t("COMPANIES_ERROR_400"),
           });
         }
       })
-      .unAuthorized(result => {
+      .unAuthorized((result) => {
         if (!didCancel) {
-          props.onClose(false, {
+          onClose(false, {
             sender: "companies",
             type: "unAuthorized",
-            message: t("COMPANIES_ERROR_401")
+            message: t("COMPANIES_ERROR_401"),
           });
         }
       })
-      .notFound(result => {
+      .notFound((result) => {
         if (!didCancel) {
-          props.onClose(false, {
+          onClose(false, {
             sender: "companies",
             type: "notFound",
-            message: t("COMPANIES_ERROR_404")
+            message: t("COMPANIES_ERROR_404"),
           });
         }
       })
-      .unKnownError(result => {
+      .unKnownError((result) => {
         if (!didCancel) {
-          props.onClose(false, {
+          onClose(false, {
             sender: "companies",
             type: "unKnownError",
-            message: t("COMPANIES_ERROR_UNKNOWN")
+            message: t("COMPANIES_ERROR_UNKNOWN"),
           });
         }
       })
-      .onRequestError(result => {
+      .onRequestError((result) => {
         if (!didCancel) {
-          props.onClose(false, {
+          onClose(false, {
             sender: "companies",
             type: "requestError",
-            message: t("COMPANIES_ERROR_REQUEST_ERROR")
+            message: t("COMPANIES_ERROR_REQUEST_ERROR"),
           });
         }
       })
       .call(pNumber);
   }
   function handleCancelVerify() {
-    if (props.onCancelVerify) props.onCancelVerify();
+    if (onCancelVerify) onCancelVerify();
   }
   function handleCloseModal() {
-    if (props.onClose) {
-      props.onClose();
-    }
+    if (onClose) onClose();
   }
   function handleBankIDClicked() {
     window.open(
-      `
-    bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null 
-    `,
+      `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`,
       "_blank"
     );
   }
@@ -302,7 +275,7 @@ export default function VerifyBankIdModal(props) {
       <div className="modal">
         <div className="bankId__centerBox">
           <div className="bankId__centerBox__header">
-            <img src={require("./../../assets/bankidLogo.png")} alt="logo" />
+            <img src={require("assets/bankidLogo.png")} alt="logo" />
             <span>{t("BL_VERIFY_MODAL_TITLE")}</span>
           </div>
           <div className="bankId__centerBox__body">

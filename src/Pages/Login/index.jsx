@@ -9,7 +9,7 @@ import batchStates from "utils/batchStates";
 import { startBankId, cancelVerify } from "api/business-loan-api";
 import "./styles.scss";
 
-const Login = props => {
+const Login = (props) => {
   let didCancel = false;
   const { t } = useLocale();
   const [{}, dispatch] = useGlobalState();
@@ -31,7 +31,7 @@ const Login = props => {
       let err = { ...error };
       err["personalNumber"] = {
         isError: true,
-        message: t("PERSONAL_NUMBER_IS_REQUIRED")
+        message: t("PERSONAL_NUMBER_IS_REQUIRED"),
       };
       setError(err);
     } else {
@@ -39,13 +39,13 @@ const Login = props => {
         let err = { ...error };
         err["personalNumber"] = {
           isError: true,
-          message: t("PERSONAL_NUMBER_IN_CORRECT")
+          message: t("PERSONAL_NUMBER_IN_CORRECT"),
         };
         setError(err);
       } else {
         let err = { ...error };
         err["personalNumber"] = {
-          isError: false
+          isError: false,
         };
         setError(err);
       }
@@ -61,7 +61,7 @@ const Login = props => {
       let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       startBankId()
-        .onOk(result => {
+        .onOk((result) => {
           if (!didCancel) {
             track(
               "BankID Verification",
@@ -76,12 +76,12 @@ const Login = props => {
             });
           }
         })
-        .onServerError(result => {
+        .onServerError((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -89,17 +89,17 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Server Error"
-              }
+                message: "Server Error",
+              },
             });
           }
         })
-        .onBadRequest(result => {
+        .onBadRequest((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -107,17 +107,17 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Bad Request"
-              }
+                message: "Bad Request",
+              },
             });
           }
         })
-        .unAuthorized(result => {
+        .unAuthorized((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -125,17 +125,17 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Un Authorized"
-              }
+                message: "Un Authorized",
+              },
             });
           }
         })
-        .unKnownError(result => {
+        .unKnownError((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -143,8 +143,8 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Unknown Error"
-              }
+                message: "Unknown Error",
+              },
             });
           }
         })
@@ -153,10 +153,16 @@ const Login = props => {
   }
 
   function handleSuccessVerify(result) {
+    if (window.analytics)
+      window.analytics.track("BankID Verified", {
+        category: "Customer Portal",
+        label: "Customer Portal login bankid popup",
+        value: 0,
+      });
     toggleVerifyModal(false);
     dispatch({
       type: "VERIFY_BANK_ID_SUCCESS",
-      payload: result
+      payload: result,
     });
     sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
     props.history.push("/app/panel/myApplications");
@@ -170,7 +176,7 @@ const Login = props => {
     );
     toggleVerifyModal(false);
     cancelVerify()
-      .onOk(result => {})
+      .onOk((result) => {})
       .call(startResult ? startResult.orderRef : null);
   }
   function handleTermChanged(e) {
@@ -274,6 +280,14 @@ const Login = props => {
           onSuccess={handleSuccessVerify}
           onClose={handleCancelVerify}
           onCancelVerify={handleCancelVerify}
+          onFailedBankId={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Failed", {
+                category: "Customer Portal",
+                label: "Customer Portal login bankid popup",
+                value: 0,
+              });
+          }}
         />
       )}
     </div>
