@@ -92,15 +92,15 @@ export default {
   OFFER_NOT_ACCEPTED_TITLE:
     "Välj det erbjudande nedanför som passar dig bäst för att gå vidare.",
   OFFER_NOT_ACCEPTED_DESCRIPTION:
-    "Erbjudanden nedan är ej bindande. När du accepterar ett erbjudande kommer banken att kontakta dig för att slutföra din finansiering med dig.",
+    "Erbjudanden nedan är ej bindande. När du accepterar det erbjudande kommer banken att kontakta dig för att slutföra din finansiering med dig.",
   OFFER_NOT_ACCEPTED_TITLE_XS:
-    "Välj ett erbjudande som passar dig bäst för att gå vidare.",
+    "Välj det erbjudande som passar dig bäst för att gå vidare.",
   OFFER_NOT_ACCEPTED_DESCRIPTION_XS: "Våra erbjudanden är ej binande.",
   OFFER_ITEM_CHEAPEST_TITLE: "Billigaste lånet",
   OFFER_ITEM_BIGGEST_TITLE: "Storte belopp",
   OFFER_ITEM_ACCEPT_BTN: "Gå vidare",
   OFFER_ITEM_MORE_BTN: "andra villkor",
-  OFFERS_ACTIONS_TITLE: "Klaka val",
+  OFFERS_ACTIONS_TITLE: "Kloka val",
   OFFERS_ACTIONS_CHEAPEST_BTN: "billigaste erbjudandet",
   OFFERS_ACTIONS_BIGGEST_BTN: "största lånebeloppet",
   OFFER_ACCEPT_MODAL_TITLE: "Godkänn för att gå vidare",
@@ -120,7 +120,7 @@ export default {
   OFFER_ACCEPT_MODAL_CANCEL_BTN: "Godkänn senare",
   OFFER_ACCEPT_MODAL_SUBMIT_BTN: "Godkänn",
   PARTNER_NAME: "Långivare namn:",
-  OFFER_ACCEPTED_ITEM_TITLE: "Ditt valt erbjudande",
+  OFFER_ACCEPTED_ITEM_TITLE: "Ditt valda erbjudande",
 
   MY_APPS_ITEM_HEADER_TITLE: "Önskat lånebelopp:",
   APP_NEEDS: "Dina anledningar till lån",
@@ -152,7 +152,8 @@ export default {
   OFFERS_OPP_YOUR_INFORMATION: "Dina uppgifter",
   OFFERS_OPP_APPLICATION_DATE: "Ansökningsdatum",
   COMPANY: "Företag",
-  OFFERS_CATEGORY_TITLE: "Dina låneerbjudande",
+  OFFERS_CATEGORY_TITLE: "Dina lånererbjudanden",
+  OFFERS_CATEGORY_IS_ACCEPTED_TITLE: "Dina andra erbjudanden",
   OFFERS_CATEGORY_TITLE_CHECK_CREDIT: "Dina erbjudanden för checkkredit",
 
   BISINUSS_LOAN: "Ansök om företagslån",

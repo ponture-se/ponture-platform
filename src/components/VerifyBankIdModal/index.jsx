@@ -293,12 +293,12 @@ export default function VerifyBankIdModal(props) {
     }
   }
   function handleBankIDClicked() {
-    window.open(
-      `
-    bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null 
-    `,
-      "_blank"
-    );
+    const a = document.createElement("a");
+    a.href = `bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null`;
+    a.target = "_blank";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
   return (
     <div className="modal-back animated fadeIn">

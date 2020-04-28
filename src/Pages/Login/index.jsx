@@ -158,7 +158,15 @@ const Login = (props) => {
       payload: result,
     });
     sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
-    props.history.push("/app/panel/viewOffers");
+
+    // const open = window.open(window.origin + `/app/panel/viewOffers`);
+    const a = document.createElement("a");
+    a.href = window.origin + `/app/panel/viewOffers`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // if (open == null || typeof open == "undefined")
+    //   props.history.push("/app/panel/viewOffers");
   }
   function handleCancelVerify() {
     track(

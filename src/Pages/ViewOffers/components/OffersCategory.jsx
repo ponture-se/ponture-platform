@@ -21,7 +21,7 @@ const OffersCategory = ({
   }, {});
 
   function useEffectFunc() {
-    if (offerUiAction.isClicked) {
+    if (offerUiAction && offerUiAction.isClicked) {
       if (refs[offerUiAction.name] && refs[offerUiAction.name].current) {
         window.scrollTo(0, refs[offerUiAction.name].current.offsetTop);
         // refs[offerUiAction.name].current.scrollIntoView({

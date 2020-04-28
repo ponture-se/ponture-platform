@@ -25,6 +25,19 @@
       format("svg"); /* iOS 4.1- */
 }
 @font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins/Poppins.eot"); /* IE9*/
+  src: url("../assets/fonts/Poppins/Poppins.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("../assets/fonts/Poppins/Poppins.woff2") format("woff2"),
+    /* chrome、firefox */ url("../assets/fonts/Poppins/Poppins.woff")
+      format("woff"),
+    /* chrome、firefox */ url("../assets/fonts/Poppins/Poppins.ttf")
+      format("truetype"),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url("../assets/fonts/Poppins/Poppins.svg#Poppins") format("svg"); /* iOS 4.1- */
+}
+@font-face {
   font-family: "OpenSanceBold";
   src: url("./../assets/fonts/openSanceBold/openSanceBold-eot.eot"); /* IE9*/
   src: url("./../assets/fonts/openSanceBold/openSanceBold-eot.eot?#iefix")
