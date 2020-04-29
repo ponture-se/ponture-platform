@@ -37,6 +37,10 @@
   }
   &__img {
     cursor: pointer;
+    padding-top: 5px;
+    @include respond(phone) {
+      padding-top: 0;
+    }
     img {
       width: 120px;
       @include respond(phone) {
