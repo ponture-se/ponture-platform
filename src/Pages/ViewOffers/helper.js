@@ -135,11 +135,13 @@ export const getCategorizedOffers = (offers) => {
         }
       }
     }
+
     if (offer.inListProps.length === 0) {
-      if (offer.inDetailProps.length > 5) {
-        offer.inListProps = offer.inDetailProps.slice(0, 5);
+      const count = isPhone() ? 3 : 5;
+      if (offer.inDetailProps.length > count) {
+        offer.inListProps = offer.inDetailProps.slice(0, count);
         offer.inDetailProps = offer.inDetailProps.slice(
-          5,
+          count,
           offer.inDetailProps.length
         );
       } else {
