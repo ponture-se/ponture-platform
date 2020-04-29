@@ -74,12 +74,13 @@ const OfferItem = (
           </div>
         )}
         <div className="offerItem__info">
-          {offer.inListProps.map((item, index) => (
-            <div key={index} className="offerItem__value">
-              <h4 className="font-bold">{item.value}</h4>
-              <span>{item.key}</span>
-            </div>
-          ))}
+          {offer.inListProps &&
+            offer.inListProps.map((item, index) => (
+              <div key={index} className="offerItem__value">
+                <h4 className="font-bold">{item.value}</h4>
+                <span>{item.key}</span>
+              </div>
+            ))}
         </div>
         {!isAccepted && (
           <div className="offerItem__action">
@@ -100,12 +101,13 @@ const OfferItem = (
       </div>
       {!isAccepted && moreInfoBox && (
         <div className="offerItem__details animated fadeIn">
-          {offer.inDetailProps.map((item, index) => (
-            <div key={index} className="offerItem__detailRow">
-              <div className="font-bold">{item.key}</div>
-              <span>{item.value}</span>
-            </div>
-          ))}
+          {offer.inDetailProps &&
+            offer.inDetailProps.map((item, index) => (
+              <div key={index} className="offerItem__detailRow">
+                <div className="font-bold">{item.key}</div>
+                <span>{item.value}</span>
+              </div>
+            ))}
         </div>
       )}
     </div>

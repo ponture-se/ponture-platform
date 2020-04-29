@@ -1,8 +1,9 @@
 @import "./../../styles/mixins.scss";
 //
 .mainPage {
-  @include variable(main-header-height, margin-top, 100px);
-  padding-top: 30px;
+  // @include variable(main-header-height, margin-top, 100px);
+  margin-top: 55px;
+  padding-top: 20px;
   @include respond(phone) {
     padding-top: 10px;
   }
