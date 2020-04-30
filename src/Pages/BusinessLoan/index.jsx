@@ -1268,7 +1268,7 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="bl__successBox__actions">
                   <button
-                    className="btn --warning btn-large"
+                    className="btn btn-warning btn-large"
                     onClick={openMyApps}
                   >
                     {t("MY_APPLICATIONS")}
@@ -1340,7 +1340,7 @@ export default function BusinessLoan(props) {
                   )}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn --warning" onClick={refreshPage}>
+                  <button className="btn btn-warning" onClick={refreshPage}>
                     {t("REFRESH")}
                   </button>
                 </div>
