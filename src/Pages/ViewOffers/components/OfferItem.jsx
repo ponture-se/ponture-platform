@@ -52,7 +52,7 @@ const OfferItem = (
             </div>
           ) : (
             <div className="offerItem__noImage">
-              <span>{offer.partnerName}</span>
+              <span>{offer.partnerDisplayName}</span>
             </div>
           )}
           {!isAccepted && (
@@ -70,7 +70,7 @@ const OfferItem = (
           </div>
         ) : (
           <div className="offerItem__noImage hidden-xs">
-            <span>{offer.partnerName}</span>
+            <span>{offer.partnerDisplayName}</span>
           </div>
         )}
         <div className="offerItem__info">

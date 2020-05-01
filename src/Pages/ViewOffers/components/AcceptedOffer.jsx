@@ -7,12 +7,7 @@ const AcceptedOffer = ({ acceptedOffer }) => {
   return (
     <div className="acceptedOffer animated fadeIn">
       <h3 className="acceptedOffer__title">
-        {t("OFFER_ACCEPTED_ITEM_TITLE")}:{" "}
-        {acceptedOffer.partnerContactInfo
-          ? acceptedOffer.partnerContactInfo.displayName
-            ? acceptedOffer.partnerContactInfo.displayName
-            : acceptedOffer.partnerContactInfo.name
-          : ""}
+        {t("OFFER_ACCEPTED_ITEM_TITLE")}: {acceptedOffer.partnerDisplayName}
       </h3>
       <div className="offerItem">
         <div className="offerItem__content">
@@ -23,7 +18,7 @@ const AcceptedOffer = ({ acceptedOffer }) => {
               </div>
             ) : (
               <div className="offerItem__noImage">
-                <span>{acceptedOffer.partnerName}</span>
+                <span>{acceptedOffer.partnerDisplayName}</span>
               </div>
             )}
           </div>
@@ -33,7 +28,7 @@ const AcceptedOffer = ({ acceptedOffer }) => {
             </div>
           ) : (
             <div className="offerItem__noImage  hidden-xs">
-              <span>{acceptedOffer.partnerName}</span>
+              <span>{acceptedOffer.partnerDisplayName}</span>
             </div>
           )}
           <div className="offerItem__info">

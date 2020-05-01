@@ -140,7 +140,7 @@ const AcceptModal = ({
                 </div>
                 <div className="personalInfo__desc font-bold">
                   {tWithVar("OFFER_ACCEPT_MODAL_FORM_DESCRIPTION", {
-                    partnerName: selectedOffer.partnerName,
+                    partnerName: selectedOffer.partnerDisplayName,
                   })}
                 </div>
               </div>
