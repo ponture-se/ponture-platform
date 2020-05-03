@@ -160,8 +160,15 @@ const Login = (props) => {
     sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
 
     // const open = window.open(window.origin + `/app/panel/viewOffers`);
+    if (!window.location.origin) {
+      window.location.origin =
+        window.location.protocol +
+        "//" +
+        window.location.hostname +
+        (window.location.port ? ":" + window.location.port : "");
+    }
     const a = document.createElement("a");
-    a.href = window.origin + `/app/panel/viewOffers`;
+    a.href = window.location.origin + `/app/panel/viewOffers`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
