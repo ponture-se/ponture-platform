@@ -19,13 +19,11 @@ export default function VerifyBankIdModal(props) {
     let fetchInterval = setInterval(() => {
       collect()
         .onOk((result) => {
-          console.log(result);
           if (!didCancel) {
             if (result) {
               if (result.progressStatus) {
                 switch (result.progressStatus.toLowerCase()) {
                   case "complete":
-                    debugger;
                     toggleMainSpinner(false);
                     setSuccess(true);
                     if (window.analytics) {
