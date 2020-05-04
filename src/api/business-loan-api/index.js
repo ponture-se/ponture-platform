@@ -181,6 +181,8 @@ export function startBankId() {
       method: "post",
       url: url,
       headers: {
+        "Cache-Control": "no-cache",
+        pragma: "no-cache",
         Accept: "application/json",
       },
       data: {
@@ -303,6 +305,8 @@ export function collect() {
       .get(url, {
         timeout: 300000,
         headers: {
+          "Cache-Control": "no-cache",
+          pragma: "no-cache",
           Accept: "application/json",
           Authorization: `Bearer ${token}`,
         },
