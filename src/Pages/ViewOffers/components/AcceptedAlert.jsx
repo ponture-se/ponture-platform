@@ -6,21 +6,12 @@ const NotAcceptedAlert = ({ acceptedOffer = {} }) => {
     <div className="notAcceptedOfferAlert animated fadeIn">
       <span className="notAcceptedOfferAlert__title">
         {tWithVar("OFFER_ACCEPTED_ALERT_EXT", {
-          name: acceptedOffer.partnerContactInfo
-            ? acceptedOffer.partnerContactInfo.displayName
-              ? acceptedOffer.partnerContactInfo.displayName
-              : acceptedOffer.partnerContactInfo.name
-            : "",
+          name: acceptedOffer.partnerDisplayName,
         })}
       </span>
       <span className="notAcceptedOfferAlert__description">
         <span>
-          {t("PARTNER_NAME")}{" "}
-          {acceptedOffer.partnerContactInfo
-            ? acceptedOffer.partnerContactInfo.displayName
-              ? acceptedOffer.partnerContactInfo.displayName
-              : acceptedOffer.partnerContactInfo.name
-            : ""}{" "}
+          {t("PARTNER_NAME")} {acceptedOffer.partnerDisplayName}
         </span>
         <span>
           <i className="icon-phone" />

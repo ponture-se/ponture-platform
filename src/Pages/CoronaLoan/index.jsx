@@ -22,12 +22,8 @@ import {
 } from "api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 //
-const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
-  ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
-  : 10000000;
-const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
-  ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MIN)
-  : 100000;
+const loanAmountMax = 5000000;
+const loanAmountMin = 100000;
 const loanPeriodStep = 1;
 const loanPeriodMax = process.env.REACT_APP_LOAN_PERIOD_MAX
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MAX)
@@ -41,11 +37,10 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
 export default function BusinessLoan(props) {
   let didCancel = false;
   const [{ b_loan_moreInfo_visibility }, dispatch] = useGlobalState();
-  const { t, appLocale, currentLang } = useLocale();
+  const { t } = useLocale();
 
   const [_loanAmount, _setLoanAmount] = useCookie("_loanAmount");
   const [_loanPeriod, _setLoanPeriod] = useCookie("_loanPeriod");
-  const [_loanReasons, _setLoanReasons] = useCookie("_loanReasons");
   const [_loanReasonOther, _setLoanReasonOther] = useCookie("_loanReasonOther");
   const [_personalNumber, _setPersonalNumber] = useCookie("_personalNumber");
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
@@ -54,14 +49,13 @@ export default function BusinessLoan(props) {
     Cookies.get("affiliate_referral_params_v2")
       ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
       : Cookies.get("affiliate_referral_params")
-  ); // extra params
+  );
+  // extra params
 
   const p_loanAmount = getParameterByName("amount");
   const __loanAmount = p_loanAmount ? p_loanAmount : _loanAmount;
   const p_loanPeriod = getParameterByName("amourtizationPeriod");
   const __loanPeriod = p_loanPeriod ? p_loanPeriod : _loanPeriod;
-  const p_loanReasons = getParameterByName("need");
-  const p_loanReasonOther = getParameterByName("needDescription");
   const p_personalNumber = getParameterByName("personalNumber");
   const __personalNumber = p_personalNumber
     ? p_personalNumber
@@ -107,20 +101,6 @@ export default function BusinessLoan(props) {
       __email && __email.length > 0 && validateEmail(__email) ? __email : "",
     terms: false,
   };
-  if (_loanReasons && _loanReasons.length > 0) {
-    try {
-      const a = JSON.parse(_loanReasons);
-      if (Array.isArray(a)) {
-        formInitValues["loanReasons"] = a;
-      } else {
-        formInitValues["loanReasons"] = undefined;
-      }
-    } catch (error) {
-      formInitValues["loanReasons"] = undefined;
-    }
-  } else {
-    formInitValues["loanReasons"] = undefined;
-  }
 
   const [mainSpinner, toggleMainSpinner] = useState(false);
   const [tab, changeTab] = useState(1);
@@ -472,24 +452,45 @@ export default function BusinessLoan(props) {
           phoneNumber: phoneNumber,
           bankid: bankIdResult,
         };
+        const utm_source = getParameterByName("utm_source");
+        const utm_medium = getParameterByName("utm_medium");
+        const utm_campaign = getParameterByName("utm_campaign");
+        const referral_id = getParameterByName("referral_id");
+        const last_referral_date = getParameterByName("last_referral_date");
         try {
-          const r = JSON.parse(referral_params);
-          if (r.utm_source) {
-            obj["utm_source"] = r.utm_source;
+          const ref = JSON.parse(referral_params);
+          if (ref && ref.utm_source) {
+            obj["utm_source"] = ref.utm_source;
           }
-          if (r.utm_medium) {
-            obj["utm_medium"] = r.utm_medium;
+          if (ref && ref.utm_medium) {
+            obj["utm_medium"] = ref.utm_medium;
           }
-          if (r.utm_campaign) {
-            obj["utm_campaign"] = r.utm_campaign;
+          if (ref && ref.utm_campaign) {
+            obj["utm_campaign"] = ref.utm_campaign;
           }
-          if (r.referral_id) {
-            obj["referral_id"] = r.referral_id;
+          if (ref && ref.referral_id) {
+            obj["referral_id"] = ref.referral_id;
           }
-          if (r.last_referral_date) {
-            obj["last_referral_date"] = r.last_referral_date;
+          if (ref && ref.last_referral_date) {
+            obj["last_referral_date"] = ref.last_referral_date;
           }
         } catch (error) {}
+
+        if (utm_source) {
+          obj["utm_source"] = utm_source;
+        }
+        if (utm_medium) {
+          obj["utm_medium"] = utm_medium;
+        }
+        if (utm_campaign) {
+          obj["utm_campaign"] = utm_campaign;
+        }
+        if (referral_id) {
+          obj["referral_id"] = referral_id;
+        }
+        if (last_referral_date) {
+          obj["last_referral_date"] = last_referral_date;
+        }
 
         submitLoan()
           .onOk((result) => {
@@ -538,7 +539,6 @@ export default function BusinessLoan(props) {
     _setLoanAmount();
     _setLoanPeriod();
     _setLoanReasonOther();
-    _setLoanReasons();
     _setPersonalNumber();
   }
   function backtoLoan() {

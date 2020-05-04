@@ -15,10 +15,12 @@ export const BothTagsId = "sameAction";
 // ============================================================
 export const getCategorizedOffers = (offers) => {
   if (!offers || offers.length === 0) return [];
-
+  const isAcceptedOffer = checkIsAcceptedOffer(offers);
   let offersList = [
     {
-      title: "OFFERS_CATEGORY_TITLE",
+      title: !isAcceptedOffer
+        ? "OFFERS_CATEGORY_TITLE"
+        : "OFFERS_CATEGORY_IS_ACCEPTED_TITLE",
       offers: [],
     },
     {
@@ -133,11 +135,13 @@ export const getCategorizedOffers = (offers) => {
         }
       }
     }
+
     if (offer.inListProps.length === 0) {
-      if (offer.inDetailProps.length > 5) {
-        offer.inListProps = offer.inDetailProps.slice(0, 5);
+      const count = isPhone() ? 3 : 5;
+      if (offer.inDetailProps.length > count) {
+        offer.inListProps = offer.inDetailProps.slice(0, count);
         offer.inDetailProps = offer.inDetailProps.slice(
-          5,
+          count,
           offer.inDetailProps.length
         );
       } else {
@@ -149,9 +153,11 @@ export const getCategorizedOffers = (offers) => {
   }
   for (let i = 0; i < offers.length; i++) {
     const offer = offers[i];
+
     const checkedTagOffer = checkOfferTag(offer);
     const checkedOutlineValues = checkOutlineValues(checkedTagOffer);
-    addToList(checkedOutlineValues);
+    if (!isAcceptedOffer || isAcceptedOffer.Id !== offer.Id)
+      addToList(checkedOutlineValues);
   }
   return offersList;
 };

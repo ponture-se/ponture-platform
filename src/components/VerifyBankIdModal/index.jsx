@@ -19,13 +19,11 @@ export default function VerifyBankIdModal(props) {
     let fetchInterval = setInterval(() => {
       collect()
         .onOk((result) => {
-          console.log(result);
           if (!didCancel) {
             if (result) {
               if (result.progressStatus) {
                 switch (result.progressStatus.toLowerCase()) {
                   case "complete":
-                    debugger;
                     toggleMainSpinner(false);
                     setSuccess(true);
                     if (window.analytics) {
@@ -293,12 +291,12 @@ export default function VerifyBankIdModal(props) {
     }
   }
   function handleBankIDClicked() {
-    window.open(
-      `
-    bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null 
-    `,
-      "_blank"
-    );
+    const a = document.createElement("a");
+    a.href = `bankid:///?autostarttoken =${props.startResult.autoStartToken} &redirect=null`;
+    a.target = "_blank";
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
   }
   return (
     <div className="modal-back animated fadeIn">

@@ -11,6 +11,7 @@ $itemBtnColor: #44b3c2;
 .appOffers {
   display: flex;
   flex-direction: column;
+  font-family: Poppins;
   .offersEmpty {
     padding-top: 40px;
     margin: auto;
@@ -35,7 +36,7 @@ $itemBtnColor: #44b3c2;
       align-items: center;
       span {
         text-decoration: underline;
-        font-family: OpenSanceBold;
+        font-weight: bold;
       }
       .icon {
         margin: 0 8px;
@@ -66,7 +67,7 @@ $itemBtnColor: #44b3c2;
       flex-direction: column;
       .title {
         font-size: 22px;
-        font-family: OpenSanceBold;
+        font-weight: bold;
       }
       .offerNumber {
         font-size: 13px;
@@ -100,7 +101,7 @@ $itemBtnColor: #44b3c2;
         font-size: 13px;
       }
       span:first-child {
-        font-family: OpenSanceBold;
+        font-weight: bold;
         font-size: 14px;
       }
       span:last-child {
@@ -301,7 +302,7 @@ $itemBtnColor: #44b3c2;
   &__content {
     background-color: white;
     box-shadow: 0 0 5px lightgray;
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     padding: 20px;
@@ -354,7 +355,7 @@ $itemBtnColor: #44b3c2;
     @include respond(phone) {
       height: 30px;
       width: 90px;
-      line-height: 25px;
+      line-height: 30px;
       font-size: 10px;
     }
   }
@@ -439,7 +440,7 @@ $itemBtnColor: #44b3c2;
   }
   &__details {
     background-color: #f7f7f8;
-    border-radius: 10px;
+    border-radius: 12px;
     padding: 20px;
     margin-top: 2px;
     @include respond(phone) {
@@ -455,17 +456,20 @@ $itemBtnColor: #44b3c2;
       margin-top: 5px;
     }
     div {
-      width: 300px;
+      width: 260px;
       color: black;
+      flex-shrink: 0;
       @include respond(phone) {
         width: auto;
         font-size: 13px;
       }
     }
     span {
-      color: gray;
+      color: #000000;
       font-size: 14px;
-      width: 170px;
+      text-align: justify;
+      // width: 170px;
+
       @include respond(phone) {
         width: auto;
         font-size: 12px;
@@ -524,7 +528,7 @@ $itemBtnColor: #44b3c2;
     align-items: center;
     .title {
       flex: 1;
-      font-family: OpenSanceBold;
+      font-weight: bold;
       font-size: 20px;
     }
     .closeIcn {
@@ -698,9 +702,10 @@ $itemBtnColor: #44b3c2;
   background-color: white;
   margin-top: 30px;
   padding: 20px 0;
-  border-radius: 10px;
+  border-radius: 30px;
   @include respond(phone) {
     padding: 10px 0;
+    border-radius: 10px;
   }
   &__title {
     margin: $boxMargin;
