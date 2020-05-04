@@ -724,24 +724,45 @@ export default function BusinessLoan(props) {
           phoneNumber: phoneNumber,
           bankid: bankIdResult,
         };
+        const utm_source = getParameterByName("utm_source");
+        const utm_medium = getParameterByName("utm_medium");
+        const utm_campaign = getParameterByName("utm_campaign");
+        const referral_id = getParameterByName("referral_id");
+        const last_referral_date = getParameterByName("last_referral_date");
         try {
-          const r = JSON.parse(referral_params);
-          if (r.utm_source) {
-            obj["utm_source"] = r.utm_source;
+          const ref = JSON.parse(referral_params);
+          if (ref && ref.utm_source) {
+            obj["utm_source"] = ref.utm_source;
           }
-          if (r.utm_medium) {
-            obj["utm_medium"] = r.utm_medium;
+          if (ref && ref.utm_medium) {
+            obj["utm_medium"] = ref.utm_medium;
           }
-          if (r.utm_campaign) {
-            obj["utm_campaign"] = r.utm_campaign;
+          if (ref && ref.utm_campaign) {
+            obj["utm_campaign"] = ref.utm_campaign;
           }
-          if (r.referral_id) {
-            obj["referral_id"] = r.referral_id;
+          if (ref && ref.referral_id) {
+            obj["referral_id"] = ref.referral_id;
           }
-          if (r.last_referral_date) {
-            obj["last_referral_date"] = r.last_referral_date;
+          if (ref && ref.last_referral_date) {
+            obj["last_referral_date"] = ref.last_referral_date;
           }
         } catch (error) {}
+
+        if (utm_source) {
+          obj["utm_source"] = utm_source;
+        }
+        if (utm_medium) {
+          obj["utm_medium"] = utm_medium;
+        }
+        if (utm_campaign) {
+          obj["utm_campaign"] = utm_campaign;
+        }
+        if (referral_id) {
+          obj["referral_id"] = referral_id;
+        }
+        if (last_referral_date) {
+          obj["last_referral_date"] = last_referral_date;
+        }
 
         submitLoan()
           .onOk((result) => {
