@@ -70,10 +70,10 @@
     display: flex;
     align-items: center;
     transition-duration: 0.2s;
-    &:hover {
-      transition-duration: 0.2s;
-      transform: scale(1.09);
-    }
+    // &:hover {
+    //   transition-duration: 0.2s;
+    //   transform: scale(1.09);
+    // }
     span {
       font-weight: bold;
       // font-family: OpenSanceBold;

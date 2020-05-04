@@ -152,6 +152,7 @@ const Login = (props) => {
   }
 
   function handleSuccessVerify(result) {
+    debugger;
     toggleVerifyModal(false);
     dispatch({
       type: "VERIFY_BANK_ID_SUCCESS",
