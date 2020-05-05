@@ -32,7 +32,7 @@ export const getCategorizedOffers = (offers) => {
   function addToList(offer) {
     const isCheckCredit =
       offer.Product_Master_Name &&
-      offer.Product_Master_Name.includes("checkkredit");
+      offer.Product_Master_Name.toLowerCase().includes("checkkredit");
     if (!isCheckCredit) offersList[0].offers.push(offer);
     else offersList[1].offers.push(offer);
     // function checkInList(offer) {
