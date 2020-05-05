@@ -1169,7 +1169,7 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="07902660255"
+                                placeholder="0790266255"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChanged}
                               />
