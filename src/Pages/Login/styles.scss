@@ -14,6 +14,8 @@
     @include variable(login-header-box-shadow, box-shadow, 0 0 3px lightgray);
     img {
       width: 180px;
+      height: 50%;
+      object-fit: contain;
       margin: 20px;
     }
     position: fixed;

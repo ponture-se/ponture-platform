@@ -23,7 +23,7 @@ const OffersCategory = ({
   function useEffectFunc() {
     if (offerUiAction && offerUiAction.isClicked) {
       if (refs[offerUiAction.name] && refs[offerUiAction.name].current) {
-        window.scrollTo(0, refs[offerUiAction.name].current.offsetTop);
+        window.scrollTo(0, refs[offerUiAction.name].current.offsetTop - 50);
         // refs[offerUiAction.name].current.scrollIntoView({
         //   behavior: "smooth",
         //   block: "start",

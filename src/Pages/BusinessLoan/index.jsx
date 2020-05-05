@@ -1003,7 +1003,7 @@ export default function BusinessLoan(props) {
                   </div>
                   <div className="bl__input animated fadeIn">
                     <label className="bl__input__label">
-                      {t("BL_REASON_LOAN")}
+                      <div>{t("BL_REASON_LOAN")}</div>
                       <span>{t("BL_REASON_LOAN_INFO")}</span>
                     </label>
                     <div className="options">
@@ -1062,7 +1062,7 @@ export default function BusinessLoan(props) {
                     }
                   >
                     <label className="bl__input__label">
-                      {t("BL_PERSONAL_NUMBER")}
+                      <div>{t("BL_PERSONAL_NUMBER")}</div>
                       <span>{t("BL_PERSONAL_NUMBER_INFO")}</span>
                     </label>
                     <div className="bl__input__element">

@@ -233,6 +233,9 @@ $itemBtnColor: #44b3c2;
   }
 }
 .OffersCategory {
+  &:last-child {
+    padding-bottom: 10px;
+  }
   &__list {
     display: flex;
     flex-direction: column;
@@ -338,24 +341,30 @@ $itemBtnColor: #44b3c2;
     }
   }
   &__noImage {
-    height: 100%;
     width: 125px;
     // background-color: whitesmoke;
     font-size: 14px;
     border-radius: 10px;
     background-color: whitesmoke;
     font-weight: bold;
-    height: 50px;
+    min-height: 50px;
     text-align: center;
-    line-height: 50px;
-    overflow: hidden;
+
+    // line-height: 50px;
     padding: 0 5px;
-    text-overflow: ellipsis;
-    white-space: nowrap;
+    // text-overflow: ellipsis;
+    // white-space: wrap;
+    position: relative;
+
+    div {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
     @include respond(phone) {
       height: 30px;
       width: 90px;
-      line-height: 30px;
       font-size: 10px;
     }
   }
@@ -363,6 +372,7 @@ $itemBtnColor: #44b3c2;
     flex: 1;
     display: flex;
     padding: 0;
+    font-family: Poppins;
     @include respond(phone) {
       padding: 5px 0;
     }
@@ -526,12 +536,15 @@ $itemBtnColor: #44b3c2;
   &__header {
     display: flex;
     align-items: center;
+    position: relative;
     .title {
       flex: 1;
       font-weight: bold;
       font-size: 20px;
     }
-    .closeIcn {
+    .closeIcon {
+      position: absolute;
+      right: 10px;
       color: gray;
       font-size: 14px;
       cursor: pointer;
@@ -645,9 +658,10 @@ $itemBtnColor: #44b3c2;
         flex-direction: column;
         margin-bottom: 5px;
       }
-      label {
+      span {
+        display: inline-block;
         margin-right: 20px;
-        min-width: 150px;
+        width: 150px;
         @include respond(phone) {
           margin-right: 0;
           min-width: auto;
@@ -718,4 +732,7 @@ $itemBtnColor: #44b3c2;
 }
 .page-empty-list {
   width: 100%;
+  div {
+    display: block;
+  }
 }
