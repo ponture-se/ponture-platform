@@ -4,8 +4,8 @@
   "private": true,
   "homepage": "https://www.visualizy.com/app/",
   "engines": {
-    "node": "10.x.x",
-    "npm": "6.x.x"
+    "node": "10.16.x",
+    "npm": "6.4.x"
   },
   "dependencies": {
     "animate.css": "^3.7.0",
@@ -44,7 +44,7 @@
     "development": [
       "last 1 chrome version",
       "last 1 firefox version",
-      "last 2 ie version",
+      "last 1 ie version",
       "last 1 safari version"
     ]
   }
