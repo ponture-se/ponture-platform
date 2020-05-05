@@ -100,7 +100,7 @@ const AcceptModal = ({
         <div className="acceptModal__content animated fadeInUp faster">
           <div className="acceptModal__header">
             <span className="title"></span>
-            <div className="icon-cross closeIcn" onClick={close} />
+            <div className="icon-cross closeIcon" onClick={close} />
           </div>
           <div className="acceptModal__body">
             <span className="font-bold acceptModal__title">
@@ -113,7 +113,7 @@ const AcceptModal = ({
                     {t("OFFER_ACCEPT_MODAL_FORM_TITLE")}
                   </span>
                   <div className="form-inputgroup">
-                    <label>{t("OFFER_ACCEPT_MODAL_FORM_PHONE_TITLE")}</label>
+                    <span>{t("OFFER_ACCEPT_MODAL_FORM_PHONE_TITLE")}</span>
                     <input
                       placeholder={t(
                         "OFFER_ACCEPT_MODAL_FORM_PHONE_PLACEHOLDER"
@@ -125,7 +125,7 @@ const AcceptModal = ({
                     />
                   </div>
                   <div className="form-inputgroup">
-                    <label>{t("OFFER_ACCEPT_MODAL_FORM_EMAIL_TITLE")}</label>
+                    <span>{t("OFFER_ACCEPT_MODAL_FORM_EMAIL_TITLE")}</span>
                     <input
                       className={formError.email ? "input-error" : ""}
                       type="email"

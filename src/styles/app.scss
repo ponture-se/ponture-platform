@@ -175,6 +175,9 @@ div::-moz-scrollbar-thumb:hover {
   transition-duration: 0.3s;
 }
 
+.customCheckboxLogin__text {
+  max-width: 400px;
+}
 .customCheckbox {
   display: flex;
   position: relative;
@@ -187,6 +190,7 @@ div::-moz-scrollbar-thumb:hover {
   user-select: none;
   @include variable(direction, direction, ltr);
   &__text {
+    display: block;
     font-size: 13px;
   }
   /* Hide the browser's default checkbox */

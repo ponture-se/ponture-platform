@@ -12,12 +12,19 @@ const OfferItem = (
 ) => {
   const [{ offerUiAction }] = useGlobalState();
   const itemRef = useRef(null);
+  const detailRef = useRef(null);
   useImperativeHandle(ref, () => itemRef.current);
   const { t } = useLocale();
   const [moreInfoBox, toggleMoreInfoBox] = useState(showDetail ? true : false);
   function toggle() {
     toggleMoreInfoBox((prev) => !prev);
   }
+  const focusOnDetail = () => {
+    if (moreInfoBox && !isAccepted)
+      if (detailRef.current)
+        window.scrollTo(0, window.pageYOffset + detailRef.current.clientHeight);
+  };
+  React.useEffect(focusOnDetail, [moreInfoBox]);
   function handleAcceptClicked() {
     if (onAcceptClicked) onAcceptClicked(offer);
   }
@@ -70,7 +77,7 @@ const OfferItem = (
           </div>
         ) : (
           <div className="offerItem__noImage hidden-xs">
-            <span>{offer.partnerDisplayName}</span>
+            <div>{offer.partnerDisplayName}</div>
           </div>
         )}
         <div className="offerItem__info">
@@ -100,7 +107,7 @@ const OfferItem = (
         )}
       </div>
       {!isAccepted && moreInfoBox && (
-        <div className="offerItem__details animated fadeIn">
+        <div className="offerItem__details animated fadeIn" ref={detailRef}>
           {offer.inDetailProps &&
             offer.inDetailProps.map((item, index) => (
               <div key={index} className="offerItem__detailRow">
