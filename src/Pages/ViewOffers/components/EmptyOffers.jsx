@@ -7,11 +7,11 @@ const EmptyOffers = () => {
     <div className="page-empty-list offersEmpty animated fadeIn">
       <Empty />
       <h2>{t("OFFERS_EMPTY_LIST_TITLE")}</h2>
-      <span className="msg1">{t("OFFERS_EMPTY_LIST_MSG1")}</span>
-      <span className="msg2">{t("OFFERS_EMPTY_LIST_MSG2")}</span>
-      <span className="msg3">{t("OFFERS_EMPTY_LIST_MSG3")}</span>
-      <span className="msg4">{t("OFFERS_EMPTY_LIST_MSG4")}</span>
-      <span className="msg5">{t("OFFERS_EMPTY_LIST_MSG5")}</span>
+      <div className="msg1">{t("OFFERS_EMPTY_LIST_MSG1")}</div>
+      <div className="msg2">{t("OFFERS_EMPTY_LIST_MSG2")}</div>
+      <div className="msg3">{t("OFFERS_EMPTY_LIST_MSG3")}</div>
+      <div className="msg4">{t("OFFERS_EMPTY_LIST_MSG4")}</div>
+      <div className="msg5">{t("OFFERS_EMPTY_LIST_MSG5")}</div>
     </div>
   );
 };

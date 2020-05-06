@@ -714,7 +714,7 @@ select {
 .userInputs {
   display: flex;
   .bl__input {
-    width: 100%;
+    width: 50%;
     margin: 0 0px;
     &:nth-child(even) {
       @include variable(input-even-margin, margin, 0 10px);

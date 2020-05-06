@@ -75,12 +75,6 @@
     }
   }
 }
-@include only_ie10_above(
-  ".bankId__centerBox",
-  (
-    height: 500px,
-  )
-);
 .bankId__centerBox {
   min-height: 500px;
   width: 100%;
@@ -181,3 +175,9 @@
     }
   }
 }
+@include only_ie9_saf4_above(
+  ".bankId__centerBox",
+  (
+    height: 500px,
+  )
+);

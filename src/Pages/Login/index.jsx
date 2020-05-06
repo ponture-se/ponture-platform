@@ -261,7 +261,7 @@ const Login = (props) => {
                 onChange={handleTermChanged}
               />
               <span className="checkmark" />
-              <span className="customCheckbox__text">
+              <span className="customCheckbox__text customCheckboxLogin__text">
                 {t("LOGIN_TERMS_TEXT")}{" "}
                 <a
                   href="https://www.ponture.com/eula"
