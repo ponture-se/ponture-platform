@@ -296,8 +296,13 @@ export default function BusinessLoan(props) {
         }
       })
       .onServerError((result) => {
+        if (window.analytics)
+          window.analytics.track("Failure", {
+            category: "Loan Application",
+            label: "/app/loan/ wizard",
+            value: 0,
+          });
         if (!didCancel) {
-          // track("Failure", "Loan Application", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           changeTab(3);
           setError({
@@ -1376,6 +1381,22 @@ export default function BusinessLoan(props) {
           personalNumber={personalNumber}
           onClose={handleCloseVerifyModal}
           onCancelVerify={handleCancelVerify}
+          onSuccess={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Verified", {
+                category: "Loan Application",
+                label: "/app/loan/ bankid popup",
+                value: 0,
+              });
+          }}
+          onFailedBankId={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Failed", {
+                category: "Loan Application",
+                label: "/app/loan/ bankid popup",
+                value: 0,
+              });
+          }}
         />
       )}
     </div>

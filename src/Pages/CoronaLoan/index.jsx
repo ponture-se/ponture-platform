@@ -14,12 +14,7 @@ import {
 import CircleSpinner from "components/CircleSpinner";
 import { useGlobalState, useLocale, useCookie, useNumberRegex } from "hooks";
 import "./styles.scss";
-import {
-  startBankId,
-  cancelVerify,
-  submitLoan,
-  getNeedsList,
-} from "api/business-loan-api";
+import { startBankId, cancelVerify, submitLoan } from "api/business-loan-api";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 //
 const loanAmountMax = 5000000;
@@ -325,8 +320,8 @@ export default function BusinessLoan(props) {
                 Cookies.set("@ponture-customer-portal/token", result);
                 if (window.analytics)
                   window.analytics.track("BankID Verification", {
-                    category: "Loan Application",
-                    label: "/app/loan/ bankid popup",
+                    category: "CoronaBrygglan Loan Application",
+                    label: "/app/coronabrygglan/ bankid popup",
                     value: 0,
                   });
                 toggleVerifyingSpinner(false);
@@ -504,8 +499,8 @@ export default function BusinessLoan(props) {
                 resetForm();
                 if (window.analytics)
                   window.analytics.track("Submit", {
-                    category: "Loan Application",
-                    label: "/app/loan/ wizard",
+                    category: "CoronaBrygglan Loan Application",
+                    label: "/app/coronabrygglan/ wizard",
                     value: loanAmount,
                   });
                 changeTab(2);
@@ -513,6 +508,12 @@ export default function BusinessLoan(props) {
             }
           })
           .onServerError((result) => {
+            if (window.analytics)
+              window.analytics.track("Failure", {
+                category: "Loan Application",
+                label: "/app/loan/ wizard",
+                value: 0,
+              });
             if (!didCancel) {
               toggleSubmitSpinner(false);
               changeTab(3);
@@ -589,8 +590,8 @@ export default function BusinessLoan(props) {
     toggleVerifyModal(false);
     if (window.analytics)
       window.analytics.track("BankID Failed", {
-        category: "Loan Application",
-        label: "/app/loan/ bankid popup",
+        category: "CoronaBrygglan Loan Application",
+        label: "/app/coronabrygglan/ bankid popup",
         value: 0,
       });
     cancelVerify()
@@ -1097,6 +1098,22 @@ export default function BusinessLoan(props) {
           personalNumber={personalNumber}
           onClose={handleCloseVerifyModal}
           onCancelVerify={handleCancelVerify}
+          onSuccess={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Verified", {
+                category: "CoronaBrygglan Loan Application",
+                label: "/app/coronabrygglan/ bankid popup",
+                value: 0,
+              });
+          }}
+          onFailedBankId={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Failed", {
+                category: "CoronaBrygglan Loan Application",
+                label: "/app/coronabrygglan/ bankid popup",
+                value: 0,
+              });
+          }}
         />
       )}
     </div>

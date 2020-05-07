@@ -152,7 +152,12 @@ const Login = (props) => {
   }
 
   function handleSuccessVerify(result) {
-    debugger;
+    if (window.analytics)
+      window.analytics.track("BankID Verified", {
+        category: "Customer Portal",
+        label: "Customer Portal login bankid popup",
+        value: 0,
+      });
     toggleVerifyModal(false);
     dispatch({
       type: "VERIFY_BANK_ID_SUCCESS",
@@ -289,6 +294,14 @@ const Login = (props) => {
           onSuccess={handleSuccessVerify}
           onClose={handleCancelVerify}
           onCancelVerify={handleCancelVerify}
+          onFailedBankId={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Failed", {
+                category: "Customer Portal",
+                label: "Customer Portal login bankid popup",
+                value: 0,
+              });
+          }}
         />
       )}
     </div>
