@@ -5,9 +5,8 @@ import cssVars from "css-vars-ponyfill";
 import React from "react";
 import ReactDOM from "react-dom";
 import App from "./App";
-import initScripts from "./initScripts";
 import * as serviceWorker from "./serviceWorker";
-initScripts();
+
 cssVars({
   preserveStatic: false,
 });
