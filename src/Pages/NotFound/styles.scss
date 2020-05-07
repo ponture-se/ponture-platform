@@ -6,7 +6,7 @@
   height: 100vh;
   font-family: OpenSanceBold;
   .box {
-  max-width: 600px;
+    max-width: 600px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -44,7 +44,7 @@
   height: 100vh;
   .t404 {
     font-size: 100px;
-    @include variable(notfound-404-color, color, orange);
+    @include variable(notfound-404-color, color, rgb(66, 204, 173));
   }
   .title {
     font-size: 35px;

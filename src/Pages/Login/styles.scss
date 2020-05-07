@@ -2,7 +2,7 @@
 //
 
 .loginContainer {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -14,12 +14,18 @@
     @include variable(login-header-box-shadow, box-shadow, 0 0 3px lightgray);
     img {
       width: 180px;
+      height: 50%;
+      object-fit: contain;
       margin: 20px;
     }
+    position: fixed;
+    top: 0;
+    right: 0;
+    z-index: 10;
   }
   .loginBox {
     padding: 0px 20px 30px 20px;
-    margin: auto;
+    margin: 90px auto 0 auto;
     display: flex;
     flex-direction: column;
     @include variable(login-box-shadow, box-shadow, 0 0 1px lightgray);
@@ -44,7 +50,7 @@
         font-size: 13px;
         display: flex;
         flex-direction: column;
-        .secText{
+        .secText {
           padding-bottom: 10px;
         }
       }

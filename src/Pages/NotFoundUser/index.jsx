@@ -4,7 +4,7 @@ import { useLocale } from "hooks";
 import NoData from "components/Commons/ErrorsComponent/NoData";
 import "./styles.scss";
 //
-const NotFoundUser = props => {
+const NotFoundUser = (props) => {
   const { t } = useLocale();
   return (
     <div className="noApplied animated fadeIn">
@@ -15,10 +15,10 @@ const NotFoundUser = props => {
         <span className="info2">{t("CUSTOMER_LOGIN_NO_APP_INFO2")}</span>
         <span className="question">{t("CUSTOMER_LOGIN_NO_APP_QUESTION")}</span>
         <div className="actions">
-          <button className="btn --success">
+          <button className="btn btn-success">
             <Link to="/app/loan">{t("CUSTOMER_LOGIN_NO_APP_BTN_LOAN")}</Link>
           </button>
-          <button className="btn --success">
+          <button className="btn btn-success">
             <a href="https://www.ponture.com/fakturakop/">
               {t("CUSTOMER_LOGIN_NO_APP_BTN_F")}
             </a>

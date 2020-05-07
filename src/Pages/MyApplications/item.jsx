@@ -7,7 +7,7 @@ import track from "utils/trackAnalytic";
 import { toggleAlert } from "components/Alert";
 import { cancelApplication } from "api/main-api";
 //
-const Item = props => {
+const Item = (props) => {
   const [{}, dispatch] = useGlobalState();
   const { t, direction } = useLocale();
   const { item } = props;
@@ -21,10 +21,10 @@ const Item = props => {
       isAjaxCall: true,
       func: cancelApplication,
       data: {
-        appId: item.opportunityID
+        appId: item.opportunityID,
       },
       onCancel: () => {},
-      onSuccess: result => {
+      onSuccess: (result) => {
         track("Cancel Offer", "Customer Portal", "Customer Portal", 0);
         if (props.onCancelSuccess) props.onCancelSuccess();
 
@@ -32,47 +32,47 @@ const Item = props => {
           type: "ADD_NOTIFY",
           value: {
             type: "success",
-            message: t("APP_CANCELED_SUCCESS")
-          }
+            message: t("APP_CANCELED_SUCCESS"),
+          },
         });
       },
-      onServerError: error => {
+      onServerError: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("INTERNAL_SERVER_ERROR")
-          }
+            message: t("INTERNAL_SERVER_ERROR"),
+          },
         });
       },
-      onBadRequest: error => {
+      onBadRequest: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("BAD_REQUEST")
-          }
+            message: t("BAD_REQUEST"),
+          },
         });
       },
-      unAuthorized: error => {},
-      notFound: error => {
+      unAuthorized: (error) => {},
+      notFound: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("NOT_FOUND")
-          }
+            message: t("NOT_FOUND"),
+          },
         });
       },
-      unKnownError: error => {
+      unKnownError: (error) => {
         dispatch({
           type: "ADD_NOTIFY",
           value: {
             type: "error",
-            message: t("UNKNOWN_ERROR")
-          }
+            message: t("UNKNOWN_ERROR"),
+          },
         });
-      }
+      },
     });
   }
   return (
@@ -226,7 +226,7 @@ const Item = props => {
       </div>
       {stage !== "funded/closed won" && stage !== "not funded/ closed lost" && (
         <div className="application__footer">
-          <button className="btn --light" onClick={handleCancelClicked}>
+          <button className="btn btn-light" onClick={handleCancelClicked}>
             <span className="icon-cross" />
             {t("CANCEL")}
           </button>
@@ -238,8 +238,8 @@ const Item = props => {
 export default Item;
 
 Item.propTypes = {
-  item: PropTypes.object.isRequired
+  item: PropTypes.object.isRequired,
 };
 Item.defaultProps = {
-  item: {}
+  item: {},
 };

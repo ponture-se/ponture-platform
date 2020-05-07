@@ -3,8 +3,15 @@ const $color2 = "whitesmoke";
 const $color3 = "lightgray";
 const $color4 = "rgb(35, 65, 141)"; // blue
 const $mainColor = "rgb(66, 204, 173)";
+const $mainColor1 = "#44b3c2";
 
 export default {
+  color1: $color1,
+  color2: $color2,
+  color3: $color3,
+  color4: $color4,
+  mainColor: $mainColor,
+  mainColor1: $mainColor1,
   "body-background": "rgb(235, 235, 238)",
   header: "75px",
   "header-bg": "white",
@@ -63,5 +70,5 @@ export default {
   "my-btn-light-bg": "lightgray",
   "my-btn-light-hover-bg": "gray",
   "my-btn-light-color": "black",
-  "my-btn-light-shadow": "0 0 5px lightgray"
+  "my-btn-light-shadow": "0 0 5px lightgray",
 };

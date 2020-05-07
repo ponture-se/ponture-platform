@@ -8,7 +8,7 @@ import Header from "./header";
 const MyApplications = lazy(() => retry(() => import("../MyApplications")));
 const ViewOffers = lazy(() => retry(() => import("../ViewOffers")));
 
-const MainPage = props => {
+const MainPage = (props) => {
   return (
     <div className="mainPage">
       <Header />
@@ -18,12 +18,12 @@ const MainPage = props => {
             <PrivateRoute
               key="myApplications"
               path="/app/panel/myApplications"
-              render={props => <MyApplications {...props} />}
+              render={(props) => <MyApplications {...props} />}
             />
             <PrivateRoute
               key="viewOffers"
-              path="/app/panel/viewOffers/:id"
-              render={props => <ViewOffers {...props} />}
+              path="/app/panel/viewOffers"
+              render={(props) => <ViewOffers {...props} />}
             />
           </Switch>
         </Suspense>

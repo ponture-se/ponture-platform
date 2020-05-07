@@ -9,7 +9,6 @@ import Notifies from "./components/Notifies";
 import PrivateRoute from "hoc/PrivateRoute";
 import withResolver from "hoc/withResolver";
 import AxiosInitializer from "utils/AxiosInitializer";
-
 //
 import BusinessLoan from "./Pages/BusinessLoan";
 import CoronaLoan from "./Pages/CoronaLoan";

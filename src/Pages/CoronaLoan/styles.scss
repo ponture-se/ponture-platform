@@ -479,7 +479,7 @@
         }
       }
     }
-    &.--invalid {
+    &.input-invalid {
       .my-input {
         outline: none;
         border: 1px solid red;
@@ -572,7 +572,7 @@
         border-width: 2px;
         transition-duration: 0.2s;
       }
-      &.--active {
+      &.companyActive {
         border: 2px solid rgb(66, 204, 173);
       }
       &__active {
@@ -710,7 +710,7 @@ select {
 .userInputs {
   display: flex;
   .bl__input {
-    width: 100%;
+    width: 50%;
     margin: 0 0px;
     &:nth-child(even) {
       @include variable(input-even-margin, margin, 0 10px);

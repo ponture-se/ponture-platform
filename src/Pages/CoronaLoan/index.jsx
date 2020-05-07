@@ -32,11 +32,10 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
 export default function BusinessLoan(props) {
   let didCancel = false;
   const [{ b_loan_moreInfo_visibility }, dispatch] = useGlobalState();
-  const { t, appLocale, currentLang } = useLocale();
+  const { t } = useLocale();
 
   const [_loanAmount, _setLoanAmount] = useCookie("_loanAmount");
   const [_loanPeriod, _setLoanPeriod] = useCookie("_loanPeriod");
-  const [_loanReasons, _setLoanReasons] = useCookie("_loanReasons");
   const [_loanReasonOther, _setLoanReasonOther] = useCookie("_loanReasonOther");
   const [_personalNumber, _setPersonalNumber] = useCookie("_personalNumber");
   const [_phoneNumber, _setPhoneNumber] = useCookie("_phoneNumber");
@@ -45,14 +44,13 @@ export default function BusinessLoan(props) {
     Cookies.get("affiliate_referral_params_v2")
       ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
       : Cookies.get("affiliate_referral_params")
-  ); // extra params
+  );
+  // extra params
 
   const p_loanAmount = getParameterByName("amount");
   const __loanAmount = p_loanAmount ? p_loanAmount : _loanAmount;
   const p_loanPeriod = getParameterByName("amourtizationPeriod");
   const __loanPeriod = p_loanPeriod ? p_loanPeriod : _loanPeriod;
-  const p_loanReasons = getParameterByName("need");
-  const p_loanReasonOther = getParameterByName("needDescription");
   const p_personalNumber = getParameterByName("personalNumber");
   const __personalNumber = p_personalNumber
     ? p_personalNumber
@@ -98,20 +96,6 @@ export default function BusinessLoan(props) {
       __email && __email.length > 0 && validateEmail(__email) ? __email : "",
     terms: false,
   };
-  if (_loanReasons && _loanReasons.length > 0) {
-    try {
-      const a = JSON.parse(_loanReasons);
-      if (Array.isArray(a)) {
-        formInitValues["loanReasons"] = a;
-      } else {
-        formInitValues["loanReasons"] = undefined;
-      }
-    } catch (error) {
-      formInitValues["loanReasons"] = undefined;
-    }
-  } else {
-    formInitValues["loanReasons"] = undefined;
-  }
 
   const [mainSpinner, toggleMainSpinner] = useState(false);
   const [tab, changeTab] = useState(1);
@@ -463,24 +447,45 @@ export default function BusinessLoan(props) {
           phoneNumber: phoneNumber,
           bankid: bankIdResult,
         };
+        const utm_source = getParameterByName("utm_source");
+        const utm_medium = getParameterByName("utm_medium");
+        const utm_campaign = getParameterByName("utm_campaign");
+        const referral_id = getParameterByName("referral_id");
+        const last_referral_date = getParameterByName("last_referral_date");
         try {
-          const r = JSON.parse(referral_params);
-          if (r.utm_source) {
-            obj["utm_source"] = r.utm_source;
+          const ref = JSON.parse(referral_params);
+          if (ref && ref.utm_source) {
+            obj["utm_source"] = ref.utm_source;
           }
-          if (r.utm_medium) {
-            obj["utm_medium"] = r.utm_medium;
+          if (ref && ref.utm_medium) {
+            obj["utm_medium"] = ref.utm_medium;
           }
-          if (r.utm_campaign) {
-            obj["utm_campaign"] = r.utm_campaign;
+          if (ref && ref.utm_campaign) {
+            obj["utm_campaign"] = ref.utm_campaign;
           }
-          if (r.referral_id) {
-            obj["referral_id"] = r.referral_id;
+          if (ref && ref.referral_id) {
+            obj["referral_id"] = ref.referral_id;
           }
-          if (r.last_referral_date) {
-            obj["last_referral_date"] = r.last_referral_date;
+          if (ref && ref.last_referral_date) {
+            obj["last_referral_date"] = ref.last_referral_date;
           }
         } catch (error) {}
+
+        if (utm_source) {
+          obj["utm_source"] = utm_source;
+        }
+        if (utm_medium) {
+          obj["utm_medium"] = utm_medium;
+        }
+        if (utm_campaign) {
+          obj["utm_campaign"] = utm_campaign;
+        }
+        if (referral_id) {
+          obj["referral_id"] = referral_id;
+        }
+        if (last_referral_date) {
+          obj["last_referral_date"] = last_referral_date;
+        }
 
         submitLoan()
           .onOk((result) => {
@@ -529,7 +534,6 @@ export default function BusinessLoan(props) {
     _setLoanAmount();
     _setLoanPeriod();
     _setLoanReasonOther();
-    _setLoanReasons();
     _setPersonalNumber();
   }
   function backtoLoan() {
@@ -539,7 +543,7 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href.split("?")[0];
   }
   function openMyApps() {
-    props.history.push("/app/panel/myApplications");
+    props.history.push("/app/panel/viewOffers");
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);
@@ -640,7 +644,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <span>{t("CORONA_LOAN_HEADER_TITLE")}</span>
                   </div>
-                  <div className="bl__input --sliderInput animated fadeIn">
+                  <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
                       <label className="bl__input__label bl__input__sliderLabel">
                         {t("BL_LOAN_AMOUNT")}
@@ -676,7 +680,7 @@ export default function BusinessLoan(props) {
                       </div>
                     </div>
                   </div>
-                  <div className="bl__input --sliderInput animated fadeIn">
+                  <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
                       <label className="bl__input__label bl__input__sliderLabel">
                         {t("BL_LOAN_PERIOD")}
@@ -737,7 +741,7 @@ export default function BusinessLoan(props) {
                   <div
                     className={
                       "pandeminInput bl__input animated fadeIn " +
-                      (!pandeminInputIsValid ? "--invalid" : "")
+                      (!pandeminInputIsValid ? "input-invalid" : "")
                     }
                   >
                     <label className="bl__input__label">
@@ -769,11 +773,11 @@ export default function BusinessLoan(props) {
                   <div
                     className={
                       "bl__input animated fadeIn " +
-                      (!personalNumberIsValid ? "--invalid" : "")
+                      (!personalNumberIsValid ? "input-invalid" : "")
                     }
                   >
                     <label className="bl__input__label">
-                      {t("BL_PERSONAL_NUMBER")}
+                      <div>{t("BL_PERSONAL_NUMBER")}</div>
                       <span>{t("BL_PERSONAL_NUMBER_INFO")}</span>
                     </label>
                     <div className="bl__input__element">
@@ -800,7 +804,7 @@ export default function BusinessLoan(props) {
                   </div>
                   {!b_loan_moreInfo_visibility && (
                     <button
-                      className="btn --success --large bankIdBtn"
+                      className="btn btn-success btn-large bankIdBtn"
                       onClick={handleBankIdClicked}
                       disabled={!pandeminChk}
                     >
@@ -825,7 +829,7 @@ export default function BusinessLoan(props) {
                               "companyWidget " +
                               (selectedCompany &&
                               selectedCompany.companyId === c.companyId
-                                ? "--active"
+                                ? "companyActive"
                                 : "")
                             }
                             onClick={() => handleSelectCompany(c)}
@@ -866,7 +870,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!phoneNumberIsValid ? "--invalid" : "")
+                          (!phoneNumberIsValid ? "input-invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -881,7 +885,7 @@ export default function BusinessLoan(props) {
                               <input
                                 type="text"
                                 className="my-input"
-                                placeholder="07902660255"
+                                placeholder="0790266255"
                                 value={phoneNumber}
                                 onChange={handlePhoneNumberChanged}
                               />
@@ -897,7 +901,7 @@ export default function BusinessLoan(props) {
                       <div
                         className={
                           "bl__input animated fadeIn " +
-                          (!emailIsValid ? "--invalid" : "")
+                          (!emailIsValid ? "input-invalid" : "")
                         }
                       >
                         <label className="bl__input__label">
@@ -955,7 +959,7 @@ export default function BusinessLoan(props) {
                     </div>
                     <div className="bl__actions">
                       <button
-                        className="btn --warning --large"
+                        className="btn btn-warning btn-large"
                         onClick={handleSubmitClicked}
                       >
                         {submitSpinner && (
@@ -1001,7 +1005,7 @@ export default function BusinessLoan(props) {
                 </div>
                 <div className="bl__successBox__actions">
                   <button
-                    className="btn --warning --large"
+                    className="btn btn-warning btn-large"
                     onClick={openMyApps}
                   >
                     {t("MY_APPLICATIONS")}
@@ -1073,7 +1077,7 @@ export default function BusinessLoan(props) {
                   )}
                 </div>
                 <div className="bl__successBox__actions">
-                  <button className="btn --warning" onClick={refreshPage}>
+                  <button className="btn btn-warning" onClick={refreshPage}>
                     {t("REFRESH")}
                   </button>
                 </div>

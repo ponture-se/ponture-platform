@@ -1,8 +1,12 @@
 @import "./../../styles/mixins.scss";
 //
 .mainPage {
-  @include variable(main-header-height, margin-top, 100px);
-  padding-top: 30px;
+  // @include variable(main-header-height, margin-top, 100px);
+  margin-top: 55px;
+  padding-top: 20px;
+  @include respond(phone) {
+    padding-top: 10px;
+  }
   &__content {
     @include variable(main-content-width, max-width, 992px);
     margin: auto;
@@ -12,12 +16,12 @@
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .mainPage__content {
-    padding:0 10px;
+    padding: 0 10px;
   }
 }
 @media (min-width: 576px) {
   .mainPage__content {
-    padding:0 10px;
+    padding: 0 10px;
   }
 }
 

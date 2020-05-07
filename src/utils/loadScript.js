@@ -4,15 +4,15 @@ export default function loadScript(url, callback) {
 
   if (script.readyState) {
     //IE
-    script.onreadystatechange = function() {
-      if (script.readyState == "loaded" || script.readyState == "complete") {
+    script.onreadystatechange = function () {
+      if (script.readyState === "loaded" || script.readyState === "complete") {
         script.onreadystatechange = null;
         callback();
       }
     };
   } else {
     //Others
-    script.onload = function() {
+    script.onload = function () {
       callback();
     };
   }

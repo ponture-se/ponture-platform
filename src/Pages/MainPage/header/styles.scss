@@ -9,10 +9,12 @@
   right: 0;
   z-index: 10;
   width: 100%;
-  @include variable(main-header-height, height, 100px);
+  font-family: Poppins;
+  height: 60px;
   @include variable(main-header-bg, background, white);
   @include variable(main-header-box-shadow, box-shadow, 0 0 3px lightgray);
   padding-top: 0 !important;
+  align-items: center;
   &__top {
     display: flex;
     align-items: flex-start;
@@ -26,19 +28,39 @@
       display: flex;
     }
     .right {
-      display: flex;
+      direction: rtl;
+    }
+    @include respond(phone) {
+      align-items: stretch;
+      padding-top: 7px;
     }
   }
   &__img {
+    cursor: pointer;
+    height: 100%;
+    padding-top: 5px;
+    @include respond(phone) {
+      padding-top: 0;
+    }
     img {
       width: 120px;
+      @include respond(phone) {
+        width: 100px;
+      }
     }
   }
   &__title {
     flex: 1;
-    // text-align: center;
-    // font-size: 20px;
-    font-family: OpenSanceBold;
+    font-size: 20px;
+    font-weight: bold;
+    span:last-child {
+      @include variable(mainColor1, color, #44b3c2);
+    }
+    @include respond(phone) {
+      position: absolute;
+      bottom: 2px;
+      font-size: 16px;
+    }
   }
   &__userInfo {
     font-size: 12px;
@@ -49,27 +71,30 @@
     display: flex;
     align-items: center;
     transition-duration: 0.2s;
-    &:hover {
-      transition-duration: 0.2s;
-      transform: scale(1.09);
-    }
+    // &:hover {
+    //   transition-duration: 0.2s;
+    //   transform: scale(1.09);
+    // }
     span {
-      font-family: OpenSanceBold;
-      font-size: 13px;
-      padding: 0 5px;
-    }
-    i {
-      @include variable(main-header-signout-icon-color, color, blue);
+      font-weight: bold;
+      // font-family: OpenSanceBold;
+      font-size: 14px;
+      @include respond(phone) {
+        font-size: 18px;
+      }
     }
   }
   &__bottom {
     flex: 1;
     margin: auto;
-    display: flex;
+    display: none;
     justify-content: space-between;
     @include variable(main-header-width, max-width, 992px);
     width: 100%;
     align-items: flex-end;
+    @include respond(phone) {
+      display: none;
+    }
     .tabItem {
       font-size: 13px;
       cursor: pointer;
@@ -111,7 +136,8 @@
         }
         &.active span {
           // position: relative;
-          font-family: OpenSanceBold;
+          // font-family: OpenSanceBold;
+          font-weight: bold;
           //   font-size: 14.5px;
           height: 100%;
           &::after {
@@ -148,13 +174,7 @@
     &__title {
       text-align: left;
     }
-    &__userInfo {
-      padding: 0;
-    }
     .left {
-      flex-direction: column;
-    }
-    .right {
       flex-direction: column;
     }
   }
@@ -165,14 +185,8 @@
     &__title {
       text-align: center;
     }
-    &__userInfo {
-      padding: 0 20px;
-    }
     .left {
       flex-direction: row;
-    }
-    .right {
-      flex-direction: column;
     }
   }
 }
@@ -184,13 +198,7 @@
     &__title {
       text-align: center;
     }
-    &__userInfo {
-      padding: 0 20px;
-    }
     .left {
-      flex-direction: row;
-    }
-    .right {
       flex-direction: row;
     }
   }
@@ -203,13 +211,7 @@
     &__title {
       text-align: center;
     }
-    &__userInfo {
-      padding: 0 20px;
-    }
     .left {
-      flex-direction: row;
-    }
-    .right {
       flex-direction: row;
     }
   }
@@ -224,13 +226,6 @@
     }
     &__title {
       text-align: center;
-    }
-    &__userInfo {
-      padding: 0 20px;
-    }
-
-    .right {
-      flex-direction: row;
     }
   }
 }

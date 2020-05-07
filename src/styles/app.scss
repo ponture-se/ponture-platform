@@ -11,18 +11,92 @@
 @import "./animate.css";
 @font-face {
   font-family: "OpenSance";
-  src: url("./../assets/fonts/OpenSans-Regular.ttf");
-  font-weight: bold;
+  src: url("./../assets/fonts/opensance/openSance-eot.eot"); /* IE9*/
+  src: url("./../assets/fonts/opensance/openSance-eot.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("./../assets/fonts/opensance/opensance-woff2.woff2")
+      format("woff2"),
+    /* chrome、firefox */ url("./../assets/fonts/opensance/opensance-woff.woff")
+      format("woff"),
+    /* chrome、firefox */ url("./../assets/fonts/opensance/opensance-ttf.ttf")
+      format("truetype"),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url("./../assets/fonts/opensance/opensance-svg.svg#OpenSance")
+      format("svg"); /* iOS 4.1- */
+}
+@font-face {
+  font-family: "Poppins";
+  src: url("../assets/fonts/Poppins/Poppins.eot"); /* IE9*/
+  src: url("../assets/fonts/Poppins/Poppins.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */ url("../assets/fonts/Poppins/Poppins.woff2") format("woff2"),
+    /* chrome、firefox */ url("../assets/fonts/Poppins/Poppins.woff")
+      format("woff"),
+    /* chrome、firefox */ url("../assets/fonts/Poppins/Poppins.ttf")
+      format("truetype"),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url("../assets/fonts/Poppins/Poppins.svg#Poppins") format("svg"); /* iOS 4.1- */
 }
 @font-face {
   font-family: "OpenSanceBold";
-  src: url("./../assets/fonts/OpenSans-Semibold.ttf");
-  font-weight: bold;
+  src: url("./../assets/fonts/openSanceBold/openSanceBold-eot.eot"); /* IE9*/
+  src: url("./../assets/fonts/openSanceBold/openSanceBold-eot.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */
+      url("./../assets/fonts/openSanceBold/openSanceBold-woff2.woff2")
+      format("woff2"),
+    /* chrome、firefox */
+      url("./../assets/fonts/openSanceBold/openSanceBold-woff.woff")
+      format("woff"),
+    /* chrome、firefox */
+      url("./../assets/fonts/openSanceBold/openSanceBold-ttf.ttf")
+      format("truetype"),
+    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
+      url("./../assets/fonts/openSanceBold/openSanceBold-svg.svg#OpenSanceBold")
+      format("svg"); /* iOS 4.1- */
+}
+// ========================
+.hidden-xs {
+  @include respond(big-desktop) {
+    display: block !important ;
+  }
+  @include respond(tab-land) {
+    display: block !important ;
+  }
+  @include respond(tab-port) {
+    display: block !important ;
+  }
+  display: block !important ;
+  @include respond(phone) {
+    display: none !important ;
+  }
+}
+.visible-f-xs {
+  display: none !important ;
+  @include respond(big-desktop) {
+    display: none !important;
+  }
+  @include respond(tab-land) {
+    display: none !important;
+  }
+  @include respond(tab-port) {
+    display: none !important ;
+  }
+  @include respond(phone) {
+    display: flex !important ;
+  }
 }
 * {
   box-sizing: border-box;
 }
+html {
+  font-size: 100%;
+}
+.font-bold {
+  font-family: openSanceBold;
+}
 body {
+  font-size: 100%;
   padding: 0;
   margin: 0;
   font-family: OpenSance;
@@ -101,6 +175,9 @@ div::-moz-scrollbar-thumb:hover {
   transition-duration: 0.3s;
 }
 
+.customCheckboxLogin__text {
+  max-width: 400px;
+}
 .customCheckbox {
   display: flex;
   position: relative;
@@ -113,6 +190,7 @@ div::-moz-scrollbar-thumb:hover {
   user-select: none;
   @include variable(direction, direction, ltr);
   &__text {
+    display: block;
     font-size: 13px;
   }
   /* Hide the browser's default checkbox */
@@ -280,7 +358,7 @@ div::-moz-scrollbar-thumb:hover {
     width: 200px;
     height: 4px;
     animation: loading 2s linear infinite;
-    @include variable(main-spinner-bg, background-color, blue);
+    @include variable(main-spinner-bg, background-color, rgb(66, 204, 173));
   }
 }
 @keyframes loading {

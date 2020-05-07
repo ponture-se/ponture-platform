@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-//
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
@@ -9,7 +8,7 @@ import batchStates from "utils/batchStates";
 import { startBankId, cancelVerify } from "api/business-loan-api";
 import "./styles.scss";
 
-const Login = props => {
+const Login = (props) => {
   let didCancel = false;
   const { t } = useLocale();
   const [{}, dispatch] = useGlobalState();
@@ -31,7 +30,7 @@ const Login = props => {
       let err = { ...error };
       err["personalNumber"] = {
         isError: true,
-        message: t("PERSONAL_NUMBER_IS_REQUIRED")
+        message: t("PERSONAL_NUMBER_IS_REQUIRED"),
       };
       setError(err);
     } else {
@@ -39,13 +38,13 @@ const Login = props => {
         let err = { ...error };
         err["personalNumber"] = {
           isError: true,
-          message: t("PERSONAL_NUMBER_IN_CORRECT")
+          message: t("PERSONAL_NUMBER_IN_CORRECT"),
         };
         setError(err);
       } else {
         let err = { ...error };
         err["personalNumber"] = {
-          isError: false
+          isError: false,
         };
         setError(err);
       }
@@ -61,7 +60,7 @@ const Login = props => {
       let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       startBankId()
-        .onOk(result => {
+        .onOk((result) => {
           if (!didCancel) {
             track(
               "BankID Verification",
@@ -76,12 +75,12 @@ const Login = props => {
             });
           }
         })
-        .onServerError(result => {
+        .onServerError((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -89,17 +88,17 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Server Error"
-              }
+                message: "Server Error",
+              },
             });
           }
         })
-        .onBadRequest(result => {
+        .onBadRequest((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -107,17 +106,17 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Bad Request"
-              }
+                message: "Bad Request",
+              },
             });
           }
         })
-        .unAuthorized(result => {
+        .unAuthorized((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -125,17 +124,17 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Un Authorized"
-              }
+                message: "Un Authorized",
+              },
             });
           }
         })
-        .unKnownError(result => {
+        .unKnownError((result) => {
           if (window.analytics)
             window.analytics.track("BankID Failed", {
               category: "Customer Portal",
               label: "Customer Portal login bankid popup",
-              value: 0
+              value: 0,
             });
           if (!didCancel) {
             toggleLoading(false);
@@ -143,8 +142,8 @@ const Login = props => {
               type: "ADD_NOTIFY",
               value: {
                 type: "error",
-                message: "Unknown Error"
-              }
+                message: "Unknown Error",
+              },
             });
           }
         })
@@ -153,13 +152,29 @@ const Login = props => {
   }
 
   function handleSuccessVerify(result) {
+    debugger;
     toggleVerifyModal(false);
     dispatch({
       type: "VERIFY_BANK_ID_SUCCESS",
-      payload: result
+      payload: result,
     });
     sessionStorage.setItem("@ponture-customer-bankid", JSON.stringify(result));
-    props.history.push("/app/panel/myApplications");
+
+    // const open = window.open(window.origin + `/app/panel/viewOffers`);
+    if (!window.location.origin) {
+      window.location.origin =
+        window.location.protocol +
+        "//" +
+        window.location.hostname +
+        (window.location.port ? ":" + window.location.port : "");
+    }
+    const a = document.createElement("a");
+    a.href = window.location.origin + `/app/panel/viewOffers`;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    // if (open == null || typeof open == "undefined")
+    //   props.history.push("/app/panel/viewOffers");
   }
   function handleCancelVerify() {
     track(
@@ -170,7 +185,7 @@ const Login = props => {
     );
     toggleVerifyModal(false);
     cancelVerify()
-      .onOk(result => {})
+      .onOk((result) => {})
       .call(startResult ? startResult.orderRef : null);
   }
   function handleTermChanged(e) {
@@ -202,7 +217,7 @@ const Login = props => {
               (error &&
               error["personalNumber"] &&
               error["personalNumber"].isError
-                ? "--invalid"
+                ? "input-invalid"
                 : "")
             }
           >
@@ -246,7 +261,7 @@ const Login = props => {
                 onChange={handleTermChanged}
               />
               <span className="checkmark" />
-              <span className="customCheckbox__text">
+              <span className="customCheckbox__text customCheckboxLogin__text">
                 {t("LOGIN_TERMS_TEXT")}{" "}
                 <a
                   href="https://www.ponture.com/eula"
@@ -259,7 +274,7 @@ const Login = props => {
             </label>
           </div>
           <button
-            className="btn --success"
+            className="btn btn-success"
             disabled={!terms || !personalNumber || personalNumber.length === 0}
           >
             {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}
