@@ -30,7 +30,7 @@ export function isPersonalNumber(pId) {
 }
 
 export function isPhoneNumber(phone) {
-  const p = /^(\+?46|0|0046)[\s\-]?[1-9][\s\-]?[0-9]([\s\-]?\d){6,7}$/;
+  const p = /^(\+46|0|0046)[\s\-]?[1-9][\s\-]?[0-9]([\s\-]?\d){7,8}$/;
   return p.test(phone);
 }
 
