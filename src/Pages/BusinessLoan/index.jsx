@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useState, useEffect } from "react";
 import InputRange from "react-input-range";
 import Cookies from "js-cookie";
 import "react-input-range/lib/css/index.css";
@@ -191,9 +191,7 @@ export default function BusinessLoan(props) {
   const [companies, setCompanies] = useState();
   const [selectedCompany, setCompany] = useState();
   const [companyIsValid, toggleCompanyValidation] = useState(true);
-  const [phoneNumber, setPhoneNumber] = useNumberRegex(
-    formInitValues.phoneNumber
-  );
+  const [phoneNumber, setPhoneNumber] = useState(formInitValues.phoneNumber);
   const [phoneNumberIsValid, togglePhoneNumberValidation] = useState(true);
   const [
     phoneNumberValidationMessage,
@@ -358,135 +356,111 @@ export default function BusinessLoan(props) {
       })
       .call(currentLang);
   }
-  const handleLoanAmount = useCallback(
-    (val) => {
-      setLoanAmount(val);
-      _setLoanAmount(val);
-      if (val <= 100000) {
-        setLoanAmountStep(5000);
-      } else if (val <= 500000) {
-        setLoanAmountStep(25000);
-      } else if (val <= 1000000) {
-        setLoanAmountStep(50000);
-      } else {
-        setLoanAmountStep(125000);
-      }
-    },
-    [_setLoanAmount]
-  );
+  const handleLoanAmount = (val) => {
+    setLoanAmount(val);
+    _setLoanAmount(val);
+    if (val <= 100000) {
+      setLoanAmountStep(5000);
+    } else if (val <= 500000) {
+      setLoanAmountStep(25000);
+    } else if (val <= 1000000) {
+      setLoanAmountStep(50000);
+    } else {
+      setLoanAmountStep(125000);
+    }
+  };
 
-  const handleLoanPeriod = useCallback(
-    (val) => {
-      setLoanPeriod(val);
-      _setLoanPeriod(val);
-    },
-    [_setLoanPeriod]
-  );
+  const handleLoanPeriod = (val) => {
+    setLoanPeriod(val);
+    _setLoanPeriod(val);
+  };
 
-  const handleMinusLoanAmount = useCallback(
-    (val) => {
-      setLoanAmount((step) => {
-        let result;
-        if (step - loanAmountStep >= loanAmountMin)
-          result = step - loanAmountStep;
-        else result = loanAmountMin;
-        _setLoanAmount(result);
-        return result;
-      });
-    },
-    [_setLoanAmount, loanAmountStep]
-  );
-  const handleAddLoanAmount = useCallback(
-    (val) => {
-      setLoanAmount((step) => {
-        let result;
-        if (step + loanAmountStep <= loanAmountMax)
-          result = step + loanAmountStep;
-        else result = loanAmountMax;
-        _setLoanAmount(result);
-        return result;
-      });
-    },
-    [_setLoanAmount, loanAmountStep]
-  );
-  const handleMinusLoanPeriod = useCallback(
-    (val) => {
-      setLoanPeriod((step) => {
-        let result;
-        if (step - loanPeriodStep >= loanPeriodMin)
-          result = step - loanPeriodStep;
-        else result = loanPeriodMin;
-        _setLoanPeriod(result);
-        return result;
-      });
-    },
-    [_setLoanPeriod]
-  );
-  const handleAddLoanPeriod = useCallback(
-    (val) => {
-      setLoanPeriod((step) => {
-        let result;
-        if (step + loanPeriodStep <= loanPeriodMax)
-          result = step + loanPeriodStep;
-        else result = loanPeriodMax;
-        _setLoanPeriod(result);
-        return result;
-      });
-    },
-    [_setLoanPeriod]
-  );
-  const handleReasonSelect = useCallback(
-    (reason) => {
-      const rList = loanReasons.map((item) => {
-        if (item.API_Name === reason.API_Name) {
-          item.selected = !item.selected;
-          if (reason.API_Name === "other") {
-            toggleOtherLoanVisibility(item.selected);
-            if (!item.selected) {
-              setLoanReasonOther("");
-              _setLoanReasonOther("");
-            }
+  const handleMinusLoanAmount = (val) => {
+    setLoanAmount((step) => {
+      let result;
+      if (step - loanAmountStep >= loanAmountMin)
+        result = step - loanAmountStep;
+      else result = loanAmountMin;
+      _setLoanAmount(result);
+      return result;
+    });
+  };
+  const handleAddLoanAmount = (val) => {
+    setLoanAmount((step) => {
+      let result;
+      if (step + loanAmountStep <= loanAmountMax)
+        result = step + loanAmountStep;
+      else result = loanAmountMax;
+      _setLoanAmount(result);
+      return result;
+    });
+  };
+  const handleMinusLoanPeriod = (val) => {
+    setLoanPeriod((step) => {
+      let result;
+      if (step - loanPeriodStep >= loanPeriodMin)
+        result = step - loanPeriodStep;
+      else result = loanPeriodMin;
+      _setLoanPeriod(result);
+      return result;
+    });
+  };
+  const handleAddLoanPeriod = (val) => {
+    setLoanPeriod((step) => {
+      let result;
+      if (step + loanPeriodStep <= loanPeriodMax)
+        result = step + loanPeriodStep;
+      else result = loanPeriodMax;
+      _setLoanPeriod(result);
+      return result;
+    });
+  };
+  const handleReasonSelect = (reason) => {
+    const rList = loanReasons.map((item) => {
+      if (item.API_Name === reason.API_Name) {
+        item.selected = !item.selected;
+        if (reason.API_Name === "other") {
+          toggleOtherLoanVisibility(item.selected);
+          if (!item.selected) {
+            setLoanReasonOther("");
+            _setLoanReasonOther("");
           }
         }
-        return item;
-      });
-      const selected = loanReasons.find((l) => l.selected);
-      if (!selected) {
-        let isDefault = false;
+      }
+      return item;
+    });
+    const selected = loanReasons.find((l) => l.selected);
+    if (!selected) {
+      let isDefault = false;
+      for (let i = 0; i < rList.length; i++) {
+        if (rList[i].isDefault) {
+          isDefault = true;
+          rList[i].selected = true;
+          break;
+        }
+      }
+      if (!isDefault) {
         for (let i = 0; i < rList.length; i++) {
-          if (rList[i].isDefault) {
-            isDefault = true;
+          if (rList[i].API_Name === "general_liquidity") {
             rList[i].selected = true;
             break;
           }
         }
-        if (!isDefault) {
-          for (let i = 0; i < rList.length; i++) {
-            if (rList[i].API_Name === "general_liquidity") {
-              rList[i].selected = true;
-              break;
-            }
-          }
-        }
       }
-      setLoanReasons(rList);
-      _setLoanReasons(JSON.stringify(rList));
-    },
-    [_setLoanReasonOther, _setLoanReasons, loanReasons]
-  );
-  const handleOtherReasonChanged = useCallback(
-    (e) => {
-      if (e.target.value.length === 0) {
-        toggleOtherReasonValidation(false);
-        setOtherReasonValidationMessage(t("OTHER_REASON_IS_REQUIRED"));
-      } else {
-        toggleOtherReasonValidation(true);
-      }
-      setLoanReasonOther(e.target.value);
-      _setLoanReasonOther(e.target.value);
-    },
-    [_setLoanReasonOther, t]
-  );
+    }
+    setLoanReasons(rList);
+    _setLoanReasons(JSON.stringify(rList));
+  };
+  const handleOtherReasonChanged = (e) => {
+    if (e.target.value.length === 0) {
+      toggleOtherReasonValidation(false);
+      setOtherReasonValidationMessage(t("OTHER_REASON_IS_REQUIRED"));
+    } else {
+      toggleOtherReasonValidation(true);
+    }
+    setLoanReasonOther(e.target.value);
+    _setLoanReasonOther(e.target.value);
+  };
   function handlePersonalNumberChanged(e) {
     if (e.target.value.length === 0) {
       togglePersonalNumberValidation(false);
@@ -512,57 +486,38 @@ export default function BusinessLoan(props) {
       togglePhoneNumberValidation(false);
       setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
     } else togglePhoneNumberValidation(true);
-
-    // if (value.length === 0) {
-    //   togglePhoneNumberValidation(false);
-    //   setPhoneNumberValidationMessage(t("PHONE_NUMBER_IS_REQUIRED"));
-    // } else {
-    //   if (value.length < 9) {
-    //     togglePhoneNumberValidation(false);
-    //     setPhoneNumberValidationMessage(t("PHONE_NUMBER_IN_CORRECT"));
-    //   } else togglePhoneNumberValidation(true);
-    // }
-    setPhoneNumber(value);
+    setPhoneNumber(e.target.value);
     _setPhoneNumber(value);
   };
-  const handleEmailChanged = useCallback(
-    (e) => {
-      if (e.target.value.length === 0) {
+  const handleEmailChanged = (e) => {
+    if (e.target.value.length === 0) {
+      toggleEmailValidation(false);
+      setEmailValidationMessage(t("EMAIL_IS_REQUIRED"));
+    } else {
+      if (!validateEmail(e.target.value)) {
         toggleEmailValidation(false);
-        setEmailValidationMessage(t("EMAIL_IS_REQUIRED"));
-      } else {
-        if (!validateEmail(e.target.value)) {
-          toggleEmailValidation(false);
-          setEmailValidationMessage(t("EMAIL_IN_CORRECT"));
-        } else toggleEmailValidation(true);
-      }
-      setEmail(e.target.value);
-      _setEmail(e.target.value);
-    },
-    [_setEmail, t]
-  );
+        setEmailValidationMessage(t("EMAIL_IN_CORRECT"));
+      } else toggleEmailValidation(true);
+    }
+    setEmail(e.target.value);
+    _setEmail(e.target.value);
+  };
   let chk;
-  const handleTermChanged = useCallback(
-    (e) => {
-      toggleTermsChecked(e.target.checked);
-      chk = e.target.checked;
-      setForm((f) => {
-        const newForm = { ...f, terms: chk };
-        return newForm;
-      });
-      toggleTermValidation(!chk);
-    },
-    [terms]
-  );
-  const handleSelectCompany = useCallback(
-    (c) => {
-      setCompany(c);
-      if (!companyIsValid) {
-        toggleCompanyValidation(true);
-      }
-    },
-    [companyIsValid]
-  );
+  const handleTermChanged = (e) => {
+    toggleTermsChecked(e.target.checked);
+    chk = e.target.checked;
+    setForm((f) => {
+      const newForm = { ...f, terms: chk };
+      return newForm;
+    });
+    toggleTermValidation(!chk);
+  };
+  const handleSelectCompany = (c) => {
+    setCompany(c);
+    if (!companyIsValid) {
+      toggleCompanyValidation(true);
+    }
+  };
 
   function handleBankIdClicked(e) {
     if (!verifyingSpinner) {
@@ -1172,7 +1127,7 @@ export default function BusinessLoan(props) {
                             </div>
                             <div className="element-group__center">
                               <input
-                                type="text"
+                                type="tel"
                                 className="my-input"
                                 placeholder="0790266255"
                                 value={phoneNumber}
