@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { Switch } from "react-router-dom";
+import { Switch, Redirect, Route } from "react-router-dom";
 import PrivateRoute from "hoc/PrivateRoute";
 import retry from "utils/retryLazyLoad";
 //
@@ -25,6 +25,7 @@ const MainPage = (props) => {
               path="/app/panel/viewOffers"
               render={(props) => <ViewOffers {...props} />}
             />
+            <Redirect from="/app/panel" to="/app/panel/viewOffers" />
           </Switch>
         </Suspense>
       </div>
