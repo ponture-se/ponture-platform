@@ -6,8 +6,6 @@ import { isBankId } from "utils";
 import track from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
 import { startBankId, cancelVerify } from "api/business-loan-api";
-import CacheBuster from "components/CacheBuster";
-
 import "./styles.scss";
 
 const Login = (props) => {
@@ -199,131 +197,114 @@ const Login = (props) => {
     toggleTerms(e.target.checked);
   }
   return (
-    <CacheBuster>
-      {({ loading, isLatestVersion, refreshCacheAndReload }) => {
-        if (loading) return null;
-        if (!loading && !isLatestVersion) {
-          refreshCacheAndReload();
-        }
-
-        return (
-          <div className="loginContainer">
-            <div className="loginHeader">
-              <img src={require("assets/logo-c.png")} alt="" />
-            </div>
-            <div className="loginBox animated fadeIn">
-              <div className="loginBox__header">
-                <span>{t("LOGIN_TITLE")}</span>
-              </div>
-              <form onSubmit={handleLoginClicked}>
-                <div className="loginBox__body__info">
-                  <span className="firstText">{t("LOGIN_TITLE1")}</span>
-                  <ul>
-                    <li>{t("LOGIN_INFO_ITEM1")}</li>
-                    <li>{t("LOGIN_INFO_ITEM2")}</li>
-                    <li>{t("LOGIN_INFO_ITEM3")}</li>
-                  </ul>
-                  <span className="secText">{t("LOGIN_TITLE2")}</span>
-                  <span className="thirdText">{t("LOGIN_TITLE3")}</span>
-                </div>
-                <div
-                  className={
-                    "formInput " +
-                    (error &&
-                    error["personalNumber"] &&
-                    error["personalNumber"].isError
-                      ? "input-invalid"
-                      : "")
-                  }
-                >
-                  <div className="formInput__header">
-                    <div className="formInput__header__left">
-                      <span className="elementInfo">
-                        {t("LOGIN_PERSONAL_NUMBER")}
-                      </span>
-                    </div>
-                  </div>
-                  <div className="formInput__body">
-                    <input
-                      type="text"
-                      className="element"
-                      placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
-                      value={personalNumber}
-                      onChange={handleChangedPersonalNumber}
-                      onBlur={handleChangedPersonalNumber}
-                      autoFocus
-                      maxLength="13"
-                      autoComplete="true"
-                    />
-                  </div>
-                  <div className="formInput__footer">
-                    <div className="formInput__footer__left">
-                      <span className="elementInfo">
-                        {error &&
-                          error["personalNumber"] &&
-                          error["personalNumber"].isError &&
-                          error["personalNumber"].message}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="termChk">
-                  <label className="customCheckbox">
-                    <input
-                      type="checkbox"
-                      id="terms"
-                      checked={terms}
-                      onChange={handleTermChanged}
-                    />
-                    <span className="checkmark" />
-                    <span className="customCheckbox__text customCheckboxLogin__text">
-                      {t("LOGIN_TERMS_TEXT")}{" "}
-                      <a
-                        href="https://www.ponture.com/eula"
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {t("LOGIN_TERMS_LINK")}
-                      </a>
-                    </span>
-                  </label>
-                </div>
-                <button
-                  className="btn btn-success"
-                  disabled={
-                    !terms || !personalNumber || personalNumber.length === 0
-                  }
-                >
-                  {!loading ? (
-                    t("LOGIN_BTN_NAME")
-                  ) : (
-                    <CircleSpinner show={true} />
-                  )}
-                </button>
-              </form>
-            </div>
-            {verifyModal && (
-              <VerifyBankIdModal
-                isLogin
-                startResult={startResult}
-                personalNumber={personalNumber}
-                onSuccess={handleSuccessVerify}
-                onClose={handleCancelVerify}
-                onCancelVerify={handleCancelVerify}
-                onFailedBankId={() => {
-                  if (window.analytics)
-                    window.analytics.track("BankID Failed", {
-                      category: "Customer Portal",
-                      label: "Customer Portal login bankid popup",
-                      value: 0,
-                    });
-                }}
-              />
-            )}
+    <div className="loginContainer">
+      <div className="loginHeader">
+        <img src={require("assets/logo-c.png")} alt="" />
+      </div>
+      <div className="loginBox animated fadeIn">
+        <div className="loginBox__header">
+          <span>{t("LOGIN_TITLE")}</span>
+        </div>
+        <form onSubmit={handleLoginClicked}>
+          <div className="loginBox__body__info">
+            <span className="firstText">{t("LOGIN_TITLE1")}</span>
+            <ul>
+              <li>{t("LOGIN_INFO_ITEM1")}</li>
+              <li>{t("LOGIN_INFO_ITEM2")}</li>
+              <li>{t("LOGIN_INFO_ITEM3")}</li>
+            </ul>
+            <span className="secText">{t("LOGIN_TITLE2")}</span>
+            <span className="thirdText">{t("LOGIN_TITLE3")}</span>
           </div>
-        );
-      }}
-    </CacheBuster>
+          <div
+            className={
+              "formInput " +
+              (error &&
+              error["personalNumber"] &&
+              error["personalNumber"].isError
+                ? "input-invalid"
+                : "")
+            }
+          >
+            <div className="formInput__header">
+              <div className="formInput__header__left">
+                <span className="elementInfo">
+                  {t("LOGIN_PERSONAL_NUMBER")}
+                </span>
+              </div>
+            </div>
+            <div className="formInput__body">
+              <input
+                type="text"
+                className="element"
+                placeholder={t("PERSONAL_NUMBER_PLACEHOLDER")}
+                value={personalNumber}
+                onChange={handleChangedPersonalNumber}
+                onBlur={handleChangedPersonalNumber}
+                autoFocus
+                maxLength="13"
+                autoComplete="true"
+              />
+            </div>
+            <div className="formInput__footer">
+              <div className="formInput__footer__left">
+                <span className="elementInfo">
+                  {error &&
+                    error["personalNumber"] &&
+                    error["personalNumber"].isError &&
+                    error["personalNumber"].message}
+                </span>
+              </div>
+            </div>
+          </div>
+          <div className="termChk">
+            <label className="customCheckbox">
+              <input
+                type="checkbox"
+                id="terms"
+                checked={terms}
+                onChange={handleTermChanged}
+              />
+              <span className="checkmark" />
+              <span className="customCheckbox__text customCheckboxLogin__text">
+                {t("LOGIN_TERMS_TEXT")}{" "}
+                <a
+                  href="https://www.ponture.com/eula"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  {t("LOGIN_TERMS_LINK")}
+                </a>
+              </span>
+            </label>
+          </div>
+          <button
+            className="btn btn-success"
+            disabled={!terms || !personalNumber || personalNumber.length === 0}
+          >
+            {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}
+          </button>
+        </form>
+      </div>
+      {verifyModal && (
+        <VerifyBankIdModal
+          isLogin
+          startResult={startResult}
+          personalNumber={personalNumber}
+          onSuccess={handleSuccessVerify}
+          onClose={handleCancelVerify}
+          onCancelVerify={handleCancelVerify}
+          onFailedBankId={() => {
+            if (window.analytics)
+              window.analytics.track("BankID Failed", {
+                category: "Customer Portal",
+                label: "Customer Portal login bankid popup",
+                value: 0,
+              });
+          }}
+        />
+      )}
+    </div>
   );
 };
 

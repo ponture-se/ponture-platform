@@ -8,10 +8,14 @@ $itemBtnColor: #44b3c2;
 @include respond(phone) {
   $boxMargin: 0 10px;
 }
+.appOffers * {
+  font-family: Poppins;
+}
 .appOffers {
   display: flex;
   flex-direction: column;
   font-family: Poppins;
+  padding-bottom: 50px;
   .offersEmpty {
     padding-top: 40px;
     margin: auto;
@@ -215,7 +219,10 @@ $itemBtnColor: #44b3c2;
       transition: all 0.2s;
       border-radius: 5px;
       &:hover {
-        transform: scale(0.95);
+        transform: scale(0.97);
+      }
+      &:focus {
+        outline: none;
       }
       @include respond(phone) {
         padding: 0 10px;
@@ -226,9 +233,15 @@ $itemBtnColor: #44b3c2;
     .redbutton {
       margin-right: 10px;
       background-color: #ff8383;
+      &:hover {
+        box-shadow: 0 0 10px #ff8383;
+      }
     }
     .greenbutton {
       background-color: #6df8be;
+      &:hover {
+        box-shadow: 0 0 10px #6df8be;
+      }
     }
   }
 }
@@ -384,6 +397,7 @@ $itemBtnColor: #44b3c2;
       text-align: center;
       font-size: 16px;
       margin: 0;
+      font-family: Poppins;
       @include respond(tab-port) {
         font-size: calc(0.35rem + 1vw);
       }
@@ -396,6 +410,7 @@ $itemBtnColor: #44b3c2;
       text-align: center;
       font-size: 13px;
       color: gray;
+      font-family: Poppins;
       @include respond(tab-port) {
         font-size: calc(0.2rem + 1vw);
       }
@@ -420,6 +435,12 @@ $itemBtnColor: #44b3c2;
     border-radius: 5px;
     margin-bottom: 20px;
     cursor: pointer;
+    transition-duration: 0.2s;
+    &:hover {
+      transform: scale(0.97);
+      transition-duration: 0.2s;
+      box-shadow: 0 0 5px $itemBtnColor;
+    }
     @include respond(tab-port) {
       padding: 8px;
       margin-bottom: 10px;
@@ -469,6 +490,8 @@ $itemBtnColor: #44b3c2;
       width: 260px;
       color: black;
       flex-shrink: 0;
+      font-family: poppins;
+      font-weight: bold;
       @include respond(phone) {
         width: auto;
         font-size: 13px;
@@ -491,6 +514,7 @@ $itemBtnColor: #44b3c2;
   font-size: 18px;
 }
 .acceptModal {
+  font-family: Poppins;
   position: fixed;
   top: 0;
   bottom: 0;
@@ -541,17 +565,18 @@ $itemBtnColor: #44b3c2;
       flex: 1;
       font-weight: bold;
       font-size: 20px;
+      font-family: Poppins;
     }
     .closeIcon {
       position: absolute;
-      right: 10px;
+      right: 0px;
       color: gray;
       font-size: 14px;
       cursor: pointer;
       transition-duration: 0.2s;
       width: 40px;
       height: 20px;
-      text-align: center;
+      text-align: right;
       &:hover {
         transition-duration: 0.2s;
         color: black;
@@ -568,6 +593,8 @@ $itemBtnColor: #44b3c2;
     display: block;
     text-align: center;
     position: static;
+    font-family: Poppins;
+    font-weight: bold;
     @include respond(phone) {
       position: absolute;
       width: 100%;
@@ -628,14 +655,16 @@ $itemBtnColor: #44b3c2;
   }
   &__left {
     flex: 1;
+    padding-right: 10px;
     @include respond(phone) {
       order: 2;
+      padding-right: 0px;
     }
   }
   &__right {
     padding-top: 30px;
     @include respond(phone) {
-      padding-top: 15px;
+      padding-top: 25px;
     }
   }
   .personalInfoForm {
@@ -647,6 +676,8 @@ $itemBtnColor: #44b3c2;
       display: block;
       font-size: 13px;
       margin-bottom: 20px;
+      font-family: Poppins;
+      font-weight: bold;
     }
     .form-inputgroup {
       display: flex;
@@ -673,6 +704,7 @@ $itemBtnColor: #44b3c2;
         min-width: 250px;
         border: 1px solid $itemBtnColor;
         border-radius: 4px;
+        font-family: Poppins;
         @include respond(phone) {
           min-width: 100%;
         }
@@ -689,6 +721,8 @@ $itemBtnColor: #44b3c2;
   &__desc {
     margin: 25px 0 15px 0;
     font-size: 13px;
+    font-family: Poppins;
+    font-weight: bold;
     @include respond(phone) {
       margin: 15px 0 0px 0;
     }
@@ -704,11 +738,14 @@ $itemBtnColor: #44b3c2;
       color: white;
       text-align: center;
       font-size: 11px;
-      line-height: 20px;
+      line-height: 22px;
       margin-bottom: 10px;
+      @include respond(phone) {
+        margin-left: 0;
+      }
     }
     &__text {
-      font-size: 12px;
+      font-size: 11.2px;
     }
   }
 }

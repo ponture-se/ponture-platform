@@ -1,4 +1,5 @@
 import React from "react";
+// import packageJson from "{root-dir}/package.json";
 global.appVersion = "0.1.1";
 
 // version from response - first param, local version second param
@@ -40,7 +41,7 @@ class CacheBuster extends React.Component {
   }
 
   componentDidMount() {
-    fetch("/meta.json")
+    fetch(`./meta.json?${new Date().getTime()}`, { cache: "no-cache" })
       .then((response) => response.json())
       .then((meta) => {
         const latestVersion = meta.version;

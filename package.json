@@ -1,6 +1,6 @@
 {
   "name": "my-react-app-1",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "private": true,
   "homepage": "https://www.visualizy.com/app/",
   "engines": {
@@ -27,9 +27,6 @@
     "source-map-explorer": "^1.8.0"
   },
   "scripts": {
-    "clean": "rm -rf build",
-    "prebuild": "npm run generate-build-version",
-    "generate-build-version": "node generate-build-version",
     "start": "react-scripts start",
     "build": "GENERATE_SOURCEMAP=false react-scripts build && mv build tmp_build && mkdir build &&  mv tmp_build build/app && mv build/app/index.html build/index.html",
     "test": "react-scripts test",
