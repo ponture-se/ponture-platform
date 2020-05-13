@@ -199,7 +199,7 @@ const Login = (props) => {
   return (
     <div className="loginContainer">
       <div className="loginHeader">
-        <img src={require("assets/logo-c.png")} alt="" />
+        <img src={require("assets/signicat-logo-black.png")} alt="" />
       </div>
       <div className="loginBox animated fadeIn">
         <div className="loginBox__header">
