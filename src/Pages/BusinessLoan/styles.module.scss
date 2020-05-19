@@ -65,15 +65,19 @@
   margin-right: 10px;
   border-radius: 8px;
   box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
+  transition-duration: 0.5s;
 }
 .headerStep__normal {
   background-color: #e7e7e7;
+  transition-duration: 0.5s;
 }
 .headerStep__current {
   background-color: #f2c94c;
+  transition-duration: 0.5s;
 }
 .headerStep__finished {
   background-color: #44b3c2;
+  transition-duration: 0.5s;
 }
 .stepText {
   padding: 0;
@@ -94,7 +98,7 @@
   //   background-color: blue;
   position: absolute;
   left: 0;
-  padding-right: 10px;
+  padding-right: 20px;
   @include respond(tab-land) {
     display: none;
   }

@@ -6,6 +6,7 @@ const Button = ({
   selected,
   showSelectedCheckMark = true,
   warning,
+  ...rest
 }) => {
   return (
     <button
@@ -20,6 +21,7 @@ const Button = ({
         " " +
         (selected && showSelectedCheckMark ? styles.checkMarkButton : "")
       }
+      {...rest}
     >
       {children}
     </button>

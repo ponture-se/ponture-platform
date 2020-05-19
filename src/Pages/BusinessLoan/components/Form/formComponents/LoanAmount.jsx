@@ -3,8 +3,8 @@ import styles from "../styles.module.scss";
 import Slider from "./Slider";
 import Button from "./common/Button";
 import Title from "./common/Title";
-import SliderEditableValue from "./common/SliderEditableValue";
 import useLocale from "hooks/useLocale";
+import { useLoanDispatch } from "hooks/useLoan";
 
 const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MIN)
@@ -21,11 +21,22 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
 
+const loanTypes = [
+  { id: 1, name: "general", displayName: "Generell likviditet" },
+  { id: 2, name: "finance", displayName: "Fastighetsfinansiering" },
+  { id: 3, name: "both", displayName: "Företagsförvärv" },
+];
+
 const LoanAmount = () => {
   const { t } = useLocale();
+  const dispatch = useLoanDispatch();
+  const [selectedType, setType] = useState();
   const [loanAmount, setLoanAmount] = useState(850000);
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(12);
+  const [isEditAmount, toggleAmountEdit] = useState(false);
+  const [isEditPeriod, togglePeriodEdit] = useState(false);
+
   function handleOnChangedAmount(val) {
     setLoanAmount(val);
     if (val <= 100000) {
@@ -48,10 +59,24 @@ const LoanAmount = () => {
       handleOnChangedPeriod(value);
     }
   }
+  function handleSelectedType(item) {
+    setType(item);
+    if (!selectedType)
+      dispatch({
+        type: "SET_FINISHED_STEP",
+        payload: 1,
+      });
+  }
+  function editAmount() {
+    toggleAmountEdit((prev) => !prev);
+  }
+  function editPeriod() {
+    togglePeriodEdit((prev) => !prev);
+  }
   return (
     <div className={styles.loanAmountBox}>
       <Slider
-        title={t("BL_LOAN_AMOUNT")}
+        title={t("Lånebelopp")}
         minValue={loanAmountMin}
         maxValue={loanAmountMax}
         step={loanAmountStep}
@@ -64,23 +89,27 @@ const LoanAmount = () => {
           return (
             <div className={styles.sliderEditable}>
               <div className={styles.sliderEditable__input}>
-                <input
-                  type="number"
-                  value={loanAmount}
-                  onChange={(e) =>
-                    handleChangeSliderEditValue("loanAmount", e.target.value)
-                  }
-                />
+                {!isEditAmount ? (
+                  <span>{loanAmount} Kr</span>
+                ) : (
+                  <input
+                    type="number"
+                    value={loanAmount}
+                    onChange={(e) =>
+                      handleChangeSliderEditValue("loanAmount", e.target.value)
+                    }
+                  />
+                )}
               </div>
-              <div className={styles.sliderEditable__icon}>
-                <i className="icon-cross" />
+              <div className={styles.sliderEditable__icon} onClick={editAmount}>
+                <i className="icon-cog" />
               </div>
             </div>
           );
         }}
       />
       <Slider
-        title={t("BL_LOAN_PERIOD")}
+        title={t("Låneperiod")}
         step={loanPeriodStep}
         maxValue={loanPeriodMax}
         minValue={loanPeriodMin}
@@ -93,16 +122,20 @@ const LoanAmount = () => {
           return (
             <div className={styles.sliderEditable}>
               <div className={styles.sliderEditable__input}>
-                <input
-                  type="number"
-                  value={loanPeriod}
-                  onChange={(e) =>
-                    handleChangeSliderEditValue("loanPeriod", e.target.value)
-                  }
-                />
+                {!isEditPeriod ? (
+                  <span>{loanPeriod} Months</span>
+                ) : (
+                  <input
+                    type="number"
+                    value={loanPeriod}
+                    onChange={(e) =>
+                      handleChangeSliderEditValue("loanPeriod", e.target.value)
+                    }
+                  />
+                )}
               </div>
-              <div className={styles.sliderEditable__icon}>
-                <i className="icon-cross" />
+              <div className={styles.sliderEditable__icon} onClick={editPeriod}>
+                <i className="icon-cog" />
               </div>
             </div>
           );
@@ -117,25 +150,19 @@ const LoanAmount = () => {
           />
         </div>
         <div className={styles.actions__btns}>
-          <Button
-            customClass={styles.actions__customBtn}
-            selected={true}
-            showSelectedCheckMark={false}
-          >
-            Generelll likviditet
-          </Button>
-          <Button
-            customClass={styles.actions__customBtn}
-            showSelectedCheckMark={false}
-          >
-            Fastighetsfinansiering
-          </Button>
-          <Button
-            customClass={styles.actions__customBtn}
-            showSelectedCheckMark={false}
-          >
-            Företagsförvärv
-          </Button>
+          {loanTypes.map((item, index) => {
+            return (
+              <Button
+                key={index}
+                customClass={styles.actions__customBtn}
+                selected={selectedType && selectedType.name === item.name}
+                showSelectedCheckMark={false}
+                onClick={() => handleSelectedType(item)}
+              >
+                {item.displayName}
+              </Button>
+            );
+          })}
         </div>
       </div>
       <div className={styles.guide}>

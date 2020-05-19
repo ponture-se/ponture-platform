@@ -5,8 +5,14 @@ import Input from "./common/Input";
 import Checkbox from "./common/Checkbox";
 
 const SubmitBox = () => {
+  const submitBoxRef = React.useRef(null);
+  React.useEffect(() => {
+    if (submitBoxRef.current) {
+      window.scrollTo(0, submitBoxRef.current.offsetTop);
+    }
+  }, []);
   return (
-    <div className={styles.submitBox}>
+    <div ref={submitBoxRef} className={styles.submitBox}>
       <div className={styles.submitBox__inputs}>
         <Input
           title="Företagetsomsättning under de senaste 12 månader"

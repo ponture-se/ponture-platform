@@ -1,14 +1,12 @@
 import React from "react";
+import { useLoanState } from "hooks/useLoan";
 import styles from "../styles.module.scss";
 import HeaderStep from "./HeaderStep";
 const Header = () => {
-  const [steps, setSteps] = React.useState([
-    { id: 1, isFinished: false, isCurrent: true },
-    { id: 2, isFinished: false, isCurrent: false },
-    { id: 3, isFinished: false, isCurrent: false },
-    { id: 4, isFinished: false, isCurrent: false },
-    { id: 5, isFinished: false, isCurrent: false },
-  ]);
+  const { steps } = useLoanState();
+  function getStepValue() {
+    return steps.find((item) => item.isCurrent).id;
+  }
   return (
     <div className={styles.header}>
       <div className={styles.header__content}>
@@ -37,7 +35,7 @@ const Header = () => {
                 <HeaderStep key={item.id} step={item} />
               ))}
             </div>
-            <h5 className={styles.stepText}>Steg 1 av 5</h5>
+            <h5 className={styles.stepText}>Steg {getStepValue()} av 5</h5>
           </div>
         </div>
       </div>
