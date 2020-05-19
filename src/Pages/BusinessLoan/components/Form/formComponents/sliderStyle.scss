@@ -1,0 +1,22 @@
+@import "styles/mixins";
+.input-range__track--active {
+  background-color: #44b3c2;
+}
+
+.input-range__slider {
+  background-color: #44b3c2;
+  box-shadow: 0 0 5px #44b3c2;
+  border: none;
+  width: 27px !important;
+  height: 27px !important;
+  margin-top: -0.9rem;
+}
+.input-range__label--value {
+  display: none;
+}
+.input-range__label--min {
+  display: none;
+}
+.input-range__label--max {
+  display: none;
+}

@@ -1,0 +1,428 @@
+@import "./../../../../styles/mixins";
+.form {
+  padding-bottom: 20px;
+  h2 {
+    margin-bottom: 40px;
+  }
+}
+
+.loanAmountBox {
+  background-color: white;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 30px 40px;
+  .actions {
+    &__info {
+      margin-bottom: 30px;
+    }
+    &__btns {
+      display: flex;
+    }
+    &__customBtn {
+      flex: 1;
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+    }
+  }
+  .guide {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+.needsBox {
+  margin-top: 40px;
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  border-radius: 12px;
+  padding: 30px 40px;
+
+  &__info {
+  }
+  &__desc {
+    font-weight: normal;
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__customBtn {
+    flex-basis: calc(25% - 10px);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    &:nth-child(4n) {
+      margin-right: 0;
+      flex-basis: calc(25%);
+    }
+  }
+}
+.companiesBox {
+  margin-top: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  border-radius: 12px;
+  padding: 30px 40px;
+  &__info {
+  }
+  &__input {
+    margin: 30px 0;
+    display: flex;
+    align-items: center;
+    h4 {
+      font-weight: normal !important;
+    }
+    &__personalNumber {
+      width: 250px !important;
+    }
+    &__customBtn {
+      min-height: 40px !important;
+      margin-left: 30px;
+      padding: 0 !important;
+      width: 200px;
+    }
+  }
+  &__info2 {
+    margin-bottom: 30px;
+    h5 {
+      padding: 0;
+      margin: 0;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__customBtn {
+    flex-basis: calc(33.33333% - 10px);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    &:nth-child(3n) {
+      margin-right: 0;
+      flex-basis: calc(33.3333333%);
+    }
+  }
+}
+.submitBox {
+  margin-top: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  border-radius: 12px;
+  padding: 30px 40px;
+  &__inputs {
+    margin-bottom: 20px;
+    &__turnOver {
+      width: 200px !important;
+    }
+
+    &__phone {
+      width: 80% !important;
+    }
+    &__email {
+      width: 80% !important;
+    }
+  }
+
+  &__twoColumns {
+    display: flex;
+    &__col {
+      flex: 1;
+    }
+  }
+  &__terms {
+    margin-bottom: 40px;
+    display: flex;
+    a {
+      margin-left: 10px;
+      color: black;
+    }
+  }
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    &__link {
+      a {
+        display: block;
+        text-align: right;
+        font-size: 12px;
+        color: #44b3c2;
+      }
+    }
+  }
+  &__customBtn {
+    width: 150px;
+    transition-duration: 0.2s;
+    &:hover {
+      background-color: darken(#ff8a00, 5);
+      transition-duration: 0.2s;
+    }
+  }
+  &__info {
+    margin-top: 30px;
+    .rowInfo {
+      display: flex;
+      height: 40px;
+      align-items: center;
+      &__chk {
+        margin-right: 15px;
+        background-color: #1abc9c;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        position: relative;
+        text-align: center;
+        &::after {
+          width: 25px;
+          left: 0;
+          color: white;
+          text-align: center;
+          position: absolute;
+          content: "\2713";
+        }
+      }
+      span {
+        font-size: 13px;
+      }
+    }
+  }
+}
+.sliderBox {
+  margin-bottom: 50px;
+  &__top {
+    display: flex;
+    margin-bottom: 40px;
+  }
+  &__info {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+  }
+}
+.sliderEditable {
+  display: flex;
+  width: 210px;
+  border-radius: 8px;
+  border: solid 1px lightgray;
+  height: 40px;
+  overflow: hidden;
+  &__input {
+    flex: 1;
+    input {
+      height: 100%;
+      width: 100%;
+      border: none;
+      padding: 0 10px;
+      font-family: poppins;
+      font-weight: bold;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  &__icon {
+    width: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #44b3c2;
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  h4 {
+    padding: 0;
+    margin: 0;
+    margin-right: 20px;
+  }
+}
+.tooltip {
+  cursor: pointer;
+  font-size: 13px;
+  text-align: center;
+  width: 40px;
+  height: 20px;
+  padding: 0 10px;
+  border-radius: 20px;
+  background-color: #d4d4d4;
+  transition-duration: 0.2s;
+  font-weight: bold;
+  &:hover {
+    transition-duration: 0.2s;
+    box-shadow: 0 0 3px gray;
+  }
+  &__customClass {
+    border-color: #44b3c2 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+  }
+  &__container {
+    width: 200px;
+    position: relative;
+    span {
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 300;
+
+      color: #000000;
+      margin-top: 10px;
+      text-align: justify;
+    }
+    i {
+      color: #000000;
+      position: absolute;
+      right: 0;
+      visibility: hidden;
+      @include respond(tab-land) {
+        visibility: visible;
+      }
+    }
+  }
+}
+
+// #region button
+.button {
+  border-radius: 10px;
+  min-height: 50px;
+  cursor: pointer;
+  font-weight: bold;
+  &:focus {
+    outline: none;
+  }
+}
+.primaryBtn {
+  border: solid 2px #44b3c2;
+  background-color: #ffffff;
+  color: #44b3c2;
+}
+.warningBtn {
+  border: solid 2px #ff8a00;
+  color: white;
+  background-color: #ff8a00;
+}
+.selectedButton {
+  color: #ffffff;
+  background-color: #44b3c2;
+}
+.checkMarkButton {
+  position: relative;
+  &::before {
+    content: "\2713";
+    color: #44b3c2;
+    font-size: 17px;
+    font-weight: bold;
+    position: absolute;
+    height: 25px;
+    background-color: white;
+    width: 25px;
+    top: 0;
+    left: 0;
+    border-radius: 50%;
+    transform: translate(-25%, -25%);
+    border: 2px solid #44b3c2;
+  }
+}
+// #endregion button
+
+// #region input box
+.inputBox {
+  margin-bottom: 20px;
+  min-height: 90px;
+  &__top {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+  }
+  &__title {
+    margin: 0;
+    margin-right: 20px;
+  }
+  &__input {
+    border-radius: 4px;
+    border: solid 0.5px #828282;
+    width: 100%;
+    display: block;
+    width: 100%;
+    height: 38px;
+    padding: 5px 10px;
+    border-radius: 4px;
+    overflow: hidden;
+    background-color: white;
+    font-size: 13px;
+    transition: all 0.3;
+    font-family: inherit;
+    backface-visibility: hidden;
+    transition: all 0.3s;
+    color: inherit;
+    outline: none;
+    &:focus:not(.input_error) {
+      // box-shadow: 0 0 4px #44b3c2;
+      // outline: 2px solid #44b3c2;
+      box-shadow: 0px 0px 0px 1.5px #44b3c2 inset;
+      background-color: white;
+    }
+    &.input_error {
+      // outline-color: transparent;
+      border: 1.5px solid red;
+    }
+  }
+  &__errorText {
+    font-size: 12px;
+    color: red;
+  }
+}
+// #endregion input-box
+
+// #region chcekbox
+.checkbox {
+  &__chk {
+    display: none;
+  }
+
+  &__label {
+    padding-left: 40px;
+    font-size: 15px;
+    position: relative;
+    cursor: pointer;
+  }
+  &__btn {
+    height: 30px;
+    width: 30px;
+    border: 2px solid #44b3c2;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: -0.3rem;
+    left: 0;
+    transition: all 0.2s;
+    &::after {
+      transition: all 0.2s;
+      display: block;
+      content: "";
+      // width: 1.2rem;
+      // height: 1.2rem;
+      // border-radius: 50%;
+      color: #44b3c2;
+      font-size: 17px;
+      font-weight: bolder;
+      transform: translate(-50%, -50%) scale(0);
+      top: 50%;
+      left: 50%;
+      position: absolute;
+      opacity: 0;
+    }
+  }
+  &__chk:checked + &__label span::after {
+    content: "\2713";
+    opacity: 1;
+    transform: translate(-50%, -50%) scale(1);
+  }
+}
+
+// #endregion checkbox

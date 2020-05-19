@@ -1,6 +1,5 @@
 import React from "react";
 import Cookies from "js-cookie";
-import { NavLink } from "react-router-dom";
 import "./styles.scss";
 import { useGlobalState, useLocale } from "hooks";
 
