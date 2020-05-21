@@ -107,10 +107,15 @@ const NeedsBox = () => {
             selected={item.selected}
             onClick={() => selectNeed(item)}
           >
-            Generelll likviditet
+            {item.displayName}
           </Button>
         ))}
       </div>
+      {!needsList.some((n) => n.selected) && (
+        <div className={styles.guide}>
+          Välj minst en anledning från listan för att gå vidare.
+        </div>
+      )}
     </div>
   );
 };

@@ -1,16 +1,57 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
+import { isPhoneNumber, validateEmail } from "utils";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Input from "./common/Input";
 import Checkbox from "./common/Checkbox";
 
 const SubmitBox = () => {
+  const {
+    errors,
+    register,
+    setError,
+    clearError,
+    setValue,
+    formState: { dirty },
+  } = useFormContext();
   const submitBoxRef = React.useRef(null);
   React.useEffect(() => {
     if (submitBoxRef.current) {
       window.scrollTo(0, submitBoxRef.current.offsetTop);
     }
-  }, []);
+  }, [register]);
+
+  function handleOnChange(name, value) {
+    const length = value.length;
+    let isValid = true;
+
+    if (length === 0) {
+      isValid = false;
+      setError([{ type: "required", name, message: "This is required." }]);
+    }
+
+    if (isValid) {
+      if (name === "email") {
+        if (!validateEmail(value)) {
+          isValid = false;
+          setError([{ type: "notMatch", name, message: "Incorrect email." }]);
+        }
+      } else if (name === "phoneNumber") {
+        if (!isPhoneNumber(value)) {
+          setError([
+            { type: "notMatch", name, message: "Incorrect phone number" },
+          ]);
+          isValid = false;
+        }
+      }
+    }
+
+    if (isValid) {
+      clearError(name);
+      setValue(name, value);
+    }
+  }
   return (
     <div ref={submitBoxRef} className={styles.submitBox}>
       <div className={styles.submitBox__inputs}>
@@ -27,7 +68,9 @@ const SubmitBox = () => {
               title="Ditt telefonnummer"
               placeholder="t.ex.  070 980 20 91"
               extraClassStyle={styles.submitBox__inputs__phone}
-              errorText="It is required"
+              onChange={(e) => handleOnChange("phoneNumber", e.target.value)}
+              onBlur={(e) => handleOnChange("phoneNumber", e.target.value)}
+              errorText={errors.phoneNumber && errors.phoneNumber.message}
             />
           </div>
           <div className={styles.submitBox__twoColumns__col}>
@@ -35,6 +78,9 @@ const SubmitBox = () => {
               title="Ditt e-post"
               placeholder="t.ex fredrik@comany.com"
               extraClassStyle={styles.submitBox__inputs__email}
+              errorText={errors.email && errors.email.message}
+              onChange={(e) => handleOnChange("email", e.target.value)}
+              onBlur={(e) => handleOnChange("email", e.target.value)}
             />
           </div>
         </div>
@@ -61,11 +107,7 @@ const SubmitBox = () => {
           >
             Börja om
           </a>
-          <a
-            href="https://www.ponture.com/eula"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+          <a href="/app/loan">
             (Om du klicka här kommer förmuläret att nollställas)
           </a>
         </div>

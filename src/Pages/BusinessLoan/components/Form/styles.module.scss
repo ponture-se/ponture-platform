@@ -3,6 +3,7 @@
   padding-bottom: 20px;
   h2 {
     margin-bottom: 40px;
+    font-family: PoppinsBold;
   }
 }
 
@@ -52,10 +53,18 @@
     flex-basis: calc(25% - 10px);
     margin-right: 10px;
     margin-bottom: 10px;
+    font-size: 12px;
+    min-height: 75px !important;
+
     &:nth-child(4n) {
       margin-right: 0;
       flex-basis: calc(25%);
     }
+  }
+  .guide {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
   }
 }
 .companiesBox {
@@ -64,7 +73,7 @@
   box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
   border-radius: 12px;
   padding: 40px;
-  padding-bottom: 10px;
+  // padding-bottom: 10px;
   &__info {
   }
   &__input {
@@ -78,7 +87,8 @@
       width: 250px !important;
     }
     &__customBtn {
-      min-height: 40px !important;
+      margin-top: 5px;
+      min-height: 45px !important;
       margin-left: 30px;
       padding: 0 !important;
       width: 200px;
@@ -98,13 +108,33 @@
     flex-wrap: wrap;
   }
   &__customBtn {
-    flex-basis: calc(33.33333% - 10px);
-    margin-right: 10px;
-    margin-bottom: 10px;
+    flex-basis: calc(33.33333% - 20px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 75px !important;
     &:nth-child(3n) {
       margin-right: 0;
       flex-basis: calc(33.3333333%);
     }
+    i {
+      font-size: 20px;
+      margin-right: 5px;
+    }
+  }
+  &__guid {
+    font-size: 13px;
+    ul {
+      list-style: none;
+      padding-left: 10px;
+    }
+  }
+  &__guide1 {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
   }
 }
 .submitBox {
@@ -116,14 +146,14 @@
   &__inputs {
     margin-bottom: 20px;
     &__turnOver {
-      width: 200px !important;
+      width: 230px !important;
     }
 
     &__phone {
-      width: 80% !important;
+      width: 85% !important;
     }
     &__email {
-      width: 80% !important;
+      width: 85% !important;
     }
   }
 
@@ -156,6 +186,7 @@
   &__customBtn {
     width: 150px;
     transition-duration: 0.2s;
+    font-size: 17px;
     &:hover {
       background-color: darken(#ff8a00, 5);
       transition-duration: 0.2s;
@@ -215,26 +246,30 @@
     transition-duration: 0.3s;
     background-color: #ddf2f4;
   }
+  &.isEditSliderEditValue {
+    transition-duration: 0.3s;
+    background-color: #ddf2f4;
+  }
   &__input {
     flex: 1;
-    span {
+    h4 {
       display: flex;
       align-items: center;
       height: 100%;
       width: 100%;
-      padding: 0 10px;
-      font-family: poppins;
-      font-weight: bold;
-      font-size: 13px;
-      background-color: transparent;
+      padding: 0px;
+      margin: 0;
+      margin-left: 15px;
+      font-family: PoppinsSemiBold;
     }
     input {
       height: 100%;
       width: 100%;
       border: none;
-      padding: 0 10px;
-      font-family: poppins;
-      font-weight: bold;
+      padding: 0 15px;
+      font-size: 16px;
+      font-family: poppinsSemiBold;
+      background-color: transparent;
       &:focus {
         outline: none;
       }
@@ -258,6 +293,7 @@
     padding: 0;
     margin: 0;
     margin-right: 20px;
+    font-family: PoppinsSemiBold;
   }
 }
 .tooltip {
@@ -307,10 +343,10 @@
 // #region button
 .button {
   border-radius: 10px;
-  min-height: 50px;
+  min-height: 60px;
   cursor: pointer;
-  font-weight: bold;
   transition: all 0.2s;
+  font-family: PoppinsSemiBold;
   &:focus {
     outline: none;
     transition: all 0.2s;
@@ -319,7 +355,7 @@
 .primaryBtn {
   border: solid 2px #44b3c2;
   background-color: #ffffff;
-  color: #44b3c2;
+  color: #188695;
   transition: all 0.2s;
 }
 .warningBtn {
@@ -368,15 +404,14 @@
   &__input {
     border-radius: 4px;
     border: solid 0.5px #828282;
-    width: 100%;
     display: block;
     width: 100%;
-    height: 38px;
+    height: 45px;
     padding: 5px 10px;
     border-radius: 4px;
     overflow: hidden;
     background-color: white;
-    font-size: 13px;
+    font-size: 16px;
     transition: all 0.3;
     font-family: inherit;
     backface-visibility: hidden;

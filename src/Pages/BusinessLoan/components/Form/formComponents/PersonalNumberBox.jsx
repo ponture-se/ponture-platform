@@ -45,6 +45,17 @@ const PersonalNumberBox = () => {
           Sök efter mitt företag
         </Button>
       </div>
+      <div className={styles.companiesBox__guid}>
+        <span className={styles.companiesBox__guid_title}>
+          Det personnummer som kan accepteras är:
+        </span>
+        <ul>
+          <li>- Ägare av företaget </li>
+          <li>- Styrelsemedlemmar i företaget</li>
+          <li>- Suppleant</li>
+          <li>- En firmatecknare av företag</li>
+        </ul>
+      </div>
     </div>
   );
 };

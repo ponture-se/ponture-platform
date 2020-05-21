@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { useFormContext } from "react-hook-form";
+import separateNumberByChar from "utils/separateNumberByChar";
 import styles from "../styles.module.scss";
 import Slider from "./Slider";
 import Button from "./common/Button";
@@ -28,8 +30,17 @@ const loanTypes = [
 ];
 
 const LoanAmount = () => {
+  const {
+    errors,
+    setError,
+    clearError,
+    setValue,
+    formState: { dirty },
+  } = useFormContext();
   const { t } = useLocale();
   const dispatch = useLoanDispatch();
+  const editAmountInputRef = React.useRef(null);
+  const editPeriodInputRef = React.useRef(null);
   const [selectedType, setType] = useState();
   const [loanAmount, setLoanAmount] = useState(850000);
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
@@ -54,9 +65,9 @@ const LoanAmount = () => {
   }
   function handleChangeSliderEditValue(name, value) {
     if (name === "loanAmount") {
-      handleOnChangedAmount(value);
+      handleOnChangedAmount(parseInt(value));
     } else {
-      handleOnChangedPeriod(value);
+      handleOnChangedPeriod(parseInt(value));
     }
   }
   function handleSelectedType(item) {
@@ -68,11 +79,32 @@ const LoanAmount = () => {
       });
   }
   function editAmount() {
-    toggleAmountEdit((prev) => !prev);
+    if (!isEditAmount) {
+      toggleAmountEdit(true);
+    }
   }
+  React.useEffect(() => {
+    if (isEditAmount) {
+      if (editAmountInputRef.current) {
+        editAmountInputRef.current.focus();
+      }
+    }
+  }, [isEditAmount]);
   function editPeriod() {
-    togglePeriodEdit((prev) => !prev);
+    if (!isEditPeriod) {
+      togglePeriodEdit(true);
+      if (editPeriodInputRef.current) {
+        editPeriodInputRef.current.focus();
+      }
+    }
   }
+  React.useEffect(() => {
+    if (isEditPeriod) {
+      if (editPeriodInputRef.current) {
+        editPeriodInputRef.current.focus();
+      }
+    }
+  }, [isEditPeriod]);
   return (
     <div className={styles.loanAmountBox}>
       <Slider
@@ -87,12 +119,27 @@ const LoanAmount = () => {
         id="loanAmount"
         manualValueComponent={() => {
           return (
-            <div className={styles.sliderEditable}>
+            <div
+              className={
+                styles.sliderEditable +
+                " " +
+                (isEditAmount ? styles.isEditSliderEditValue : "")
+              }
+              onMouseLeave={() => {
+                if (isEditAmount) {
+                  toggleAmountEdit(false);
+                }
+              }}
+              onClick={editAmount}
+            >
               <div className={styles.sliderEditable__input}>
                 {!isEditAmount ? (
-                  <span>{loanAmount} Kr</span>
+                  <h4>{separateNumberByChar(loanAmount)} kr</h4>
                 ) : (
                   <input
+                    step="10000"
+                    max={loanAmountMax}
+                    ref={editAmountInputRef}
                     type="number"
                     value={loanAmount}
                     onChange={(e) =>
@@ -101,7 +148,7 @@ const LoanAmount = () => {
                   />
                 )}
               </div>
-              <div className={styles.sliderEditable__icon} onClick={editAmount}>
+              <div className={styles.sliderEditable__icon}>
                 <i className="icon-cog" />
               </div>
             </div>
@@ -120,12 +167,28 @@ const LoanAmount = () => {
         id="loanMonth"
         manualValueComponent={() => {
           return (
-            <div className={styles.sliderEditable}>
+            <div
+              className={
+                styles.sliderEditable +
+                " " +
+                (isEditPeriod ? styles.isEditSliderEditValue : "")
+              }
+              onClick={editPeriod}
+              onMouseLeave={() => {
+                if (isEditPeriod) {
+                  togglePeriodEdit(false);
+                }
+              }}
+            >
               <div className={styles.sliderEditable__input}>
                 {!isEditPeriod ? (
-                  <span>{loanPeriod} Months</span>
+                  <h4>
+                    {loanPeriod} {loanPeriod === 1 ? "månad" : "månader"}
+                  </h4>
                 ) : (
                   <input
+                    ref={editPeriodInputRef}
+                    min={1}
                     type="number"
                     value={loanPeriod}
                     onChange={(e) =>
@@ -134,7 +197,7 @@ const LoanAmount = () => {
                   />
                 )}
               </div>
-              <div className={styles.sliderEditable__icon} onClick={editPeriod}>
+              <div className={styles.sliderEditable__icon}>
                 <i className="icon-cog" />
               </div>
             </div>
@@ -165,9 +228,11 @@ const LoanAmount = () => {
           })}
         </div>
       </div>
-      <div className={styles.guide}>
-        Välj ett alternativ ovan för att gå vidare
-      </div>
+      {!selectedType && (
+        <div className={styles.guide}>
+          Välj ett alternativ ovan för att gå vidare
+        </div>
+      )}
     </div>
   );
 };
