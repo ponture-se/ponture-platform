@@ -8,9 +8,6 @@
 @import "./components/formInput.scss";
 @import "./components/button.scss";
 
-// animate
-@import "./animate.css";
-
 // ========================
 .hidden-xs {
   @include respond(big-desktop) {

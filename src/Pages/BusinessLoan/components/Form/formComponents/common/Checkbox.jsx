@@ -1,9 +1,12 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styles from "../../styles.module.scss";
-const Checkbox = ({ title, id, ...rest }) => {
+const Checkbox = ({ title, id, errorText, ...rest }, ref) => {
+  const inputRef = React.useRef(null);
+  React.useImperativeHandle(ref, () => inputRef.current);
   return (
     <div className={styles.checkbox}>
       <input
+        ref={inputRef}
         type="checkbox"
         className={styles.checkbox__chk}
         id={id}
@@ -13,8 +16,9 @@ const Checkbox = ({ title, id, ...rest }) => {
         <span className={styles.checkbox__btn}></span>
         {title}
       </label>
+      <span className={styles.checkbox__errorText}>{errorText}</span>
     </div>
   );
 };
 
-export default Checkbox;
+export default forwardRef(Checkbox);

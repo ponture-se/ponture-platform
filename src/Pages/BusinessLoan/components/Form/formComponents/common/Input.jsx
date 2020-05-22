@@ -1,7 +1,12 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import styles from "../../styles.module.scss";
 import Tooltip from "./Tooltip";
-const Input = ({ title, tooltip, errorText, extraClassStyle, id, ...rest }) => {
+const Input = (
+  { title, tooltip, errorText, extraClassStyle, id, ...rest },
+  ref
+) => {
+  const inputRef = React.useRef(null);
+  React.useImperativeHandle(ref, () => inputRef.current);
   return (
     <div className={styles.inputBox}>
       <div className={styles.inputBox__top}>
@@ -9,6 +14,7 @@ const Input = ({ title, tooltip, errorText, extraClassStyle, id, ...rest }) => {
         {tooltip && <Tooltip text={tooltip} id={id} />}
       </div>
       <input
+        ref={inputRef}
         className={
           (errorText && styles.input_error) +
           " " +
@@ -18,11 +24,9 @@ const Input = ({ title, tooltip, errorText, extraClassStyle, id, ...rest }) => {
         }
         {...rest}
       />
-      {errorText && (
-        <span className={styles.inputBox__errorText}>{errorText}</span>
-      )}
+      <span className={styles.inputBox__errorText}>{errorText}</span>
     </div>
   );
 };
 
-export default Input;
+export default forwardRef(Input);

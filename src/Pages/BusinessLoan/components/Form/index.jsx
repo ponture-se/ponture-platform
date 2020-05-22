@@ -13,26 +13,24 @@ const LoanForm = () => {
     mode: "onChange",
   });
   const { register } = methods;
-  React.useEffect(() => {
-    register({ name: "amount" });
-    register({ name: "amourtizationPeriod" });
+  function init() {
     register({ name: "need" });
     register({ name: "personalNumber" });
     register({ name: "orgNumber" });
     register({ name: "orgName" });
-    register({ name: "email" });
-    register({ name: "phoneNumber" });
-  }, [register]);
+  }
+  React.useEffect(init, []);
+
   return (
     <FormContext {...methods}>
-      <div className={styles.form}>
+      <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
         <h2>Ansök om företagslån</h2>
         <LoanAmount />
         {steps[0].isFinished && <NeedsBox />}
         {steps[1].isFinished && <PersonalNumberBox />}
         {steps[2].isFinished && <CompaniesBox />}
         {steps[3].isFinished && <SubmitBox />}
-      </div>
+      </form>
     </FormContext>
   );
 };

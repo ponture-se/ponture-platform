@@ -1,4 +1,5 @@
 export const initialState = {
+  formStatus: "noNeedBankId",
   steps: [
     { id: 1, isFinished: false, isCurrent: true },
     { id: 2, isFinished: false, isCurrent: false },
@@ -23,6 +24,11 @@ export const reducer = (state, action) => {
           }
           return item;
         }),
+      };
+    case "SET_FORM_STATUS":
+      return {
+        ...state,
+        formStatus: payload,
       };
     default:
       return state;

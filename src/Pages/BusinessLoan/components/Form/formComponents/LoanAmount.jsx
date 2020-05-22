@@ -31,6 +31,7 @@ const loanTypes = [
 
 const LoanAmount = () => {
   const {
+    register,
     errors,
     setError,
     clearError,
@@ -47,6 +48,11 @@ const LoanAmount = () => {
   const [loanPeriod, setLoanPeriod] = useState(12);
   const [isEditAmount, toggleAmountEdit] = useState(false);
   const [isEditPeriod, togglePeriodEdit] = useState(false);
+  function initForm() {
+    register({ name: "amount", type: "custom" });
+    register({ name: "amourtizationPeriod", type: "custom" });
+  }
+  React.useEffect(initForm, []);
 
   function handleOnChangedAmount(val) {
     setLoanAmount(val);
