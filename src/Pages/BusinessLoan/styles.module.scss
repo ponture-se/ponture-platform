@@ -10,7 +10,6 @@
   right: 0;
   top: 0;
   z-index: 100;
-  // height: 120px;
   background-color: white;
   box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.25);
   &__content {
@@ -25,6 +24,7 @@
     flex: 1;
     display: flex;
     padding: 15px 0;
+    flex-wrap: wrap;
     .logo {
       flex: 1;
       img {
@@ -34,6 +34,9 @@
     .info {
       display: flex;
       flex-direction: row-reverse;
+      @include respond(tab-port) {
+        display: none;
+      }
       &__item {
         margin-left: 15px;
         span {
@@ -42,6 +45,51 @@
           font-weight: bold;
         }
       }
+    }
+    .menu {
+      font-size: 25px;
+      margin-right: 10px;
+      cursor: pointer;
+      display: none;
+      @include respond(tab-port) {
+        display: flex;
+      }
+    }
+    .info__mobile {
+      padding: 20px 0;
+      padding-bottom: 0;
+      display: none;
+      width: 100%;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      height: 220px;
+      padding-top: 30px;
+      transition: all 0.3s;
+      overflow: hidden;
+      @include respond(tab-port) {
+        display: flex;
+      }
+      animation: height 0.3s;
+      .item {
+        margin-bottom: 35px;
+        i {
+          font-size: 20px;
+        }
+        span {
+          font-size: 20px;
+          margin-left: 10px;
+          font-family: PoppinsSemiBold;
+        }
+      }
+    }
+  }
+  @keyframes height {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 220px;
     }
   }
   &__bottom {
@@ -62,6 +110,9 @@
   border-radius: 8px;
   box-shadow: inset 0 2px 4px 0 rgba(0, 0, 0, 0.1);
   transition-duration: 0.5s;
+  @include respond(phone) {
+    height: 7px;
+  }
 }
 .headerStep__normal {
   background-color: #e7e7e7;
@@ -154,6 +205,10 @@
 .form {
   width: 768px;
   margin: 0 auto;
+  padding: 0;
+  @include respond(tab-port) {
+    padding: 0 10px;
+  }
 }
 .noNeedBankIdAlertBox {
   width: 768px;
@@ -165,6 +220,10 @@
   display: flex;
   flex-direction: column;
   padding: 50px;
+  @include respond(phone) {
+    padding: 20px;
+    margin: 0 10px;
+  }
   h1 {
     margin: 0;
     align-self: center;

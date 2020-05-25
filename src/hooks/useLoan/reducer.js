@@ -1,5 +1,5 @@
 export const initialState = {
-  formStatus: "noNeedBankId",
+  formStatus: "form",
   steps: [
     { id: 1, isFinished: false, isCurrent: true },
     { id: 2, isFinished: false, isCurrent: false },

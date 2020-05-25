@@ -6,7 +6,7 @@ import UnSuccessFullBankId from "./components/UnSuccessFullBankId";
 import styles from "./styles.module.scss";
 
 const BankIdVerification = () => {
-  const [bankIdStatus, setBankIdStatus] = React.useState("success");
+  const [bankIdStatus, setBankIdStatus] = React.useState("verify");
   return (
     <div className={styles.container}>
       <Header />

@@ -1,7 +1,7 @@
 import React from "react";
 import InputRange from "react-input-range";
 import "react-input-range/lib/css/index.css";
-import "./sliderStyle.scss";
+import "./styles.scss";
 import styles from "../styles.module.scss";
 import Title from "./common/Title";
 const Slider = ({

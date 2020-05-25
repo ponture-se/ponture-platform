@@ -13,18 +13,38 @@
   background-color: #ffffff;
   border-radius: 12px;
   padding: 40px;
+  @include respond(tab-port) {
+    padding: 20px;
+  }
   .actions {
     &__info {
       margin-bottom: 30px;
     }
     &__btns {
       display: flex;
+      flex-direction: row;
+      @include respond(phone) {
+        display: none;
+      }
     }
     &__customBtn {
       flex: 1;
       &:not(:last-child) {
         margin-right: 10px;
       }
+      @include respond(phone) {
+        &:not(:last-child) {
+          margin-right: 0px;
+        }
+        margin-bottom: 10px;
+      }
+    }
+  }
+  .mobileActions {
+    display: none;
+    @include respond(phone) {
+      display: flex;
+      flex-direction: column;
     }
   }
   .guide {
@@ -39,7 +59,9 @@
   box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
   border-radius: 12px;
   padding: 30px 40px;
-
+  @include respond(tab-port) {
+    padding: 20px;
+  }
   &__info {
   }
   &__desc {
@@ -50,7 +72,7 @@
     flex-wrap: wrap;
   }
   &__customBtn {
-    flex-basis: calc(25% - 10px);
+    width: calc(25% - 10px);
     margin-right: 10px;
     margin-bottom: 10px;
     font-size: 12px;
@@ -58,7 +80,14 @@
 
     &:nth-child(4n) {
       margin-right: 0;
-      flex-basis: calc(25%);
+      width: calc(25%);
+      @include respond(tab-port) {
+        margin-right: 10px;
+        width: calc(50% - 10px);
+      }
+    }
+    @include respond(tab-port) {
+      width: calc(50% - 10px);
     }
   }
   .guide {
@@ -74,6 +103,9 @@
   box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
   border-radius: 12px;
   padding: 40px;
+  @include respond(tab-port) {
+    padding: 20px;
+  }
   // padding-bottom: 10px;
   &__info {
   }
@@ -82,11 +114,19 @@
     display: flex;
     align-items: center;
     position: relative;
+    @include respond(phone) {
+      position: static;
+      align-items: stretch;
+      flex-direction: column;
+    }
     h4 {
       font-weight: normal !important;
     }
     &__personalNumber {
       width: 250px !important;
+      @include respond(phone) {
+        width: 100% !important;
+      }
     }
     &__customBtn {
       min-height: 45px !important;
@@ -95,12 +135,17 @@
       padding: 0 10px !important;
       position: absolute;
       left: 270px;
+      @include respond(phone) {
+        position: static;
+        max-width: 100% !important;
+        width: 100%;
+      }
       a {
+        text-align: center;
         display: block;
         height: 20px;
         width: 20px;
         position: relative;
-        text-align: center;
         &:before {
           position: absolute;
           content: "\2713";
@@ -135,18 +180,36 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: row;
     min-height: 75px !important;
     &:nth-child(3n) {
       margin-right: 0;
       flex-basis: calc(33.3333333%);
+      @include respond(phone) {
+        flex-basis: calc(50% - 20px);
+        margin-right: 20px;
+      }
     }
     i {
       font-size: 20px;
       margin-right: 5px;
+      margin-bottom: 0;
+      @include respond(phone) {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+    }
+    @include respond(phone) {
+      flex-basis: calc(50% - 20px);
+      flex-direction: column;
     }
   }
   &__guid {
     font-size: 16px;
+    margin-top: 0px;
+    @include respond(phone) {
+      margin-top: 20px;
+    }
     ul {
       // list-style: none;
       padding-left: 10px;
@@ -166,22 +229,38 @@
   box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
   border-radius: 12px;
   padding: 30px 40px;
+  @include respond(tab-port) {
+    padding: 20px;
+  }
   &__inputs {
     margin-bottom: 20px;
     &__turnOver {
       width: 230px !important;
+      @include respond(tab-port) {
+        width: 100% !important;
+      }
     }
 
     &__phone {
       width: 85% !important;
+      @include respond(tab-port) {
+        width: 100% !important;
+      }
     }
     &__email {
       width: 85% !important;
+      @include respond(tab-port) {
+        width: 100% !important;
+      }
     }
   }
 
   &__twoColumns {
     display: flex;
+    flex-direction: row;
+    @include respond(tab-port) {
+      flex-direction: column;
+    }
     &__col {
       flex: 1;
     }
@@ -197,15 +276,18 @@
   &__actions {
     display: flex;
     justify-content: space-between;
-
+    flex-direction: row;
+    @include respond(tab-port) {
+      flex-direction: column;
+    }
     &__link {
       a {
         display: block;
         text-align: right;
         color: #44b3c2;
-        font-size: 16px;
+        font-size: 13px;
         &:first-child {
-          font-size: 13px;
+          font-size: 16px;
         }
       }
     }
@@ -216,6 +298,11 @@
     width: 150px;
     transition-duration: 0.2s;
     font-size: 17px;
+    margin-bottom: 0px;
+    @include respond(tab-port) {
+      width: 100%;
+      margin-bottom: 10px;
+    }
     &:hover {
       background-color: darken(#ff8a00, 5);
       transition-duration: 0.2s;
@@ -228,6 +315,7 @@
       height: 40px;
       align-items: center;
       &__chk {
+        flex-shrink: 0;
         margin-right: 15px;
         background-color: #1abc9c;
         width: 25px;
@@ -272,6 +360,10 @@
     align-items: center;
     display: flex;
     justify-content: space-between;
+    @include respond(phone) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
   }
 }
 .sliderEditable {
@@ -282,6 +374,11 @@
   height: 40px;
   overflow: hidden;
   transition-duration: 0.3s;
+  margin-top: 0px;
+  @include respond(phone) {
+    width: 100%;
+    margin-top: 20px;
+  }
   &:hover {
     transition-duration: 0.3s;
     background-color: #ddf2f4;
@@ -434,9 +531,12 @@
 .inputBox {
   margin-bottom: 20px;
   min-height: 90px;
+  @include respond(phone) {
+    margin-bottom: 0;
+  }
   &__top {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 20px;
     align-items: center;
   }
   &__title {
@@ -472,7 +572,7 @@
   }
   &__errorText {
     display: block;
-    height: 15px;
+    min-height: 15px;
     font-size: 16px;
     color: red;
     margin-top: 5px;

@@ -3,6 +3,7 @@ import { useLoanState } from "hooks/useLoan";
 import styles from "../styles.module.scss";
 import HeaderStep from "./HeaderStep";
 const Header = () => {
+  const [isOpenMenu, toggleMenu] = React.useState(false);
   const { steps, formStatus } = useLoanState();
   function getStepValue() {
     return steps.find((item) => item.isCurrent).id;
@@ -27,6 +28,27 @@ const Header = () => {
               <span>Contact@openratio.cm</span>
             </span>
           </div>
+          <div
+            className={styles.menu}
+            onClick={() => toggleMenu((prev) => !prev)}
+          >
+            <i className="icon-bars" />
+          </div>
+          {isOpenMenu && (
+            <div className={styles.info__mobile}>
+              <span className={styles.item}>
+                <i className="icon-envelope" />
+                <span>Chat</span>
+              </span>
+              <span className={styles.item}>
+                <i className="icon-envelope" />
+                <span>010 129 29 20</span>
+              </span>
+              <span className={styles.item}>
+                <span>Contact@openratio.cm</span>
+              </span>
+            </div>
+          )}
         </div>
         {formStatus === "form" && (
           <div className={styles.header__bottom}>

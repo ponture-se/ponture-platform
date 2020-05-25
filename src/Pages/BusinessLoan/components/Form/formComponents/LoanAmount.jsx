@@ -7,6 +7,7 @@ import Button from "./common/Button";
 import Title from "./common/Title";
 import useLocale from "hooks/useLocale";
 import { useLoanDispatch } from "hooks/useLoan";
+import CategoriesModal from "./LoanCategoriesModal";
 
 const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MIN)
@@ -23,7 +24,7 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
 
-const loanTypes = [
+export const loanTypes = [
   { id: 1, name: "general", displayName: "Generell likviditet" },
   { id: 2, name: "finance", displayName: "Fastighetsfinansiering" },
   { id: 3, name: "both", displayName: "Företagsförvärv" },
@@ -48,6 +49,7 @@ const LoanAmount = () => {
   const [loanPeriod, setLoanPeriod] = useState(12);
   const [isEditAmount, toggleAmountEdit] = useState(false);
   const [isEditPeriod, togglePeriodEdit] = useState(false);
+  const [isOpenModal, toggleCategoriesModal] = useState(false);
   function initForm() {
     register({ name: "amount", type: "custom" });
     register({ name: "amourtizationPeriod", type: "custom" });
@@ -111,135 +113,172 @@ const LoanAmount = () => {
       }
     }
   }, [isEditPeriod]);
+
+  function handleChooseCategory() {
+    toggleCategoriesModal(true);
+  }
+  function handleCloseCategoriesModal(item) {
+    toggleCategoriesModal(false);
+    if (item) {
+      handleSelectedType(item);
+    }
+  }
   return (
-    <div className={styles.loanAmountBox}>
-      <Slider
-        title={t("Lånebelopp")}
-        minValue={loanAmountMin}
-        maxValue={loanAmountMax}
-        step={loanAmountStep}
-        unit="kr"
-        value={loanAmount}
-        onChangedValue={handleOnChangedAmount}
-        tooltip="Välj det lånebloppet som du önskar. Vanligtvis tänk om ditt företags återbetalningsförmåga. Kan ditt företag betala för lånekostnaden under låneperiod eller inte."
-        id="loanAmount"
-        manualValueComponent={() => {
-          return (
-            <div
-              className={
-                styles.sliderEditable +
-                " " +
-                (isEditAmount ? styles.isEditSliderEditValue : "")
-              }
-              onMouseLeave={() => {
-                if (isEditAmount) {
-                  toggleAmountEdit(false);
-                }
-              }}
-              onClick={editAmount}
-            >
-              <div className={styles.sliderEditable__input}>
-                {!isEditAmount ? (
-                  <h4>{separateNumberByChar(loanAmount)} kr</h4>
-                ) : (
-                  <input
-                    step="10000"
-                    max={loanAmountMax}
-                    ref={editAmountInputRef}
-                    type="number"
-                    value={loanAmount}
-                    onChange={(e) =>
-                      handleChangeSliderEditValue("loanAmount", e.target.value)
-                    }
-                  />
-                )}
-              </div>
-              <div className={styles.sliderEditable__icon}>
-                <i className="icon-cog" />
-              </div>
-            </div>
-          );
-        }}
-      />
-      <Slider
-        title={t("Låneperiod")}
-        step={loanPeriodStep}
-        maxValue={loanPeriodMax}
-        minValue={loanPeriodMin}
-        unit="kr"
-        value={loanPeriod}
-        onChangedValue={handleOnChangedPeriod}
-        tooltip="Välj det lånebloppet som du önskar. Vanligtvis tänk om ditt företags återbetalningsförmåga. Kan ditt företag betala för lånekostnaden under låneperiod eller inte."
-        id="loanMonth"
-        manualValueComponent={() => {
-          return (
-            <div
-              className={
-                styles.sliderEditable +
-                " " +
-                (isEditPeriod ? styles.isEditSliderEditValue : "")
-              }
-              onClick={editPeriod}
-              onMouseLeave={() => {
-                if (isEditPeriod) {
-                  togglePeriodEdit(false);
-                }
-              }}
-            >
-              <div className={styles.sliderEditable__input}>
-                {!isEditPeriod ? (
-                  <h4>
-                    {loanPeriod} {loanPeriod === 1 ? "månad" : "månader"}
-                  </h4>
-                ) : (
-                  <input
-                    ref={editPeriodInputRef}
-                    min={1}
-                    type="number"
-                    value={loanPeriod}
-                    onChange={(e) =>
-                      handleChangeSliderEditValue("loanPeriod", e.target.value)
-                    }
-                  />
-                )}
-              </div>
-              <div className={styles.sliderEditable__icon}>
-                <i className="icon-cog" />
-              </div>
-            </div>
-          );
-        }}
-      />
-      <div className={styles.actions}>
-        <div className={styles.actions__info}>
-          <Title
-            text="Vad ska lånet används till?"
-            tooltip="no tooltip"
-            id="aa"
-          />
-        </div>
-        <div className={styles.actions__btns}>
-          {loanTypes.map((item, index) => {
+    <>
+      <div className={styles.loanAmountBox}>
+        <Slider
+          title={t("Lånebelopp")}
+          minValue={loanAmountMin}
+          maxValue={loanAmountMax}
+          step={loanAmountStep}
+          unit="kr"
+          value={loanAmount}
+          onChangedValue={handleOnChangedAmount}
+          tooltip="Välj det lånebloppet som du önskar. Vanligtvis tänk om ditt företags återbetalningsförmåga. Kan ditt företag betala för lånekostnaden under låneperiod eller inte."
+          id="loanAmount"
+          manualValueComponent={() => {
             return (
-              <Button
-                key={index}
-                customClass={styles.actions__customBtn}
-                selected={selectedType && selectedType.name === item.name}
-                showSelectedCheckMark={false}
-                onClick={() => handleSelectedType(item)}
+              <div
+                className={
+                  styles.sliderEditable +
+                  " " +
+                  (isEditAmount ? styles.isEditSliderEditValue : "")
+                }
+                onMouseLeave={() => {
+                  if (isEditAmount) {
+                    toggleAmountEdit(false);
+                  }
+                }}
+                onClick={editAmount}
               >
-                {item.displayName}
-              </Button>
+                <div className={styles.sliderEditable__input}>
+                  {!isEditAmount ? (
+                    <h4>{separateNumberByChar(loanAmount)} kr</h4>
+                  ) : (
+                    <input
+                      step="10000"
+                      max={loanAmountMax}
+                      ref={editAmountInputRef}
+                      type="number"
+                      value={loanAmount}
+                      onChange={(e) =>
+                        handleChangeSliderEditValue(
+                          "loanAmount",
+                          e.target.value
+                        )
+                      }
+                    />
+                  )}
+                </div>
+                <div className={styles.sliderEditable__icon}>
+                  <i className="icon-cog" />
+                </div>
+              </div>
             );
-          })}
+          }}
+        />
+        <Slider
+          title={t("Låneperiod")}
+          step={loanPeriodStep}
+          maxValue={loanPeriodMax}
+          minValue={loanPeriodMin}
+          unit="kr"
+          value={loanPeriod}
+          onChangedValue={handleOnChangedPeriod}
+          tooltip="Välj det lånebloppet som du önskar. Vanligtvis tänk om ditt företags återbetalningsförmåga. Kan ditt företag betala för lånekostnaden under låneperiod eller inte."
+          id="loanMonth"
+          manualValueComponent={() => {
+            return (
+              <div
+                className={
+                  styles.sliderEditable +
+                  " " +
+                  (isEditPeriod ? styles.isEditSliderEditValue : "")
+                }
+                onClick={editPeriod}
+                onMouseLeave={() => {
+                  if (isEditPeriod) {
+                    togglePeriodEdit(false);
+                  }
+                }}
+              >
+                <div className={styles.sliderEditable__input}>
+                  {!isEditPeriod ? (
+                    <h4>
+                      {loanPeriod} {loanPeriod === 1 ? "månad" : "månader"}
+                    </h4>
+                  ) : (
+                    <input
+                      ref={editPeriodInputRef}
+                      min={1}
+                      type="number"
+                      value={loanPeriod}
+                      onChange={(e) =>
+                        handleChangeSliderEditValue(
+                          "loanPeriod",
+                          e.target.value
+                        )
+                      }
+                    />
+                  )}
+                </div>
+                <div className={styles.sliderEditable__icon}>
+                  <i className="icon-cog" />
+                </div>
+              </div>
+            );
+          }}
+        />
+        <div className={styles.actions}>
+          <div className={styles.actions__info}>
+            <Title
+              text="Vad ska lånet används till?"
+              tooltip="no tooltip"
+              id="aa"
+            />
+          </div>
+          <div className={styles.actions__btns}>
+            {loanTypes.map((item, index) => {
+              return (
+                <Button
+                  key={index}
+                  customClass={styles.actions__customBtn}
+                  selected={selectedType && selectedType.name === item.name}
+                  showSelectedCheckMark={false}
+                  onClick={() => handleSelectedType(item)}
+                >
+                  {item.displayName}
+                </Button>
+              );
+            })}
+          </div>
         </div>
+        <div className={styles.mobileActions}>
+          {selectedType && (
+            <Button
+              customClass={styles.actions__customBtn}
+              selected={true}
+              showSelectedCheckMark={false}
+            >
+              {selectedType.displayName}
+            </Button>
+          )}
+          <Button
+            customClass={styles.actions__customBtn}
+            showSelectedCheckMark={false}
+            onClick={handleChooseCategory}
+          >
+            {!selectedType ? "Choose Category" : "Change Category"}
+          </Button>
+        </div>
+        {!selectedType && (
+          <div className={styles.guide}>
+            Välj ett alternativ ovan för att gå vidare
+          </div>
+        )}
       </div>
-      {!selectedType && (
-        <div className={styles.guide}>
-          Välj ett alternativ ovan för att gå vidare
-        </div>
-      )}
-    </div>
+      {isOpenModal && <CategoriesModal onClose={handleCloseCategoriesModal} />}
+    </>
   );
 };
 

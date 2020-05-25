@@ -39,7 +39,7 @@ const App = () => {
                 render={(props) => <BusinessLoan {...props} />}
               />
               <Route
-                path="/app/loan/verifyBankId"
+                path="/app/loan/verifybankId"
                 render={(props) => <BankIdVerification {...props} />}
               />
               <Route
