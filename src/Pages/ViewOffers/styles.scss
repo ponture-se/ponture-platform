@@ -248,6 +248,7 @@ $itemBtnColor: #44b3c2;
   }
 }
 .offerItem {
+  position: relative;
   margin: $boxMargin;
   transition: all 0.2s;
   &.accepted {
@@ -485,6 +486,13 @@ $itemBtnColor: #44b3c2;
         font-size: 12px;
       }
     }
+  }
+  &__special {
+    background-color: darkorange;
+    padding: 10px;
+    z-index: 0;
+    border-radius: 10px;
+    font-size: 13px;
   }
 }
 .row-title {
