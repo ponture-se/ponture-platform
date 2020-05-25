@@ -62,21 +62,28 @@ const PersonalNumberBox = () => {
           })}
           disabled={isDonePNumber}
         />
-        <Button
-          customClass={styles.companiesBox__input__customBtn}
-          selected={true}
-          showSelectedCheckMark={false}
-        >
-          {!spinner ? (
-            !isDonePNumber ? (
+        {!isDonePNumber && (
+          <Button
+            customClass={styles.companiesBox__input__customBtn}
+            selected={true}
+            showSelectedCheckMark={false}
+          >
+            {!spinner ? (
               "Sök efter mitt företag"
             ) : (
-              <a />
-            )
-          ) : (
-            <CircleSpinner show={true} size="small" />
-          )}
-        </Button>
+              <CircleSpinner show={true} size="small" />
+            )}
+          </Button>
+        )}
+        {isDonePNumber && (
+          <Button
+            customClass={styles.companiesBox__input__isDoneBtn}
+            selected={true}
+            showSelectedCheckMark={false}
+          >
+            <a />
+          </Button>
+        )}
       </form>
       <div className={styles.companiesBox__guid}>
         <span className={styles.companiesBox__guid_title}>

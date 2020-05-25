@@ -263,13 +263,24 @@ const LoanAmount = () => {
               {selectedType.displayName}
             </Button>
           )}
-          <Button
-            customClass={styles.actions__customBtn}
-            showSelectedCheckMark={false}
-            onClick={handleChooseCategory}
-          >
-            {!selectedType ? "Choose Category" : "Change Category"}
-          </Button>
+          {selectedType && (
+            <Button
+              customClass={styles.actions__customBtnLink}
+              showSelectedCheckMark={false}
+              onClick={handleChooseCategory}
+            >
+              Byt användningskategori
+            </Button>
+          )}
+          {!selectedType && (
+            <Button
+              customClass={styles.actions__customBtn}
+              showSelectedCheckMark={false}
+              onClick={handleChooseCategory}
+            >
+              Välj ..
+            </Button>
+          )}
         </div>
         {!selectedType && (
           <div className={styles.guide}>
