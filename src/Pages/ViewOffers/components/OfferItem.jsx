@@ -6,7 +6,6 @@ import React, {
 } from "react";
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
-import { oppStages } from "../helper";
 const OfferItem = (
   { offer = {}, onAcceptClicked, isAccepted, showDetail, opportunity },
   ref
@@ -31,13 +30,7 @@ const OfferItem = (
     if (onAcceptClicked) onAcceptClicked(offer);
   }
   function getOfferClass() {
-    let cls =
-      "offerItem " +
-      (isAccepted ? "accepted " : "") +
-      (opportunity.opportunityStage === oppStages.won ||
-      opportunity.opportunityStage === oppStages.lost
-        ? "accepted "
-        : "");
+    let cls = "offerItem " + (isAccepted ? "accepted " : "");
     if (!isAccepted && offerUiAction && offerUiAction.name === offer.fakeId) {
       return cls + " " + offerUiAction.className;
     }
@@ -99,27 +92,22 @@ const OfferItem = (
               </div>
             ))}
         </div>
-        {opportunity.opportunityStage !== oppStages.won &&
-        opportunity.opportunityStage !== oppStages.lost
-          ? !isAccepted && (
-              <div className="offerItem__action">
-                <button
-                  className="offerItem__acceptBtn hidden-xs"
-                  onClick={handleAcceptClicked}
-                >
-                  {t("OFFER_ITEM_ACCEPT_BTN")}
-                </button>
-                <button className="offerItem__moreBtn" onClick={toggle}>
-                  {t("OFFER_ITEM_MORE_BTN")}{" "}
-                  <span
-                    className={
-                      moreInfoBox ? "icon-caret-up" : "icon-caret-down"
-                    }
-                  />
-                </button>
-              </div>
-            )
-          : null}
+        {!isAccepted && (
+          <div className="offerItem__action">
+            <button
+              className="offerItem__acceptBtn hidden-xs"
+              onClick={handleAcceptClicked}
+            >
+              {t("OFFER_ITEM_ACCEPT_BTN")}
+            </button>
+            <button className="offerItem__moreBtn" onClick={toggle}>
+              {t("OFFER_ITEM_MORE_BTN")}{" "}
+              <span
+                className={moreInfoBox ? "icon-caret-up" : "icon-caret-down"}
+              />
+            </button>
+          </div>
+        )}
       </div>
       {!isAccepted && moreInfoBox && (
         <div className="offerItem__details animated fadeIn" ref={detailRef}>
