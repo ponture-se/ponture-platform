@@ -17,11 +17,11 @@ const Header = () => {
           </div>
           <div className={styles.info}>
             <span className={styles.info__item}>
-              <i className="icon-envelope" />
+              <img src={require("assets/icons/chat.png")} alt="" />
               <span>Chat</span>
             </span>
             <span className={styles.info__item}>
-              <i className="icon-envelope" />
+              <img src={require("assets/icons/phone.png")} alt="" />
               <span>010 129 29 20</span>
             </span>
             <span className={styles.info__item}>
@@ -37,7 +37,7 @@ const Header = () => {
           {isOpenMenu && (
             <div className={styles.info__mobile}>
               <span className={styles.item}>
-                <i className="icon-envelope" />
+                <img src={require("assets/icons/chat.png")} alt="" />
                 <span>Chat</span>
               </span>
               <span className={styles.item}>

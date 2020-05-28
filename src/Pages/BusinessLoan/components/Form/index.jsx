@@ -27,9 +27,14 @@ const LoanForm = () => {
         <h2>Ansök om företagslån</h2>
         <LoanAmount />
         {steps[0].isFinished && <NeedsBox />}
-        {steps[1].isFinished && <PersonalNumberBox />}
-        {steps[2].isFinished && <CompaniesBox />}
-        {steps[3].isFinished && <SubmitBox />}
+        {steps[1].isFinished && steps[1].isFinished && <PersonalNumberBox />}
+        {steps[0].isFinished && steps[1].isFinished && steps[2].isFinished && (
+          <CompaniesBox />
+        )}
+        {steps[0].isFinished &&
+          steps[1].isFinished &&
+          steps[2].isFinished &&
+          steps[3].isFinished && <SubmitBox />}
       </form>
     </FormContext>
   );

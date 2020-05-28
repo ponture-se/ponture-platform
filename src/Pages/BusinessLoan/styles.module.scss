@@ -39,10 +39,15 @@
       }
       &__item {
         margin-left: 15px;
+        display: flex;
         span {
           font-size: 13px;
           margin-left: 10px;
           font-weight: bold;
+        }
+        img {
+          width: 20px;
+          height: 20px;
         }
       }
     }

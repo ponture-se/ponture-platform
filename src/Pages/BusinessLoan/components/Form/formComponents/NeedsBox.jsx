@@ -2,74 +2,28 @@ import React from "react";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Title from "./common/Title";
-import { useLoanDispatch } from "hooks/useLoan";
+import { useLoanDispatch, useLoanState } from "hooks/useLoan";
+import useLoanApi from "hooks/useLoan/useLoanApi";
 
-const needs = [
-  {
-    id: 1,
-    name: "",
-    displayName: "Köp av fordon",
-  },
-  {
-    id: 2,
-    name: "",
-    displayName: "Anställa Personal",
-  },
-  {
-    id: 3,
-    name: "",
-    displayName: "Renovering",
-  },
-  {
-    id: 4,
-    name: "",
-    displayName: "Hyra Lokal",
-  },
-  {
-    id: 5,
-    name: "",
-    displayName: "Seasonsfinansiering",
-  },
-  {
-    id: 6,
-    name: "",
-    displayName: "Inköp av varo lager",
-  },
-  {
-    id: 7,
-    name: "",
-    displayName: "Köp/Hyr av utrustning",
-  },
-  {
-    id: 8,
-    name: "",
-    displayName: "Oväntade utgifter",
-  },
-  {
-    id: 9,
-    name: "",
-    displayName: "Ansökan om tillstånd",
-  },
-  {
-    id: 10,
-    name: "",
-    displayName: "Betala av andra skulder",
-  },
-  {
-    id: 11,
-    name: "",
-    displayName: "Ospecificerad",
-  },
-  {
-    id: 12,
-    name: "",
-    displayName: "Ospecificerad",
-  },
-];
 const NeedsBox = () => {
-  const dispatch = useLoanDispatch();
-  const [needsList, setNeeds] = React.useState(needs);
   const needsBoxRef = React.useRef(null);
+  const dispatch = useLoanDispatch();
+  const { selectedNeedCategory } = useLoanState();
+  const { getNeedsByCategory } = useLoanApi();
+  const [needsList, setNeeds] = React.useState(
+    JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
+  );
+  const updateNeeds = () => {
+    dispatch({
+      type: "SET_CURRENT_STEP",
+      payload: 2,
+    });
+    setNeeds(
+      JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
+    );
+  };
+  React.useEffect(updateNeeds, [selectedNeedCategory]);
+
   React.useEffect(() => {
     if (needsBoxRef.current) {
       window.scrollTo(0, needsBoxRef.current.offsetTop);
@@ -81,9 +35,14 @@ const NeedsBox = () => {
         type: "SET_FINISHED_STEP",
         payload: 2,
       });
+    } else {
+      dispatch({
+        type: "SET_CURRENT_STEP",
+        payload: 2,
+      });
     }
     const n = needsList.map((need) => {
-      if (need.id === item.id) {
+      if (need.API_Name === item.API_Name) {
         need.selected = !need.selected;
       }
       return need;
@@ -100,18 +59,19 @@ const NeedsBox = () => {
         alternativ
       </h5>
       <div className={styles.needsBox__list}>
-        {needsList.map((item, index) => (
-          <Button
-            key={index}
-            customClass={styles.needsBox__customBtn}
-            selected={item.selected}
-            onClick={() => selectNeed(item)}
-          >
-            {item.displayName}
-          </Button>
-        ))}
+        {needsList &&
+          needsList.map((item, index) => (
+            <Button
+              key={item.API_Name}
+              customClass={styles.needsBox__customBtn}
+              selected={item.selected}
+              onClick={() => selectNeed(item)}
+            >
+              {item.Label}
+            </Button>
+          ))}
       </div>
-      {!needsList.some((n) => n.selected) && (
+      {needsList && !needsList.some((n) => n.selected) && (
         <div className={styles.guide}>
           Välj minst en anledning från listan för att gå vidare.
         </div>

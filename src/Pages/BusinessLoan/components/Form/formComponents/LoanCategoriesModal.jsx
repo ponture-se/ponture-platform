@@ -1,10 +1,13 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
+import { useLoanState } from "hooks/useLoan";
 import styles from "../styles.module.scss";
 import "./styles.scss";
 import Button from "./common/Button";
-import { loanTypes } from "./LoanAmount";
+
 const LoanCategoriesModal = ({ onClose }) => {
+  const { needs } = useLoanState();
+
   useEffect(() => {
     document.body.style.overflowY = "hidden";
     return () => (document.body.style.overflowY = "auto");
@@ -24,18 +27,19 @@ const LoanCategoriesModal = ({ onClose }) => {
             <div className="icon-cross closeIcon" onClick={close} />
           </div>
           <div className="acceptModal__body">
-            {loanTypes.map((item, index) => {
-              return (
-                <Button
-                  key={index}
-                  customClass={styles.actions__customBtn}
-                  showSelectedCheckMark={false}
-                  onClick={() => onClose(item)}
-                >
-                  {item.displayName}
-                </Button>
-              );
-            })}
+            {needs &&
+              Object.keys(needs).map((item, index) => {
+                return (
+                  <Button
+                    key={index}
+                    customClass={styles.actions__customBtn}
+                    showSelectedCheckMark={false}
+                    onClick={() => onClose(item)}
+                  >
+                    {item}
+                  </Button>
+                );
+              })}
           </div>
         </div>
       </div>

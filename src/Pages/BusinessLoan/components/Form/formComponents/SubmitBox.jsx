@@ -3,6 +3,7 @@ import { useFormContext } from "react-hook-form";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Input from "./common/Input";
+import CurrencyInput from "./common/CurrencyInput";
 import Checkbox from "./common/Checkbox";
 import { useLoanDispatch } from "hooks/useLoan";
 import useLocale from "hooks/useLocale";
@@ -37,27 +38,25 @@ const SubmitBox = () => {
       }, 1000);
     }
   };
+
   return (
     <div ref={submitBoxRef} className={styles.submitBox}>
       <div className={styles.submitBox__inputs}>
-        <Input
+        <CurrencyInput
           title="Företagetsomsättning under de senaste 12 månader"
           placeholder="t.ex.  1 200 000 kr"
           extraClassStyle={styles.submitBox__inputs__turnOver}
           tooltip="no tooltip"
           id="ff"
           errorText={errors.lastYear && errors.lastYear.message}
-          ref={register({
+          rules={{
             required: "this is a required",
-            maxLength: {
-              value: 9,
-              message: "This is not valid value.",
+            validate: (value) => {
+              const val = value.split(" ").join("");
+              return val.length <= 9 || "This is not valid value.";
             },
-          })}
+          }}
           name="lastYear"
-          type="number"
-          min="0"
-          max="999999999"
         />
         <div className={styles.submitBox__twoColumns}>
           <div className={styles.submitBox__twoColumns__col}>
@@ -101,14 +100,16 @@ const SubmitBox = () => {
           name="terms"
           ref={register({ required: t("BL_TERMS_IS_REQUIRED") })}
           errorText={errors.terms && errors.terms.message}
+          extraLabel={
+            <a
+              href="https://www.ponture.com/eula"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              användarvillkoren.
+            </a>
+          }
         />
-        <a
-          href="https://www.ponture.com/eula"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          användarvillkoren.
-        </a>
       </div>
       <div className={styles.submitBox__actions}>
         <Button

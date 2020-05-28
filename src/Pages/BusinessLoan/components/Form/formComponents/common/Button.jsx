@@ -17,12 +17,13 @@ const Button = ({
         " " +
         (customClass ? customClass : "") +
         " " +
-        (selected ? styles.selectedButton : "") +
-        " " +
-        (selected && showSelectedCheckMark ? styles.checkMarkButton : "")
+        (selected ? styles.selectedButton : "")
       }
       {...rest}
     >
+      {selected && showSelectedCheckMark && (
+        <div className={styles.checkMarkButton} />
+      )}
       {children}
     </button>
   );

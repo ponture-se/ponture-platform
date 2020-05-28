@@ -80,9 +80,7 @@ const PersonalNumberBox = () => {
             customClass={styles.companiesBox__input__isDoneBtn}
             selected={true}
             showSelectedCheckMark={false}
-          >
-            <a />
-          </Button>
+          />
         )}
       </form>
       <div className={styles.companiesBox__guid}>

@@ -359,3 +359,12 @@ div::-moz-scrollbar-thumb:hover {
   justify-content: center;
   align-items: center;
 }
+
+//variables
+
+svg {
+  width: 100px;
+  height: 100px;
+  margin: 20px;
+  display: inline-block;
+}

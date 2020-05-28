@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import separateNumberByChar from "utils/separateNumberByChar";
+import { getParameterByName, isNumber } from "utils";
 import styles from "../styles.module.scss";
 import Slider from "./Slider";
 import Button from "./common/Button";
 import Title from "./common/Title";
 import useLocale from "hooks/useLocale";
-import { useLoanDispatch } from "hooks/useLoan";
+import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import CategoriesModal from "./LoanCategoriesModal";
 
 const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
@@ -24,12 +25,6 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
 
-export const loanTypes = [
-  { id: 1, name: "general", displayName: "Generell likviditet" },
-  { id: 2, name: "finance", displayName: "Fastighetsfinansiering" },
-  { id: 3, name: "both", displayName: "Företagsförvärv" },
-];
-
 const LoanAmount = () => {
   const {
     register,
@@ -39,14 +34,48 @@ const LoanAmount = () => {
     setValue,
     formState: { dirty },
   } = useFormContext();
+  const params_loanAmount = getParameterByName("amount");
+  const params_loanPeriod = getParameterByName("amourtizationPeriod");
+  const params_need = getParameterByName("need");
   const { t } = useLocale();
   const dispatch = useLoanDispatch();
+  const { needs } = useLoanState();
   const editAmountInputRef = React.useRef(null);
   const editPeriodInputRef = React.useRef(null);
+  const [showUrlNeedsBox, toggleUrlNeedsBox] = useState(() => {
+    if (!params_need || params_need.length === 0) {
+      return false;
+    }
+    const n_s = params_need.split(",");
+    for (const key in needs) {
+      return needs[key].some((item) => n_s.includes(item.API_Name));
+    }
+    return false;
+  });
   const [selectedType, setType] = useState();
-  const [loanAmount, setLoanAmount] = useState(850000);
+  const [loanAmount, setLoanAmount] = useState(() => {
+    return params_loanAmount &&
+      params_loanAmount.length > 0 &&
+      isNumber(params_loanAmount)
+      ? parseInt(params_loanAmount) < loanAmountMin
+        ? loanAmountMin
+        : parseInt(params_loanAmount) > loanAmountMax
+        ? loanAmountMax
+        : parseInt(params_loanAmount)
+      : 3500000;
+  });
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
-  const [loanPeriod, setLoanPeriod] = useState(12);
+  const [loanPeriod, setLoanPeriod] = useState(() => {
+    return params_loanPeriod &&
+      params_loanPeriod.length > 0 &&
+      isNumber(params_loanPeriod)
+      ? parseInt(params_loanPeriod) < loanPeriodMin
+        ? loanPeriodMin
+        : parseInt(params_loanPeriod) > loanPeriodMax
+        ? loanPeriodMax
+        : parseInt(params_loanPeriod)
+      : 12;
+  });
   const [isEditAmount, toggleAmountEdit] = useState(false);
   const [isEditPeriod, togglePeriodEdit] = useState(false);
   const [isOpenModal, toggleCategoriesModal] = useState(false);
@@ -78,13 +107,23 @@ const LoanAmount = () => {
       handleOnChangedPeriod(parseInt(value));
     }
   }
-  function handleSelectedType(item) {
+  function handleSelectedCategory(item) {
     setType(item);
-    if (!selectedType)
+    if (!selectedType) {
+      dispatch({
+        type: "SET_NEED_CATEGORY",
+        payload: item,
+      });
       dispatch({
         type: "SET_FINISHED_STEP",
         payload: 1,
       });
+    } else {
+      dispatch({
+        type: "SET_NEED_CATEGORY",
+        payload: item,
+      });
+    }
   }
   function editAmount() {
     if (!isEditAmount) {
@@ -119,9 +158,7 @@ const LoanAmount = () => {
   }
   function handleCloseCategoriesModal(item) {
     toggleCategoriesModal(false);
-    if (item) {
-      handleSelectedType(item);
-    }
+    if (item) handleSelectedCategory(item);
   }
   return (
     <>
@@ -171,7 +208,7 @@ const LoanAmount = () => {
                   )}
                 </div>
                 <div className={styles.sliderEditable__icon}>
-                  <i className="icon-cog" />
+                  <img src={require("assets/icons/edit.png")} alt="" />
                 </div>
               </div>
             );
@@ -223,69 +260,96 @@ const LoanAmount = () => {
                   )}
                 </div>
                 <div className={styles.sliderEditable__icon}>
-                  <i className="icon-cog" />
+                  <img src={require("assets/icons/edit.png")} alt="" />
                 </div>
               </div>
             );
           }}
         />
-        <div className={styles.actions}>
-          <div className={styles.actions__info}>
-            <Title
-              text="Vad ska lånet används till?"
-              tooltip="no tooltip"
-              id="aa"
-            />
+        {showUrlNeedsBox ? (
+          <div className={styles.actions}>
+            <div className={styles.actions__info}>
+              <Title text="Selected needs" tooltip="no tooltip" id="aa" />
+            </div>
+            <div className={styles.actions__btns}>
+              {needs &&
+                Object.keys(needs).map((item, index) => {
+                  return (
+                    <Button
+                      key={index}
+                      customClass={styles.actions__customBtn}
+                      selected={true}
+                      showSelectedCheckMark={true}
+                      onClick={() => handleSelectedCategory(item)}
+                    >
+                      {item}
+                    </Button>
+                  );
+                })}
+            </div>
           </div>
-          <div className={styles.actions__btns}>
-            {loanTypes.map((item, index) => {
-              return (
+        ) : (
+          <>
+            <div className={styles.actions}>
+              <div className={styles.actions__info}>
+                <Title
+                  text="Vad ska lånet används till?"
+                  tooltip="no tooltip"
+                  id="aa"
+                />
+              </div>
+              <div className={styles.actions__btns}>
+                {needs &&
+                  Object.keys(needs).map((item, index) => {
+                    return (
+                      <Button
+                        key={index}
+                        customClass={styles.actions__customBtn}
+                        selected={selectedType && selectedType === item}
+                        showSelectedCheckMark={false}
+                        onClick={() => handleSelectedCategory(item)}
+                      >
+                        {item}
+                      </Button>
+                    );
+                  })}
+              </div>
+            </div>
+            <div className={styles.mobileActions}>
+              {selectedType && (
                 <Button
-                  key={index}
                   customClass={styles.actions__customBtn}
-                  selected={selectedType && selectedType.name === item.name}
+                  selected={true}
                   showSelectedCheckMark={false}
-                  onClick={() => handleSelectedType(item)}
                 >
-                  {item.displayName}
+                  {selectedType}
                 </Button>
-              );
-            })}
-          </div>
-        </div>
-        <div className={styles.mobileActions}>
-          {selectedType && (
-            <Button
-              customClass={styles.actions__customBtn}
-              selected={true}
-              showSelectedCheckMark={false}
-            >
-              {selectedType.displayName}
-            </Button>
-          )}
-          {selectedType && (
-            <Button
-              customClass={styles.actions__customBtnLink}
-              showSelectedCheckMark={false}
-              onClick={handleChooseCategory}
-            >
-              Byt användningskategori
-            </Button>
-          )}
-          {!selectedType && (
-            <Button
-              customClass={styles.actions__customBtn}
-              showSelectedCheckMark={false}
-              onClick={handleChooseCategory}
-            >
-              Välj ..
-            </Button>
-          )}
-        </div>
-        {!selectedType && (
-          <div className={styles.guide}>
-            Välj ett alternativ ovan för att gå vidare
-          </div>
+              )}
+              {selectedType && (
+                <Button
+                  customClass={styles.actions__customBtnLink}
+                  showSelectedCheckMark={false}
+                  onClick={handleChooseCategory}
+                >
+                  Byt användningskategori
+                </Button>
+              )}
+              {!selectedType && (
+                <Button
+                  customClass={styles.actions__customBtn}
+                  showSelectedCheckMark={false}
+                  onClick={handleChooseCategory}
+                >
+                  Välj ..
+                </Button>
+              )}
+            </div>
+            {!selectedType && (
+              <div className={styles.guide}>
+                Välj ett alternativ ovan för att gå vidare
+              </div>
+            )}
+          </>
         )}
       </div>
       {isOpenModal && <CategoriesModal onClose={handleCloseCategoriesModal} />}

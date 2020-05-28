@@ -1,6 +1,6 @@
 import React, { forwardRef } from "react";
 import styles from "../../styles.module.scss";
-const Checkbox = ({ title, id, errorText, ...rest }, ref) => {
+const Checkbox = ({ title, id, errorText, extraLabel, ...rest }, ref) => {
   const inputRef = React.useRef(null);
   React.useImperativeHandle(ref, () => inputRef.current);
   return (
@@ -16,6 +16,7 @@ const Checkbox = ({ title, id, errorText, ...rest }, ref) => {
         <span className={styles.checkbox__btn}></span>
         {title}
       </label>
+      {extraLabel}
       <span className={styles.checkbox__errorText}>{errorText}</span>
     </div>
   );

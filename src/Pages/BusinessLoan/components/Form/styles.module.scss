@@ -84,7 +84,8 @@
     margin-bottom: 10px;
     font-size: 12px;
     min-height: 75px !important;
-
+    word-wrap: break-word;
+    display: inline-block;
     &:nth-child(4n) {
       margin-right: 0;
       width: calc(25%);
@@ -138,17 +139,17 @@
     &__customBtn {
       min-height: 45px !important;
       margin-top: 2px;
-      max-width: 190px !important;
+      max-width: 190px;
       padding: 0 10px !important;
-      position: absolute;
+      position: absolute !important;
       left: 270px;
       position: absolute;
       justify-content: center;
       align-items: center;
       display: flex;
       @include respond(phone) {
-        position: static;
-        max-width: 100% !important;
+        position: static !important;
+        max-width: 100%;
         width: 100%;
       }
     }
@@ -163,23 +164,28 @@
         margin-top: 0px;
         min-height: 50px !important;
       }
-      a {
-        text-align: center;
-        display: block;
-        height: 20px;
-        width: 35px;
-        position: relative;
-        &:before {
-          position: absolute;
-          content: "\2713";
-          color: white;
-          top: -15px;
-          left: 0;
-          right: 0;
-          bottom: 0;
-          margin: auto;
-          font-size: 30px;
-        }
+      &::before {
+        position: absolute;
+        left: 0;
+        top: 42%;
+        height: 15px;
+        width: 3px;
+        background-color: white;
+        content: "";
+        transform: translate(20px, -1px) rotate(-45deg);
+        transform-origin: left bottom;
+      }
+
+      &::after {
+        position: absolute;
+        left: 0;
+        bottom: 20%;
+        height: 3px;
+        width: 30px;
+        background-color: white;
+        content: "";
+        transform: translate(20px, -1px) rotate(-45deg);
+        transform-origin: left bottom;
       }
     }
   }
@@ -296,9 +302,10 @@
       flex-direction: column;
     }
     a {
-      margin-left: 10px;
+      margin-left: 5px;
       color: black;
       @include respond(phone) {
+        display: block;
         margin-left: 40px;
       }
     }
@@ -353,13 +360,28 @@
         border-radius: 50%;
         position: relative;
         text-align: center;
-        &::after {
-          width: 25px;
-          left: 0;
-          color: white;
-          text-align: center;
+        &::before {
           position: absolute;
-          content: "\2713";
+          left: 0;
+          top: 50%;
+          height: 7px;
+          width: 3px;
+          background-color: white;
+          content: "";
+          transform: translateX(10px) rotate(-45deg);
+          transform-origin: left bottom;
+        }
+
+        &::after {
+          position: absolute;
+          left: 0;
+          bottom: 20%;
+          height: 3px;
+          width: 15px;
+          background-color: white;
+          content: "";
+          transform: translateX(10px) rotate(-45deg);
+          transform-origin: left bottom;
         }
       }
       span {
@@ -448,8 +470,10 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #44b3c2;
     cursor: pointer;
+    img {
+      width: 22px;
+    }
   }
 }
 
@@ -511,6 +535,7 @@
 
 // #region button
 .button {
+  position: relative;
   border-radius: 10px;
   min-height: 60px;
   cursor: pointer;
@@ -538,21 +563,37 @@
   transition: all 0.2s;
 }
 .checkMarkButton {
-  position: relative;
+  position: absolute;
+  height: 30px;
+  background-color: white;
+  width: 30px;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translate(-25%, -25%);
+  border: 2px solid #44b3c2;
   &::before {
-    content: "\2713";
-    color: #44b3c2;
-    font-size: 17px;
-    font-weight: bold;
     position: absolute;
-    height: 25px;
-    background-color: white;
-    width: 25px;
-    top: 0;
     left: 0;
-    border-radius: 50%;
-    transform: translate(-25%, -25%);
-    border: 2px solid #44b3c2;
+    top: 50%;
+    height: 7px;
+    width: 3px;
+    background-color: #44b3c2;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
+  }
+
+  &::after {
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+    height: 3px;
+    width: 15px;
+    background-color: #44b3c2;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
   }
 }
 // #endregion button
@@ -612,8 +653,7 @@
 
 // #region chcekbox
 .checkbox {
-  display: flex;
-  flex-direction: column;
+  width: 100%;
   position: relative;
   &__chk {
     display: none;
@@ -624,6 +664,7 @@
     font-size: 16px;
     position: relative;
     cursor: pointer;
+    width: 100%;
   }
   &__btn {
     height: 30px;
@@ -635,27 +676,39 @@
     top: -0.3rem;
     left: 0;
     transition: all 0.2s;
-    &::after {
-      transition: all 0.2s;
-      display: block;
-      content: "";
-      // width: 1.2rem;
-      // height: 1.2rem;
-      // border-radius: 50%;
-      color: #44b3c2;
-      font-size: 17px;
-      font-weight: bolder;
-      transform: translate(-50%, -50%) scale(0);
-      top: 50%;
-      left: 50%;
+    &::before {
       position: absolute;
+      left: 0;
+      top: 50%;
+      height: 10px;
+      width: 4px;
+      background-color: #44b3c2;
+      content: "";
+      transform: translateX(10px) rotate(-45deg);
+      transform-origin: left bottom;
       opacity: 0;
+      transition-duration: 0.2s;
+    }
+
+    &::after {
+      position: absolute;
+      left: 0;
+      bottom: 10%;
+      height: 4px;
+      width: 20px;
+      background-color: #44b3c2;
+      content: "";
+      transform: translateX(10px) rotate(-45deg);
+      transform-origin: left bottom;
+      opacity: 0;
+      transition-duration: 0.2s;
     }
   }
   &__chk:checked + &__label span::after {
-    content: "\2713";
     opacity: 1;
-    transform: translate(-50%, -50%) scale(1);
+  }
+  &__chk:checked + &__label span::before {
+    opacity: 1;
   }
   &__errorText {
     // position: absolute;

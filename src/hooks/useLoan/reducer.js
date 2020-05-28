@@ -7,11 +7,23 @@ export const initialState = {
     { id: 4, isFinished: false, isCurrent: false },
     { id: 5, isFinished: false, isCurrent: false },
   ],
+  needs: null,
 };
 //
 export const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
+    case "SET_CURRENT_STEP":
+      return {
+        ...state,
+        steps: state.steps.map((item) => {
+          if (item.id === payload) {
+            item.isFinished = false;
+            item.isCurrent = true;
+          }
+          return item;
+        }),
+      };
     case "SET_FINISHED_STEP":
       return {
         ...state,
@@ -25,10 +37,21 @@ export const reducer = (state, action) => {
           return item;
         }),
       };
+    case "SET_NEED_CATEGORY":
+      return {
+        ...state,
+        selectedNeedCategory: payload,
+      };
     case "SET_FORM_STATUS":
       return {
         ...state,
         formStatus: payload,
+      };
+    case "SET_NEEDS":
+      debugger;
+      return {
+        ...state,
+        needs: payload,
       };
     default:
       return state;
