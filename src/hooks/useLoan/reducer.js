@@ -48,7 +48,6 @@ export const reducer = (state, action) => {
         formStatus: payload,
       };
     case "SET_NEEDS":
-      debugger;
       return {
         ...state,
         needs: payload,

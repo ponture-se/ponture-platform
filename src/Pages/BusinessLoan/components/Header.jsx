@@ -28,11 +28,18 @@ const Header = () => {
               <span>Contact@openratio.cm</span>
             </span>
           </div>
-          <div
-            className={styles.menu}
-            onClick={() => toggleMenu((prev) => !prev)}
-          >
-            <i className="icon-bars" />
+          <div className={styles.menu}>
+            <input
+              type="checkbox"
+              className={styles.menu__checkbox}
+              id="navi-toggle"
+              checked={isOpenMenu}
+              onChange={(e) => toggleMenu(e.target.checked)}
+            />
+
+            <label htmlFor="navi-toggle" className={styles.menu__button}>
+              <span className={styles.menu__icon}></span>
+            </label>
           </div>
           {isOpenMenu && (
             <div className={styles.info__mobile}>
@@ -41,7 +48,7 @@ const Header = () => {
                 <span>Chat</span>
               </span>
               <span className={styles.item}>
-                <i className="icon-envelope" />
+                <img src={require("assets/icons/phone.png")} alt="" />
                 <span>010 129 29 20</span>
               </span>
               <span className={styles.item}>
