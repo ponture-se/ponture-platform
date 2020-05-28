@@ -10,12 +10,13 @@ import AcceptedAlert from "./components/AcceptedAlert";
 import UiActions from "./components/UiActions";
 import OffersCategory from "./components/OffersCategory";
 import AcceptedOffer from "./components/AcceptedOffer";
-// import OfferModal from "./OfferModal";
+import IsDoneOpportunity from "./components/IsDoneOpportunity";
 import { getLatestOffers } from "api/main-api";
 import {
   getCategorizedOffers,
   checkIsAcceptedOffer,
   checkIsSameUiAction,
+  oppStages,
 } from "./helper";
 
 //
@@ -31,6 +32,7 @@ const AllOffers = ({ match }) => {
     acceptedOffer: null,
     isAccepted: false,
     hasUiActionsSame: false,
+    isDone: false,
     offers: [],
   });
 
@@ -39,37 +41,59 @@ const AllOffers = ({ match }) => {
 
   const init = (result, errorTitle, errorMsg) => {
     if (!didCancel.current) {
-      if (result) {
-        if (!result.offers || result.offers.length === 0) {
-          setState((prevState) => ({
-            ...prevState,
-            loading: false,
-            opportunity: result.opportunityDetail,
-          }));
-        } else {
-          const categorizedOffers = getCategorizedOffers(result.offers);
-          const acceptedOffer = checkIsAcceptedOffer(result.offers);
-          const hasUiActionsSame = checkIsSameUiAction(result.offers);
-
-          setState((prevState) => ({
-            ...prevState,
-            loading: false,
-            opportunity: result.opportunityDetail,
-            offers: categorizedOffers,
-            isAccepted: acceptedOffer ? true : false,
-            acceptedOffer,
-            hasUiActionsSame,
-          }));
-        }
-      } else
-        updateState({
+      const opportunity = result.opportunityDetail;
+      if (
+        opportunity.opportunityStage.toLowerCase() ===
+          oppStages.won.toLowerCase() ||
+        opportunity.opportunityStage.toLowerCase() ===
+          oppStages.lost.toLowerCase()
+      ) {
+        setState((prevState) => ({
+          ...prevState,
           loading: false,
-          error: {
-            title: t(errorTitle),
-            message: t(errorMsg),
-          },
-        });
-    }
+          opportunity,
+          isDone: true,
+        }));
+      } else {
+        if (result) {
+          if (!result.offers || result.offers.length === 0) {
+            setState((prevState) => ({
+              ...prevState,
+              loading: false,
+              opportunity,
+            }));
+          } else {
+            const categorizedOffers = getCategorizedOffers(result.offers);
+            const acceptedOffer = checkIsAcceptedOffer(result.offers);
+            const hasUiActionsSame = checkIsSameUiAction(result.offers);
+
+            setState((prevState) => ({
+              ...prevState,
+              loading: false,
+              opportunity,
+              offers: categorizedOffers,
+              isAccepted: acceptedOffer ? true : false,
+              acceptedOffer,
+              hasUiActionsSame,
+            }));
+          }
+        } else
+          updateState({
+            loading: false,
+            error: {
+              title: t(errorTitle),
+              message: t(errorMsg),
+            },
+          });
+      }
+    } else
+      updateState({
+        loading: false,
+        error: {
+          title: t(errorTitle),
+          message: t(errorMsg),
+        },
+      });
   };
   function _getLatestOffers() {
     getLatestOffers()
@@ -108,6 +132,7 @@ const AllOffers = ({ match }) => {
     isAccepted,
     acceptedOffer,
     hasUiActionsSame,
+    isDone,
   } = state;
   useEffect(_getLatestOffers, []);
 
@@ -127,6 +152,11 @@ const AllOffers = ({ match }) => {
           <Loading />
         ) : error ? (
           <Error />
+        ) : isDone ? (
+          <>
+            <OppInfo opportunity={opportunity} />
+            <IsDoneOpportunity />
+          </>
         ) : !offers || offers.length === 0 ? (
           <>
             <OppInfo opportunity={opportunity} />
