@@ -2,6 +2,7 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import StateProvider from "./hooks/useGlobalState/stateProvider";
 import { LocaleProvider } from "./hooks/useLocale/localeContext";
+import { LoanProvider } from "./hooks/useLoan";
 import { useTheme } from "./hooks";
 import "./styles/animate.css";
 import "./styles/app.scss";
@@ -36,7 +37,11 @@ const App = () => {
                 key="appLoan"
                 path="/app/loan"
                 exact
-                render={(props) => <BusinessLoan {...props} />}
+                render={(props) => (
+                  <LoanProvider>
+                    <BusinessLoan {...props} />
+                  </LoanProvider>
+                )}
               />
               <Route
                 path="/app/loan/verifybankId"
