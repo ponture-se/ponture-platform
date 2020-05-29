@@ -20,11 +20,11 @@ const SubmitBox = () => {
   } = useFormContext();
   const submitBoxRef = React.useRef(null);
   const dispatch = useLoanDispatch();
-  const { contactInfo } = useLoanState();
+  const { contactInfo, currentStep } = useLoanState();
   const { t } = useLocale();
   const [spinner, toggleSpinner] = React.useState(false);
   const init = () => {
-    if (submitBoxRef.current)
+    if (submitBoxRef.current && currentStep === "submitBox")
       window.scrollTo(0, submitBoxRef.current.offsetTop);
     if (contactInfo) {
       setValue("lastYear", contactInfo.lastYear);

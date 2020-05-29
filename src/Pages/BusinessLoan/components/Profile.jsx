@@ -4,7 +4,7 @@ const Profile = () => {
   return (
     <div className={styles.profileContent}>
       <img
-        src="https://www.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg"
+        src="https://www.ponture.com/wp-content/uploads/2019/04/Kim.jpg"
         alt=""
       />
       <div className={styles.profileContent__username}>

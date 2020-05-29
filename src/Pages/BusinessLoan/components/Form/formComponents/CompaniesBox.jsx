@@ -10,7 +10,7 @@ const CompaniesBox = () => {
   const companiesBoxRef = React.useRef(null);
   const dispatch = useLoanDispatch();
   const { errors, setValue } = useFormContext();
-  const { selectedCompany, companies } = useLoanState();
+  const { selectedCompany, companies, currentStep } = useLoanState();
 
   function handleSelectCompany(item) {
     setValue("company", item);
@@ -21,10 +21,14 @@ const CompaniesBox = () => {
     if (!selectedCompany)
       dispatch({
         type: "NEXT_STEP",
+        payload: {
+          finishedStep: "companiesBox",
+          nextStep: "submitBox",
+        },
       });
   }
   const init = () => {
-    if (companiesBoxRef.current) {
+    if (companiesBoxRef.current && currentStep === "companiesBox") {
       window.scrollTo(0, companiesBoxRef.current.offsetTop);
     }
     if (selectedCompany) setValue("company", selectedCompany);

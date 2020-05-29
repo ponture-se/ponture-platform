@@ -19,7 +19,7 @@ const PersonalNumberBox = () => {
     getValues,
   } = useFormContext();
   const dispatch = useLoanDispatch();
-  const { companies, personalNumber } = useLoanState();
+  const { companies, personalNumber, currentStep } = useLoanState();
   const { _getCompanies } = useLoanApi();
 
   const { t } = useLocale();
@@ -30,19 +30,19 @@ const PersonalNumberBox = () => {
   );
   const init = () => {
     if (personalNumber) setValue("personalNumber", personalNumber);
-
-    if (pNumberBoxRef.current) {
+    if (pNumberBoxRef.current && currentStep === "personalNumberBox") {
       window.scrollTo(0, pNumberBoxRef.current.offsetTop);
     }
   };
   React.useEffect(init, []);
 
   function handleKeyDown(e) {
+    e.stopPropagation();
     if (e.key === "Enter") {
-      searchCompanies();
+      searchCompanies(e);
     }
   }
-  async function searchCompanies() {
+  async function searchCompanies(e) {
     if (!isDonePNumber) {
       const isValid = await triggerValidation("personalNumber");
       if (isValid) {
@@ -55,6 +55,10 @@ const PersonalNumberBox = () => {
             toggleIsDonePNumber(true);
             dispatch({
               type: "NEXT_STEP",
+              payload: {
+                finishedStep: "personalNumberBox",
+                nextStep: "companiesBox",
+              },
             });
           },
           () => {
@@ -82,7 +86,6 @@ const PersonalNumberBox = () => {
           id="cc"
           name="personalNumber"
           autoFocus
-          onKeyDown={handleKeyDown}
           ref={register({
             required: t("PERSONAL_NUMBER_IS_REQUIRED"),
             pattern: {
@@ -97,6 +100,7 @@ const PersonalNumberBox = () => {
             customClass={styles.companiesBox__input__customBtn}
             selected={true}
             showSelectedCheckMark={false}
+            onClick={searchCompanies}
           >
             {!spinner ? (
               "Sök efter mitt företag"

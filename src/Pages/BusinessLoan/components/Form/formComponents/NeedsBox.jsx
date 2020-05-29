@@ -10,17 +10,17 @@ const NeedsBox = () => {
   const needsBoxRef = React.useRef(null);
   const { errors, clearError, setValue } = useFormContext();
   const dispatch = useLoanDispatch();
-  const { selectedNeedCategory } = useLoanState();
+  const {
+    selectedNeedCategory,
+    currentStep,
+    steps1: { needsBox },
+  } = useLoanState();
   const { getNeedsByCategory } = useLoanApi();
   const [needsList, setNeeds] = React.useState(
     JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
   );
   const [isDoneNextStepAction, setIsDoneNextStep] = React.useState(false);
   const updateNeeds = () => {
-    dispatch({
-      type: "SET_CURRENT_STEP",
-      payload: 2,
-    });
     setNeeds(
       JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
     );
@@ -29,12 +29,12 @@ const NeedsBox = () => {
     };
   };
   React.useEffect(updateNeeds, [selectedNeedCategory]);
-
-  React.useEffect(() => {
-    if (needsBoxRef.current) {
+  const scroll = () => {
+    if (needsBoxRef.current && currentStep === "needsBox") {
       window.scrollTo(0, needsBoxRef.current.offsetTop);
     }
-  }, []);
+  };
+  React.useEffect(scroll, []);
   function selectNeed(item) {
     const n = needsList.map((need) => {
       if (need.API_Name === item.API_Name) {
@@ -46,14 +46,20 @@ const NeedsBox = () => {
     setValue("need", selectedNeeds);
     if (selectedNeeds.length === 0) {
       dispatch({
-        type: "SET_CURRENT_STEP",
-        payload: 2,
+        type: "SET_STEP_TO_NOT_FINISHED",
+        payload: {
+          step: "needsBox",
+        },
       });
       setIsDoneNextStep(false);
     } else {
       if (!isDoneNextStepAction) {
         dispatch({
           type: "NEXT_STEP",
+          payload: {
+            finishedStep: "needsBox",
+            nextStep: "personalNumberBox",
+          },
         });
         setIsDoneNextStep(true);
       }
@@ -76,7 +82,7 @@ const NeedsBox = () => {
               key={item.API_Name}
               customClass={styles.needsBox__customBtn}
               selected={item.selected}
-              onClick={() => selectNeed(item)}
+              onMouseDown={() => selectNeed(item)}
             >
               {item.Label}
             </Button>

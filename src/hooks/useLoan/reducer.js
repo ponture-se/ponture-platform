@@ -1,42 +1,122 @@
 export const initialState = {
   formStatus: "form",
-  steps: [],
+  steps1: [],
   needs: null,
+  currentStep: "loanAmountBox",
+  steps: {
+    loanAmountBox: {
+      index: 1,
+      isHidden: false,
+      isFinished: false,
+      isTouched: true,
+    },
+    needsBox: {
+      index: 2,
+      isHidden: false,
+      isFinished: false,
+      isTouched: false,
+    },
+    personalNumberBox: {
+      index: 3,
+      isHidden: false,
+      isFinished: false,
+      isTouched: false,
+    },
+    companiesBox: {
+      index: 4,
+      isHidden: false,
+      isFinished: false,
+      isTouched: false,
+    },
+    submitBox: {
+      index: 5,
+      isHidden: false,
+      isFinished: false,
+      isTouched: false,
+    },
+  },
 };
 //
 export const reducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "SET_CURRENT_STEP":
-      return {
-        ...state,
-        steps: state.steps.map((item, index) => {
-          if (item.id === payload) {
-            item.isFinished = false;
-            item.isCurrent = true;
-          }
-          return item;
-        }),
-      };
     case "NEXT_STEP":
-      let i;
-      let new_steps = state.steps.map((item, index) => {
-        if (!i && index !== state.steps.length - 1 && item.isCurrent) {
-          i = index;
-          item.isFinished = true;
-          item.isCurrent = false;
-        }
-        return item;
-      });
-      const lastCurrentStep = new_steps.find(
-        (item) => !item.isFinished && item.isCurrent
-      );
-      if (!lastCurrentStep && new_steps[i + 1]) {
-        new_steps[i + 1].isCurrent = true;
+      let s = {
+        ...state,
+        steps: {
+          ...state.steps,
+          [payload.finishedStep]: {
+            ...state.steps[payload.finishedStep],
+            isFinished: true,
+          },
+          [payload.nextStep]: {
+            ...state.steps[payload.nextStep],
+            isTouched: true,
+          },
+        },
+        currentStep: payload.nextStep,
+      };
+      if (payload.nextStep === "personalNumberBox") {
+        const a = {
+          ...s,
+          steps: {
+            ...s.steps,
+            personalNumberBox: {
+              ...s.steps.personalNumberBox,
+              isHidden: false,
+            },
+            companiesBox: {
+              ...s.steps.companiesBox,
+              isHidden: false,
+            },
+            submitBox: {
+              ...s.steps.submitBox,
+              isHidden: false,
+            },
+          },
+        };
+        return a;
       }
+      return s;
+    case "SET_STEP_TO_NOT_FINISHED":
       return {
         ...state,
-        new_steps,
+        steps: {
+          ...state.steps,
+          [payload.step]: {
+            ...state.steps[payload.step],
+            isFinished: false,
+          },
+          personalNumberBox: {
+            ...state.steps["personalNumberBox"],
+            isHidden: true,
+          },
+        },
+        currentStep: payload.step,
+      };
+    case "URL_NEEDS_RESET_TO_LOAN_BOX":
+      return {
+        ...state,
+        isUrlNeeds: false,
+        steps: {
+          ...state.steps,
+          loanAmountBox: {
+            ...state.steps.loanAmountBox,
+            isFinished: false,
+          },
+          personalNumberBox: {
+            ...state.steps["personalNumberBox"],
+            isHidden: true,
+          },
+          companiesBox: {
+            ...state.steps["companiesBox"],
+            isHidden: true,
+          },
+          submitBox: {
+            ...state.steps["submitBox"],
+            isHidden: true,
+          },
+        },
       };
     case "SET_NEED_CATEGORY":
       return {
@@ -55,37 +135,26 @@ export const reducer = (state, action) => {
         needs: categorizedNeeds,
         isUrlNeeds,
         urlNeeds,
-        steps: isUrlNeeds
-          ? [
-              { id: 1, isFinished: false, isCurrent: true },
-              { id: 3, isFinished: false, isCurrent: false },
-              { id: 4, isFinished: false, isCurrent: false },
-              { id: 5, isFinished: false, isCurrent: false },
-            ]
-          : [
-              { id: 1, isFinished: false, isCurrent: true },
-              { id: 2, isFinished: false, isCurrent: false },
-              { id: 3, isFinished: false, isCurrent: false },
-              { id: 4, isFinished: false, isCurrent: false },
-              { id: 5, isFinished: false, isCurrent: false },
-            ],
       };
     case "TOGGLE_IS_NEEDS_URL":
-      const new_s = [
-        { id: 1, isFinished: false, isCurrent: true },
-        {
-          id: 2,
-          isFinished: false,
-          isCurrent: true,
-        },
-        state.steps[1],
-        state.steps[2],
-        state.steps[3],
-      ];
       return {
         ...state,
         isUrlNeeds: payload,
-        steps: new_s,
+        steps: {
+          ...state.steps,
+          personalNumberBox: {
+            ...state.steps["personalNumberBox"],
+            isHidden: true,
+          },
+          companiesBox: {
+            ...state.steps["companiesBox"],
+            isHidden: true,
+          },
+          submitBox: {
+            ...state.steps["submitBox"],
+            isHidden: true,
+          },
+        },
       };
 
     case "SET_COMPANIES":

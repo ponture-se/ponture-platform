@@ -104,21 +104,29 @@ const LoanAmount = () => {
     }
   }
   function handleSelectedCategory(item) {
-    setType(item);
-    if (!selectedType) {
+    if (!selectedType || selectedType !== item) {
+      setValue("need", undefined);
       dispatch({
         type: "SET_NEED_CATEGORY",
         payload: item,
       });
-      dispatch({
-        type: "NEXT_STEP",
-        payload: 1,
-      });
-    } else {
-      dispatch({
-        type: "SET_NEED_CATEGORY",
-        payload: item,
-      });
+      if (selectedType) {
+        dispatch({
+          type: "SET_STEP_TO_NOT_FINISHED",
+          payload: {
+            step: "needsBox",
+          },
+        });
+      } else
+        dispatch({
+          type: "NEXT_STEP",
+          payload: {
+            finishedStep: "loanAmountBox",
+            nextStep: "needsBox",
+          },
+        });
+
+      setType(item);
     }
   }
   function editAmount() {
@@ -142,32 +150,50 @@ const LoanAmount = () => {
     }
   }
   React.useEffect(() => {
-    if (isEditPeriod) {
-      if (editPeriodInputRef.current) {
-        editPeriodInputRef.current.focus();
-      }
-    }
+    if (isEditPeriod)
+      if (editPeriodInputRef.current) editPeriodInputRef.current.focus();
   }, [isEditPeriod]);
 
   function openCategoriesModal() {
     toggleCategoriesModal(true);
   }
   function handleCloseCategoriesModal(item) {
-    if (item && isUrlNeeds && isPhone()) {
+    toggleCategoriesModal(false);
+    if (item) {
+      setType(item);
       setValue("need", undefined);
       dispatch({
-        type: "TOGGLE_IS_NEEDS_URL",
-        payload: false,
+        type: "SET_NEED_CATEGORY",
+        payload: item,
       });
+      dispatch({
+        type: "NEXT_STEP",
+        payload: {
+          finishedStep: "loanAmountBox",
+          nextStep: "needsBox",
+        },
+      });
+      if (isUrlNeeds && isPhone()) {
+        dispatch({
+          type: "TOGGLE_IS_NEEDS_URL",
+          payload: false,
+        });
+        // handleSelectedCategory(item);
+      } else {
+        dispatch({
+          type: "SET_STEP_TO_NOT_FINISHED",
+          payload: {
+            step: "needsBox",
+          },
+        });
+      }
     }
-    toggleCategoriesModal(false);
-    if (item) handleSelectedCategory(item);
   }
   function changeUrlNeedsToCategory() {
     if (!isPhone()) {
       setValue("need", undefined);
       dispatch({
-        type: "TOGGLE_IS_NEEDS_URL",
+        type: "URL_NEEDS_RESET_TO_LOAN_BOX",
         payload: false,
       });
     } else openCategoriesModal();

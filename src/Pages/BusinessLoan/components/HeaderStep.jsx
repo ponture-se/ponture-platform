@@ -1,13 +1,15 @@
 import React from "react";
 import styles from "../styles.module.scss";
-const HeaderStep = ({ step }) => {
-  const { isFinished, isCurrent } = step;
+const HeaderStep = ({ step = {}, currentStep }) => {
+  const { isFinished, isTouched, isHidden } = step;
   return (
     <div
       className={
         styles.headerStep +
         " " +
-        (!isCurrent && !isFinished
+        (isHidden
+          ? styles.headerStep__normal
+          : !isTouched && !isFinished
           ? styles.headerStep__normal
           : isFinished
           ? styles.headerStep__finished

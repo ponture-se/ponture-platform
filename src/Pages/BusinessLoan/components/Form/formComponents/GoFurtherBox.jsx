@@ -1,12 +1,15 @@
 import React from "react";
 import styles from "./../styles.module.scss";
-import { useLoanDispatch, useLoanState } from "hooks/useLoan";
+import { useLoanDispatch } from "hooks/useLoan";
 const FurtherMoreBox = () => {
   const dispatch = useLoanDispatch();
   function handleClick() {
     dispatch({
       type: "NEXT_STEP",
-      payload: 1,
+      payload: {
+        finishedStep: "loanAmountBox",
+        nextStep: "personalNumberBox",
+      },
     });
   }
   return (

@@ -7,18 +7,18 @@ import GoUp from "./GoUp";
 import { useLoanState } from "hooks/useLoan";
 
 const Content = (props) => {
-  const { formStatus, steps } = useLoanState();
+  const { formStatus } = useLoanState();
   const [goUpState, toggleGoUp] = React.useState(false);
-  React.useEffect(() => {
-    const handleScroll = () => {
-      if (window.pageYOffset < 1000) toggleGoUp(false);
-      else toggleGoUp(true);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll");
-    };
-  }, []);
+  // React.useEffect(() => {
+  //   const handleScroll = () => {
+  //     if (window.pageYOffset < 1000) toggleGoUp(false);
+  //     else toggleGoUp(true);
+  //   };
+  //   window.addEventListener("scroll", handleScroll);
+  //   return () => {
+  //     window.removeEventListener("scroll");
+  //   };
+  // }, []);
   return (
     <>
       <div className={styles.content}>

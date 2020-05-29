@@ -7,6 +7,7 @@ import NeedsBox from "./formComponents/NeedsBox";
 import PersonalNumberBox from "./formComponents/PersonalNumberBox";
 import CompaniesBox from "./formComponents/CompaniesBox";
 import SubmitBox from "./formComponents/SubmitBox";
+import Footer from "./formComponents/Footer";
 import { useLoanState } from "hooks/useLoan";
 const LoanForm = () => {
   const { steps, isUrlNeeds } = useLoanState();
@@ -24,30 +25,39 @@ const LoanForm = () => {
       <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
         <h2>Ansök om företagslån</h2>
         <LoanAmount />
+        {isUrlNeeds && !steps["loanAmountBox"].isFinished && <FurtherBox />}
 
-        {isUrlNeeds && !steps[0].isFinished && <FurtherBox />}
+        {!isUrlNeeds &&
+          steps["loanAmountBox"].isFinished &&
+          steps["needsBox"].isTouched && <NeedsBox />}
 
-        {!isUrlNeeds && steps[0].isFinished && <NeedsBox />}
-        {((isUrlNeeds && steps[0].isFinished) ||
-          (!isUrlNeeds && steps[0].isFinished && steps[1].isFinished)) && (
-          <PersonalNumberBox />
-        )}
-        {((isUrlNeeds && steps[0].isFinished && steps[1].isFinished) ||
+        {((isUrlNeeds && steps["loanAmountBox"].isFinished) ||
           (!isUrlNeeds &&
-            steps[0].isFinished &&
-            steps[1].isFinished &&
-            steps[2].isFinished)) && <CompaniesBox />}
+            steps["loanAmountBox"].isFinished &&
+            steps["needsBox"].isFinished)) &&
+          steps["personalNumberBox"].isTouched && <PersonalNumberBox />}
 
         {((isUrlNeeds &&
-          steps[0].isFinished &&
-          steps[1].isFinished &&
-          steps[2].isFinished) ||
+          steps["loanAmountBox"].isFinished &&
+          steps["personalNumberBox"].isFinished) ||
           (!isUrlNeeds &&
-            steps[0].isFinished &&
-            steps[1].isFinished &&
-            steps[2].isFinished &&
-            steps[3].isFinished)) && <SubmitBox />}
+            steps["loanAmountBox"].isFinished &&
+            steps["needsBox"].isFinished &&
+            steps["personalNumberBox"].isFinished)) &&
+          steps["companiesBox"].isTouched && <CompaniesBox />}
+
+        {((isUrlNeeds &&
+          steps["loanAmountBox"].isFinished &&
+          steps["personalNumberBox"].isFinished &&
+          steps["companiesBox"].isFinished) ||
+          (!isUrlNeeds &&
+            steps["loanAmountBox"].isFinished &&
+            steps["needsBox"].isFinished &&
+            steps["personalNumberBox"].isFinished &&
+            steps["companiesBox"].isFinished)) &&
+          steps["submitBox"].isTouched && <SubmitBox />}
       </form>
+      <Footer />
     </FormContext>
   );
 };

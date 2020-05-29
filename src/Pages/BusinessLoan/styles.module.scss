@@ -121,7 +121,7 @@
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      height: 220px;
+      height: 150px;
       padding-top: 30px;
       transition: all 0.3s;
       overflow: hidden;
@@ -130,12 +130,12 @@
       }
       animation: height 0.3s;
       .item {
-        margin-bottom: 35px;
+        margin-bottom: 15px;
         i {
           font-size: 20px;
         }
         span {
-          font-size: 20px;
+          font-size: 15px;
           margin-left: 10px;
           font-family: PoppinsSemiBold;
         }
@@ -151,7 +151,7 @@
       height: 0;
     }
     100% {
-      height: 220px;
+      height: 150px;
     }
   }
   &__bottom {
@@ -359,6 +359,9 @@
   display: flex;
   align-items: center;
   height: 60px;
+  @include respond(phone) {
+    display: none;
+  }
   &__circle {
     border-radius: 50%;
     width: 56px;
