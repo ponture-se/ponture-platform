@@ -350,3 +350,30 @@
     display: flex;
   }
 }
+
+.goUpBox {
+  cursor: pointer;
+  position: fixed;
+  left: 20px;
+  bottom: 100px;
+  display: flex;
+  align-items: center;
+  height: 60px;
+  &__circle {
+    border-radius: 50%;
+    width: 56px;
+    height: 56px;
+    border: solid 1px #44b3c2;
+    background-color: #e4e4e4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  &__icon {
+    font-size: 35px;
+    color: #44b3c2;
+  }
+  &__text {
+    margin-left: 10px;
+  }
+}
