@@ -1,5 +1,7 @@
 import React from "react";
-import { useLoanDispatch } from "hooks/useLoan";
+import { useLoanDispatch, useLoanState } from "hooks/useLoan";
+import { useFormContext } from "react-hook-form";
+import { IoMdBusiness } from "react-icons/io";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Title from "./common/Title";
@@ -7,27 +9,27 @@ import Title from "./common/Title";
 const CompaniesBox = () => {
   const companiesBoxRef = React.useRef(null);
   const dispatch = useLoanDispatch();
-  const [companies, setCompanies] = React.useState([
-    { id: 1, name: "a", displayName: "Generelll likviditet" },
-    { id: 2, name: "aa", displayName: "Generelll likviditet" },
-    { id: 3, name: "aaa", displayName: "Generelll likviditet" },
-    { id: 4, name: "aaa", displayName: "Generelll likviditet" },
-    { id: 5, name: "aaaa", displayName: "Generelll likviditet" },
-  ]);
-  const [selectedCompany, setCompany] = React.useState();
+  const { errors, setValue } = useFormContext();
+  const { selectedCompany, companies } = useLoanState();
+
   function handleSelectCompany(item) {
-    setCompany(item);
+    setValue("company", item);
+    dispatch({
+      type: "SET_SELECTED_COMPANY",
+      payload: item,
+    });
     if (!selectedCompany)
       dispatch({
-        type: "SET_FINISHED_STEP",
-        payload: 4,
+        type: "NEXT_STEP",
       });
   }
-  React.useEffect(() => {
+  const init = () => {
     if (companiesBoxRef.current) {
       window.scrollTo(0, companiesBoxRef.current.offsetTop);
     }
-  }, []);
+    if (selectedCompany) setValue("company", selectedCompany);
+  };
+  React.useEffect(init, []);
   return (
     <div ref={companiesBoxRef} className={styles.companiesBox}>
       <div className={styles.companiesBox__info2}>
@@ -35,21 +37,21 @@ const CompaniesBox = () => {
         <h5>Vi har hittat följade företag. Välj det....</h5>
       </div>
       <div className={styles.companiesBox__list}>
-        {companies.map((item, index) => (
-          <Button
-            key={index}
-            customClass={styles.companiesBox__customBtn}
-            selected={selectedCompany && selectedCompany.id === item.id}
-            onClick={() => handleSelectCompany(item)}
-          >
-            <i
-              className={
-                "icon-item-type " + styles.companiesBox__customBtn__icon
+        {companies &&
+          companies.map((item, index) => (
+            <Button
+              key={item.companyId}
+              customClass={styles.companiesBox__customBtn}
+              selected={
+                selectedCompany && selectedCompany.companyId === item.companyId
               }
-            />
-            {item.displayName}
-          </Button>
-        ))}
+              onClick={() => handleSelectCompany(item)}
+            >
+              <ion-icon name="business-outline"></ion-icon>
+              <IoMdBusiness className={styles.companiesBox__customBtn__icon} />
+              {item.companyName}
+            </Button>
+          ))}
       </div>
       {!selectedCompany && (
         <div className={styles.companiesBox__guide1}>

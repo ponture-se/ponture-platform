@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import separateNumberByChar from "utils/separateNumberByChar";
 import { getParameterByName, isNumber } from "utils";
+import { isPhone } from "utils/responsiveSizes";
 import styles from "../styles.module.scss";
 import Slider from "./Slider";
 import Button from "./common/Button";
@@ -36,22 +37,11 @@ const LoanAmount = () => {
   } = useFormContext();
   const params_loanAmount = getParameterByName("amount");
   const params_loanPeriod = getParameterByName("amourtizationPeriod");
-  const params_need = getParameterByName("need");
   const { t } = useLocale();
   const dispatch = useLoanDispatch();
-  const { needs } = useLoanState();
+  const { needs, isUrlNeeds, urlNeeds } = useLoanState();
   const editAmountInputRef = React.useRef(null);
   const editPeriodInputRef = React.useRef(null);
-  const [showUrlNeedsBox, toggleUrlNeedsBox] = useState(() => {
-    if (!params_need || params_need.length === 0) {
-      return false;
-    }
-    const n_s = params_need.split(",");
-    for (const key in needs) {
-      return needs[key].some((item) => n_s.includes(item.API_Name));
-    }
-    return false;
-  });
   const [selectedType, setType] = useState();
   const [loanAmount, setLoanAmount] = useState(() => {
     return params_loanAmount &&
@@ -79,13 +69,18 @@ const LoanAmount = () => {
   const [isEditAmount, toggleAmountEdit] = useState(false);
   const [isEditPeriod, togglePeriodEdit] = useState(false);
   const [isOpenModal, toggleCategoriesModal] = useState(false);
-  function initForm() {
-    register({ name: "amount", type: "custom" });
-    register({ name: "amourtizationPeriod", type: "custom" });
+  function init() {
+    register({ name: "amount" }, { required: true });
+    register({ name: "amourtizationPeriod" }, { required: true });
+    register({ name: "need" }, { required: true });
+    setValue("amount", loanAmount);
+    setValue("amourtizationPeriod", loanPeriod);
+    if (isUrlNeeds) setValue("need", urlNeeds);
   }
-  React.useEffect(initForm, []);
+  React.useEffect(init, []);
 
   function handleOnChangedAmount(val) {
+    setValue("amount", val);
     setLoanAmount(val);
     if (val <= 100000) {
       setLoanAmountStep(5000);
@@ -98,6 +93,7 @@ const LoanAmount = () => {
     }
   }
   function handleOnChangedPeriod(value) {
+    setValue("amourtizationPeriod", value);
     setLoanPeriod(value);
   }
   function handleChangeSliderEditValue(name, value) {
@@ -115,7 +111,7 @@ const LoanAmount = () => {
         payload: item,
       });
       dispatch({
-        type: "SET_FINISHED_STEP",
+        type: "NEXT_STEP",
         payload: 1,
       });
     } else {
@@ -153,12 +149,28 @@ const LoanAmount = () => {
     }
   }, [isEditPeriod]);
 
-  function handleChooseCategory() {
+  function openCategoriesModal() {
     toggleCategoriesModal(true);
   }
   function handleCloseCategoriesModal(item) {
+    if (item && isUrlNeeds && isPhone()) {
+      setValue("need", undefined);
+      dispatch({
+        type: "TOGGLE_IS_NEEDS_URL",
+        payload: false,
+      });
+    }
     toggleCategoriesModal(false);
     if (item) handleSelectedCategory(item);
+  }
+  function changeUrlNeedsToCategory() {
+    if (!isPhone()) {
+      setValue("need", undefined);
+      dispatch({
+        type: "TOGGLE_IS_NEEDS_URL",
+        payload: false,
+      });
+    } else openCategoriesModal();
   }
   return (
     <>
@@ -266,27 +278,36 @@ const LoanAmount = () => {
             );
           }}
         />
-        {showUrlNeedsBox ? (
+        {isUrlNeeds ? (
           <div className={styles.actions}>
             <div className={styles.actions__info}>
-              <Title text="Selected needs" tooltip="no tooltip" id="aa" />
+              <Title
+                text="Anledningar till lånet"
+                tooltip="no tooltip"
+                id="aa"
+              />
             </div>
-            <div className={styles.actions__btns}>
-              {needs &&
-                Object.keys(needs).map((item, index) => {
-                  return (
-                    <Button
-                      key={index}
-                      customClass={styles.actions__customBtn}
-                      selected={true}
-                      showSelectedCheckMark={true}
-                      onClick={() => handleSelectedCategory(item)}
-                    >
-                      {item}
-                    </Button>
-                  );
-                })}
+            <div className={styles.actions__urlNeedsList}>
+              {urlNeeds.map((item, index) => {
+                return (
+                  <Button
+                    key={index}
+                    customClass={styles.actions__urlCustomBtn}
+                    selected={true}
+                    showSelectedCheckMark={true}
+                  >
+                    {item.Label}
+                  </Button>
+                );
+              })}
             </div>
+            <Button
+              customClass={styles.actions__customBtnLink}
+              showSelectedCheckMark={false}
+              onClick={changeUrlNeedsToCategory}
+            >
+              Välj andra anledningar till lånet ...
+            </Button>
           </div>
         ) : (
           <>
@@ -329,7 +350,7 @@ const LoanAmount = () => {
                 <Button
                   customClass={styles.actions__customBtnLink}
                   showSelectedCheckMark={false}
-                  onClick={handleChooseCategory}
+                  onClick={openCategoriesModal}
                 >
                   Byt användningskategori
                 </Button>
@@ -338,7 +359,7 @@ const LoanAmount = () => {
                 <Button
                   customClass={styles.actions__customBtn}
                   showSelectedCheckMark={false}
-                  onClick={handleChooseCategory}
+                  onClick={openCategoriesModal}
                 >
                   Välj ..
                 </Button>

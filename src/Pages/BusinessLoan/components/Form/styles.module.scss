@@ -1,4 +1,239 @@
 @import "./../../../../styles/mixins";
+// #region tooltip
+.tooltip {
+  cursor: pointer;
+  font-size: 13px;
+  text-align: center;
+  width: 40px;
+  height: 20px;
+  padding: 0 10px;
+  border-radius: 20px;
+  background-color: #d4d4d4;
+  transition-duration: 0.2s;
+  font-weight: bold;
+  &:hover {
+    transition-duration: 0.2s;
+    box-shadow: 0 0 3px gray;
+  }
+  &__customClass {
+    border-color: #44b3c2 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+  }
+  &__container {
+    width: 200px;
+    position: relative;
+    span {
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 300;
+
+      color: #000000;
+      margin-top: 10px;
+      text-align: justify;
+    }
+    i {
+      color: #000000;
+      position: absolute;
+      right: 0;
+      visibility: hidden;
+      @include respond(tab-land) {
+        visibility: visible;
+      }
+    }
+  }
+}
+// #endregion tooltip
+
+// #region button
+.button {
+  position: relative;
+  border-radius: 10px;
+  min-height: 60px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: PoppinsSemiBold;
+  &:focus {
+    outline: none;
+    transition: all 0.2s;
+  }
+}
+.primaryBtn {
+  border: solid 2px #44b3c2;
+  background-color: #ffffff;
+  color: #188695;
+  transition: all 0.2s;
+}
+.warningBtn {
+  border: solid 2px #ff8a00;
+  color: white;
+  background-color: #ff8a00;
+}
+.selectedButton {
+  color: #ffffff;
+  background-color: #44b3c2;
+  transition: all 0.2s;
+}
+.checkMarkButton {
+  position: absolute;
+  height: 30px;
+  background-color: white;
+  width: 30px;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translate(-25%, -25%);
+  border: 2px solid #44b3c2;
+  &::before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 7px;
+    width: 3px;
+    background-color: #44b3c2;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
+  }
+
+  &::after {
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+    height: 3px;
+    width: 15px;
+    background-color: #44b3c2;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
+  }
+}
+// #endregion button
+
+// #region input box
+.inputBox {
+  margin-bottom: 20px;
+  min-height: 90px;
+  @include respond(phone) {
+    margin-bottom: 0;
+  }
+  &__top {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  &__title {
+    margin: 0;
+    margin-right: 20px;
+  }
+  &__input {
+    border: solid 0.5px #828282;
+    display: block;
+    width: 100%;
+    height: 45px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    font-size: 16px;
+    transition: all 0.3;
+    font-family: inherit;
+    backface-visibility: hidden;
+    transition: all 0.3s;
+    color: inherit;
+    outline: none;
+    &:focus:not(.input_error) {
+      // box-shadow: 0 0 4px #44b3c2;
+      // outline: 2px solid #44b3c2;
+      box-shadow: 0px 0px 0px 1.5px #44b3c2 inset;
+      background-color: white;
+    }
+    &.input_error {
+      // outline-color: transparent;
+      border: 1.5px solid red;
+    }
+  }
+  &__errorText {
+    display: block;
+    min-height: 15px;
+    font-size: 16px;
+    color: red;
+    margin-top: 5px;
+  }
+}
+// #endregion input-box
+
+// #region chcekbox
+.checkbox {
+  width: 100%;
+  position: relative;
+  &__chk {
+    display: none;
+  }
+
+  &__label {
+    padding-left: 40px;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+  }
+  &__btn {
+    height: 30px;
+    width: 30px;
+    border: 2px solid #44b3c2;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: -0.3rem;
+    left: 0;
+    transition: all 0.2s;
+    &::before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: 10px;
+      width: 4px;
+      background-color: #44b3c2;
+      content: "";
+      transform: translateX(10px) rotate(-45deg);
+      transform-origin: left bottom;
+      opacity: 0;
+      transition-duration: 0.2s;
+    }
+
+    &::after {
+      position: absolute;
+      left: 0;
+      bottom: 10%;
+      height: 4px;
+      width: 20px;
+      background-color: #44b3c2;
+      content: "";
+      transform: translateX(10px) rotate(-45deg);
+      transform-origin: left bottom;
+      opacity: 0;
+      transition-duration: 0.2s;
+    }
+  }
+  &__chk:checked + &__label span::after {
+    opacity: 1;
+  }
+  &__chk:checked + &__label span::before {
+    opacity: 1;
+  }
+  &__errorText {
+    // position: absolute;
+    display: block;
+    padding-left: 40px;
+    color: red;
+    top: 20px;
+    width: 100%;
+  }
+}
+
+// #endregion checkbox
+
 .form {
   padding-bottom: 20px;
   h2 {
@@ -23,9 +258,14 @@
     &__btns {
       display: flex;
       flex-direction: row;
+      flex-wrap: wrap;
       @include respond(phone) {
         display: none;
       }
+    }
+    &__urlNeedsList {
+      display: flex;
+      flex-wrap: wrap;
     }
     &__customBtn {
       flex: 1;
@@ -39,6 +279,26 @@
           margin-right: 0px;
         }
         margin-bottom: 10px;
+      }
+    }
+    &__urlCustomBtn {
+      width: calc(25% - 10px);
+      margin-right: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      min-height: 75px !important;
+      word-wrap: break-word;
+      display: inline-block;
+      &:nth-child(4n) {
+        margin-right: 0;
+        width: calc(25%);
+        @include respond(tab-port) {
+          margin-right: 10px;
+          width: calc(50% - 10px);
+        }
+      }
+      @include respond(tab-port) {
+        width: calc(50% - 10px);
       }
     }
     &__customBtnLink {
@@ -58,6 +318,33 @@
     margin-top: 30px;
     font-size: 14px;
     text-align: center;
+  }
+}
+.furtherMoreBox {
+  margin-top: 20px;
+  background-color: white;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  background-color: #ffffff;
+  border-radius: 12px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  &:hover {
+    background-color: whitesmoke;
+    transition-duration: 0.2s;
+  }
+  h4 {
+    margin: 0;
+  }
+  span {
+    font-size: 11px;
+    font-weight: bold;
+  }
+  @include respond(tab-port) {
   }
 }
 .needsBox {
@@ -114,7 +401,6 @@
   @include respond(tab-port) {
     padding: 20px;
   }
-  // padding-bottom: 10px;
   &__info {
   }
   &__input {
@@ -164,28 +450,8 @@
         margin-top: 0px;
         min-height: 50px !important;
       }
-      &::before {
-        position: absolute;
-        left: 0;
-        top: 42%;
-        height: 15px;
-        width: 3px;
-        background-color: white;
-        content: "";
-        transform: translate(20px, -1px) rotate(-45deg);
-        transform-origin: left bottom;
-      }
-
-      &::after {
-        position: absolute;
-        left: 0;
-        bottom: 20%;
-        height: 3px;
-        width: 30px;
-        background-color: white;
-        content: "";
-        transform: translate(20px, -1px) rotate(-45deg);
-        transform-origin: left bottom;
+      .checkmark {
+        font-size: 30px;
       }
     }
   }
@@ -209,8 +475,9 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    flex-direction: row;
-    min-height: 75px !important;
+    flex-direction: column;
+    min-height: 100px;
+    padding: 5px 0;
     &:nth-child(3n) {
       margin-right: 0;
       flex-basis: calc(33.3333333%);
@@ -219,9 +486,9 @@
         margin-right: 20px;
       }
     }
-    i {
-      font-size: 20px;
-      margin-right: 5px;
+    &__icon {
+      font-size: 30px;
+      margin-right: 10px;
       margin-bottom: 0;
       @include respond(phone) {
         margin-right: 0;
@@ -472,7 +739,7 @@
     justify-content: center;
     cursor: pointer;
     img {
-      width: 22px;
+      width: 18px;
     }
   }
 }
@@ -487,237 +754,3 @@
     font-family: PoppinsSemiBold;
   }
 }
-// #region tooltip
-.tooltip {
-  cursor: pointer;
-  font-size: 13px;
-  text-align: center;
-  width: 40px;
-  height: 20px;
-  padding: 0 10px;
-  border-radius: 20px;
-  background-color: #d4d4d4;
-  transition-duration: 0.2s;
-  font-weight: bold;
-  &:hover {
-    transition-duration: 0.2s;
-    box-shadow: 0 0 3px gray;
-  }
-  &__customClass {
-    border-color: #44b3c2 !important;
-    border-style: solid !important;
-    border-width: 1px !important;
-  }
-  &__container {
-    width: 200px;
-    position: relative;
-    span {
-      font-family: Poppins;
-      font-size: 12px;
-      font-weight: 300;
-
-      color: #000000;
-      margin-top: 10px;
-      text-align: justify;
-    }
-    i {
-      color: #000000;
-      position: absolute;
-      right: 0;
-      visibility: hidden;
-      @include respond(tab-land) {
-        visibility: visible;
-      }
-    }
-  }
-}
-// #endregion tooltip
-
-// #region button
-.button {
-  position: relative;
-  border-radius: 10px;
-  min-height: 60px;
-  cursor: pointer;
-  transition: all 0.2s;
-  font-family: PoppinsSemiBold;
-  &:focus {
-    outline: none;
-    transition: all 0.2s;
-  }
-}
-.primaryBtn {
-  border: solid 2px #44b3c2;
-  background-color: #ffffff;
-  color: #188695;
-  transition: all 0.2s;
-}
-.warningBtn {
-  border: solid 2px #ff8a00;
-  color: white;
-  background-color: #ff8a00;
-}
-.selectedButton {
-  color: #ffffff;
-  background-color: #44b3c2;
-  transition: all 0.2s;
-}
-.checkMarkButton {
-  position: absolute;
-  height: 30px;
-  background-color: white;
-  width: 30px;
-  top: 0;
-  left: 0;
-  border-radius: 50%;
-  transform: translate(-25%, -25%);
-  border: 2px solid #44b3c2;
-  &::before {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    height: 7px;
-    width: 3px;
-    background-color: #44b3c2;
-    content: "";
-    transform: translateX(10px) rotate(-45deg);
-    transform-origin: left bottom;
-  }
-
-  &::after {
-    position: absolute;
-    left: 0;
-    bottom: 20%;
-    height: 3px;
-    width: 15px;
-    background-color: #44b3c2;
-    content: "";
-    transform: translateX(10px) rotate(-45deg);
-    transform-origin: left bottom;
-  }
-}
-// #endregion button
-
-// #region input box
-.inputBox {
-  margin-bottom: 20px;
-  min-height: 90px;
-  @include respond(phone) {
-    margin-bottom: 0;
-  }
-  &__top {
-    display: flex;
-    margin-bottom: 20px;
-    align-items: center;
-  }
-  &__title {
-    margin: 0;
-    margin-right: 20px;
-  }
-  &__input {
-    border: solid 0.5px #828282;
-    display: block;
-    width: 100%;
-    height: 45px;
-    padding: 5px 10px;
-    border-radius: 8px;
-    overflow: hidden;
-    background-color: white;
-    font-size: 16px;
-    transition: all 0.3;
-    font-family: inherit;
-    backface-visibility: hidden;
-    transition: all 0.3s;
-    color: inherit;
-    outline: none;
-    &:focus:not(.input_error) {
-      // box-shadow: 0 0 4px #44b3c2;
-      // outline: 2px solid #44b3c2;
-      box-shadow: 0px 0px 0px 1.5px #44b3c2 inset;
-      background-color: white;
-    }
-    &.input_error {
-      // outline-color: transparent;
-      border: 1.5px solid red;
-    }
-  }
-  &__errorText {
-    display: block;
-    min-height: 15px;
-    font-size: 16px;
-    color: red;
-    margin-top: 5px;
-  }
-}
-// #endregion input-box
-
-// #region chcekbox
-.checkbox {
-  width: 100%;
-  position: relative;
-  &__chk {
-    display: none;
-  }
-
-  &__label {
-    padding-left: 40px;
-    font-size: 16px;
-    position: relative;
-    cursor: pointer;
-    width: 100%;
-  }
-  &__btn {
-    height: 30px;
-    width: 30px;
-    border: 2px solid #44b3c2;
-    border-radius: 50%;
-    display: inline-block;
-    position: absolute;
-    top: -0.3rem;
-    left: 0;
-    transition: all 0.2s;
-    &::before {
-      position: absolute;
-      left: 0;
-      top: 50%;
-      height: 10px;
-      width: 4px;
-      background-color: #44b3c2;
-      content: "";
-      transform: translateX(10px) rotate(-45deg);
-      transform-origin: left bottom;
-      opacity: 0;
-      transition-duration: 0.2s;
-    }
-
-    &::after {
-      position: absolute;
-      left: 0;
-      bottom: 10%;
-      height: 4px;
-      width: 20px;
-      background-color: #44b3c2;
-      content: "";
-      transform: translateX(10px) rotate(-45deg);
-      transform-origin: left bottom;
-      opacity: 0;
-      transition-duration: 0.2s;
-    }
-  }
-  &__chk:checked + &__label span::after {
-    opacity: 1;
-  }
-  &__chk:checked + &__label span::before {
-    opacity: 1;
-  }
-  &__errorText {
-    // position: absolute;
-    display: block;
-    padding-left: 40px;
-    color: red;
-    top: 20px;
-    width: 100%;
-  }
-}
-
-// #endregion checkbox

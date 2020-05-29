@@ -6,7 +6,10 @@ const Header = () => {
   const [isOpenMenu, toggleMenu] = React.useState(false);
   const { steps, formStatus } = useLoanState();
   function getStepValue() {
-    return steps.find((item) => item.isCurrent).id;
+    const isCurrentItem = steps.findIndex((item) => item.isCurrent);
+    return isCurrentItem || isCurrentItem === 0
+      ? isCurrentItem + 1
+      : steps.length;
   }
   return (
     <div className={styles.header}>
@@ -65,7 +68,9 @@ const Header = () => {
                   <HeaderStep key={item.id} step={item} />
                 ))}
               </div>
-              <h5 className={styles.stepText}>Steg {getStepValue()} av 5</h5>
+              <h5 className={styles.stepText}>
+                Steg {getStepValue()} av {steps.length}
+              </h5>
             </div>
           </div>
         )}

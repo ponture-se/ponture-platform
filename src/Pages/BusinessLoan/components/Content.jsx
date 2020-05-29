@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import styles from "../styles.module.scss";
 import Profile from "./Profile";
 import Form from "./Form";
-import Loading from "components/SquareSpinner";
 import NoBankIdAlert from "./NoBankIdAlert";
 import { useLoanState } from "hooks/useLoan";
 

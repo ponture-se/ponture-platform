@@ -311,7 +311,7 @@ div::-moz-scrollbar-thumb:hover {
     width: 200px;
     height: 4px;
     animation: loading 2s linear infinite;
-    @include variable(main-spinner-bg, background-color, rgb(66, 204, 173));
+    background-color: #44b3c2;
   }
 }
 @keyframes loading {
@@ -358,13 +358,4 @@ div::-moz-scrollbar-thumb:hover {
   flex-direction: column;
   justify-content: center;
   align-items: center;
-}
-
-//variables
-
-svg {
-  width: 100px;
-  height: 100px;
-  margin: 20px;
-  display: inline-block;
 }

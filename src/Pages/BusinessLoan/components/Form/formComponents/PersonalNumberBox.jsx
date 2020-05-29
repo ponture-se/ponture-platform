@@ -1,38 +1,60 @@
 import React from "react";
 import { useFormContext } from "react-hook-form";
+import { IoMdCheckmark } from "react-icons/io";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Input from "./common/Input";
 import Title from "./common/Title";
 import CircleSpinner from "components/CircleSpinner";
-import { useLoanDispatch } from "hooks/useLoan";
+import { useLoanDispatch, useLoanState } from "hooks/useLoan";
+import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
 
 const PersonalNumberBox = () => {
-  const { errors, register, triggerValidation } = useFormContext();
+  const {
+    errors,
+    register,
+    setValue,
+    triggerValidation,
+    getValues,
+  } = useFormContext();
   const dispatch = useLoanDispatch();
+  const { companies, personalNumber } = useLoanState();
+  const { _getCompanies } = useLoanApi();
+
   const { t } = useLocale();
   const pNumberBoxRef = React.useRef(null);
   const [spinner, toggleSpinner] = React.useState(false);
-  const [isDonePNumber, toggleIsDonePNumber] = React.useState(false);
-  React.useEffect(() => {
+  const [isDonePNumber, toggleIsDonePNumber] = React.useState(
+    personalNumber ? true : false
+  );
+  const init = () => {
+    if (personalNumber) setValue("personalNumber", personalNumber);
+
     if (pNumberBoxRef.current) {
       window.scrollTo(0, pNumberBoxRef.current.offsetTop);
     }
-  }, []);
+  };
+  React.useEffect(init, []);
   async function searchCompanies() {
     if (!isDonePNumber) {
       const isValid = await triggerValidation("personalNumber");
       if (isValid) {
         toggleSpinner(true);
-        setTimeout(() => {
-          toggleSpinner(false);
-          toggleIsDonePNumber(true);
-          dispatch({
-            type: "SET_FINISHED_STEP",
-            payload: 3,
-          });
-        }, 1000);
+        const pNumber = getValues().personalNumber;
+        _getCompanies(
+          pNumber,
+          () => {
+            toggleSpinner(false);
+            toggleIsDonePNumber(true);
+            dispatch({
+              type: "NEXT_STEP",
+            });
+          },
+          () => {
+            toggleSpinner(false);
+          }
+        );
       }
     }
   }
@@ -53,6 +75,7 @@ const PersonalNumberBox = () => {
           tooltip="no tooltip"
           id="cc"
           name="personalNumber"
+          autofocus
           ref={register({
             required: t("PERSONAL_NUMBER_IS_REQUIRED"),
             pattern: {
@@ -80,7 +103,9 @@ const PersonalNumberBox = () => {
             customClass={styles.companiesBox__input__isDoneBtn}
             selected={true}
             showSelectedCheckMark={false}
-          />
+          >
+            <IoMdCheckmark className={styles.checkmark} />
+          </Button>
         )}
       </form>
       <div className={styles.companiesBox__guid}>

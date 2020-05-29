@@ -1,4 +1,5 @@
 import React from "react";
+import { useFormContext } from "react-hook-form";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Title from "./common/Title";
@@ -7,12 +8,14 @@ import useLoanApi from "hooks/useLoan/useLoanApi";
 
 const NeedsBox = () => {
   const needsBoxRef = React.useRef(null);
+  const { errors, clearError, setValue } = useFormContext();
   const dispatch = useLoanDispatch();
   const { selectedNeedCategory } = useLoanState();
   const { getNeedsByCategory } = useLoanApi();
   const [needsList, setNeeds] = React.useState(
     JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
   );
+  const [isDoneNextStepAction, setIsDoneNextStep] = React.useState(false);
   const updateNeeds = () => {
     dispatch({
       type: "SET_CURRENT_STEP",
@@ -21,6 +24,9 @@ const NeedsBox = () => {
     setNeeds(
       JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
     );
+    return () => {
+      setIsDoneNextStep(false);
+    };
   };
   React.useEffect(updateNeeds, [selectedNeedCategory]);
 
@@ -30,23 +36,28 @@ const NeedsBox = () => {
     }
   }, []);
   function selectNeed(item) {
-    if (!needsList.some((n) => n.selected)) {
-      dispatch({
-        type: "SET_FINISHED_STEP",
-        payload: 2,
-      });
-    } else {
-      dispatch({
-        type: "SET_CURRENT_STEP",
-        payload: 2,
-      });
-    }
     const n = needsList.map((need) => {
       if (need.API_Name === item.API_Name) {
         need.selected = !need.selected;
       }
       return need;
     });
+    const selectedNeeds = n.filter((need) => need.selected);
+    setValue("need", selectedNeeds);
+    if (selectedNeeds.length === 0) {
+      dispatch({
+        type: "SET_CURRENT_STEP",
+        payload: 2,
+      });
+      setIsDoneNextStep(false);
+    } else {
+      if (!isDoneNextStepAction) {
+        dispatch({
+          type: "NEXT_STEP",
+        });
+        setIsDoneNextStep(true);
+      }
+    }
     setNeeds(n);
   }
   return (

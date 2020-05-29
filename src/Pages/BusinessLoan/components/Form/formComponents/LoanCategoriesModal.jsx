@@ -24,7 +24,7 @@ const LoanCategoriesModal = ({ onClose }) => {
         <div className="acceptModal__content animated fadeInUp faster">
           <div className="acceptModal__header">
             <span className="title">Choose a category</span>
-            <div className="icon-cross closeIcon" onClick={close} />
+            <div className="icon-cross closeIcon" onClick={() => close()} />
           </div>
           <div className="acceptModal__body">
             {needs &&

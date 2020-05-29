@@ -5,7 +5,7 @@ import Button from "./common/Button";
 import Input from "./common/Input";
 import CurrencyInput from "./common/CurrencyInput";
 import Checkbox from "./common/Checkbox";
-import { useLoanDispatch } from "hooks/useLoan";
+import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import useLocale from "hooks/useLocale";
 import CircleSpinner from "components/CircleSpinner";
 
@@ -14,17 +14,38 @@ const SubmitBox = () => {
     errors,
     register,
     handleSubmit,
+    getValues,
+    setValue,
     formState: { dirty, isValid, submitCount },
   } = useFormContext();
   const submitBoxRef = React.useRef(null);
   const dispatch = useLoanDispatch();
+  const { contactInfo } = useLoanState();
   const { t } = useLocale();
   const [spinner, toggleSpinner] = React.useState(false);
-  React.useEffect(() => {
-    if (submitBoxRef.current) {
+  const init = () => {
+    if (submitBoxRef.current)
       window.scrollTo(0, submitBoxRef.current.offsetTop);
+    if (contactInfo) {
+      setValue("lastYear", contactInfo.lastYear);
+      setValue("phoneNumber", contactInfo.phoneNumber);
+      setValue("email", contactInfo.email);
+      setValue("terms", contactInfo.terms);
     }
-  }, [register]);
+    return () => {
+      const values = getValues();
+      dispatch({
+        type: "SET_CONTACT_INFO",
+        payload: {
+          lastYear: values["lastYear"],
+          phoneNumber: values["phoneNumber"],
+          email: values["email"],
+          terms: values["terms"],
+        },
+      });
+    };
+  };
+  React.useEffect(init, []);
 
   const onSubmit = async (data) => {
     if (submitCount === 1) {

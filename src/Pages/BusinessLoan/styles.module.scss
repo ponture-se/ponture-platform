@@ -166,7 +166,8 @@
   display: flex;
 }
 .headerStep {
-  width: calc(20% - 10px);
+  flex-basis: calc(20% - 10px);
+  flex: 1;
   height: 10px;
   margin-right: 10px;
   border-radius: 8px;

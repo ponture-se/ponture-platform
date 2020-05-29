@@ -30,8 +30,8 @@ const ApplyLoan = (props) => {
     </div>
   ) : (
     <div className={styles.wrapper}>
-      {!loading && <Header />}
-      {!loading && !error ? <Content /> : <ErrorBox />}
+      <Header />
+      {!error ? <Content /> : <ErrorBox />}
     </div>
   );
 };
