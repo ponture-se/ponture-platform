@@ -36,6 +36,12 @@ const PersonalNumberBox = () => {
     }
   };
   React.useEffect(init, []);
+
+  function handleKeyDown(e) {
+    if (e.key === "Enter") {
+      searchCompanies();
+    }
+  }
   async function searchCompanies() {
     if (!isDonePNumber) {
       const isValid = await triggerValidation("personalNumber");
@@ -66,7 +72,7 @@ const PersonalNumberBox = () => {
           showTooltip={false}
         />
       </div>
-      <form className={styles.companiesBox__input} onSubmit={searchCompanies}>
+      <div className={styles.companiesBox__input} onSubmit={searchCompanies}>
         <Input
           title="Ange personnummer"
           placeholder="19830611-1222"
@@ -75,7 +81,8 @@ const PersonalNumberBox = () => {
           tooltip="no tooltip"
           id="cc"
           name="personalNumber"
-          autofocus
+          autoFocus
+          onKeyDown={handleKeyDown}
           ref={register({
             required: t("PERSONAL_NUMBER_IS_REQUIRED"),
             pattern: {
@@ -107,7 +114,7 @@ const PersonalNumberBox = () => {
             <IoMdCheckmark className={styles.checkmark} />
           </Button>
         )}
-      </form>
+      </div>
       <div className={styles.companiesBox__guid}>
         <span className={styles.companiesBox__guid_title}>
           Det personnummer som kan accepteras är:
