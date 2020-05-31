@@ -91,6 +91,14 @@ export const reducer = (state, action) => {
             ...state.steps["personalNumberBox"],
             isHidden: true,
           },
+          companiesBox: {
+            ...state.steps["companiesBox"],
+            isHidden: true,
+          },
+          submitBox: {
+            ...state.steps["submitBox"],
+            isHidden: true,
+          },
         },
         currentStep: payload.step,
       };
