@@ -56,6 +56,7 @@ const OffersCategory = ({
               ref={refs[offer.fakeId]}
               onAcceptClicked={handleAcceptClicked}
               isAccepted={isAccepted}
+              opportunity={opportunity}
             />
           ))}
         </div>

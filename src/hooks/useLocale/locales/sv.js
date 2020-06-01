@@ -96,6 +96,7 @@ export default {
   OFFER_NOT_ACCEPTED_TITLE_XS:
     "Välj det erbjudande som passar dig bäst för att gå vidare.",
   OFFER_NOT_ACCEPTED_DESCRIPTION_XS: "Våra erbjudanden är ej binande.",
+  OFFER_DONE_TEXT: "Din ansökan är stängd.",
   OFFER_ITEM_CHEAPEST_TITLE: "Billigaste lånet",
   OFFER_ITEM_BIGGEST_TITLE: "Storte belopp",
   OFFER_ITEM_ACCEPT_BTN: "Gå vidare",

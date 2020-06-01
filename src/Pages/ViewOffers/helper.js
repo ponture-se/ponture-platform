@@ -12,6 +12,10 @@ export const Tags = {
   both: "cheapest,biggest",
 };
 export const BothTagsId = "sameAction";
+export const oppStages = {
+  won: "Funded/Closed Won",
+  lost: "Not Funded/ Closed lost",
+};
 // ============================================================
 export const getCategorizedOffers = (offers) => {
   if (!offers || offers.length === 0) return [];

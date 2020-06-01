@@ -7,7 +7,7 @@ import React, {
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
 const OfferItem = (
-  { offer = {}, onAcceptClicked, isAccepted, showDetail },
+  { offer = {}, onAcceptClicked, isAccepted, showDetail, opportunity },
   ref
 ) => {
   const [{ offerUiAction }] = useGlobalState();
@@ -16,6 +16,7 @@ const OfferItem = (
   useImperativeHandle(ref, () => itemRef.current);
   const { t } = useLocale();
   const [moreInfoBox, toggleMoreInfoBox] = useState(showDetail ? true : false);
+
   function toggle() {
     toggleMoreInfoBox((prev) => !prev);
   }
@@ -120,6 +121,9 @@ const OfferItem = (
               ) : null;
             })}
         </div>
+      )}
+      {offer && offer.detail && offer.detail.Special_Offer && (
+        <div className="offerItem__special">{offer.detail.Special_Offer}</div>
       )}
     </div>
   );
