@@ -139,11 +139,6 @@ const AllOffers = ({ match }) => {
   function handleAcceptedOffer() {
     setState((prevState) => ({ ...prevState, loading: true }));
     _getLatestOffers();
-    // window.scrollTo({
-    //   top: 0,
-    //   left: 0,
-    //   behavior: "smooth",
-    // });
   }
   return (
     <>
@@ -187,13 +182,6 @@ const AllOffers = ({ match }) => {
             ))}
           </>
         )}
-        {/* {viewOfferModal && (
-        <OfferModal
-          offer={selectedOffer}
-          app={app}
-          onClose={handleCloseViewOffer}
-        />
-      )} */}
       </div>
     </>
   );

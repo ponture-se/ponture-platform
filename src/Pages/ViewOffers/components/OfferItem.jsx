@@ -36,6 +36,25 @@ const OfferItem = (
     }
     return cls;
   }
+  function getDefaultValueSpecial() {
+    if (
+      offer.detail &&
+      offer.detail.Special_Offer &&
+      offer.detail.Special_Offer.length > 0
+    ) {
+      const v = offer.detail.Special_Offer.split("/n")
+        .join("")
+        .split("/r")
+        .join("");
+      return <div className="offerItem__special">{v}</div>;
+    }
+    const a = offer.outline.find((out) => out.apiName === "Special_Offer");
+    return a && a.defaultValue ? (
+      <div className="offerItem__special">
+        {a.defaultValue.split("/n").join("").split("/r").join("")}
+      </div>
+    ) : undefined;
+  }
   return (
     <div className={getOfferClass()} ref={itemRef}>
       {!isAccepted && (
@@ -122,9 +141,7 @@ const OfferItem = (
             })}
         </div>
       )}
-      {offer && offer.detail && offer.detail.Special_Offer && (
-        <div className="offerItem__special">{offer.detail.Special_Offer}</div>
-      )}
+      {getDefaultValueSpecial()}
     </div>
   );
 };
