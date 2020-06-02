@@ -49,7 +49,7 @@ const OfferItem = (
       return <div className="offerItem__special">{v}</div>;
     }
     const a = offer.outline.find((out) => out.apiName === "Special_Offer");
-    return a ? (
+    return a && a.defaultValue ? (
       <div className="offerItem__special">
         {a.split("/n").join("").split("/r").join("")}
       </div>
