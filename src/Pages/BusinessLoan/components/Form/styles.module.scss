@@ -441,20 +441,29 @@
         width: 100%;
       }
     }
-    &__isDoneBtn {
-      width: 50px;
-      min-height: 45px !important;
-      align-self: center;
-      margin-top: 4px;
-      margin-left: 20px;
+  }
+  &__isDonePNumber {
+    margin-top: 30px;
+    span {
+      font-size: 20px;
       @include respond(phone) {
-        margin-left: 0px;
-        margin-top: 0px;
-        min-height: 50px !important;
+        margin-right: 20px;
       }
-      .checkmark {
-        font-size: 30px;
-      }
+    }
+  }
+  &__isDoneBtn {
+    width: 50px;
+    min-height: 45px !important;
+    align-self: center;
+    margin-top: 4px;
+    margin-left: 20px;
+    @include respond(phone) {
+      margin-left: 0px;
+      margin-top: 0px;
+      min-height: 50px !important;
+    }
+    .checkmark {
+      font-size: 30px;
     }
   }
   &__info2 {

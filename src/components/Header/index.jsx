@@ -1,8 +1,8 @@
 import React from "react";
 import { useLoanState } from "hooks/useLoan";
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 import HeaderStep from "./HeaderStep";
-const Header = () => {
+const Header = ({ headerBottom }) => {
   const [isOpenMenu, toggleMenu] = React.useState(false);
   const { formStatus, isUrlNeeds, steps, currentStep } = useLoanState();
   function getStepValue() {
@@ -61,7 +61,7 @@ const Header = () => {
             </div>
           )}
         </div>
-        {formStatus === "form" && (
+        {headerBottom && formStatus === "form" && (
           <div className={styles.header__bottom}>
             <div className={styles.header__bottomContent}>
               <div className={styles.stepWrapper}>

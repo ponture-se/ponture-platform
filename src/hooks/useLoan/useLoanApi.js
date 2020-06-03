@@ -46,11 +46,33 @@ const useLoanApi = () => {
       })
       .onServerError((result) => {
         track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
         if (onError) onError();
       })
-      .onBadRequest((result) => onError && onError())
-      .notFound((result) => onError && onError())
-      .unKnownError((result) => onError && onError())
+      .onBadRequest((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .notFound((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .unKnownError((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
       .call(currentLang);
   }
   function _getCompanies(personalNumber, onSuccess, onError) {
@@ -69,11 +91,33 @@ const useLoanApi = () => {
       })
       .onServerError((result) => {
         track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
         if (onError) onError();
       })
-      .onBadRequest((result) => onError && onError())
-      .notFound((result) => onError && onError())
-      .unKnownError((result) => onError && onError())
+      .onBadRequest((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .notFound((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .unKnownError((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
       .call(pId);
   }
   function getNeedsByCategory(category) {

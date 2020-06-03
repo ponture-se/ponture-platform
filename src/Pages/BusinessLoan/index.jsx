@@ -1,25 +1,20 @@
 import React from "react";
 import styles from "./styles.module.scss";
-import Header from "./components/Header";
+import Header from "components/Header";
 import Content from "./components/Content";
 import ErrorBox from "./components/ErrorBox";
-import { LoanProvider } from "hooks/useLoan";
+import { useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
-const ApplyLoan = (props) => {
+const ApplyLoan = ({ headerBottom }) => {
+  const { errorBox } = useLoanState();
   const { t } = useLocale();
   const { getNeeds } = useLoanApi();
   const [loading, toggleLoading] = React.useState(true);
-  const [error, toggleErrorBox] = React.useState(false);
   const init = () => {
     getNeeds(
-      (needs) => {
-        toggleLoading(false);
-      },
-      () => {
-        toggleLoading(false);
-        toggleErrorBox(true);
-      }
+      (needs) => toggleLoading(false),
+      () => toggleLoading(false)
     );
   };
   React.useEffect(init, []);
@@ -30,8 +25,8 @@ const ApplyLoan = (props) => {
     </div>
   ) : (
     <div className={styles.wrapper}>
-      <Header />
-      {!error ? <Content /> : <ErrorBox />}
+      <Header headerBottom={headerBottom} />
+      {!errorBox ? <Content /> : <ErrorBox />}
     </div>
   );
 };

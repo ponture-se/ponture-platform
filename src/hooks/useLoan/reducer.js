@@ -176,11 +176,17 @@ export const reducer = (state, action) => {
       return {
         ...state,
         selectedCompany: payload,
+        currentStep: "",
       };
     case "SET_CONTACT_INFO":
       return {
         ...state,
         contactInfo: payload,
+      };
+    case "TOGGLE_ERROR_BOX":
+      return {
+        ...state,
+        errorBox: payload,
       };
     default:
       return state;

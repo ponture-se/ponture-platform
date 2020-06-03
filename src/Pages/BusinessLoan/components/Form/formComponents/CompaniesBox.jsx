@@ -18,14 +18,13 @@ const CompaniesBox = () => {
       type: "SET_SELECTED_COMPANY",
       payload: item,
     });
-    if (!selectedCompany)
-      dispatch({
-        type: "NEXT_STEP",
-        payload: {
-          finishedStep: "companiesBox",
-          nextStep: "submitBox",
-        },
-      });
+    dispatch({
+      type: "NEXT_STEP",
+      payload: {
+        finishedStep: "companiesBox",
+        nextStep: "submitBox",
+      },
+    });
   }
   const init = () => {
     if (companiesBoxRef.current && currentStep === "companiesBox") {

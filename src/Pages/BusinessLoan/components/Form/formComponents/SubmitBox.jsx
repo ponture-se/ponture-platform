@@ -24,8 +24,6 @@ const SubmitBox = () => {
   const { t } = useLocale();
   const [spinner, toggleSpinner] = React.useState(false);
   const init = () => {
-    if (submitBoxRef.current && currentStep === "submitBox")
-      window.scrollTo(0, submitBoxRef.current.offsetTop);
     if (contactInfo) {
       setValue("lastYear", contactInfo.lastYear);
       setValue("phoneNumber", contactInfo.phoneNumber);
@@ -45,6 +43,10 @@ const SubmitBox = () => {
       });
     };
   };
+  React.useEffect(() => {
+    if (submitBoxRef.current && currentStep === "submitBox")
+      window.scrollTo(0, submitBoxRef.current.offsetTop);
+  }, [currentStep]);
   React.useEffect(init, []);
 
   const onSubmit = async (data) => {

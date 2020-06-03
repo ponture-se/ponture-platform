@@ -1,5 +1,5 @@
 import React from "react";
-import styles from "../styles.module.scss";
+import styles from "./styles.module.scss";
 const HeaderStep = ({ step = {}, currentStep }) => {
   const { isFinished, isTouched, isHidden } = step;
   return (
