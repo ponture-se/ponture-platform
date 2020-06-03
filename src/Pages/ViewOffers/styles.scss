@@ -462,6 +462,7 @@ $itemBtnColor: #44b3c2;
     margin-top: 10px;
     display: flex;
     flex-direction: row;
+    font-family: poppins;
     @include respond(phone) {
       flex-direction: column;
       margin-top: 5px;
@@ -470,6 +471,8 @@ $itemBtnColor: #44b3c2;
       width: 260px;
       color: black;
       flex-shrink: 0;
+      font-family: poppins;
+      font-weight: bold;
       @include respond(phone) {
         width: auto;
         font-size: 13px;
@@ -479,7 +482,7 @@ $itemBtnColor: #44b3c2;
       color: #000000;
       font-size: 14px;
       text-align: justify;
-      // width: 170px;
+      font-family: poppins;
 
       @include respond(phone) {
         width: auto;
@@ -493,6 +496,7 @@ $itemBtnColor: #44b3c2;
     z-index: 0;
     border-radius: 10px;
     font-size: 13px;
+    font-family: poppins;
   }
 }
 .row-title {
