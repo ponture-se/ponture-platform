@@ -9,6 +9,9 @@ const Header = ({ headerBottom }) => {
     const index = steps[currentStep].index;
     return isUrlNeeds && index > 2 ? index - 1 : index;
   }
+  function openChat() {
+    if (document.tidioChatApi) document.tidioChatApi.display(true);
+  }
   return (
     <div className={styles.header}>
       <div className={styles.header__content}>
@@ -27,16 +30,20 @@ const Header = ({ headerBottom }) => {
             </div>
           </div>
           <div className={styles.info}>
-            <span className={styles.info__item}>
+            <span
+              className={styles.info__item}
+              onClick={openChat}
+              style={{ cursor: "pointer" }}
+            >
               <img src={require("assets/icons/chat.png")} alt="" />
               <span>Chat</span>
             </span>
             <span className={styles.info__item}>
               <img src={require("assets/icons/phone.png")} alt="" />
-              <span>010 129 29 20</span>
+              <a href="tel:0101292920">010 129 29 20</a>
             </span>
             <span className={styles.info__item}>
-              <span>Contact@openratio.cm</span>
+              <a href="mailto:Contact@openratio.cm">Contact@openratio.cm</a>
             </span>
             <img
               src="https://www.ponture.com/wp-content/uploads/2020/05/google-rating-without-text-1.png"
@@ -58,16 +65,22 @@ const Header = ({ headerBottom }) => {
           </div>
           {isOpenMenu && (
             <div className={styles.info__mobile}>
-              <span className={styles.item}>
+              <span
+                className={styles.item}
+                onClick={openChat}
+                style={{ cursor: "pointer" }}
+              >
                 <img src={require("assets/icons/chat.png")} alt="" />
                 <span>Chat</span>
               </span>
               <span className={styles.item}>
                 <img src={require("assets/icons/phone.png")} alt="" />
-                <span>010 129 29 20</span>
+                <a href="tel:0101292920">010 129 29 20</a>
               </span>
               <span className={styles.item}>
-                <span>Contact@openratio.cm</span>
+                <span>
+                  <a href="mailto:Contact@openratio.cm">Contact@openratio.cm</a>
+                </span>
               </span>
               <div className={styles.financeLogo}>
                 <img

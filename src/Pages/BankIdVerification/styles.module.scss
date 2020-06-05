@@ -71,11 +71,15 @@
   padding: 40px 50px;
   @include respond(phone) {
     padding: 20px;
+    padding-bottom: 40px;
   }
   h2 {
     margin: 0;
     align-self: center;
     margin-bottom: 20px;
+    @include respond(phone) {
+      font-size: 22px;
+    }
   }
   .bankIdOption {
     margin-top: 20px;
@@ -94,10 +98,17 @@
     }
     h4 {
       flex: 1;
+      @include respond(phone) {
+        font-size: 14px;
+      }
     }
     img {
       width: 45px;
       height: 45px;
+      @include respond(phone) {
+        width: 30px;
+        height: 30px;
+      }
     }
   }
   .info {
@@ -116,6 +127,17 @@
       line-height: normal;
       letter-spacing: normal;
       color: #1b1b1b;
+      text-align: left;
+      @include respond(phone) {
+        text-align: justify;
+      }
+    }
+  }
+  .mobileIcon {
+    font-size: 40px;
+    margin-right: 10px;
+    @include respond(phone) {
+      font-size: 25px;
     }
   }
 }
@@ -169,5 +191,46 @@
   .link {
     margin-top: 40px;
     color: black;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  @include respond(phone) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  &__left {
+    flex: 1;
+    margin-bottom: 0px;
+    img {
+      width: 150px;
+    }
+    @include respond(phone) {
+      flex: 0;
+      margin-bottom: 20px;
+    }
+  }
+  &__right {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    flex-direction: row;
+    @include respond(phone) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    span {
+      font-size: 13px;
+    }
+    img {
+      margin-left: 10px;
+      width: 40px;
+      @include respond(phone) {
+        margin-left: 0px;
+      }
+    }
   }
 }

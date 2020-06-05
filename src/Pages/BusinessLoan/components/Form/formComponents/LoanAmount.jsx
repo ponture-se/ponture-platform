@@ -17,6 +17,7 @@ const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
 const loanAmountMax = process.env.REACT_APP_LOAN_AMOUNT_MAX
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MAX)
   : 10000000;
+const loanAmountDefaultValue = 3500000;
 
 const loanPeriodStep = 1;
 const loanPeriodMax = process.env.REACT_APP_LOAN_PERIOD_MAX
@@ -25,6 +26,7 @@ const loanPeriodMax = process.env.REACT_APP_LOAN_PERIOD_MAX
 const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   ? parseInt(process.env.REACT_APP_LOAN_PERIOD_MIN)
   : 1;
+const loanPeriodDefaultValue = 12;
 
 const LoanAmount = () => {
   const { register, setValue } = useFormContext();
@@ -45,7 +47,7 @@ const LoanAmount = () => {
         : parseInt(params_loanAmount) > loanAmountMax
         ? loanAmountMax
         : parseInt(params_loanAmount)
-      : 3500000;
+      : loanAmountDefaultValue;
   });
   const [loanAmountStep, setLoanAmountStep] = useState(50000);
   const [loanPeriod, setLoanPeriod] = useState(() => {
@@ -57,7 +59,7 @@ const LoanAmount = () => {
         : parseInt(params_loanPeriod) > loanPeriodMax
         ? loanPeriodMax
         : parseInt(params_loanPeriod)
-      : 12;
+      : loanPeriodDefaultValue;
   });
   const [isEditAmount, toggleAmountEdit] = useState(false);
   const [isEditPeriod, togglePeriodEdit] = useState(false);
@@ -72,7 +74,8 @@ const LoanAmount = () => {
   }
   React.useEffect(init, []);
 
-  function handleOnChangedAmount(val) {
+  function handleOnChangedAmount(value) {
+    const val = value;
     setValue("amount", val);
     setLoanAmount(val);
     if (val <= 100000) {
@@ -86,8 +89,9 @@ const LoanAmount = () => {
     }
   }
   function handleOnChangedPeriod(value) {
-    setValue("amourtizationPeriod", value);
-    setLoanPeriod(value);
+    const val = value;
+    setValue("amourtizationPeriod", val);
+    setLoanPeriod(val);
   }
   function handleChangeSliderEditValue(name, value) {
     if (name === "loanAmount") {
@@ -120,6 +124,34 @@ const LoanAmount = () => {
         });
 
       setType(item);
+    }
+  }
+  function handleAmountLostFocus() {
+    if (isEditAmount) {
+      toggleAmountEdit(false);
+      if (!loanAmount) {
+        handleOnChangedAmount(loanAmountDefaultValue);
+      } else {
+        if (loanAmount > loanAmountMax) {
+          handleOnChangedAmount(loanAmountMax);
+        } else if (loanAmount < loanAmountMin) {
+          handleOnChangedAmount(loanAmountMin);
+        }
+      }
+    }
+  }
+  function handlePeriodLostFocus() {
+    if (isEditPeriod) {
+      togglePeriodEdit(false);
+      if (!loanPeriod) {
+        handleOnChangedPeriod(loanPeriodDefaultValue);
+      } else {
+        if (loanPeriod > loanPeriodMax) {
+          handleOnChangedPeriod(loanPeriodMax);
+        } else if (loanPeriod < loanPeriodMin) {
+          handleOnChangedPeriod(loanPeriodMin);
+        }
+      }
     }
   }
   function editAmount() {
@@ -212,11 +244,7 @@ const LoanAmount = () => {
                   " " +
                   (isEditAmount ? styles.isEditSliderEditValue : "")
                 }
-                onMouseLeave={() => {
-                  if (isEditAmount) {
-                    toggleAmountEdit(false);
-                  }
-                }}
+                onMouseLeave={handleAmountLostFocus}
                 onClick={editAmount}
               >
                 <div className={styles.sliderEditable__input}>
@@ -264,11 +292,7 @@ const LoanAmount = () => {
                   (isEditPeriod ? styles.isEditSliderEditValue : "")
                 }
                 onClick={editPeriod}
-                onMouseLeave={() => {
-                  if (isEditPeriod) {
-                    togglePeriodEdit(false);
-                  }
-                }}
+                onMouseLeave={handlePeriodLostFocus}
               >
                 <div className={styles.sliderEditable__input}>
                   {!isEditPeriod ? (

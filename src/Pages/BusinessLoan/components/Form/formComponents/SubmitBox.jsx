@@ -122,7 +122,7 @@ const SubmitBox = () => {
           extraClassStyle={styles.submitBox__inputs__turnOver}
           tooltip="no tooltip"
           id="ff"
-          errorText={errors.lastYear && errors.lastYear.message}
+          errorText={errors.givenRevenue && errors.givenRevenue.message}
           rules={{
             required: "this is a required",
             validate: (value) => {

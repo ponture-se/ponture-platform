@@ -50,7 +50,6 @@ const CompaniesBox = () => {
               }
               onClick={() => handleSelectCompany(item)}
             >
-              <ion-icon name="business-outline"></ion-icon>
               <IoMdBusiness className={styles.companiesBox__customBtn__icon} />
               {item.companyName}
             </Button>

@@ -407,8 +407,7 @@
   }
   &__input {
     margin-top: 30px;
-    display: flex;
-    align-items: center;
+    // display: flex;
     position: relative;
     @include respond(phone) {
       position: static;
@@ -425,13 +424,13 @@
       }
     }
     &__customBtn {
-      min-height: 45px !important;
-      margin-top: 2px;
+      height: 45px;
+      min-height: 45px;
+      // margin-top: 10px;
       max-width: 190px;
       padding: 0 10px !important;
-      position: absolute !important;
       left: 270px;
-      top: 50%;
+      top: 60%;
       transform: translateY(-50%);
       position: absolute;
       justify-content: center;
@@ -488,7 +487,7 @@
     flex-wrap: wrap;
   }
   &__customBtn {
-    flex-basis: calc(33.33333% - 20px);
+    flex-basis: calc(33.33333% - 25px);
     margin-right: 20px;
     margin-bottom: 20px;
     display: flex;
@@ -496,10 +495,11 @@
     justify-content: center;
     flex-direction: column;
     min-height: 100px;
-    padding: 5px 0;
+    padding: 5px 0px;
+    font-size: 12px;
     &:nth-child(3n) {
       margin-right: 0;
-      flex-basis: calc(33.3333333%);
+      flex-basis: calc(33.3333333% - 10px);
       @include respond(phone) {
         flex-basis: calc(50% - 20px);
         margin-right: 20px;
@@ -627,6 +627,7 @@
   &__customBtn {
     display: flex;
     justify-content: center;
+    align-items: center;
     width: 150px;
     transition-duration: 0.2s;
     font-size: 17px;

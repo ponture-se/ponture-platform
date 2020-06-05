@@ -20,6 +20,7 @@
     display: flex;
     padding: 15px 0;
     flex-wrap: wrap;
+    min-height: 60px !important;
     .logo {
       flex: 1;
       display: flex;
@@ -52,10 +53,13 @@
       &__item {
         margin-left: 15px;
         display: flex;
+        a,
         span {
           font-size: 13px;
           margin-left: 10px;
           font-weight: bold;
+          text-decoration: none;
+          color: black;
         }
         img {
           width: 20px;
@@ -170,10 +174,13 @@
         i {
           font-size: 20px;
         }
+        a,
         span {
           font-size: 15px;
           margin-left: 10px;
           font-family: PoppinsSemiBold;
+          text-decoration: none;
+          color: black;
         }
         img {
           width: 23px;
@@ -191,6 +198,7 @@
     }
   }
   &__bottom {
+    height: 50px;
   }
   &__bottomContent {
     height: 100%;
