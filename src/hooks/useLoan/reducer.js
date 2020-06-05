@@ -1,7 +1,7 @@
 export const initialState = {
   formStatus: "form",
-  steps1: [],
   needs: null,
+  pNumberTryCounter: 0,
   currentStep: "loanAmountBox",
   steps: {
     loanAmountBox: {
@@ -187,6 +187,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         errorBox: payload,
+      };
+    case "INCREMENT_P_NUMBER_TRY_COUNTER":
+      return {
+        ...state,
+        pNumberTryCounter: state.pNumberTryCounter + 1,
       };
     default:
       return state;

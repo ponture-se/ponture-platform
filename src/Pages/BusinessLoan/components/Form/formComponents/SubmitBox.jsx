@@ -1,4 +1,6 @@
 import React from "react";
+import Cookies from "js-cookie";
+import { getParameterByName, isNumber } from "utils";
 import { useFormContext } from "react-hook-form";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
@@ -25,17 +27,19 @@ const SubmitBox = () => {
   const [spinner, toggleSpinner] = React.useState(false);
   const init = () => {
     if (contactInfo) {
-      setValue("lastYear", contactInfo.lastYear);
-      setValue("phoneNumber", contactInfo.phoneNumber);
-      setValue("email", contactInfo.email);
-      setValue("terms", contactInfo.terms);
+      setValue([
+        { givenRevenue: contactInfo.givenRevenue },
+        { phoneNumber: contactInfo.phoneNumber },
+        { email: contactInfo.email },
+        { terms: contactInfo.terms },
+      ]);
     }
     return () => {
       const values = getValues();
       dispatch({
         type: "SET_CONTACT_INFO",
         payload: {
-          lastYear: values["lastYear"],
+          givenRevenue: values["givenRevenue"],
           phoneNumber: values["phoneNumber"],
           email: values["email"],
           terms: values["terms"],
@@ -52,6 +56,53 @@ const SubmitBox = () => {
   const onSubmit = async (data) => {
     if (submitCount === 1) {
       toggleSpinner(true);
+      const referral_params = Cookies.get("affiliate_referral_params_v2")
+        ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
+        : Cookies.get("affiliate_referral_params");
+      let pId = data.personalNumber.replace("-", "");
+      if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
+      let obj = {
+        orgNumber: data.company.companyId,
+        orgName: data.company.companyName,
+        personalNumber: pId,
+        givenRevenue: data.givenRevenue,
+        amount: parseInt(data.loanAmount),
+        amourtizationPeriod: parseInt(data.loanPeriod),
+        need: data.needs.map((n) => n.API_Name),
+        email: data.email,
+        phoneNumber: data.phoneNumber,
+      };
+      const pCode = getParameterByName("pcode");
+      const utm_source = getParameterByName("utm_source");
+      const utm_medium = getParameterByName("utm_medium");
+      const utm_campaign = getParameterByName("utm_campaign");
+      const referral_id = getParameterByName("referral_id");
+      const last_referral_date = getParameterByName("last_referral_date");
+      try {
+        const ref = JSON.parse(referral_params);
+        if (ref && ref.utm_source) {
+          obj["utm_source"] = ref.utm_source;
+        }
+        if (ref && ref.utm_medium) {
+          obj["utm_medium"] = ref.utm_medium;
+        }
+        if (ref && ref.utm_campaign) {
+          obj["utm_campaign"] = ref.utm_campaign;
+        }
+        if (ref && ref.referral_id) {
+          obj["referral_id"] = ref.referral_id;
+        }
+        if (ref && ref.last_referral_date) {
+          obj["last_referral_date"] = ref.last_referral_date;
+        }
+      } catch (error) {}
+      if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pCode"] = pCode;
+      if (utm_source) obj["utm_source"] = utm_source;
+      if (utm_medium) obj["utm_medium"] = utm_medium;
+      if (utm_campaign) obj["utm_campaign"] = utm_campaign;
+      if (referral_id) obj["referral_id"] = referral_id;
+      if (last_referral_date) obj["last_referral_date"] = last_referral_date;
+
       setTimeout(() => {
         toggleSpinner(false);
         dispatch({
@@ -79,7 +130,7 @@ const SubmitBox = () => {
               return val.length <= 9 || "This is not valid value.";
             },
           }}
-          name="lastYear"
+          name="givenRevenue"
         />
         <div className={styles.submitBox__twoColumns}>
           <div className={styles.submitBox__twoColumns__col}>
@@ -145,9 +196,13 @@ const SubmitBox = () => {
         </Button>
         <div className={styles.submitBox__actions__link}>
           <a href="/app/loan">Börja om</a>
-          <a href="/app/loan">
-            (Om du klicka här kommer förmuläret att nollställas)
-          </a>
+          <div>
+            (
+            <a href="/app/loan">
+              Om du klicka här kommer förmuläret att nollställas
+            </a>
+            )
+          </div>
         </div>
       </div>
       {!isValid && (

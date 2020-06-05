@@ -8,13 +8,9 @@ import useLoanApi from "hooks/useLoan/useLoanApi";
 
 const NeedsBox = () => {
   const needsBoxRef = React.useRef(null);
-  const { errors, clearError, setValue } = useFormContext();
+  const { setValue } = useFormContext();
   const dispatch = useLoanDispatch();
-  const {
-    selectedNeedCategory,
-    currentStep,
-    steps1: { needsBox },
-  } = useLoanState();
+  const { selectedNeedCategory, currentStep } = useLoanState();
   const { getNeedsByCategory } = useLoanApi();
   const [needsList, setNeeds] = React.useState(
     JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))

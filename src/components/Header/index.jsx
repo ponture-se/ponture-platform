@@ -18,6 +18,13 @@ const Header = ({ headerBottom }) => {
               src="https://www.ponture.com/wp-content/uploads/2019/04/logo-color-no-bg-500png.png"
               alt="logo"
             />
+            <div className={styles.financeLogo}>
+              <span>Ponture AB är registrerade hos Finansinspektionen</span>
+              <img
+                src="https://www.ponture.com/wp-content/uploads/2019/04/financial_supervisory_authority.png"
+                alt=""
+              />
+            </div>
           </div>
           <div className={styles.info}>
             <span className={styles.info__item}>
@@ -31,6 +38,10 @@ const Header = ({ headerBottom }) => {
             <span className={styles.info__item}>
               <span>Contact@openratio.cm</span>
             </span>
+            <img
+              src="https://www.ponture.com/wp-content/uploads/2020/05/google-rating-without-text-1.png"
+              alt=""
+            />
           </div>
           <div className={styles.menu}>
             <input
@@ -58,6 +69,18 @@ const Header = ({ headerBottom }) => {
               <span className={styles.item}>
                 <span>Contact@openratio.cm</span>
               </span>
+              <div className={styles.financeLogo}>
+                <img
+                  src="https://www.ponture.com/wp-content/uploads/2019/04/financial_supervisory_authority.png"
+                  alt=""
+                />
+                <span>Ponture AB är registrerade hos Finansinspektionen</span>
+              </div>
+              <img
+                className={styles.rating}
+                src="https://www.ponture.com/wp-content/uploads/2020/05/google-rating-without-text-1.png"
+                alt=""
+              />
             </div>
           )}
         </div>

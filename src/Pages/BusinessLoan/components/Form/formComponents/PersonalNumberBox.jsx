@@ -12,6 +12,7 @@ import useLocale from "hooks/useLocale";
 
 const PersonalNumberBox = () => {
   const {
+    setError,
     errors,
     register,
     setValue,
@@ -19,15 +20,15 @@ const PersonalNumberBox = () => {
     getValues,
   } = useFormContext();
   const dispatch = useLoanDispatch();
-  const { companies, personalNumber, currentStep } = useLoanState();
+  const { personalNumber, currentStep, pNumberTryCounter } = useLoanState();
   const { _getCompanies } = useLoanApi();
 
   const { t } = useLocale();
   const pNumberBoxRef = React.useRef(null);
   const [spinner, toggleSpinner] = React.useState(false);
-  const [isDonePNumber, toggleIsDonePNumber] = React.useState(
-    personalNumber ? true : false
-  );
+  const [isDonePNumber, toggleIsDonePNumber] = React.useState(() => {
+    return pNumberTryCounter === 2 ? false : personalNumber ? true : false;
+  });
   const init = () => {
     if (personalNumber) setValue("personalNumber", personalNumber);
     if (pNumberBoxRef.current && currentStep === "personalNumberBox") {
@@ -50,20 +51,32 @@ const PersonalNumberBox = () => {
         const pNumber = getValues().personalNumber;
         _getCompanies(
           pNumber,
-          () => {
+          (companies) => {
             toggleSpinner(false);
-            toggleIsDonePNumber(true);
-            dispatch({
-              type: "NEXT_STEP",
-              payload: {
-                finishedStep: "personalNumberBox",
-                nextStep: "companiesBox",
-              },
-            });
+            if (!companies || companies.length === 0) {
+              dispatch({
+                type: "INCREMENT_P_NUMBER_TRY_COUNTER",
+              });
+              setError([
+                {
+                  type: "empty",
+                  name: "personalNumber",
+                  message:
+                    "There aren't any companies for this personal number.try once again",
+                },
+              ]);
+            } else {
+              toggleIsDonePNumber(true);
+              dispatch({
+                type: "NEXT_STEP",
+                payload: {
+                  finishedStep: "personalNumberBox",
+                  nextStep: "companiesBox",
+                },
+              });
+            }
           },
-          () => {
-            toggleSpinner(false);
-          }
+          () => toggleSpinner(false)
         );
       }
     }
@@ -73,14 +86,23 @@ const PersonalNumberBox = () => {
       <div className={styles.companiesBox__info}>
         <Title
           text={
-            !isDonePNumber
+            pNumberTryCounter === 2
+              ? "You are not allowed to try more than twice"
+              : !isDonePNumber
               ? "Ange ditt personnummer och klicka på “Sök” för att hitta ditt företag"
               : "Ditt personnummer har verifierats"
           }
           showTooltip={false}
         />
       </div>
-      {!isDonePNumber ? (
+      {pNumberTryCounter === 2 ? (
+        <div className={styles.companiesBox__morethan2Text}>
+          <a href="/app/loan">Börja om</a>
+          <a href="/app/loan">
+            Om du klicka här kommer förmuläret att nollställas
+          </a>
+        </div>
+      ) : !isDonePNumber ? (
         <>
           <div
             className={styles.companiesBox__input}
@@ -103,6 +125,7 @@ const PersonalNumberBox = () => {
                 },
               })}
             />
+
             <Button
               customClass={styles.companiesBox__input__customBtn}
               selected={true}
@@ -116,6 +139,7 @@ const PersonalNumberBox = () => {
               )}
             </Button>
           </div>
+
           <div className={styles.companiesBox__guid}>
             <span className={styles.companiesBox__guid_title}>
               Det personnummer som kan accepteras är:

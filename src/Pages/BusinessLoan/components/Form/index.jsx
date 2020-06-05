@@ -1,6 +1,7 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import { useForm, FormContext } from "react-hook-form";
+import { getParameterByName } from "utils";
 import LoanAmount from "./formComponents/LoanAmount";
 import FurtherBox from "./formComponents/GoFurtherBox";
 import NeedsBox from "./formComponents/NeedsBox";
@@ -9,6 +10,8 @@ import CompaniesBox from "./formComponents/CompaniesBox";
 import SubmitBox from "./formComponents/SubmitBox";
 import Footer from "./formComponents/Footer";
 import { useLoanState } from "hooks/useLoan";
+const title = getParameterByName("ptitle");
+//
 const LoanForm = () => {
   const { steps, isUrlNeeds } = useLoanState();
   const methods = useForm({
@@ -23,7 +26,7 @@ const LoanForm = () => {
   return (
     <FormContext {...methods}>
       <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-        <h2>Ansök om företagslån</h2>
+        <h2>{title && title.length > 0 ? title : "Ansök om företagslån"}</h2>
         <LoanAmount />
         {isUrlNeeds && !steps["loanAmountBox"].isFinished && <FurtherBox />}
 

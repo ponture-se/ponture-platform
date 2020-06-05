@@ -27,14 +27,7 @@ const loanPeriodMin = process.env.REACT_APP_LOAN_PERIOD_MIN
   : 1;
 
 const LoanAmount = () => {
-  const {
-    register,
-    errors,
-    setError,
-    clearError,
-    setValue,
-    formState: { dirty },
-  } = useFormContext();
+  const { register, setValue } = useFormContext();
   const params_loanAmount = getParameterByName("amount");
   const params_loanPeriod = getParameterByName("amourtizationPeriod");
   const { t } = useLocale();

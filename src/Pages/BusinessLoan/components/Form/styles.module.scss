@@ -431,11 +431,14 @@
       padding: 0 10px !important;
       position: absolute !important;
       left: 270px;
+      top: 50%;
+      transform: translateY(-50%);
       position: absolute;
       justify-content: center;
       align-items: center;
       display: flex;
       @include respond(phone) {
+        margin-top: 20px;
         position: static !important;
         max-width: 100%;
         width: 100%;
@@ -465,6 +468,11 @@
     .checkmark {
       font-size: 30px;
     }
+  }
+  &__morethan2Text {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
   }
   &__info2 {
     margin-bottom: 30px;
@@ -596,14 +604,19 @@
       flex-direction: column;
     }
     &__link {
+      display: flex;
       margin-top: 0px;
+      color: #44b3c2;
+      flex-direction: column;
       a {
-        display: block;
         text-align: right;
         color: #44b3c2;
+        font-size: 16px;
+      }
+      div {
         font-size: 13px;
-        &:first-child {
-          font-size: 16px;
+        a {
+          font-size: 13px;
         }
       }
       @include respond(phone) {
