@@ -1,0 +1,826 @@
+@import "./../../../../styles/mixins";
+// #region tooltip
+.tooltip {
+  cursor: pointer;
+  font-size: 13px;
+  text-align: center;
+  width: 40px;
+  height: 20px;
+  padding: 0 10px;
+  border-radius: 20px;
+  background-color: #d4d4d4;
+  transition-duration: 0.2s;
+  font-weight: bold;
+  &:hover {
+    transition-duration: 0.2s;
+    box-shadow: 0 0 3px gray;
+  }
+  &__customClass {
+    border-color: #44b3c2 !important;
+    border-style: solid !important;
+    border-width: 1px !important;
+  }
+  &__container {
+    width: 200px;
+    position: relative;
+    span {
+      font-family: Poppins;
+      font-size: 12px;
+      font-weight: 300;
+
+      color: #000000;
+      margin-top: 10px;
+      text-align: justify;
+    }
+    i {
+      color: #000000;
+      position: absolute;
+      right: 0;
+      visibility: hidden;
+      @include respond(tab-land) {
+        visibility: visible;
+      }
+    }
+  }
+}
+// #endregion tooltip
+
+// #region button
+.button {
+  position: relative;
+  border-radius: 10px;
+  min-height: 60px;
+  cursor: pointer;
+  transition: all 0.2s;
+  font-family: PoppinsSemiBold;
+  &:focus {
+    outline: none;
+    transition: all 0.2s;
+  }
+}
+.primaryBtn {
+  border: solid 2px #44b3c2;
+  background-color: #ffffff;
+  color: #188695;
+  transition: all 0.2s;
+}
+.warningBtn {
+  border: solid 2px #ff8a00;
+  color: white;
+  background-color: #ff8a00;
+}
+.selectedButton {
+  color: #ffffff;
+  background-color: #44b3c2;
+  transition: all 0.2s;
+}
+.checkMarkButton {
+  position: absolute;
+  height: 30px;
+  background-color: white;
+  width: 30px;
+  top: 0;
+  left: 0;
+  border-radius: 50%;
+  transform: translate(-25%, -25%);
+  border: 2px solid #44b3c2;
+  &::before {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    height: 7px;
+    width: 3px;
+    background-color: #44b3c2;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
+  }
+
+  &::after {
+    position: absolute;
+    left: 0;
+    bottom: 20%;
+    height: 3px;
+    width: 15px;
+    background-color: #44b3c2;
+    content: "";
+    transform: translateX(10px) rotate(-45deg);
+    transform-origin: left bottom;
+  }
+}
+// #endregion button
+
+// #region input box
+.inputBox {
+  margin-bottom: 20px;
+  min-height: 90px;
+  @include respond(phone) {
+    margin-bottom: 0;
+  }
+  &__top {
+    display: flex;
+    margin-bottom: 20px;
+    align-items: center;
+  }
+  &__title {
+    margin: 0;
+    margin-right: 20px;
+  }
+  &__input {
+    border: solid 0.5px #828282;
+    display: block;
+    width: 100%;
+    height: 45px;
+    padding: 5px 10px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: white;
+    font-size: 16px;
+    transition: all 0.3;
+    font-family: inherit;
+    backface-visibility: hidden;
+    transition: all 0.3s;
+    color: inherit;
+    outline: none;
+    &:focus:not(.input_error) {
+      // box-shadow: 0 0 4px #44b3c2;
+      // outline: 2px solid #44b3c2;
+      box-shadow: 0px 0px 0px 1.5px #44b3c2 inset;
+      background-color: white;
+    }
+    &.input_error {
+      // outline-color: transparent;
+      border: 1.5px solid red;
+    }
+  }
+  &__errorText {
+    display: block;
+    min-height: 15px;
+    font-size: 16px;
+    color: red;
+    margin-top: 5px;
+  }
+}
+// #endregion input-box
+
+// #region chcekbox
+.checkbox {
+  width: 100%;
+  position: relative;
+  &__chk {
+    display: none;
+  }
+
+  &__label {
+    padding-left: 40px;
+    font-size: 16px;
+    position: relative;
+    cursor: pointer;
+    width: 100%;
+  }
+  &__btn {
+    height: 30px;
+    width: 30px;
+    border: 2px solid #44b3c2;
+    border-radius: 50%;
+    display: inline-block;
+    position: absolute;
+    top: -0.3rem;
+    left: 0;
+    transition: all 0.2s;
+    &::before {
+      position: absolute;
+      left: 0;
+      top: 50%;
+      height: 10px;
+      width: 4px;
+      background-color: #44b3c2;
+      content: "";
+      transform: translateX(10px) rotate(-45deg);
+      transform-origin: left bottom;
+      opacity: 0;
+      transition-duration: 0.2s;
+    }
+
+    &::after {
+      position: absolute;
+      left: 0;
+      bottom: 10%;
+      height: 4px;
+      width: 20px;
+      background-color: #44b3c2;
+      content: "";
+      transform: translateX(10px) rotate(-45deg);
+      transform-origin: left bottom;
+      opacity: 0;
+      transition-duration: 0.2s;
+    }
+  }
+  &__chk:checked + &__label span::after {
+    opacity: 1;
+  }
+  &__chk:checked + &__label span::before {
+    opacity: 1;
+  }
+  &__errorText {
+    // position: absolute;
+    display: block;
+    padding-left: 40px;
+    color: red;
+    top: 20px;
+    width: 100%;
+  }
+}
+
+// #endregion checkbox
+
+.form {
+  padding-bottom: 20px;
+  h2 {
+    margin-bottom: 40px;
+    font-family: PoppinsBold;
+  }
+}
+
+.loanAmountBox {
+  background-color: white;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 40px;
+  @include respond(tab-port) {
+    padding: 20px 30px;
+  }
+  .actions {
+    &__info {
+      margin-bottom: 30px;
+    }
+    &__btns {
+      display: flex;
+      flex-direction: row;
+      flex-wrap: wrap;
+      @include respond(phone) {
+        display: none;
+      }
+    }
+    &__urlNeedsList {
+      display: flex;
+      flex-wrap: wrap;
+    }
+    &__customBtn {
+      flex: 1;
+
+      &:not(:last-child) {
+        margin-right: 10px;
+      }
+      @include respond(phone) {
+        font-size: 15px;
+        &:not(:last-child) {
+          margin-right: 0px;
+        }
+        margin-bottom: 10px;
+      }
+    }
+    &__urlCustomBtn {
+      width: calc(25% - 10px);
+      margin-right: 10px;
+      margin-bottom: 10px;
+      font-size: 12px;
+      min-height: 75px !important;
+      word-wrap: break-word;
+      display: inline-block;
+      &:nth-child(4n) {
+        margin-right: 0;
+        width: calc(25%);
+        @include respond(tab-port) {
+          margin-right: 10px;
+          width: calc(50% - 10px);
+        }
+      }
+      @include respond(tab-port) {
+        width: calc(50% - 10px);
+      }
+    }
+    &__customBtnLink {
+      border: none !important;
+      text-decoration: underline;
+      font-size: 15px;
+    }
+  }
+  .mobileActions {
+    display: none;
+    @include respond(phone) {
+      display: flex;
+      flex-direction: column;
+    }
+  }
+  .guide {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+.furtherMoreBox {
+  margin-top: 20px;
+  background-color: white;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  background-color: #ffffff;
+  border-radius: 12px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  border: 1px solid #188695;
+  color: #188695;
+  cursor: pointer;
+  transition-duration: 0.2s;
+  &:hover {
+    background-color: whitesmoke;
+    transition-duration: 0.2s;
+  }
+  h4 {
+    margin: 0;
+  }
+  span {
+    font-size: 11px;
+    font-weight: bold;
+  }
+  @include respond(tab-port) {
+  }
+}
+.needsBox {
+  margin-top: 40px;
+  background-color: #f2f2f2;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  border-radius: 12px;
+  padding: 30px 40px;
+  @include respond(tab-port) {
+    padding: 20px;
+  }
+  &__info {
+  }
+  &__desc {
+    font-weight: normal;
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__customBtn {
+    width: calc(25% - 10px);
+    margin-right: 10px;
+    margin-bottom: 10px;
+    font-size: 12px;
+    min-height: 75px !important;
+    word-wrap: break-word;
+    display: inline-block;
+    &:nth-child(4n) {
+      margin-right: 0;
+      width: calc(25%);
+      @include respond(tab-port) {
+        margin-right: 10px;
+        width: calc(50% - 10px);
+      }
+    }
+    @include respond(tab-port) {
+      width: calc(50% - 10px);
+    }
+  }
+  .guide {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+// #region companies + personalNumber
+.companiesBox {
+  margin-top: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  border-radius: 12px;
+  padding: 40px;
+  @include respond(tab-port) {
+    padding: 20px;
+  }
+  &__info {
+  }
+  &__input {
+    margin-top: 30px;
+    // display: flex;
+    position: relative;
+    @include respond(phone) {
+      position: static;
+      align-items: stretch;
+      flex-direction: column;
+    }
+    h4 {
+      font-weight: normal !important;
+    }
+    &__personalNumber {
+      width: 250px !important;
+      @include respond(phone) {
+        width: 100% !important;
+      }
+    }
+    &__customBtn {
+      height: 45px;
+      min-height: 45px;
+      // margin-top: 10px;
+      max-width: 190px;
+      padding: 0 10px !important;
+      left: 270px;
+      top: 60%;
+      transform: translateY(-50%);
+      position: absolute;
+      justify-content: center;
+      align-items: center;
+      display: flex;
+      @include respond(phone) {
+        margin-top: 20px;
+        position: static !important;
+        max-width: 100%;
+        width: 100%;
+      }
+    }
+  }
+  &__isDonePNumber {
+    margin-top: 30px;
+    span {
+      font-size: 20px;
+      @include respond(phone) {
+        margin-right: 20px;
+      }
+    }
+  }
+  &__isDoneBtn {
+    width: 50px;
+    min-height: 45px !important;
+    align-self: center;
+    margin-top: 4px;
+    margin-left: 20px;
+    @include respond(phone) {
+      margin-left: 0px;
+      margin-top: 0px;
+      min-height: 50px !important;
+    }
+    .checkmark {
+      font-size: 30px;
+    }
+  }
+  &__morethan2Text {
+    margin: 20px 0;
+    display: flex;
+    flex-direction: column;
+  }
+  &__info2 {
+    margin-bottom: 30px;
+    h5 {
+      padding: 0;
+      margin: 0;
+      margin-top: 5px;
+      font-weight: normal;
+    }
+  }
+  &__list {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  &__customBtn {
+    flex-basis: calc(33.33333% - 25px);
+    margin-right: 20px;
+    margin-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    min-height: 100px;
+    padding: 5px 0px;
+    font-size: 12px;
+    &:nth-child(3n) {
+      margin-right: 0;
+      flex-basis: calc(33.3333333% - 10px);
+      @include respond(phone) {
+        flex-basis: calc(50% - 20px);
+        margin-right: 20px;
+      }
+    }
+    &__icon {
+      font-size: 30px;
+      margin-right: 10px;
+      margin-bottom: 0;
+      @include respond(phone) {
+        margin-right: 0;
+        margin-bottom: 5px;
+      }
+    }
+    @include respond(phone) {
+      flex-basis: calc(50% - 20px);
+      flex-direction: column;
+    }
+  }
+  &__guid {
+    font-size: 16px;
+    margin-top: 0px;
+    @include respond(phone) {
+      margin-top: 20px;
+    }
+    ul {
+      // list-style: none;
+      padding-left: 10px;
+    }
+  }
+  &__guide1 {
+    margin-top: 30px;
+    font-size: 14px;
+    text-align: center;
+  }
+}
+// #endregion companies+personalnumber
+//#region submitbox
+.submitBox {
+  margin-top: 40px;
+  background-color: #ffffff;
+  box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);
+  border-radius: 12px;
+  padding: 30px 40px;
+  @include respond(tab-port) {
+    padding: 20px;
+  }
+  &__inputs {
+    margin-bottom: 20px;
+    &__turnOver {
+      width: 230px !important;
+      @include respond(tab-port) {
+        width: 100% !important;
+      }
+    }
+
+    &__phone {
+      width: 85% !important;
+      @include respond(tab-port) {
+        width: 100% !important;
+      }
+    }
+    &__email {
+      width: 85% !important;
+      @include respond(tab-port) {
+        width: 100% !important;
+      }
+    }
+  }
+
+  &__twoColumns {
+    display: flex;
+    flex-direction: row;
+    @include respond(tab-port) {
+      flex-direction: column;
+    }
+    &__col {
+      flex: 1;
+    }
+  }
+  &__terms {
+    margin-bottom: 50px;
+    display: flex;
+    flex-direction: row;
+    @include respond(phone) {
+      flex-direction: column;
+    }
+    a {
+      margin-left: 5px;
+      color: black;
+      @include respond(phone) {
+        display: block;
+        margin-left: 40px;
+      }
+    }
+  }
+  &__actions {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: row;
+    @include respond(tab-port) {
+      flex-direction: column;
+    }
+    &__link {
+      display: flex;
+      margin-top: 0px;
+      color: #44b3c2;
+      flex-direction: column;
+      a {
+        text-align: right;
+        color: #44b3c2;
+        font-size: 16px;
+      }
+      div {
+        font-size: 13px;
+        a {
+          font-size: 13px;
+        }
+      }
+      @include respond(phone) {
+        margin-top: 20px;
+      }
+    }
+  }
+  &__customBtn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 150px;
+    transition-duration: 0.2s;
+    font-size: 17px;
+    margin-bottom: 0px;
+    @include respond(tab-port) {
+      width: 100%;
+      margin-bottom: 10px;
+    }
+    &:hover {
+      background-color: darken(#ff8a00, 5);
+      transition-duration: 0.2s;
+    }
+  }
+  &__info {
+    margin-top: 30px;
+    .rowInfo {
+      display: flex;
+      height: 40px;
+      align-items: center;
+      &__chk {
+        flex-shrink: 0;
+        margin-right: 15px;
+        background-color: #1abc9c;
+        width: 25px;
+        height: 25px;
+        border-radius: 50%;
+        position: relative;
+        text-align: center;
+        &::before {
+          position: absolute;
+          left: 0;
+          top: 50%;
+          height: 7px;
+          width: 3px;
+          background-color: white;
+          content: "";
+          transform: translateX(10px) rotate(-45deg);
+          transform-origin: left bottom;
+        }
+
+        &::after {
+          position: absolute;
+          left: 0;
+          bottom: 20%;
+          height: 3px;
+          width: 15px;
+          background-color: white;
+          content: "";
+          transform: translateX(10px) rotate(-45deg);
+          transform-origin: left bottom;
+        }
+      }
+      span {
+        font-size: 16px;
+      }
+    }
+  }
+  &__errors {
+    ul {
+      margin: 0;
+      padding: 0;
+      margin-top: 20px;
+      padding-left: 20px;
+      color: red;
+    }
+  }
+}
+// #endregion submitbox
+
+.sliderBox {
+  margin-bottom: 50px;
+  &__top {
+    display: flex;
+    margin-bottom: 40px;
+  }
+  &__info {
+    width: 100%;
+    align-items: center;
+    display: flex;
+    justify-content: space-between;
+    @include respond(phone) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+  }
+}
+.sliderEditable {
+  display: flex;
+  width: 210px;
+  border-radius: 8px;
+  border: solid 1px lightgray;
+  height: 40px;
+  overflow: hidden;
+  transition-duration: 0.3s;
+  margin-top: 0px;
+  @include respond(phone) {
+    width: 100%;
+    margin-top: 20px;
+  }
+  &:hover {
+    transition-duration: 0.3s;
+    background-color: #ddf2f4;
+  }
+  &.isEditSliderEditValue {
+    transition-duration: 0.3s;
+    background-color: #ddf2f4;
+  }
+  &__input {
+    flex: 1;
+    h4 {
+      display: flex;
+      align-items: center;
+      height: 100%;
+      width: 100%;
+      padding: 0px;
+      margin: 0;
+      margin-left: 15px;
+      font-family: PoppinsSemiBold;
+    }
+    input {
+      height: 100%;
+      width: 100%;
+      border: none;
+      padding: 0 15px;
+      font-size: 16px;
+      font-family: poppinsSemiBold;
+      background-color: transparent;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  &__icon {
+    width: 50px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    img {
+      width: 18px;
+    }
+  }
+}
+
+.title {
+  display: flex;
+  align-items: center;
+  h4 {
+    padding: 0;
+    margin: 0;
+    margin-right: 20px;
+    font-family: PoppinsSemiBold;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 100px;
+  @include respond(phone) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  &__left {
+    flex: 1;
+    margin-bottom: 0px;
+    img {
+      width: 150px;
+    }
+    @include respond(phone) {
+      flex: 0;
+      margin-bottom: 20px;
+    }
+  }
+  &__right {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    flex-direction: row;
+    @include respond(phone) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    span {
+      font-size: 13px;
+    }
+    img {
+      margin-left: 10px;
+      width: 40px;
+      @include respond(phone) {
+        margin-left: 0px;
+      }
+    }
+  }
+}

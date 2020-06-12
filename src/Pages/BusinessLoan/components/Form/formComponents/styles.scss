@@ -1,0 +1,141 @@
+@import "styles/mixins";
+.input-range__track--active {
+  background-color: #44b3c2;
+}
+
+.input-range__slider {
+  background-color: #44b3c2;
+  box-shadow: 0 0 5px #44b3c2;
+  border: none;
+  width: 27px !important;
+  height: 27px !important;
+  margin-top: -0.9rem;
+}
+.input-range__label--value {
+  display: none;
+}
+.input-range__label--min {
+  display: none;
+}
+.input-range__label--max {
+  display: none;
+}
+
+.acceptModal {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  height: 100%;
+  z-index: 100;
+  &__bg {
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 101;
+    height: 100%;
+    width: 100%;
+  }
+  &__content {
+    width: 768px;
+    position: fixed;
+    top: 40px;
+    left: 0;
+    right: 0;
+    margin: auto;
+    z-index: 102;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 10px;
+    background: white;
+    outline: 0;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    @include ie-only {
+      height: 400px;
+    }
+    @include respond(tab-port) {
+      width: 96%;
+      margin: 2%;
+      top: 10px;
+    }
+    @include respond(phone) {
+      width: 96%;
+      margin: 2%;
+      top: 10px;
+    }
+  }
+  &__header {
+    display: flex;
+    align-items: center;
+    position: relative;
+    .title {
+      flex: 1;
+      font-weight: bold;
+      font-size: 20px;
+    }
+    .closeIcon {
+      position: absolute;
+      right: 10px;
+      color: gray;
+      font-size: 14px;
+      cursor: pointer;
+      transition-duration: 0.2s;
+      width: 40px;
+      height: 20px;
+      text-align: center;
+      &:hover {
+        transition-duration: 0.2s;
+        color: black;
+      }
+    }
+  }
+  &__body {
+    flex: 1;
+    font-size: 14px;
+    padding: 35px 0;
+
+    button {
+      width: 100% !important;
+      margin: 10px 0;
+    }
+  }
+  &__title {
+    font-size: 20px;
+    display: block;
+    text-align: center;
+    position: static;
+    @include respond(phone) {
+      position: absolute;
+      width: 100%;
+      top: 20px;
+      text-align: left;
+    }
+  }
+
+  &__footer {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    padding: 20px 0;
+    @include respond(phone) {
+      flex-direction: column;
+      padding-top: 10px;
+    }
+    button {
+      width: 200px;
+      margin: 0 5px;
+      @include respond(phone) {
+        width: auto;
+      }
+      &:disabled {
+        opacity: 0.5;
+      }
+      &:first-child {
+        @include respond(phone) {
+          order: 2;
+          margin-top: 10px;
+        }
+      }
+    }
+  }
+}

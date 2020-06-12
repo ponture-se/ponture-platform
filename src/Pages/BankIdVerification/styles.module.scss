@@ -1,0 +1,208 @@
+@import "../../styles/mixins";
+.container {
+  @include layoutbase;
+  & * {
+    font-family: poppins;
+  }
+}
+.mainContent {
+  max-width: 768px;
+  margin: auto;
+  margin-top: 125px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.14);
+  background-color: #ffffff;
+  position: relative;
+  @include respond(phone) {
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+}
+.submitSpinner {
+  position: absolute;
+  background-color: rgba(0, 0, 0, 0.4);
+  top: 0;
+  width: 100%;
+  height: 100%;
+  border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 40px;
+  span {
+    margin-bottom: 20px;
+  }
+}
+
+.bankIdMenu {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 50px;
+  @include respond(phone) {
+    padding: 20px;
+    padding-bottom: 40px;
+  }
+  h2 {
+    margin: 0;
+    align-self: center;
+    margin-bottom: 20px;
+    @include respond(phone) {
+      font-size: 22px;
+    }
+  }
+  .bankIdOption {
+    margin-top: 20px;
+    padding: 0 20px;
+    border-radius: 10px;
+    border: solid 1px #d9d9d9;
+    background-color: #fbfbfb;
+    display: flex;
+    height: 60px;
+    align-items: center;
+    cursor: pointer;
+    transition-duration: 0.2s;
+    &:hover {
+      transition-duration: 0.2s;
+      box-shadow: 0 0 5px lightgray;
+    }
+    h4 {
+      flex: 1;
+      @include respond(phone) {
+        font-size: 14px;
+      }
+    }
+    img {
+      width: 45px;
+      height: 45px;
+      @include respond(phone) {
+        width: 30px;
+        height: 30px;
+      }
+    }
+  }
+  .info {
+    margin-top: 30px;
+    display: flex;
+    &__icon {
+      color: #187bcd;
+      margin-right: 15px;
+      font-size: 25px;
+    }
+    &__text {
+      font-size: 13px;
+      font-weight: 300;
+      font-stretch: normal;
+      font-style: normal;
+      line-height: normal;
+      letter-spacing: normal;
+      color: #1b1b1b;
+      text-align: left;
+      @include respond(phone) {
+        text-align: justify;
+      }
+    }
+  }
+  .mobileIcon {
+    font-size: 40px;
+    margin-right: 10px;
+    @include respond(phone) {
+      font-size: 25px;
+    }
+  }
+}
+
+.unSuccessFullBankId {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 50px;
+  @include respond(phone) {
+    padding: 20px;
+    padding-bottom: 40px;
+  }
+  &__header {
+    align-self: center;
+    display: flex;
+    margin-bottom: 20px;
+    &__icon {
+      font-size: 25px;
+      color: #187bcd;
+      margin-right: 15px;
+    }
+    &__title {
+      margin: 0;
+      text-align: center;
+    }
+  }
+  .link {
+    align-self: center;
+    color: #44b3c2;
+  }
+  .info {
+    margin-top: 40px;
+    font-weight: 500;
+  }
+}
+.successFullBankId {
+  display: flex;
+  flex-direction: column;
+  padding: 40px 50px;
+  @include respond(phone) {
+    padding: 20px;
+  }
+  &__title {
+    margin: 0;
+    align-self: center;
+    text-align: center;
+  }
+  .info {
+    margin-top: 50px;
+    font-size: 16px;
+  }
+  .link {
+    margin-top: 40px;
+    color: black;
+  }
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  margin-top: 40px;
+  @include respond(phone) {
+    align-items: flex-start;
+    flex-direction: column;
+  }
+  &__left {
+    flex: 1;
+    margin-bottom: 0px;
+    img {
+      width: 150px;
+    }
+    @include respond(phone) {
+      flex: 0;
+      margin-bottom: 20px;
+    }
+  }
+  &__right {
+    display: flex;
+    align-items: center;
+    height: 50px;
+    flex-direction: row;
+    @include respond(phone) {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+    span {
+      font-size: 13px;
+    }
+    img {
+      margin-left: 10px;
+      width: 40px;
+      @include respond(phone) {
+        margin-left: 0px;
+      }
+    }
+  }
+}
