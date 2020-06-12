@@ -1,4 +1,5 @@
 import React from "react";
+import { withRouter } from "react-router-dom";
 import Cookies from "js-cookie";
 import { getParameterByName, isNumber } from "utils";
 import { useFormContext } from "react-hook-form";
@@ -8,10 +9,11 @@ import Input from "./common/Input";
 import CurrencyInput from "./common/CurrencyInput";
 import Checkbox from "./common/Checkbox";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
+import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
 import CircleSpinner from "components/CircleSpinner";
 
-const SubmitBox = () => {
+const SubmitBox = ({ history }) => {
   const {
     errors,
     register,
@@ -21,8 +23,9 @@ const SubmitBox = () => {
     formState: { dirty, isValid, submitCount },
   } = useFormContext();
   const submitBoxRef = React.useRef(null);
+  const { _createOpp } = useLoanApi();
   const dispatch = useLoanDispatch();
-  const { contactInfo, currentStep } = useLoanState();
+  const { contactInfo, currentStep, personalNumber } = useLoanState();
   const { t } = useLocale();
   const [spinner, toggleSpinner] = React.useState(false);
   const init = () => {
@@ -59,16 +62,16 @@ const SubmitBox = () => {
       const referral_params = Cookies.get("affiliate_referral_params_v2")
         ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
         : Cookies.get("affiliate_referral_params");
-      let pId = data.personalNumber.replace("-", "");
+      let pId = personalNumber.replace("-", "");
       if (pId.length === 10 || pId.length === 11) pId = "19" + pId;
       let obj = {
         orgNumber: data.company.companyId,
         orgName: data.company.companyName,
         personalNumber: pId,
         givenRevenue: data.givenRevenue,
-        amount: parseInt(data.loanAmount),
-        amourtizationPeriod: parseInt(data.loanPeriod),
-        need: data.needs.map((n) => n.API_Name),
+        amount: parseInt(data.amount),
+        amourtizationPeriod: parseInt(data.amourtizationPeriod),
+        need: data.need.map((n) => n.API_Name),
         email: data.email,
         phoneNumber: data.phoneNumber,
       };
@@ -103,13 +106,21 @@ const SubmitBox = () => {
       if (referral_id) obj["referral_id"] = referral_id;
       if (last_referral_date) obj["last_referral_date"] = last_referral_date;
 
-      setTimeout(() => {
-        toggleSpinner(false);
-        dispatch({
-          type: "SET_FORM_STATUS",
-          payload: "noNeedBankId",
-        });
-      }, 1000);
+      _createOpp(
+        obj,
+        (result) => {
+          if (result && (!result.data || !result.data.bankIdRequired)) {
+            dispatch({
+              type: "SET_LOAN_FORM_STATUS",
+              payload: "noNeedBankId",
+            });
+          } else {
+            history.push("/app/loan/verifybankId");
+          }
+          toggleSpinner(false);
+        },
+        () => toggleSpinner(false)
+      );
     }
   };
 
@@ -123,6 +134,7 @@ const SubmitBox = () => {
           tooltip="no tooltip"
           id="ff"
           errorText={errors.givenRevenue && errors.givenRevenue.message}
+          autoFocus
           rules={{
             required: "this is a required",
             validate: (value) => {
@@ -231,4 +243,4 @@ const SubmitBox = () => {
   );
 };
 
-export default SubmitBox;
+export default withRouter(SubmitBox);

@@ -1,5 +1,5 @@
 export const initialState = {
-  formStatus: "form",
+  loanFormStatus: "form",
   needs: null,
   pNumberTryCounter: 0,
   currentStep: "loanAmountBox",
@@ -131,11 +131,7 @@ export const reducer = (state, action) => {
         ...state,
         selectedNeedCategory: payload,
       };
-    case "SET_FORM_STATUS":
-      return {
-        ...state,
-        formStatus: payload,
-      };
+
     case "SET_NEEDS":
       const { categorizedNeeds, isUrlNeeds, urlNeeds } = payload;
       return {
@@ -192,6 +188,11 @@ export const reducer = (state, action) => {
       return {
         ...state,
         pNumberTryCounter: state.pNumberTryCounter + 1,
+      };
+    case "SET_LOAN_FORM_STATUS":
+      return {
+        ...state,
+        loanFormStatus: payload,
       };
     default:
       return state;

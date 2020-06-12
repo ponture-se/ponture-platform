@@ -1,6 +1,5 @@
 import React from "react";
-import styles from "../styles.module.scss";
-
+import styles from "./styles.module.scss";
 import useLocale from "hooks/useLocale";
 
 const ErrorBox = (props) => {

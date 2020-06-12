@@ -7,22 +7,22 @@ import GoUp from "./GoUp";
 import { useLoanState } from "hooks/useLoan";
 
 const Content = (props) => {
-  const { formStatus } = useLoanState();
+  const { loanFormStatus } = useLoanState();
   const [goUpState, toggleGoUp] = React.useState(false);
-  // React.useEffect(() => {
-  //   const handleScroll = () => {
-  //     if (window.pageYOffset < 1000) toggleGoUp(false);
-  //     else toggleGoUp(true);
-  //   };
-  //   window.addEventListener("scroll", handleScroll);
-  //   return () => {
-  //     window.removeEventListener("scroll");
-  //   };
-  // }, []);
+  React.useEffect(() => {
+    const handleScroll = () => {
+      if (window.pageYOffset < 1000) toggleGoUp(false);
+      else toggleGoUp(true);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
   return (
     <>
       <div className={styles.content}>
-        {formStatus === "form" ? (
+        {loanFormStatus === "form" ? (
           <>
             <div className={styles.profile}>
               <Profile />
@@ -31,7 +31,7 @@ const Content = (props) => {
               <Form />
             </div>
           </>
-        ) : formStatus === "noNeedBankId" ? (
+        ) : loanFormStatus === "noNeedBankId" ? (
           <NoBankIdAlert />
         ) : null}
       </div>

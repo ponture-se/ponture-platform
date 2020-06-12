@@ -1,4 +1,5 @@
 import React from "react";
+import Signs from "./Signs";
 import styles from "../styles.module.scss";
 
 const UnSuccessFullBankId = () => {
@@ -20,6 +21,7 @@ const UnSuccessFullBankId = () => {
         verfiera våra kunder genom BankID. Detta gör dig möjlighet att få snabba
         erbjudanden från oss.
       </span>
+      <Signs />
     </div>
   );
 };

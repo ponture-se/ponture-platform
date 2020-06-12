@@ -44,12 +44,9 @@ const App = () => {
                 )}
               />
               <Route
-                path="/app/loan/verifybankId"
-                render={(props) => (
-                  <LoanProvider>
-                    <BankIdVerification {...props} />
-                  </LoanProvider>
-                )}
+                exact
+                path="/app/loan/verifybankId/:oppId"
+                render={(props) => <BankIdVerification {...props} />}
               />
               <Route
                 key="coronaLoan"

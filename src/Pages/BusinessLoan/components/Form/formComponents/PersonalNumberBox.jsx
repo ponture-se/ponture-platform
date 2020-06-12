@@ -25,18 +25,24 @@ const PersonalNumberBox = () => {
 
   const { t } = useLocale();
   const pNumberBoxRef = React.useRef(null);
+  const pNumberBoxInput = React.useRef(null);
   const [spinner, toggleSpinner] = React.useState(false);
   const [isDonePNumber, toggleIsDonePNumber] = React.useState(() => {
     return pNumberTryCounter === 2 ? false : personalNumber ? true : false;
   });
   const init = () => {
-    if (personalNumber) setValue("personalNumber", personalNumber);
+    if (personalNumber) {
+      setValue("personalNumber", personalNumber);
+    } else {
+      if (pNumberBoxInput.current) {
+        pNumberBoxInput.current.focus();
+      }
+    }
     if (pNumberBoxRef.current && currentStep === "personalNumberBox") {
       window.scrollTo(0, pNumberBoxRef.current.offsetTop);
     }
   };
   React.useEffect(init, []);
-
   function handleKeyDown(e) {
     e.stopPropagation();
     if (e.key === "Enter") {
@@ -116,14 +122,17 @@ const PersonalNumberBox = () => {
               tooltip="no tooltip"
               id="cc"
               name="personalNumber"
-              autoFocus
-              ref={register({
-                required: t("PERSONAL_NUMBER_IS_REQUIRED"),
-                pattern: {
-                  value: /^(19|20)?[0-9]{2}(0|1)[0-9][0-3][0-9][-]?[0-9]{4}$/,
-                  message: t("PERSONAL_NUMBER_IN_CORRECT"),
-                },
-              })}
+              onKeyDown={handleKeyDown}
+              ref={(e) => {
+                pNumberBoxInput.current = e;
+                register(e, {
+                  required: t("PERSONAL_NUMBER_IS_REQUIRED"),
+                  pattern: {
+                    value: /^(19|20)?[0-9]{2}(0|1)[0-9][0-3][0-9][-]?[0-9]{4}$/,
+                    message: t("PERSONAL_NUMBER_IN_CORRECT"),
+                  },
+                });
+              }}
             />
 
             <Button

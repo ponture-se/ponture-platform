@@ -1,11 +1,12 @@
 import React from "react";
 import styles from "./styles.module.scss";
 import Header from "components/Header";
+import ErrorBox from "components/ErrorBox";
 import Content from "./components/Content";
-import ErrorBox from "./components/ErrorBox";
 import { useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
+
 const ApplyLoan = ({ headerBottom }) => {
   const { errorBox } = useLoanState();
   const { t } = useLocale();

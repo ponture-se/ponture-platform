@@ -6,7 +6,7 @@ const SuccessFullBankId = () => {
   return (
     <div className={styles.successFullBankId}>
       <h2 className={styles.successFullBankId__title}>
-        Din BankID inloggning fortfarande behövs
+        Vi har mottagit din ansökan
       </h2>
       <span className={styles.info}>
         Du blir navigerad automatisk till din konto hos oss inom 5 sekunder

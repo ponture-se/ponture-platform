@@ -4,7 +4,8 @@ import styles from "./styles.module.scss";
 import HeaderStep from "./HeaderStep";
 const Header = ({ headerBottom }) => {
   const [isOpenMenu, toggleMenu] = React.useState(false);
-  const { formStatus, isUrlNeeds, steps, currentStep } = useLoanState();
+  const { loanFormStatus, isUrlNeeds, steps, currentStep } =
+    useLoanState() || {};
   function getStepValue() {
     const index = steps[currentStep].index;
     return isUrlNeeds && index > 2 ? index - 1 : index;
@@ -97,7 +98,7 @@ const Header = ({ headerBottom }) => {
             </div>
           )}
         </div>
-        {headerBottom && formStatus === "form" && (
+        {headerBottom && loanFormStatus === "form" && (
           <div className={styles.header__bottom}>
             <div className={styles.header__bottomContent}>
               <div className={styles.stepWrapper}>

@@ -1,7 +1,7 @@
 import {
   startBankId,
   cancelVerify,
-  submitLoan,
+  createOpp,
   getNeedsList,
   getCompanies,
 } from "api/business-loan-api";
@@ -123,10 +123,47 @@ const useLoanApi = () => {
   function getNeedsByCategory(category) {
     return needs[category];
   }
+  function _createOpp(loan, onSuccess, onError) {
+    createOpp()
+      .onOk((result) => {
+        if (onSuccess) onSuccess(result);
+      })
+      .onServerError((result) => {
+        track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .onBadRequest((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .notFound((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .unKnownError((result) => {
+        dispatch({
+          type: "TOGGLE_ERROR_BOX",
+          payload: true,
+        });
+        if (onError) onError();
+      })
+      .call(loan);
+  }
   return {
     getNeeds,
     getNeedsByCategory,
     _getCompanies,
+    _createOpp,
   };
 };
 export default useLoanApi;
