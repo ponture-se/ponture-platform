@@ -5,7 +5,12 @@ import Signs from "./Signs";
 import VerifyBankIdModalNew from "components/VerifyBankIdModalNew";
 import styles from "../styles.module.scss";
 
-const BankIdMenu = ({ onSuccessBankId, onCanceledBankId, onErrorBankId }) => {
+const BankIdMenu = ({
+  oppId,
+  onSuccessBankId,
+  onCanceledBankId,
+  onErrorBankId,
+}) => {
   const isMobile = isMobileDevice();
   const [verifyModal, toggleVerifyModal] = React.useState();
   function handleCloseBankId(status, result) {
@@ -57,6 +62,7 @@ const BankIdMenu = ({ onSuccessBankId, onCanceledBankId, onErrorBankId }) => {
       </div>
       {verifyModal && (
         <VerifyBankIdModalNew
+          oppId={oppId}
           onClose={handleCloseBankId}
           onSuccess={() => {
             if (window.analytics)

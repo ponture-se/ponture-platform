@@ -6,6 +6,7 @@ import SuccessFullBankId from "./components/SuccessFullBankId";
 import UnSuccessFullBankId from "./components/UnSuccessFullBankId";
 import SubmitLoading from "./components/SubmitLoading";
 import styles from "./styles.module.scss";
+import { submitLoanNew } from "api/business-loan-api";
 
 const BankIdVerification = ({ match, headerBottom }) => {
   const [bankIdStatus, setBankIdStatus] = React.useState("verify");
@@ -13,13 +14,25 @@ const BankIdVerification = ({ match, headerBottom }) => {
   const [isError, toggleIsError] = React.useState(
     match.params.oppId ? false : true
   );
-  function handleSuccessBankId() {
+  function handleSuccessBankId(result) {
     toggleIsSubmitting(true);
-    setTimeout(() => {
-      toggleIsSubmitting(false);
-      setBankIdStatus("success");
-      // toggleIsError(true);
-    }, 1000);
+    submitLoanNew()
+      .onOk((result) => {
+        toggleIsSubmitting(false);
+        setBankIdStatus("success");
+      })
+      .onServerError((result) => {
+        toggleIsError(true);
+        // track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+      })
+      .onBadRequest((result) => {})
+      .notFound((result) => {
+        toggleIsError(true);
+      })
+      .unKnownError((result) => {
+        toggleIsError(true);
+      })
+      .call(match.params.oppId, result);
   }
   function handleErrorBankId() {}
   function handleCanceledBankId() {
@@ -33,6 +46,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
           <ErrorBox />
         ) : bankIdStatus === "verify" ? (
           <BankIDMenu
+            oppId={match.params.oppId}
             onSuccessBankId={handleSuccessBankId}
             onCanceledBankId={handleCanceledBankId}
             onErrorBankId={handleErrorBankId}

@@ -11,9 +11,11 @@ import Checkbox from "./common/Checkbox";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
+import useGlobalState from "hooks/useGlobalState";
 import CircleSpinner from "components/CircleSpinner";
 
 const SubmitBox = ({ history }) => {
+  const [{}, globalDispatch] = useGlobalState();
   const {
     errors,
     register,
@@ -57,7 +59,7 @@ const SubmitBox = ({ history }) => {
   React.useEffect(init, []);
 
   const onSubmit = async (data) => {
-    if (submitCount === 1) {
+    if (!spinner) {
       toggleSpinner(true);
       const referral_params = Cookies.get("affiliate_referral_params_v2")
         ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
@@ -68,7 +70,7 @@ const SubmitBox = ({ history }) => {
         orgNumber: data.company.companyId,
         orgName: data.company.companyName,
         personalNumber: pId,
-        givenRevenue: data.givenRevenue,
+        givenRevenue: parseInt(data.givenRevenue),
         amount: parseInt(data.amount),
         amourtizationPeriod: parseInt(data.amourtizationPeriod),
         need: data.need.map((n) => n.API_Name),
@@ -115,11 +117,13 @@ const SubmitBox = ({ history }) => {
               payload: "noNeedBankId",
             });
           } else {
-            history.push("/app/loan/verifybankId");
+            history.push(`/app/loan/verifybankId/${result.data.oppId}`);
           }
           toggleSpinner(false);
         },
-        () => toggleSpinner(false)
+        (result) => {
+          toggleSpinner(false);
+        }
       );
     }
   };
@@ -239,6 +243,7 @@ const SubmitBox = ({ history }) => {
           </div>
         ))}
       </div>
+      {spinner && <div className={styles.disableBodyWrapper}></div>}
     </div>
   );
 };

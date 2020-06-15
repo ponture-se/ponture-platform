@@ -18,7 +18,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
   const _collect = () => {
     collect()
       .onOk((result) => {
-        if (!didCancel) {
+        if (!didCancel.current) {
           if (result) {
             if (result.progressStatus) {
               switch (result.progressStatus.toLowerCase()) {

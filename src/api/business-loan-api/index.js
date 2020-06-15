@@ -5,12 +5,12 @@ const config = process.env;
 const baseUrl = config.REACT_APP_BASE_URL;
 const needsListUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_NEEDS_LIST;
 const startUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_START;
-const startBankId_newUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_START;
+const startBankId_newUrl = baseUrl + "/auth/tokenWithOppId";
 const collectUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_COLLECT;
 const cancelUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_CANCEL;
 const companiesUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_GET_COMPANIES;
 const submitUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_SUBMIT;
-const submitNewUrl = baseUrl + config.REACT_APP_BUSINESS_SILENT_SUBMIT;
+const submitNewUrl = baseUrl + "/apply/submit/v2";
 const createOppUrl = baseUrl + "/apply/createOpp";
 export function getNeedsList() {
   let _onOkCallBack;
