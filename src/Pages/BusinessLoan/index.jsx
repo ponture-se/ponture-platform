@@ -57,6 +57,7 @@ export default function BusinessLoan(props) {
       : Cookies.get("affiliate_referral_params")
   ); // extra params
 
+  const pTitle = getParameterByName("ptitle");
   const p_loanAmount = getParameterByName("amount");
   const __loanAmount = p_loanAmount ? p_loanAmount : _loanAmount;
   const p_loanPeriod = getParameterByName("amourtizationPeriod");
@@ -684,6 +685,7 @@ export default function BusinessLoan(props) {
           phoneNumber: phoneNumber,
           bankid: bankIdResult,
         };
+        const pcode = getParameterByName("pcode");
         const utm_source = getParameterByName("utm_source");
         const utm_medium = getParameterByName("utm_medium");
         const utm_campaign = getParameterByName("utm_campaign");
@@ -723,7 +725,9 @@ export default function BusinessLoan(props) {
         if (last_referral_date) {
           obj["last_referral_date"] = last_referral_date;
         }
-
+        if (pcode && pcode.length && isNumber(pcode)) {
+          obj["pcode"] = pcode;
+        }
         submitLoan()
           .onOk((result) => {
             if (!didCancel) {
@@ -880,7 +884,9 @@ export default function BusinessLoan(props) {
                     <div className="bl__form__circleIcon">
                       <i className="icon-request" />
                     </div>
-                    <span>{t("BISINUSS_LOAN")}</span>
+                    <span>
+                      {pTitle && pTitle.length ? pTitle : t("BISINUSS_LOAN")}
+                    </span>
                   </div>
                   <div className="bl__input sliderInput animated fadeIn">
                     <div className="bl__input__header">
