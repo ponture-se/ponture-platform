@@ -271,4 +271,8 @@ export default {
   CUSTOMER_LOGIN_NO_APP_BTN_F: "Fakturaköp",
   CUSTOMER_LOGIN_NO_APP_INFO3:
     "Visste du att genom oss skickar du bara en ansökan och får erbjudanden från upp till 15 banker och finansiella institut - helt kostnadsfritt",
+
+  ALREADY_VERIFIED: "Primary Contact of this opp was already verified.",
+  INVALID_OPP_STAGE: "Opp stage is invalid",
+  VERIFICATION_NOT_NEEDED: "BankId Verification not needed",
 };

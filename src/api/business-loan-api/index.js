@@ -293,6 +293,12 @@ export function startBankIdByOppId() {
       _unKnownErrorCallBack(result);
     }
   }
+  let _forbiddenErrorCallBack;
+  function _forbiddenError(result) {
+    if (_forbiddenErrorCallBack) {
+      _forbiddenErrorCallBack(result);
+    }
+  }
 
   const _call = (oppId) => {
     const url = startBankId_newUrl;
@@ -324,6 +330,9 @@ export function startBankIdByOppId() {
               break;
             case 401:
               _unAuthorized();
+              break;
+            case 403:
+              _forbiddenError(error.response.data);
               break;
             case 404:
               _notFound();
@@ -365,6 +374,10 @@ export function startBankIdByOppId() {
     },
     onRequestError: function (callback) {
       _onRequestErrorCallBack = callback;
+      return this;
+    },
+    forbiddenError: function (callback) {
+      _forbiddenErrorCallBack = callback;
       return this;
     },
     unKnownError: function (callback) {

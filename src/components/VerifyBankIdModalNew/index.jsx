@@ -6,11 +6,12 @@ import { useLocale } from "hooks";
 import "./styles.scss";
 
 //
-export default function VerifyBankIdModal({ oppId, onClose }) {
+export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   let didCancel = useRef(false);
   let fetchInterval = useRef(null);
   const { t } = useLocale();
   const [mainSpinner, toggleMainSpinner] = useState(true);
+  const [startResult, setStartResult] = useState();
   const [status, setStatus] = useState("Starting bankid");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
@@ -148,7 +149,9 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
   const startBankId = () => {
     startBankIdByOppId()
       .onOk((result) => {
+        if (bankIdDevice) openBankIDTab(bankIdDevice, result);
         setStatus(t("RFA1"));
+        setStartResult(result);
         fetchInterval = setInterval(() => {
           _collect();
         }, 3000);
@@ -189,6 +192,15 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
           });
         }
       })
+      .forbiddenError((result) => {
+        if (!didCancel.current) {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t(result.errorCode),
+          });
+        }
+      })
       .onRequestError((result) => {
         if (!didCancel.current) {
           toggleMainSpinner(false);
@@ -210,14 +222,17 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
   React.useEffect(useEffectFunction, []);
 
   function handleCancelVerify() {
-    if (onClose) onClose("canceled");
+    if (onClose) onClose("canceled", startResult);
   }
   function handleCloseModal() {
     if (onClose) onClose("close");
   }
-  function handleBankIDClicked() {
+  function openBankIDTab(device, startResult) {
     const a = document.createElement("a");
-    // a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
+    if (device === "mobile")
+      a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
+    else
+      a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
     a.target = "_blank";
     document.body.appendChild(a);
     a.click();

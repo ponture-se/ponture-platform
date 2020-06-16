@@ -12,6 +12,7 @@ const BankIdMenu = ({
   onErrorBankId,
 }) => {
   const isMobile = isMobileDevice();
+  const [bankIdDevice, setBankIdDevice] = React.useState();
   const [verifyModal, toggleVerifyModal] = React.useState();
   function handleCloseBankId(status, result) {
     toggleVerifyModal(false);
@@ -25,7 +26,16 @@ const BankIdMenu = ({
       }
     }
   }
-  function openBankIdModal() {
+  function openBankIdModal(btn) {
+    if (btn === "first") {
+      if (isMobile) {
+        setBankIdDevice("mobile");
+      }
+    } else {
+      if (!isMobile) {
+        setBankIdDevice("browser");
+      }
+    }
     // onSuccessBankId();
     toggleVerifyModal(true);
   }
@@ -33,7 +43,10 @@ const BankIdMenu = ({
     <>
       <div className={styles.bankIdMenu}>
         <h2>Välj inloggningsalternativ</h2>
-        <div className={styles.bankIdOption} onClick={openBankIdModal}>
+        <div
+          className={styles.bankIdOption}
+          onClick={() => openBankIdModal("first")}
+        >
           <h4>
             {!isMobile
               ? "Mobilt BankID på annan enhet"
@@ -42,7 +55,10 @@ const BankIdMenu = ({
           <IoMdPhonePortrait className={styles.mobileIcon} />
           <img src={require("assets/bankidLogo.png")} alt="" />
         </div>
-        <div className={styles.bankIdOption} onClick={openBankIdModal}>
+        <div
+          className={styles.bankIdOption}
+          onClick={() => openBankIdModal("second")}
+        >
           <h4>
             {!isMobile ? "BankID på denna enhet" : "BankID på annan enhet"}
           </h4>
@@ -62,6 +78,7 @@ const BankIdMenu = ({
       </div>
       {verifyModal && (
         <VerifyBankIdModalNew
+          bankIdDevice={bankIdDevice}
           oppId={oppId}
           onClose={handleCloseBankId}
           onSuccess={() => {

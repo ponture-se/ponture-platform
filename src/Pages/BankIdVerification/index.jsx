@@ -6,7 +6,7 @@ import SuccessFullBankId from "./components/SuccessFullBankId";
 import UnSuccessFullBankId from "./components/UnSuccessFullBankId";
 import SubmitLoading from "./components/SubmitLoading";
 import styles from "./styles.module.scss";
-import { submitLoanNew } from "api/business-loan-api";
+import { submitLoanNew, cancelVerify } from "api/business-loan-api";
 
 const BankIdVerification = ({ match, headerBottom }) => {
   const [bankIdStatus, setBankIdStatus] = React.useState("verify");
@@ -35,8 +35,9 @@ const BankIdVerification = ({ match, headerBottom }) => {
       .call(match.params.oppId, result);
   }
   function handleErrorBankId() {}
-  function handleCanceledBankId() {
+  function handleCanceledBankId(startResult) {
     setBankIdStatus("unSuccess");
+    if (startResult) cancelVerify().call(startResult.orderRef);
   }
   return (
     <div className={styles.container}>
