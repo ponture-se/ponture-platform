@@ -44,7 +44,7 @@ const Header = ({ headerBottom }) => {
               <a href="tel:0101292920">010 129 29 20</a>
             </span>
             <span className={styles.info__item}>
-              <a href="mailto:Contact@openratio.cm">Contact@openratio.cm</a>
+              <a href="mailto:Contact@ponture.cm">Contact@ponture.cm</a>
             </span>
             <img
               src="https://www.ponture.com/wp-content/uploads/2020/05/google-rating-without-text-1.png"

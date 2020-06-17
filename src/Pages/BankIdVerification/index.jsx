@@ -1,19 +1,77 @@
 import React from "react";
 import Header from "components/Header";
+import Loading from "./components/Loading";
 import ErrorBox from "components/ErrorBox";
 import BankIDMenu from "./components/BankIDMenu";
 import SuccessFullBankId from "./components/SuccessFullBankId";
 import UnSuccessFullBankId from "./components/UnSuccessFullBankId";
 import SubmitLoading from "./components/SubmitLoading";
 import styles from "./styles.module.scss";
-import { submitLoanNew, cancelVerify } from "api/business-loan-api";
+import {
+  checkCriteria,
+  submitLoanNew,
+  cancelVerify,
+} from "api/business-loan-api";
+import useLocale from "hooks/useLocale";
 
 const BankIdVerification = ({ match, headerBottom }) => {
+  const { t } = useLocale();
   const [bankIdStatus, setBankIdStatus] = React.useState("verify");
+  const [loading, toggleMainSpinner] = React.useState(true);
   const [isSubmitting, toggleIsSubmitting] = React.useState(false);
-  const [isError, toggleIsError] = React.useState(
-    match.params.oppId ? false : true
-  );
+  const [isError, setError] = React.useState(match.params.oppId ? false : true);
+  function init() {
+    if (match.params.oppId)
+      checkCriteria()
+        .onOk((result) => {
+          toggleMainSpinner(false);
+        })
+        .onServerError((result) => {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t("INTERNAL_SERVER_ERROR"),
+          });
+        })
+        .onBadRequest((result) => {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t("BAD_REQUEST"),
+          });
+        })
+        .unAuthorized((result) => {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t("UN_AUTHORIZED"),
+          });
+        })
+        .unKnownError((result) => {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t("UNKNOWN_ERROR"),
+          });
+        })
+        .forbiddenError((result) => {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t(result.errorCode),
+          });
+        })
+        .onRequestError((result) => {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t("ON_REQUEST_ERROR"),
+          });
+        })
+        .call(match.params.oppId);
+  }
+  React.useEffect(init, []);
+
   function handleSuccessBankId(result) {
     toggleIsSubmitting(true);
     submitLoanNew()
@@ -22,15 +80,15 @@ const BankIdVerification = ({ match, headerBottom }) => {
         setBankIdStatus("success");
       })
       .onServerError((result) => {
-        toggleIsError(true);
+        setError(true);
         // track("Failure", "Loan Application", "/app/loan/ wizard", 0);
       })
       .onBadRequest((result) => {})
       .notFound((result) => {
-        toggleIsError(true);
+        setError(true);
       })
       .unKnownError((result) => {
-        toggleIsError(true);
+        setError(true);
       })
       .call(match.params.oppId, result);
   }
@@ -43,7 +101,9 @@ const BankIdVerification = ({ match, headerBottom }) => {
     <div className={styles.container}>
       <Header headerBottom={headerBottom} />
       <div className={styles.mainContent}>
-        {isError ? (
+        {loading ? (
+          <Loading />
+        ) : isError ? (
           <ErrorBox />
         ) : bankIdStatus === "verify" ? (
           <BankIDMenu
