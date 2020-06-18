@@ -748,3 +748,22 @@ $itemBtnColor: #44b3c2;
     display: block;
   }
 }
+
+.needBankIdBox {
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 0 5px lightgray;
+  border-radius: 12px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  button {
+    background-color: $itemBtnColor;
+  }
+  a {
+    width: 150px;
+    color: white;
+    text-decoration: none;
+  }
+}
