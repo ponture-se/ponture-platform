@@ -7,6 +7,7 @@ import EmptyOffers from "./components/EmptyOffers";
 import Error from "./components/FailedFetch";
 import NotAcceptedAlert from "./components/NotAcceptedAlert";
 import AcceptedAlert from "./components/AcceptedAlert";
+import NeedsBankId from "./components/NeedsBankID";
 import UiActions from "./components/UiActions";
 import OffersCategory from "./components/OffersCategory";
 import AcceptedOffer from "./components/AcceptedOffer";
@@ -60,7 +61,7 @@ const AllOffers = ({ match }) => {
             setState((prevState) => ({
               ...prevState,
               loading: false,
-              opportunity,
+              opportunity: result.opportunityDetail,
             }));
           } else {
             const categorizedOffers = getCategorizedOffers(result.offers);
@@ -70,7 +71,7 @@ const AllOffers = ({ match }) => {
             setState((prevState) => ({
               ...prevState,
               loading: false,
-              opportunity,
+              opportunity: result.opportunityDetail,
               offers: categorizedOffers,
               isAccepted: acceptedOffer ? true : false,
               acceptedOffer,
@@ -140,6 +141,7 @@ const AllOffers = ({ match }) => {
     setState((prevState) => ({ ...prevState, loading: true }));
     _getLatestOffers();
   }
+
   return (
     <>
       <div className="appOffers">
@@ -147,6 +149,11 @@ const AllOffers = ({ match }) => {
           <Loading />
         ) : error ? (
           <Error />
+        ) : !opportunity.bankVerified && opportunity.amount < 2000000 ? (
+          <>
+            <OppInfo opportunity={opportunity} />
+            <NeedsBankId opportunity={opportunity} />
+          </>
         ) : isDone ? (
           <>
             <OppInfo opportunity={opportunity} />
