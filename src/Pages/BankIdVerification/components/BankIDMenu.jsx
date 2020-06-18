@@ -1,45 +1,89 @@
 import React from "react";
+import useLocale from "hooks/useLocale";
 import { IoMdPhonePortrait } from "react-icons/io";
 import isMobileDevice from "utils/isMobileDevice";
 import Signs from "./Signs";
 import VerifyBankIdModalNew from "components/VerifyBankIdModalNew";
 import styles from "../styles.module.scss";
+import track from "utils/trackAnalytic";
 
-const BankIdMenu = ({ onSuccessBankId, onCanceledBankId, onErrorBankId }) => {
+const BankIdMenu = ({
+  oppId,
+  onSuccessBankId,
+  onCanceledBankId,
+  onErrorBankId,
+}) => {
+  const { t } = useLocale();
   const isMobile = isMobileDevice();
+  const [bankIdDevice, setBankIdDevice] = React.useState();
   const [verifyModal, toggleVerifyModal] = React.useState();
   function handleCloseBankId(status, result) {
     toggleVerifyModal(false);
     if (status && status !== "close") {
       if (status === "success") {
+        track(
+          "BankID Verified",
+          "Loan Application v2",
+          "/app/loan/verifybankid bankid popup",
+          0
+        );
         onSuccessBankId(result);
       } else if (status === "canceled") {
+        track(
+          "BankID failed",
+          "Loan Application v2",
+          "/app/loan/verifybankid bankid popup",
+          0
+        );
         onCanceledBankId(result);
       } else {
         // onErrorBankId();
       }
     }
   }
-  function openBankIdModal() {
+  function openBankIdModal(btn) {
+    track(
+      "BankID Verification",
+      "Loan Application v2",
+      "/app/loan/verifybankid bankid popup",
+      0
+    );
+    if (btn === "first") {
+      if (isMobile) {
+        setBankIdDevice("mobile");
+      }
+    } else {
+      if (!isMobile) {
+        setBankIdDevice("browser");
+      }
+    }
     // onSuccessBankId();
     toggleVerifyModal(true);
   }
   return (
     <>
       <div className={styles.bankIdMenu}>
-        <h2>Välj inloggningsalternativ</h2>
-        <div className={styles.bankIdOption} onClick={openBankIdModal}>
+        <h2>{t("VERIFY_MENU_TITLE")}</h2>
+        <div
+          className={styles.bankIdOption}
+          onClick={() => openBankIdModal("first")}
+        >
           <h4>
             {!isMobile
-              ? "Mobilt BankID på annan enhet"
-              : "Mobilt BankID på denna enhet"}
+              ? t("VERIFY_MENU_OPTION_1_BROWSER_TITLE")
+              : t("VERIFY_MENU_OPTION_1_MOBILE_TITLE")}
           </h4>
           <IoMdPhonePortrait className={styles.mobileIcon} />
           <img src={require("assets/bankidLogo.png")} alt="" />
         </div>
-        <div className={styles.bankIdOption} onClick={openBankIdModal}>
+        <div
+          className={styles.bankIdOption}
+          onClick={() => openBankIdModal("second")}
+        >
           <h4>
-            {!isMobile ? "BankID på denna enhet" : "BankID på annan enhet"}
+            {!isMobile
+              ? t("VERIFY_MENU_OPTION_2_BROWSER_TITLE")
+              : t("VERIFY_MENU_OPTION_2_MOBILE_TITLE")}
           </h4>
           <img src={require("assets/bankidLogo.png")} alt="" />
         </div>
@@ -48,15 +92,15 @@ const BankIdMenu = ({ onSuccessBankId, onCanceledBankId, onErrorBankId }) => {
             <i className="icon-shield" />
           </div>
           <span className={styles.info__text}>
-            Vår kundsäkerhet är av yttersta vikt för oss därför kräver vi att
-            verfiera våra kunder genom BankID. Detta gör dig möjlighet att få
-            snabba erbjudanden från oss.
+            {t("VERIFY_MENU_DESCRIPTION")}
           </span>
         </div>
         <Signs />
       </div>
       {verifyModal && (
         <VerifyBankIdModalNew
+          bankIdDevice={bankIdDevice}
+          oppId={oppId}
           onClose={handleCloseBankId}
           onSuccess={() => {
             if (window.analytics)

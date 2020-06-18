@@ -241,7 +241,14 @@
     font-family: PoppinsBold;
   }
 }
-
+.disableBodyWrapper {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 1000;
+}
 .loanAmountBox {
   background-color: white;
   box-shadow: 0 4px 10px 0 rgba(63, 63, 63, 0.15);

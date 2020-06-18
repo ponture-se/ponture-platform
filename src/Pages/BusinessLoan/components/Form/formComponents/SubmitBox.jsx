@@ -11,21 +11,30 @@ import Checkbox from "./common/Checkbox";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
+import useGlobalState from "hooks/useGlobalState";
 import CircleSpinner from "components/CircleSpinner";
+import track from "utils/trackAnalytic";
 
 const SubmitBox = ({ history }) => {
+  const [{}, globalDispatch] = useGlobalState();
   const {
     errors,
     register,
     handleSubmit,
     getValues,
     setValue,
-    formState: { dirty, isValid, submitCount },
+    formState: { dirty, isValid },
   } = useFormContext();
   const submitBoxRef = React.useRef(null);
   const { _createOpp } = useLoanApi();
   const dispatch = useLoanDispatch();
-  const { contactInfo, currentStep, personalNumber } = useLoanState();
+  const {
+    contactInfo,
+    currentStep,
+    personalNumber,
+    steps,
+    tracking,
+  } = useLoanState();
   const { t } = useLocale();
   const [spinner, toggleSpinner] = React.useState(false);
   const init = () => {
@@ -55,9 +64,25 @@ const SubmitBox = ({ history }) => {
       window.scrollTo(0, submitBoxRef.current.offsetTop);
   }, [currentStep]);
   React.useEffect(init, []);
+  function checkTracking() {
+    if (
+      steps.submitBox.isTouched &&
+      !steps.submitBox.isFinished &&
+      !tracking.submitBox
+    ) {
+      dispatch({
+        type: "SET_TRACKING",
+        payload: {
+          name: "submitBox",
+        },
+      });
+      track("Step 5", "Loan Application v2", "/app/loan/ wizard", 0);
+    }
+  }
+  React.useEffect(checkTracking, []);
 
   const onSubmit = async (data) => {
-    if (submitCount === 1) {
+    if (!spinner) {
       toggleSpinner(true);
       const referral_params = Cookies.get("affiliate_referral_params_v2")
         ? decodeURIComponent(Cookies.get("affiliate_referral_params_v2"))
@@ -68,7 +93,7 @@ const SubmitBox = ({ history }) => {
         orgNumber: data.company.companyId,
         orgName: data.company.companyName,
         personalNumber: pId,
-        givenRevenue: data.givenRevenue,
+        givenRevenue: parseInt(data.givenRevenue),
         amount: parseInt(data.amount),
         amourtizationPeriod: parseInt(data.amourtizationPeriod),
         need: data.need.map((n) => n.API_Name),
@@ -99,7 +124,7 @@ const SubmitBox = ({ history }) => {
           obj["last_referral_date"] = ref.last_referral_date;
         }
       } catch (error) {}
-      if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pCode"] = pCode;
+      if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pcode"] = pCode;
       if (utm_source) obj["utm_source"] = utm_source;
       if (utm_medium) obj["utm_medium"] = utm_medium;
       if (utm_campaign) obj["utm_campaign"] = utm_campaign;
@@ -109,17 +134,31 @@ const SubmitBox = ({ history }) => {
       _createOpp(
         obj,
         (result) => {
+          track(
+            "Submit",
+            "Loan Application v2",
+            "/app/loan/ wizard",
+            obj.amount
+          );
+          toggleSpinner(false);
           if (result && (!result.data || !result.data.bankIdRequired)) {
+            track(
+              "Finished without BankID",
+              "Loan Application v2",
+              "/app/loan/ wizard",
+              0
+            );
             dispatch({
               type: "SET_LOAN_FORM_STATUS",
               payload: "noNeedBankId",
             });
           } else {
-            history.push("/app/loan/verifybankId");
+            history.push(`/app/loan/verifybankId/${result.data.oppId}`);
           }
-          toggleSpinner(false);
         },
-        () => toggleSpinner(false)
+        (result) => {
+          toggleSpinner(false);
+        }
       );
     }
   };
@@ -128,18 +167,18 @@ const SubmitBox = ({ history }) => {
     <div ref={submitBoxRef} className={styles.submitBox}>
       <div className={styles.submitBox__inputs}>
         <CurrencyInput
-          title="Företagetsomsättning under de senaste 12 månader"
+          title={t("SUBMIT_LABEL")}
+          tooltip={t("SUBMIT_TOOLTIP")}
           placeholder="t.ex.  1 200 000 kr"
           extraClassStyle={styles.submitBox__inputs__turnOver}
-          tooltip="no tooltip"
           id="ff"
           errorText={errors.givenRevenue && errors.givenRevenue.message}
           autoFocus
           rules={{
-            required: "this is a required",
+            required: t("REQUIRED_INPUT"),
             validate: (value) => {
               const val = value.split(" ").join("");
-              return val.length <= 9 || "This is not valid value.";
+              return val.length <= 9 || t("SUBMIT_REVENUE_NOT_VALID");
             },
           }}
           name="givenRevenue"
@@ -151,10 +190,10 @@ const SubmitBox = ({ history }) => {
               placeholder="t.ex.  070 980 20 91"
               extraClassStyle={styles.submitBox__inputs__phone}
               ref={register({
-                required: "this is a required",
+                required: t("REQUIRED_INPUT"),
                 pattern: {
                   value: /^(\+46|0|0046)[\s\-]?[1-9][\s\-]?[0-9]([\s\-]?\d){7,8}$/,
-                  message: "Invalid phone number",
+                  message: t("PHONE_NUMBER_IN_CORRECT"),
                 },
               })}
               name="phoneNumber"
@@ -168,10 +207,10 @@ const SubmitBox = ({ history }) => {
               extraClassStyle={styles.submitBox__inputs__email}
               errorText={errors.email && errors.email.message}
               ref={register({
-                required: "this is a required",
+                required: t("REQUIRED_INPUT"),
                 pattern: {
                   value: /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/,
-                  message: "Invalid email address",
+                  message: t("EMAIL_IN_CORRECT"),
                 },
               })}
               name="email"
@@ -181,7 +220,7 @@ const SubmitBox = ({ history }) => {
       </div>
       <div className={styles.submitBox__terms}>
         <Checkbox
-          title="Härmed godkänner jag"
+          title={t("SUBMIT_TERMS_LABEL")}
           id="termChk"
           name="terms"
           ref={register({ required: t("BL_TERMS_IS_REQUIRED") })}
@@ -192,7 +231,7 @@ const SubmitBox = ({ history }) => {
               target="_blank"
               rel="noopener noreferrer"
             >
-              användarvillkoren.
+              {t("SUBMIT_TERMS_LINK")}
             </a>
           }
         />
@@ -204,16 +243,12 @@ const SubmitBox = ({ history }) => {
           warning
           onClick={handleSubmit(onSubmit)}
         >
-          {spinner ? <CircleSpinner show={true} /> : "Skicka"}
+          {spinner ? <CircleSpinner show={true} /> : t("SUBMIT_SEND_BUTTON")}
         </Button>
         <div className={styles.submitBox__actions__link}>
-          <a href="/app/loan">Börja om</a>
+          <a href="/app/loan">{t("REFRESH_LINK_TEXT_1")}</a>
           <div>
-            (
-            <a href="/app/loan">
-              Om du klicka här kommer förmuläret att nollställas
-            </a>
-            )
+            (<a href="/app/loan">{t("REFRESH_LINK_TEXT_2")}</a>)
           </div>
         </div>
       </div>
@@ -228,10 +263,10 @@ const SubmitBox = ({ history }) => {
       )}
       <div className={styles.submitBox__info}>
         {[
-          "Ansökan är kostnadsfritt",
-          "Vi tar bara en UC kreditupplysning på ditt företag",
-          "Du binder dig inte till något",
-          "Våra finanskonsulter finns för att hjälpa dig inom hela processen",
+          t("SUBMIT_GUID_1"),
+          t("SUBMIT_GUID_2"),
+          t("SUBMIT_GUID_3"),
+          t("SUBMIT_GUID_4"),
         ].map((item, index) => (
           <div className={styles.rowInfo} key={index}>
             <div className={styles.rowInfo__chk} />
@@ -239,6 +274,7 @@ const SubmitBox = ({ history }) => {
           </div>
         ))}
       </div>
+      {spinner && <div className={styles.disableBodyWrapper}></div>}
     </div>
   );
 };

@@ -35,6 +35,13 @@ export const initialState = {
       isTouched: false,
     },
   },
+  tracking: {
+    loanAmountBox: true,
+    needsBox: false,
+    personalNumberBox: false,
+    companiesBox: false,
+    submitBox: false,
+  },
 };
 //
 export const reducer = (state, action) => {
@@ -193,6 +200,14 @@ export const reducer = (state, action) => {
       return {
         ...state,
         loanFormStatus: payload,
+      };
+    case "SET_TRACKING":
+      return {
+        ...state,
+        tracking: {
+          ...state.tracking,
+          [payload.name]: true,
+        },
       };
     default:
       return state;

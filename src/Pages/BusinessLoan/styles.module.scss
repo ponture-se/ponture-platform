@@ -124,6 +124,7 @@
   display: flex;
   align-items: center;
   height: 60px;
+
   @include respond(phone) {
     display: none;
   }
@@ -132,7 +133,7 @@
     width: 56px;
     height: 56px;
     border: solid 1px #44b3c2;
-    background-color: #e4e4e4;
+    background-color: white;
     display: flex;
     justify-content: center;
     align-items: center;

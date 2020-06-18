@@ -10,9 +10,11 @@ import CompaniesBox from "./formComponents/CompaniesBox";
 import SubmitBox from "./formComponents/SubmitBox";
 import Footer from "./formComponents/Footer";
 import { useLoanState } from "hooks/useLoan";
+import useLocale from "hooks/useLocale";
 const title = getParameterByName("ptitle");
 //
 const LoanForm = () => {
+  const { t } = useLocale();
   const { steps, isUrlNeeds } = useLoanState();
   const methods = useForm({
     mode: "onChange",
@@ -26,7 +28,9 @@ const LoanForm = () => {
   return (
     <FormContext {...methods}>
       <form className={styles.form} onSubmit={(e) => e.preventDefault()}>
-        <h2>{title && title.length > 0 ? title : "Ansök om företagslån"}</h2>
+        <h2>
+          {title && title.length > 0 ? title : t("LOAN_WIZARD_DEFAULT_TITLE")}
+        </h2>
         <LoanAmount />
         {isUrlNeeds && !steps["loanAmountBox"].isFinished && <FurtherBox />}
 

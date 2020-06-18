@@ -1,5 +1,5 @@
 import React, { Suspense, lazy } from "react";
-import { Switch, Redirect, Route } from "react-router-dom";
+import { Switch, Redirect } from "react-router-dom";
 import PrivateRoute from "hoc/PrivateRoute";
 import retry from "utils/retryLazyLoad";
 //

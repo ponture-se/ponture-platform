@@ -1,11 +1,13 @@
 import React, { useEffect } from "react";
 import ReactDOM from "react-dom";
 import { useLoanState } from "hooks/useLoan";
+import useLocale from "hooks/useLocale";
 import styles from "../styles.module.scss";
 import "./styles.scss";
 import Button from "./common/Button";
 
 const LoanCategoriesModal = ({ onClose }) => {
+  const { t } = useLocale();
   const { needs } = useLoanState();
 
   useEffect(() => {
@@ -23,7 +25,9 @@ const LoanCategoriesModal = ({ onClose }) => {
         <div className="acceptModal__bg" onClick={close} />
         <div className="acceptModal__content animated fadeInUp faster">
           <div className="acceptModal__header">
-            <span className="title">Choose a category</span>
+            <span className="title">
+              {t("LOAN_AMOUNT_MODAL_CATEGORIES_TITLE")}
+            </span>
             <div className="icon-cross closeIcon" onClick={() => close()} />
           </div>
           <div className="acceptModal__body">

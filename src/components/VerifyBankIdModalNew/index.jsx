@@ -3,14 +3,16 @@ import ReactDOM from "react-dom";
 import CircleSpinner from "./../CircleSpinner";
 import { startBankIdByOppId, collect } from "api/business-loan-api";
 import { useLocale } from "hooks";
+import track from "utils/trackAnalytic";
 import "./styles.scss";
 
 //
-export default function VerifyBankIdModal({ oppId, onClose }) {
+export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   let didCancel = useRef(false);
   let fetchInterval = useRef(null);
   const { t } = useLocale();
   const [mainSpinner, toggleMainSpinner] = useState(true);
+  const [startResult, setStartResult] = useState();
   const [status, setStatus] = useState("Starting bankid");
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
@@ -18,7 +20,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
   const _collect = () => {
     collect()
       .onOk((result) => {
-        if (!didCancel) {
+        if (!didCancel.current) {
           if (result) {
             if (result.progressStatus) {
               switch (result.progressStatus.toLowerCase()) {
@@ -69,32 +71,39 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
                   type: "user_cancel",
                   message: t("VERIFY_USER_CANCEL"),
                 });
-                if (onClose)
-                  setTimeout(() => {
-                    if (onClose) onClose("canceled");
-                  }, 1000);
+                setTimeout(() => {
+                  if (onClose) onClose("canceled");
+                }, 1000);
               } else if (expired) {
+                track(
+                  "BankID failed",
+                  "Loan Application v2",
+                  "/app/loan/verifybankid bankid popup",
+                  0
+                );
                 setError({
                   type: "",
                   message: t("VERIFY_EXPIRED"),
                 });
-              } else
+              } else {
+                track(
+                  "BankID failed",
+                  "Loan Application v2",
+                  "/app/loan/verifybankid bankid popup",
+                  0
+                );
                 setError({
                   type: "",
                   message: t("VERIFY_ERROR"),
                 });
+              }
             }
           }
         }
       })
       .onServerError((result) => {
         clearInterval(fetchInterval);
-        // if (window.analytics)
-        //   window.analytics.track("BankID Failed", {
-        //     category: "Customer Portal",
-        //     label: "Customer Portal login bankid popup",
-        //     value: 0
-        //   });
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -105,6 +114,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
       })
       .onBadRequest((result) => {
         clearInterval(fetchInterval);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -115,6 +125,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
       })
       .unAuthorized((result) => {
         clearInterval(fetchInterval);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -125,6 +136,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
       })
       .unKnownError((result) => {
         clearInterval(fetchInterval);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -135,6 +147,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
       })
       .onRequestError((result) => {
         clearInterval(fetchInterval);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -148,12 +161,15 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
   const startBankId = () => {
     startBankIdByOppId()
       .onOk((result) => {
+        if (bankIdDevice) openBankIDTab(bankIdDevice, result);
         setStatus(t("RFA1"));
+        setStartResult(result);
         fetchInterval = setInterval(() => {
           _collect();
         }, 3000);
       })
       .onServerError((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -163,6 +179,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
         }
       })
       .onBadRequest((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -172,6 +189,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
         }
       })
       .unAuthorized((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -181,6 +199,7 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
         }
       })
       .unKnownError((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -189,7 +208,17 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
           });
         }
       })
+      .forbiddenError((result) => {
+        if (!didCancel.current) {
+          toggleMainSpinner(false);
+          setError({
+            type: "",
+            message: t(result.errorCode),
+          });
+        }
+      })
       .onRequestError((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         if (!didCancel.current) {
           toggleMainSpinner(false);
           setError({
@@ -210,14 +239,17 @@ export default function VerifyBankIdModal({ oppId, onClose }) {
   React.useEffect(useEffectFunction, []);
 
   function handleCancelVerify() {
-    if (onClose) onClose("canceled");
+    if (onClose) onClose("canceled", startResult);
   }
   function handleCloseModal() {
     if (onClose) onClose("close");
   }
-  function handleBankIDClicked() {
+  function openBankIDTab(device, startResult) {
     const a = document.createElement("a");
-    // a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
+    if (device === "mobile")
+      a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
+    else
+      a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
     a.target = "_blank";
     document.body.appendChild(a);
     a.click();
