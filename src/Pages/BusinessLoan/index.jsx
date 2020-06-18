@@ -22,7 +22,7 @@ const ApplyLoan = ({ headerBottom }) => {
   return loading ? (
     <div className="loaderBox">
       <div className="loader" />
-      {t("MAIN_SPINNER_LOADING_TEXT")}
+      {t("Loading loan wizard form")}
     </div>
   ) : (
     <div className={styles.wrapper}>

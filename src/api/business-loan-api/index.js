@@ -1151,7 +1151,7 @@ export function submitLoanNew() {
     }
   }
 
-  const _call = (oppId, bankid) => {
+  const _call = (values) => {
     const url = submitNewUrl;
     const token = Cookies.get("@pontrue-wizard/token");
     axios({
@@ -1161,7 +1161,7 @@ export function submitLoanNew() {
         Authorization: `Bearer ${token}`,
         Accept: "application/json",
       },
-      data: { oppId, bankid },
+      data: values,
     })
       .then((response) => {
         _onOk(response.data ? response.data : undefined);

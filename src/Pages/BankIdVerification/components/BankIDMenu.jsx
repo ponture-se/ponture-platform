@@ -1,4 +1,5 @@
 import React from "react";
+import useLocale from "hooks/useLocale";
 import { IoMdPhonePortrait } from "react-icons/io";
 import isMobileDevice from "utils/isMobileDevice";
 import Signs from "./Signs";
@@ -11,6 +12,7 @@ const BankIdMenu = ({
   onCanceledBankId,
   onErrorBankId,
 }) => {
+  const { t } = useLocale();
   const isMobile = isMobileDevice();
   const [bankIdDevice, setBankIdDevice] = React.useState();
   const [verifyModal, toggleVerifyModal] = React.useState();
@@ -42,15 +44,15 @@ const BankIdMenu = ({
   return (
     <>
       <div className={styles.bankIdMenu}>
-        <h2>Välj inloggningsalternativ</h2>
+        <h2>{t("VERIFY_MENU_TITLE")}</h2>
         <div
           className={styles.bankIdOption}
           onClick={() => openBankIdModal("first")}
         >
           <h4>
             {!isMobile
-              ? "Mobilt BankID på annan enhet"
-              : "Mobilt BankID på denna enhet"}
+              ? t("VERIFY_MENU_OPTION_1_BROWSER_TITLE")
+              : t("VERIFY_MENU_OPTION_1_MOBILE_TITLE")}
           </h4>
           <IoMdPhonePortrait className={styles.mobileIcon} />
           <img src={require("assets/bankidLogo.png")} alt="" />
@@ -60,7 +62,9 @@ const BankIdMenu = ({
           onClick={() => openBankIdModal("second")}
         >
           <h4>
-            {!isMobile ? "BankID på denna enhet" : "BankID på annan enhet"}
+            {!isMobile
+              ? t("VERIFY_MENU_OPTION_2_BROWSER_TITLE")
+              : t("VERIFY_MENU_OPTION_2_MOBILE_TITLE")}
           </h4>
           <img src={require("assets/bankidLogo.png")} alt="" />
         </div>
@@ -69,9 +73,7 @@ const BankIdMenu = ({
             <i className="icon-shield" />
           </div>
           <span className={styles.info__text}>
-            Vår kundsäkerhet är av yttersta vikt för oss därför kräver vi att
-            verfiera våra kunder genom BankID. Detta gör dig möjlighet att få
-            snabba erbjudanden från oss.
+            {t("VERIFY_MENU_DESCRIPTION")}
           </span>
         </div>
         <Signs />

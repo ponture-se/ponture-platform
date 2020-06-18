@@ -227,14 +227,14 @@ const LoanAmount = () => {
     <>
       <div className={styles.loanAmountBox}>
         <Slider
-          title={t("Lånebelopp")}
+          title={t("LOAN_AMOUNT_LABEL")}
           minValue={loanAmountMin}
           maxValue={loanAmountMax}
           step={loanAmountStep}
           unit="kr"
           value={loanAmount}
           onChangedValue={handleOnChangedAmount}
-          tooltip="Välj det lånebloppet som du önskar. Vanligtvis tänk om ditt företags återbetalningsförmåga. Kan ditt företag betala för lånekostnaden under låneperiod eller inte."
+          tooltip={t("LOAN_AMOUNT_TOOLTIP")}
           id="loanAmount"
           manualValueComponent={() => {
             return (
@@ -274,14 +274,14 @@ const LoanAmount = () => {
           }}
         />
         <Slider
-          title={t("Låneperiod")}
+          title={t("LOAN_PERIOD_LABEL")}
           step={loanPeriodStep}
           maxValue={loanPeriodMax}
           minValue={loanPeriodMin}
           unit="kr"
           value={loanPeriod}
           onChangedValue={handleOnChangedPeriod}
-          tooltip="Välj det lånebloppet som du önskar. Vanligtvis tänk om ditt företags återbetalningsförmåga. Kan ditt företag betala för lånekostnaden under låneperiod eller inte."
+          tooltip={t("LOAN_PERIOD_TOOLTIP")}
           id="loanMonth"
           manualValueComponent={() => {
             return (
@@ -325,9 +325,9 @@ const LoanAmount = () => {
           <div className={styles.actions}>
             <div className={styles.actions__info}>
               <Title
-                text="Anledningar till lånet"
-                tooltip="no tooltip"
-                id="aa"
+                text={t("LOAN_AMOUNT_URL_NEEDS_LABEL")}
+                tooltip={t("LOAN_AMOUNT_URL_NEEDS_TOOLTIP")}
+                id="urlneedstooltip"
               />
             </div>
             <div className={styles.actions__urlNeedsList}>
@@ -349,7 +349,7 @@ const LoanAmount = () => {
               showSelectedCheckMark={false}
               onClick={changeUrlNeedsToCategory}
             >
-              Välj andra anledningar till lånet ...
+              {t("LOAN_AMOUNT_URL_NEEDS_CHANGE_CATEGORY")}
             </Button>
           </div>
         ) : (
@@ -357,8 +357,8 @@ const LoanAmount = () => {
             <div className={styles.actions}>
               <div className={styles.actions__info}>
                 <Title
-                  text="Vad ska lånet används till?"
-                  tooltip="no tooltip"
+                  text={t("LOAN_NEEDS_CATEGORIES_LABEL")}
+                  tooltip={t("LOAN_NEEDS_CATEGORIES_TOOLTIP")}
                   id="aa"
                 />
               </div>
@@ -395,7 +395,7 @@ const LoanAmount = () => {
                   showSelectedCheckMark={false}
                   onClick={openCategoriesModal}
                 >
-                  Byt användningskategori
+                  {t("LOAN_AMOUNT_CHANGE_BTN_TITLE")}
                 </Button>
               )}
               {!selectedType && (
@@ -404,14 +404,12 @@ const LoanAmount = () => {
                   showSelectedCheckMark={false}
                   onClick={openCategoriesModal}
                 >
-                  Välj ..
+                  {t("LOAN_AMOUNT_CHOOSE_BTN_TITLE")}
                 </Button>
               )}
             </div>
             {!selectedType && (
-              <div className={styles.guide}>
-                Välj ett alternativ ovan för att gå vidare
-              </div>
+              <div className={styles.guide}>{t("LOAN_AMOUNT_GUIDE")}</div>
             )}
           </>
         )}

@@ -1,11 +1,13 @@
 import React from "react";
 import { useLoanState } from "hooks/useLoan";
+import useLocale from "hooks/useLocale";
 import styles from "./styles.module.scss";
 import HeaderStep from "./HeaderStep";
 const Header = ({ headerBottom }) => {
   const [isOpenMenu, toggleMenu] = React.useState(false);
   const { loanFormStatus, isUrlNeeds, steps, currentStep } =
     useLoanState() || {};
+  const { t } = useLocale();
   function getStepValue() {
     const index = steps[currentStep].index;
     return isUrlNeeds && index > 2 ? index - 1 : index;
@@ -23,7 +25,7 @@ const Header = ({ headerBottom }) => {
               alt="logo"
             />
             <div className={styles.financeLogo}>
-              <span>Ponture AB är registrerade hos Finansinspektionen</span>
+              <span>{t("LOGO_TEXT")}</span>
               <img
                 src="https://www.ponture.com/wp-content/uploads/2019/04/financial_supervisory_authority.png"
                 alt=""
@@ -80,7 +82,7 @@ const Header = ({ headerBottom }) => {
               </span>
               <span className={styles.item}>
                 <span>
-                  <a href="mailto:Contact@openratio.cm">Contact@openratio.cm</a>
+                  <a href="mailto:Contact@openratio.cm">Contact@ponture.cm</a>
                 </span>
               </span>
               <div className={styles.financeLogo}>
@@ -88,7 +90,7 @@ const Header = ({ headerBottom }) => {
                   src="https://www.ponture.com/wp-content/uploads/2019/04/financial_supervisory_authority.png"
                   alt=""
                 />
-                <span>Ponture AB är registrerade hos Finansinspektionen</span>
+                <span>{t("LOGO_TEXT")}</span>
               </div>
               <img
                 className={styles.rating}
@@ -126,7 +128,7 @@ const Header = ({ headerBottom }) => {
                 />
               </div>
               <h5 className={styles.stepText}>
-                Steg {getStepValue()} av {isUrlNeeds ? 4 : 5}
+                {t("STEP")} {getStepValue()} av {isUrlNeeds ? 4 : 5}
               </h5>
             </div>
           </div>

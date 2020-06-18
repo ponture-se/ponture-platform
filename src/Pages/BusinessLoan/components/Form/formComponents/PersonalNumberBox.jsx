@@ -93,20 +93,18 @@ const PersonalNumberBox = () => {
         <Title
           text={
             pNumberTryCounter === 2
-              ? "You are not allowed to try more than twice"
+              ? t("PERSONAL_NUMBER_MORE_THAN_2_TEXT")
               : !isDonePNumber
-              ? "Ange ditt personnummer och klicka på “Sök” för att hitta ditt företag"
-              : "Ditt personnummer har verifierats"
+              ? t("PERSONAL_NUMBER_TITLE")
+              : t("PERSONAL_NUMBER_VERIFIED")
           }
           showTooltip={false}
         />
       </div>
       {pNumberTryCounter === 2 ? (
         <div className={styles.companiesBox__morethan2Text}>
-          <a href="/app/loan">Börja om</a>
-          <a href="/app/loan">
-            Om du klicka här kommer förmuläret att nollställas
-          </a>
+          <a href="/app/loan">{t("REFRESH_LINK_TEXT_1")}</a>
+          <a href="/app/loan">{t("REFRESH_LINK_TEXT_2")}</a>
         </div>
       ) : !isDonePNumber ? (
         <>
@@ -115,11 +113,11 @@ const PersonalNumberBox = () => {
             onSubmit={searchCompanies}
           >
             <Input
-              title="Ange personnummer"
+              title={t("PERSONAL_NUMBER_INPUT_LABEL")}
               placeholder="19830611-1222"
               extraClassStyle={styles.companiesBox__input__personalNumber}
               errorText={errors.personalNumber && errors.personalNumber.message}
-              tooltip="no tooltip"
+              tooltip={t("PERSONAL_NUMBER_INPUT_TOOLTIP")}
               id="cc"
               name="personalNumber"
               onKeyDown={handleKeyDown}
@@ -142,7 +140,7 @@ const PersonalNumberBox = () => {
               onClick={searchCompanies}
             >
               {!spinner ? (
-                "Sök efter mitt företag"
+                t("PERSONAL_NUMBER_BUTTON_TEXT")
               ) : (
                 <CircleSpinner show={true} size="small" />
               )}
@@ -151,13 +149,13 @@ const PersonalNumberBox = () => {
 
           <div className={styles.companiesBox__guid}>
             <span className={styles.companiesBox__guid_title}>
-              Det personnummer som kan accepteras är:
+              {t("PERSONAL_NUMBER_GUIDE_TITLE")}
             </span>
             <ul>
-              <li>Ägare av företaget </li>
-              <li>Styrelsemedlemmar i företaget</li>
-              <li>Suppleant</li>
-              <li>En firmatecknare av företag</li>
+              <li>{t("PERSONAL_NUMBER_GUIDE_1")}</li>
+              <li>{t("PERSONAL_NUMBER_GUIDE_2")}</li>
+              <li>{t("PERSONAL_NUMBER_GUIDE_3")}</li>
+              <li>{t("PERSONAL_NUMBER_GUIDE_4")}</li>
             </ul>
           </div>
         </>

@@ -13,6 +13,7 @@ import withResolver from "hoc/withResolver";
 import AxiosInitializer from "utils/AxiosInitializer";
 //
 import BusinessLoan from "./Pages/BusinessLoan";
+import BusinessLoanOld from "./Pages/BusinessLoanOld";
 import BankIdVerification from "./Pages/BankIdVerification";
 import CoronaLoan from "./Pages/CoronaLoan";
 import Login from "./Pages/Login";
@@ -32,6 +33,12 @@ const App = () => {
                 key="login"
                 path="/app/login"
                 render={(props) => <Login {...props} />}
+              />
+              <Route
+                key="appLoan"
+                path="/app/oldloan"
+                exact
+                render={(props) => <BusinessLoanOld {...props} />}
               />
               <Route
                 key="appLoan"

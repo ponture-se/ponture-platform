@@ -1,6 +1,8 @@
 import React from "react";
+import useLocale from "hooks/useLocale";
 import styles from "../styles.module.scss";
 const Profile = () => {
+  const { t } = useLocale();
   return (
     <div className={styles.profileContent}>
       <img
@@ -11,22 +13,13 @@ const Profile = () => {
         Kim Rundkvist tipsar
       </div>
       <div className={styles.profileContent__info}>
-        <h5>Så här ansöka du om företagslån hos oss</h5>
-        <span>1. Fyll i det här förmularät.</span>
-        <span>2. Vi genomför en sök mellan 20+ banker och långivare</span>
-        <span>
-          3. Du får erbjudanden i ditt konto hos oss Vi kommer att maila och
-          SMSa igenom processen.
-        </span>
-        <span>
-          Du kan jämföra och gå vidare med erbjudandet som passar dig bäst på
-          ditt konto hos oss.
-        </span>
-        <span>
-          I vissa fall kommer vi att kontakta dig för att ta in mer information
-          som behövs.
-        </span>
-        <span>Kontakta mig om du vill ha mer hjälp.</span>
+        <h5>{t("PROFILE_TITLE")}</h5>
+        <span>{t("PROFILE_DESC_1")}</span>
+        <span>{t("PROFILE_DESC_2")}</span>
+        <span>{t("PROFILE_DESC_3")}</span>
+        <span>{t("PROFILE_DESC_4")}</span>
+        <span>{t("PROFILE_DESC_5")}</span>
+        <span>{t("PROFILE_DESC_6")}</span>
       </div>
     </div>
   );

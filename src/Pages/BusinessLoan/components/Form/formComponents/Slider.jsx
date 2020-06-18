@@ -5,6 +5,7 @@ import "./styles.scss";
 import styles from "../styles.module.scss";
 import Title from "./common/Title";
 const Slider = ({
+  id,
   tooltip,
   title,
   minValue,
@@ -19,7 +20,7 @@ const Slider = ({
     <div className={styles.sliderBox}>
       <div className={styles.sliderBox__top}>
         <div className={styles.sliderBox__info}>
-          <Title text={title} tooltip={tooltip} />
+          <Title text={title} tooltip={tooltip} id={id} />
           {manualValueComponent(value)}
         </div>
       </div>

@@ -12,9 +12,12 @@ import {
   submitLoanNew,
   cancelVerify,
 } from "api/business-loan-api";
+import { getParameterByName, isNumber } from "utils";
 import useLocale from "hooks/useLocale";
+import useGlobalState from "hooks/useGlobalState";
 
 const BankIdVerification = ({ match, headerBottom }) => {
+  const [{}, dispatch] = useGlobalState();
   const { t } = useLocale();
   const [bankIdStatus, setBankIdStatus] = React.useState("verify");
   const [loading, toggleMainSpinner] = React.useState(true);
@@ -74,10 +77,24 @@ const BankIdVerification = ({ match, headerBottom }) => {
 
   function handleSuccessBankId(result) {
     toggleIsSubmitting(true);
+    const pCode = getParameterByName("pcode");
+    let obj = {
+      oppId: match.params.oppId,
+      bankid: result,
+    };
+    if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pcode"] = pCode;
     submitLoanNew()
-      .onOk((result) => {
+      .onOk((submitResult) => {
         toggleIsSubmitting(false);
         setBankIdStatus("success");
+        sessionStorage.setItem(
+          "@ponture-customer-bankid",
+          JSON.stringify(result)
+        );
+        dispatch({
+          type: "VERIFY_BANK_ID_SUCCESS",
+          payload: result,
+        });
       })
       .onServerError((result) => {
         setError(true);
@@ -90,7 +107,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
       .unKnownError((result) => {
         setError(true);
       })
-      .call(match.params.oppId, result);
+      .call(obj);
   }
   function handleErrorBankId() {}
   function handleCanceledBankId(startResult) {

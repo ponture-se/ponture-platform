@@ -5,8 +5,10 @@ import Button from "./common/Button";
 import Title from "./common/Title";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
+import useLocale from "hooks/useLocale";
 
 const NeedsBox = () => {
+  const { t } = useLocale();
   const needsBoxRef = React.useRef(null);
   const { setValue } = useFormContext();
   const dispatch = useLoanDispatch();
@@ -65,12 +67,9 @@ const NeedsBox = () => {
   return (
     <div ref={needsBoxRef} className={"animated fadeIn " + styles.needsBox}>
       <div className={styles.needsBox__info}>
-        <Title text="Anledning till lån" tooltip="no tooltip" id="bb" />
+        <Title text={t("NEEDS_LABEL")} tooltip={t("NEEDS_TOOLTIP")} id="bb" />
       </div>
-      <h5 className={styles.needsBox__desc}>
-        Om du har mer än en anledning till företagslån får du välja flera
-        alternativ
-      </h5>
+      <h5 className={styles.needsBox__desc}>{t("NEEDS_DESCRIPTION")}</h5>
       <div className={styles.needsBox__list}>
         {needsList &&
           needsList.map((item, index) => (
@@ -85,9 +84,7 @@ const NeedsBox = () => {
           ))}
       </div>
       {needsList && !needsList.some((n) => n.selected) && (
-        <div className={styles.guide}>
-          Välj minst en anledning från listan för att gå vidare.
-        </div>
+        <div className={styles.guide}>{t("NEEDS_GUIDE")}</div>
       )}
     </div>
   );

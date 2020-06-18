@@ -5,8 +5,10 @@ import { IoMdBusiness } from "react-icons/io";
 import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Title from "./common/Title";
+import useLocale from "hooks/useLocale";
 
 const CompaniesBox = () => {
+  const { t } = useLocale();
   const companiesBoxRef = React.useRef(null);
   const dispatch = useLoanDispatch();
   const { errors, setValue } = useFormContext();
@@ -36,8 +38,12 @@ const CompaniesBox = () => {
   return (
     <div ref={companiesBoxRef} className={styles.companiesBox}>
       <div className={styles.companiesBox__info2}>
-        <Title text="Välj ditt företag" tooltip="no tooltip" id="dd" />
-        <h5>Vi har hittat följade företag. Välj det....</h5>
+        <Title
+          text={t("COMPANIES_LABEL")}
+          tooltip={t("COMPANIES_TOOLTIP")}
+          id="dd"
+        />
+        <h5>{t("COMPANIES_DESCRIPTION")}</h5>
       </div>
       <div className={styles.companiesBox__list}>
         {companies &&
@@ -57,7 +63,7 @@ const CompaniesBox = () => {
       </div>
       {!selectedCompany && (
         <div className={styles.companiesBox__guide1}>
-          Välj ditt företag som du söker finansiering till för att gå vidare.
+          {t("COMPANIES_GUIDE")}
         </div>
       )}
     </div>
