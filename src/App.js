@@ -2,7 +2,9 @@ import React from "react";
 import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
 import StateProvider from "./hooks/useGlobalState/stateProvider";
 import { LocaleProvider } from "./hooks/useLocale/localeContext";
+import { LoanProvider } from "./hooks/useLoan";
 import { useTheme } from "./hooks";
+import "./styles/animate.css";
 import "./styles/app.scss";
 import { Alert } from "./components/Alert";
 import Notifies from "./components/Notifies";
@@ -11,6 +13,8 @@ import withResolver from "hoc/withResolver";
 import AxiosInitializer from "utils/AxiosInitializer";
 //
 import BusinessLoan from "./Pages/BusinessLoan";
+import BusinessLoanOld from "./Pages/BusinessLoanOld";
+import BankIdVerification from "./Pages/BankIdVerification";
 import CoronaLoan from "./Pages/CoronaLoan";
 import Login from "./Pages/Login";
 import MainPage from "./Pages/MainPage";
@@ -26,14 +30,30 @@ const App = () => {
           <BrowserRouter>
             <Switch>
               <Route
-                key="appLoan"
+                key="login"
                 path="/app/login"
                 render={(props) => <Login {...props} />}
               />
               <Route
                 key="appLoan"
+                path="/app/oldloan"
+                exact
+                render={(props) => <BusinessLoanOld {...props} />}
+              />
+              <Route
+                key="appLoan"
                 path="/app/loan"
-                render={(props) => <BusinessLoan {...props} />}
+                exact
+                render={(props) => (
+                  <LoanProvider>
+                    <BusinessLoan {...props} headerBottom={true} />
+                  </LoanProvider>
+                )}
+              />
+              <Route
+                exact
+                path="/app/loan/verifybankId/:oppId"
+                render={(props) => <BankIdVerification {...props} />}
               />
               <Route
                 key="coronaLoan"

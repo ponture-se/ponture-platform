@@ -2,59 +2,12 @@
 @import "./colors.scss";
 @import "./variables.scss";
 @import "./mixins.scss";
+@import "./typography";
 
 // comonents
 @import "./components/formInput.scss";
 @import "./components/button.scss";
 
-// animate
-@import "./animate.css";
-@font-face {
-  font-family: "OpenSance";
-  src: url("./../assets/fonts/opensance/openSance-eot.eot"); /* IE9*/
-  src: url("./../assets/fonts/opensance/openSance-eot.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */ url("./../assets/fonts/opensance/opensance-woff2.woff2")
-      format("woff2"),
-    /* chrome、firefox */ url("./../assets/fonts/opensance/opensance-woff.woff")
-      format("woff"),
-    /* chrome、firefox */ url("./../assets/fonts/opensance/opensance-ttf.ttf")
-      format("truetype"),
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-      url("./../assets/fonts/opensance/opensance-svg.svg#OpenSance")
-      format("svg"); /* iOS 4.1- */
-}
-@font-face {
-  font-family: "Poppins";
-  src: url("../assets/fonts/Poppins/Poppins.eot"); /* IE9*/
-  src: url("../assets/fonts/Poppins/Poppins.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */ url("../assets/fonts/Poppins/Poppins.woff2") format("woff2"),
-    /* chrome、firefox */ url("../assets/fonts/Poppins/Poppins.woff")
-      format("woff"),
-    /* chrome、firefox */ url("../assets/fonts/Poppins/Poppins.ttf")
-      format("truetype"),
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-      url("../assets/fonts/Poppins/Poppins.svg#Poppins") format("svg"); /* iOS 4.1- */
-}
-@font-face {
-  font-family: "OpenSanceBold";
-  src: url("./../assets/fonts/openSanceBold/openSanceBold-eot.eot"); /* IE9*/
-  src: url("./../assets/fonts/openSanceBold/openSanceBold-eot.eot?#iefix")
-      format("embedded-opentype"),
-    /* IE6-IE8 */
-      url("./../assets/fonts/openSanceBold/openSanceBold-woff2.woff2")
-      format("woff2"),
-    /* chrome、firefox */
-      url("./../assets/fonts/openSanceBold/openSanceBold-woff.woff")
-      format("woff"),
-    /* chrome、firefox */
-      url("./../assets/fonts/openSanceBold/openSanceBold-ttf.ttf")
-      format("truetype"),
-    /* chrome、firefox、opera、Safari, Android, iOS 4.2+*/
-      url("./../assets/fonts/openSanceBold/openSanceBold-svg.svg#OpenSanceBold")
-      format("svg"); /* iOS 4.1- */
-}
 // ========================
 .hidden-xs {
   @include respond(big-desktop) {
@@ -358,7 +311,7 @@ div::-moz-scrollbar-thumb:hover {
     width: 200px;
     height: 4px;
     animation: loading 2s linear infinite;
-    @include variable(main-spinner-bg, background-color, rgb(66, 204, 173));
+    background-color: #44b3c2;
   }
 }
 @keyframes loading {
