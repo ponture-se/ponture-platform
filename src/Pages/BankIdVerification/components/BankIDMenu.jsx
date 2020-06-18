@@ -5,6 +5,7 @@ import isMobileDevice from "utils/isMobileDevice";
 import Signs from "./Signs";
 import VerifyBankIdModalNew from "components/VerifyBankIdModalNew";
 import styles from "../styles.module.scss";
+import track from "utils/trackAnalytic";
 
 const BankIdMenu = ({
   oppId,
@@ -20,8 +21,20 @@ const BankIdMenu = ({
     toggleVerifyModal(false);
     if (status && status !== "close") {
       if (status === "success") {
+        track(
+          "BankID Verified",
+          "Loan Application v2",
+          "/app/loan/verifybankid bankid popup",
+          0
+        );
         onSuccessBankId(result);
       } else if (status === "canceled") {
+        track(
+          "BankID failed",
+          "Loan Application v2",
+          "/app/loan/verifybankid bankid popup",
+          0
+        );
         onCanceledBankId(result);
       } else {
         // onErrorBankId();
@@ -29,6 +42,12 @@ const BankIdMenu = ({
     }
   }
   function openBankIdModal(btn) {
+    track(
+      "BankID Verification",
+      "Loan Application v2",
+      "/app/loan/verifybankid bankid popup",
+      0
+    );
     if (btn === "first") {
       if (isMobile) {
         setBankIdDevice("mobile");

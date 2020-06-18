@@ -15,6 +15,7 @@ import {
 import { getParameterByName, isNumber } from "utils";
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
+import track from "utils/trackAnalytic";
 
 const BankIdVerification = ({ match, headerBottom }) => {
   const [{}, dispatch] = useGlobalState();
@@ -30,6 +31,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
           toggleMainSpinner(false);
         })
         .onServerError((result) => {
+          track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
             type: "",
@@ -37,6 +39,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
           });
         })
         .onBadRequest((result) => {
+          track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
             type: "",
@@ -44,6 +47,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
           });
         })
         .unAuthorized((result) => {
+          track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
             type: "",
@@ -51,6 +55,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
           });
         })
         .unKnownError((result) => {
+          track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
             type: "",
@@ -65,6 +70,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
           });
         })
         .onRequestError((result) => {
+          track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
             type: "",
@@ -85,6 +91,12 @@ const BankIdVerification = ({ match, headerBottom }) => {
     if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pcode"] = pCode;
     submitLoanNew()
       .onOk((submitResult) => {
+        track(
+          "Finished with BankID",
+          "Loan Application v2",
+          "/app/loan/ wizard",
+          0
+        );
         toggleIsSubmitting(false);
         setBankIdStatus("success");
         sessionStorage.setItem(

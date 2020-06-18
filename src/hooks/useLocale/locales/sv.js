@@ -306,11 +306,7 @@ export default {
     "Ange ditt personnummer och klicka på “Sök” för att hitta ditt företag",
   PERSONAL_NUMBER_VERIFIED: "Ditt personnummer har verifierats",
   PERSONAL_NUMBER_INPUT_LABEL: "Ange personnummer",
-  PERSONAL_NUMBER_INPUT_TOOLTIP: `De personnummer som kan accepteras är: 
-    - Ägare av företaget
-    - Styrelsemedlemmar i företaget
-    - Suppleant
-    - En firmatecknare av företag`,
+  PERSONAL_NUMBER_INPUT_TOOLTIP: `Det personnummer som kan accepteras är: ägare av företaget, styrelsemedlemmar i företaget, suppleant eller en firmatecknare av företag`,
   PERSONAL_NUMBER_BUTTON_TEXT: "Sök efter mitt företag",
   PERSONAL_NUMBER_GUIDE_TITLE: "Det personnummer som kan accepteras är:",
   PERSONAL_NUMBER_GUIDE_1: "Ägare av företaget",

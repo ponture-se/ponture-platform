@@ -9,6 +9,7 @@ import CircleSpinner from "components/CircleSpinner";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
+import track from "utils/trackAnalytic";
 
 const PersonalNumberBox = () => {
   const {
@@ -20,7 +21,13 @@ const PersonalNumberBox = () => {
     getValues,
   } = useFormContext();
   const dispatch = useLoanDispatch();
-  const { personalNumber, currentStep, pNumberTryCounter } = useLoanState();
+  const {
+    personalNumber,
+    currentStep,
+    pNumberTryCounter,
+    steps,
+    tracking,
+  } = useLoanState();
   const { _getCompanies } = useLoanApi();
 
   const { t } = useLocale();
@@ -43,6 +50,22 @@ const PersonalNumberBox = () => {
     }
   };
   React.useEffect(init, []);
+  function checkTracking() {
+    if (
+      steps.personalNumberBox.isTouched &&
+      !steps.personalNumberBox.isFinished &&
+      !tracking.personalNumberBox
+    ) {
+      dispatch({
+        type: "SET_TRACKING",
+        payload: {
+          name: "personalNumberBox",
+        },
+      });
+      track("Step 3", "Loan Application v2", "/app/loan/ wizard", 0);
+    }
+  }
+  React.useEffect(checkTracking, []);
   function handleKeyDown(e) {
     e.stopPropagation();
     if (e.key === "Enter") {
@@ -82,7 +105,10 @@ const PersonalNumberBox = () => {
               });
             }
           },
-          () => toggleSpinner(false)
+          () => {
+            toggleSpinner(false);
+            track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
+          }
         );
       }
     }

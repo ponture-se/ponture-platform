@@ -10,6 +10,7 @@ import Title from "./common/Title";
 import useLocale from "hooks/useLocale";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import CategoriesModal from "./LoanCategoriesModal";
+import track from "utils/trackAnalytic";
 
 const loanAmountMin = process.env.REACT_APP_LOAN_AMOUNT_MIN
   ? parseInt(process.env.REACT_APP_LOAN_AMOUNT_MIN)
@@ -71,6 +72,7 @@ const LoanAmount = () => {
     setValue("amount", loanAmount);
     setValue("amourtizationPeriod", loanPeriod);
     if (isUrlNeeds) setValue("need", urlNeeds);
+    track("Step 1", "Loan Application v2", "/app/loan/ wizard", 0);
   }
   React.useEffect(init, []);
 

@@ -13,6 +13,7 @@ import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
 import CircleSpinner from "components/CircleSpinner";
+import track from "utils/trackAnalytic";
 
 const SubmitBox = ({ history }) => {
   const [{}, globalDispatch] = useGlobalState();
@@ -22,12 +23,18 @@ const SubmitBox = ({ history }) => {
     handleSubmit,
     getValues,
     setValue,
-    formState: { dirty, isValid, submitCount },
+    formState: { dirty, isValid },
   } = useFormContext();
   const submitBoxRef = React.useRef(null);
   const { _createOpp } = useLoanApi();
   const dispatch = useLoanDispatch();
-  const { contactInfo, currentStep, personalNumber } = useLoanState();
+  const {
+    contactInfo,
+    currentStep,
+    personalNumber,
+    steps,
+    tracking,
+  } = useLoanState();
   const { t } = useLocale();
   const [spinner, toggleSpinner] = React.useState(false);
   const init = () => {
@@ -57,6 +64,22 @@ const SubmitBox = ({ history }) => {
       window.scrollTo(0, submitBoxRef.current.offsetTop);
   }, [currentStep]);
   React.useEffect(init, []);
+  function checkTracking() {
+    if (
+      steps.submitBox.isTouched &&
+      !steps.submitBox.isFinished &&
+      !tracking.submitBox
+    ) {
+      dispatch({
+        type: "SET_TRACKING",
+        payload: {
+          name: "submitBox",
+        },
+      });
+      track("Step 5", "Loan Application v2", "/app/loan/ wizard", 0);
+    }
+  }
+  React.useEffect(checkTracking, []);
 
   const onSubmit = async (data) => {
     if (!spinner) {
@@ -111,8 +134,20 @@ const SubmitBox = ({ history }) => {
       _createOpp(
         obj,
         (result) => {
+          track(
+            "Submit",
+            "Loan Application v2",
+            "/app/loan/ wizard",
+            obj.amount
+          );
           toggleSpinner(false);
           if (result && (!result.data || !result.data.bankIdRequired)) {
+            track(
+              "Finished without BankID",
+              "Loan Application v2",
+              "/app/loan/ wizard",
+              0
+            );
             dispatch({
               type: "SET_LOAN_FORM_STATUS",
               payload: "noNeedBankId",

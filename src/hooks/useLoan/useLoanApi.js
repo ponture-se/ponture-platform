@@ -129,7 +129,7 @@ const useLoanApi = () => {
         if (onSuccess) onSuccess(result);
       })
       .onServerError((result) => {
-        track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         dispatch({
           type: "TOGGLE_ERROR_BOX",
           payload: true,
@@ -140,6 +140,7 @@ const useLoanApi = () => {
         if (onError) onError(result);
       })
       .notFound((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         dispatch({
           type: "TOGGLE_ERROR_BOX",
           payload: true,
@@ -147,6 +148,7 @@ const useLoanApi = () => {
         if (onError) onError();
       })
       .unKnownError((result) => {
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
         dispatch({
           type: "TOGGLE_ERROR_BOX",
           payload: true,

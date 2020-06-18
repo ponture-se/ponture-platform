@@ -6,13 +6,14 @@ import Title from "./common/Title";
 import { useLoanDispatch, useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
+import track from "utils/trackAnalytic";
 
 const NeedsBox = () => {
   const { t } = useLocale();
   const needsBoxRef = React.useRef(null);
   const { setValue } = useFormContext();
   const dispatch = useLoanDispatch();
-  const { selectedNeedCategory, currentStep } = useLoanState();
+  const { selectedNeedCategory, currentStep, steps, tracking } = useLoanState();
   const { getNeedsByCategory } = useLoanApi();
   const [needsList, setNeeds] = React.useState(
     JSON.parse(JSON.stringify(getNeedsByCategory(selectedNeedCategory)))
@@ -33,6 +34,22 @@ const NeedsBox = () => {
     }
   };
   React.useEffect(scroll, []);
+  function checkTracking() {
+    if (
+      steps.needsBox.isTouched &&
+      !steps.needsBox.isFinished &&
+      !tracking.needsBox
+    ) {
+      dispatch({
+        type: "SET_TRACKING",
+        payload: {
+          name: "needsBox",
+        },
+      });
+      track("Step 2", "Loan Application v2", "/app/loan/ wizard", 0);
+    }
+  }
+  React.useEffect(checkTracking, []);
   function selectNeed(item) {
     const n = needsList.map((need) => {
       if (need.API_Name === item.API_Name) {

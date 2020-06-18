@@ -6,13 +6,20 @@ import styles from "../styles.module.scss";
 import Button from "./common/Button";
 import Title from "./common/Title";
 import useLocale from "hooks/useLocale";
+import track from "utils/trackAnalytic";
 
 const CompaniesBox = () => {
   const { t } = useLocale();
   const companiesBoxRef = React.useRef(null);
   const dispatch = useLoanDispatch();
   const { errors, setValue } = useFormContext();
-  const { selectedCompany, companies, currentStep } = useLoanState();
+  const {
+    selectedCompany,
+    companies,
+    currentStep,
+    steps,
+    tracking,
+  } = useLoanState();
 
   function handleSelectCompany(item) {
     setValue("company", item);
@@ -35,6 +42,22 @@ const CompaniesBox = () => {
     if (selectedCompany) setValue("company", selectedCompany);
   };
   React.useEffect(init, []);
+  function checkTracking() {
+    if (
+      steps.companiesBox.isTouched &&
+      !steps.companiesBox.isFinished &&
+      !tracking.companiesBox
+    ) {
+      dispatch({
+        type: "SET_TRACKING",
+        payload: {
+          name: "companiesBox",
+        },
+      });
+      track("Step 4", "Loan Application v2", "/app/loan/ wizard", 0);
+    }
+  }
+  React.useEffect(checkTracking, []);
   return (
     <div ref={companiesBoxRef} className={styles.companiesBox}>
       <div className={styles.companiesBox__info2}>
