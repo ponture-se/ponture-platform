@@ -174,7 +174,7 @@ const Login = (props) => {
         (window.location.port ? ":" + window.location.port : "");
     }
     const a = document.createElement("a");
-    a.href = window.location.origin + `/app/panel/viewOffers`;
+    a.href = window.location.origin + `/app/panel/viewOffers/`;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

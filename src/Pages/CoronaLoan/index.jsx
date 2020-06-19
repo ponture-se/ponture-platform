@@ -514,7 +514,7 @@ export default function BusinessLoan(props) {
     window.location.href = window.location.href.split("?")[0];
   }
   function openMyApps() {
-    props.history.push("/app/panel/viewOffers");
+    props.history.push("/app/panel/viewOffers/");
   }
   function handleCloseVerifyModal(isSuccess, result, bIdResult) {
     toggleVerifyModal(false);

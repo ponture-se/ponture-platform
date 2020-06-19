@@ -8,7 +8,7 @@ const SuccessFullBankId = ({ history }) => {
   const { t } = useLocale();
   React.useEffect(() => {
     const timeout = setTimeout(() => {
-      history.push("/app/panel/viewOffers");
+      history.push("/app/panel/viewOffers/");
     }, 5000);
     return () => {
       clearTimeout(timeout);
@@ -20,7 +20,7 @@ const SuccessFullBankId = ({ history }) => {
         {t("SUBMIT_SUCCESS_TITLE")}
       </h2>
       <span className={styles.info}>{t("SUBMIT_SUCCESS_DESCRIPTION")}</span>
-      <Link to="/app/panel/viewOffers" className={styles.link}>
+      <Link to="/app/panel/viewOffers/" className={styles.link}>
         {t("SUBMIT_SUCCESS_LINK")}
       </Link>
     </div>
