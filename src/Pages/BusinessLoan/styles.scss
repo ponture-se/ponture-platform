@@ -7,6 +7,24 @@
 .input-range__slider-container {
   transition: none;
 }
+.text1337 {
+  display: flex;
+  img {
+    width: 150px;
+    height: 100px;
+    margin-right: 20px;
+    @include respond(phone) {
+      width: 100px;
+      height: 80px;
+    }
+  }
+  span {
+    max-width: 300px;
+    @include respond(phone) {
+      font-size: 13px;
+    }
+  }
+}
 .bl {
   &__loading {
     height: calc(100vh - 85px);
