@@ -149,7 +149,7 @@ const AllOffers = ({ match }) => {
           <Loading />
         ) : error ? (
           <Error />
-        ) : !opportunity.bankVerified && opportunity.amount < 2000000 ? (
+        ) : !opportunity.bankVerified ? (
           <>
             <OppInfo opportunity={opportunity} />
             <NeedsBankId opportunity={opportunity} />
