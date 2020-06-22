@@ -90,8 +90,7 @@ const PersonalNumberBox = () => {
                 {
                   type: "empty",
                   name: "personalNumber",
-                  message:
-                    "There aren't any companies for this personal number.try once again",
+                  message: t("PERSONAL_NUMBER_EMPTY_COMPANIES_WARNING"),
                 },
               ]);
             } else {

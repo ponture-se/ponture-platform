@@ -1,5 +1,6 @@
 export const initialState = {
   loanFormStatus: "form",
+  errorBox: false,
   needs: null,
   pNumberTryCounter: 0,
   currentStep: "loanAmountBox",

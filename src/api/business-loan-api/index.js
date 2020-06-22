@@ -702,28 +702,7 @@ export function cancelVerify() {
         _onOk(response.data ? response.data : undefined);
       })
       .catch((error) => {
-        if (error.response) {
-          const status = error.response.status;
-          switch (status) {
-            case 400:
-              _onBadRequest();
-              break;
-            case 401:
-              _unAuthorized();
-              break;
-            case 404:
-              _notFound();
-              break;
-            case 500:
-              _onServerError();
-              break;
-            default:
-              _unKnownError();
-              break;
-          }
-        } else {
-          _unKnownError();
-        }
+        _unKnownError();
       });
   };
 
@@ -1150,7 +1129,12 @@ export function submitLoanNew() {
       _unKnownErrorCallBack(result);
     }
   }
-
+  let _forbiddenErrorCallBack;
+  function _forbiddenError(result) {
+    if (_forbiddenErrorCallBack) {
+      _forbiddenErrorCallBack(result);
+    }
+  }
   const _call = (values) => {
     const url = submitNewUrl;
     const token = Cookies.get("@pontrue-wizard/token");
@@ -1177,6 +1161,9 @@ export function submitLoanNew() {
               break;
             case 401:
               _unAuthorized();
+              break;
+            case 403:
+              _forbiddenError(error.response.data);
               break;
             case 404:
               _notFound();
@@ -1214,6 +1201,10 @@ export function submitLoanNew() {
     },
     unAuthorized: function (callback) {
       _unAuthorizedCallBack = callback;
+      return this;
+    },
+    forbiddenError: function (callback) {
+      _forbiddenErrorCallBack = callback;
       return this;
     },
     onRequestError: function (callback) {

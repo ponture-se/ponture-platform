@@ -5,7 +5,7 @@ const NeedsBankId = ({ opportunity }) => {
     <div className="needBankIdBox">
       <h3>To be continue you must verify your application</h3>
       <button className="btn btn-success1">
-        <a href={`/app/loan/verifybankid/${opportunity.opportunityID}`}>
+        <a href={`/app/loan/verifybankid/${opportunity.opportunityID}/`}>
           Click to verify
         </a>
       </button>

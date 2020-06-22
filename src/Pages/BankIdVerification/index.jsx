@@ -34,47 +34,41 @@ const BankIdVerification = ({ match, headerBottom }) => {
           track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
-            type: "",
-            message: t("INTERNAL_SERVER_ERROR"),
+            type: "common",
           });
         })
         .onBadRequest((result) => {
           track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
-            type: "",
-            message: t("BAD_REQUEST"),
+            type: "common",
           });
         })
         .unAuthorized((result) => {
           track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
-            type: "",
-            message: t("UN_AUTHORIZED"),
+            type: "common",
           });
         })
         .unKnownError((result) => {
           track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
-            type: "",
-            message: t("UNKNOWN_ERROR"),
+            type: "common",
           });
         })
         .forbiddenError((result) => {
           toggleMainSpinner(false);
           setError({
-            type: "",
-            message: t(result.errorCode),
+            type: "forbidden",
           });
         })
         .onRequestError((result) => {
           track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           toggleMainSpinner(false);
           setError({
-            type: "",
-            message: t("ON_REQUEST_ERROR"),
+            type: "common",
           });
         })
         .call(match.params.oppId);
@@ -109,22 +103,40 @@ const BankIdVerification = ({ match, headerBottom }) => {
         });
       })
       .onServerError((result) => {
-        setError(true);
-        // track("Failure", "Loan Application", "/app/loan/ wizard", 0);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
+        setError({
+          type: "common",
+        });
+      })
+      .forbiddenError((result) => {
+        setError({
+          type: "forbidden",
+        });
       })
       .onBadRequest((result) => {})
       .notFound((result) => {
-        setError(true);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
+        setError({
+          type: "common",
+        });
       })
       .unKnownError((result) => {
-        setError(true);
+        track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
+        setError({
+          type: "common",
+        });
       })
       .call(obj);
   }
   function handleErrorBankId() {}
   function handleCanceledBankId(startResult) {
     setBankIdStatus("unSuccess");
-    if (startResult) cancelVerify().call(startResult.orderRef);
+    if (startResult)
+      cancelVerify()
+        .unKnownError((result) => {
+          track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
+        })
+        .call(startResult.orderRef);
   }
   return (
     <div className={styles.container}>
@@ -133,7 +145,13 @@ const BankIdVerification = ({ match, headerBottom }) => {
         {loading ? (
           <Loading />
         ) : isError ? (
-          <ErrorBox />
+          <ErrorBox
+            title={
+              isError && isError.type === "forbidden"
+                ? t("FORBIDDEN_VERIFY_WARNING")
+                : null
+            }
+          />
         ) : bankIdStatus === "verify" ? (
           <BankIDMenu
             oppId={match.params.oppId}

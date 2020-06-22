@@ -16,7 +16,7 @@ const NotFoundUser = (props) => {
         <span className="question">{t("CUSTOMER_LOGIN_NO_APP_QUESTION")}</span>
         <div className="actions">
           <button className="btn btn-success">
-            <Link to="/app/loan">{t("CUSTOMER_LOGIN_NO_APP_BTN_LOAN")}</Link>
+            <Link to="/app/loan/">{t("CUSTOMER_LOGIN_NO_APP_BTN_LOAN")}</Link>
           </button>
           <button className="btn btn-success">
             <a href="https://www.ponture.com/fakturakop/">

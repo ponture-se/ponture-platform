@@ -2,10 +2,10 @@ import React from "react";
 import styles from "./styles.module.scss";
 import useLocale from "hooks/useLocale";
 
-const ErrorBox = (props) => {
+const ErrorBox = ({ title }) => {
   const { t } = useLocale();
   function refreshPage() {
-    window.location.href = window.location.href.split("?")[0];
+    window.location.reload();
   }
   return (
     <div className={"animated fadeIn " + styles.errorBox}>
@@ -13,7 +13,9 @@ const ErrorBox = (props) => {
         <div className={styles.errorIcon}>
           <i className="icon-warning" />
         </div>
-        <h4 className={styles.errorTopText}>{t("ERROR_OCCURRED")}!</h4>
+        <h4 className={styles.errorTopText}>
+          {title ? title : t("ERROR_OCCURRED")}!
+        </h4>
       </div>
       <hr />
       <div className={styles.longDesc}>
