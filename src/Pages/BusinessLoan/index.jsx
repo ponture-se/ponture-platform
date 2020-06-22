@@ -58,6 +58,7 @@ export default function BusinessLoan(props) {
   ); // extra params
 
   const pTitle = getParameterByName("ptitle");
+  const pCode = getParameterByName("pcode");
   const p_loanAmount = getParameterByName("amount");
   const __loanAmount = p_loanAmount ? p_loanAmount : _loanAmount;
   const p_loanPeriod = getParameterByName("amourtizationPeriod");
@@ -1053,6 +1054,12 @@ export default function BusinessLoan(props) {
                       )}
                     </div>
                   </div>
+                  {pCode === "1337" && (
+                    <div className="text1337">
+                      <img src={require("assets/1337.jpg")} alt="" />
+                      <span>{t("TEXT_1337")}</span>
+                    </div>
+                  )}
                   {!b_loan_moreInfo_visibility && (
                     <button
                       className="btn btn-success btn-large bankIdBtn"

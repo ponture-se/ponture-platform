@@ -251,6 +251,8 @@ export default {
     "BankID-appen svarar inte. Kontrollera att den är startad och att du har internetanslutning. Om du inte har något giltigt BankID kan du hämta ett hos din Bank. Försök sedan igen.",
   VERIFY_ERROR:
     "Vi kunde tyvärr inte verifiera dig. Vänligen försök igen eller kontakta oss.",
+  TEXT_1337:
+    "Lånet omfattas av en garanti som finansieras av Europeiska unionen inom programmet för sysselsättning och social innovation",
 
   INTERNAL_SERVER_ERROR: "Internt serverfel",
   BAD_REQUEST: "Dålig förfrågan",
