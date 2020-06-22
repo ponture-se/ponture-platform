@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import styles from "../styles.module.scss";
 import Profile from "./Profile";
 import Form from "./Form";
