@@ -256,7 +256,7 @@ const SubmitBox = ({ history }) => {
         <div className={styles.submitBox__errors}>
           <ul>
             {Object.keys(errors).map((item, index) => (
-              <li key={index}>{item + "-" + errors[item].message}</li>
+              <li key={index}>{t(item) + " - " + errors[item].message}</li>
             ))}
           </ul>
         </div>

@@ -156,6 +156,9 @@ export default {
   OFFERS_CATEGORY_TITLE: "Dina lånererbjudanden",
   OFFERS_CATEGORY_IS_ACCEPTED_TITLE: "Dina andra erbjudanden",
   OFFERS_CATEGORY_TITLE_CHECK_CREDIT: "Dina erbjudanden för checkkredit",
+  OFFERS_NEEDS_VERIFY_BANKID_TEXT:
+    "För att gå vidare krävs det att du verifierar dig med BankID",
+  OFFERS_NEEDS_VERIFY_BANKID_BUTTON_TEXT: "Verifiera mig",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   CORONA_LOAN_HEADER_TITLE: "Ansök om brygglån",
@@ -179,13 +182,13 @@ export default {
   BL_TERMS_LINK: "läs våra användarvillkor",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PANADEMIN_IS_REQUIRED: "Detta är obligatoriskt",
-  PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
+  PHONE_NUMBER_IN_CORRECT: "Telefonnumret kan inte vara mindre än 9 karaktärer",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
-  EMAIL_IN_CORRECT: "email är felaktigt",
+  EMAIL_IN_CORRECT: "Den email du har angivit är felaktig",
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",
-  PERSONAL_NUMBER_IS_REQUIRED: "Personligt nummer krävs",
+  PERSONAL_NUMBER_IS_REQUIRED: "Personnummer krävs",
   PERSONAL_NUMBER_IN_CORRECT:
-    "Ange ditt korrekta personnummer exampel : 19806101-1234",
+    "Ange korrek personnummer. Exempel: 19806101-1234",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
@@ -381,4 +384,8 @@ export default {
   LOGO_TEXT: "Ponture AB är registrerade hos Finansinspektionen",
   GO_UP_TEXT: "Hoppa till toppen",
   STEP: "Steg",
+  givenRevenue: "Omsättning",
+  phoneNumber: "Telefonnummer",
+  email: "Email",
+  terms: "Användarvillkoren",
 };

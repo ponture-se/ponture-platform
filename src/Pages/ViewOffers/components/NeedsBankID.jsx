@@ -1,12 +1,14 @@
 import React from "react";
+import useLocale from "hooks/useLocale";
 
 const NeedsBankId = ({ opportunity }) => {
+  const { t } = useLocale();
   return (
     <div className="needBankIdBox">
-      <h3>To be continue you must verify your application</h3>
+      <h3>{t("OFFERS_NEEDS_VERIFY_BANKID_TEXT")}</h3>
       <button className="btn btn-success1">
         <a href={`/app/loan/verifybankid/${opportunity.opportunityID}/`}>
-          Click to verify
+          {t("OFFERS_NEEDS_VERIFY_BANKID_BUTTON_TEXT")}
         </a>
       </button>
     </div>
