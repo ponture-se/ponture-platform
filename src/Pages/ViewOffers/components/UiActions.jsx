@@ -1,6 +1,7 @@
 import React from "react";
 import useGlobalState from "hooks/useGlobalState";
 import useLocale from "hooks/useLocale";
+import track from "utils/trackAnalytic";
 import { Tags, BothTagsId } from "../helper";
 
 const UiActions = ({ hasUiActionsSame }) => {
@@ -8,6 +9,7 @@ const UiActions = ({ hasUiActionsSame }) => {
   const { t } = useLocale();
 
   function scrollCheapest() {
+    track("Clicked Cheapest offer", "Customer Portal v2", "Customer Portal", 0);
     let name = Tags.cheapest;
     if (hasUiActionsSame) {
       name = BothTagsId;
@@ -18,6 +20,7 @@ const UiActions = ({ hasUiActionsSame }) => {
     });
   }
   function scrollBiggest() {
+    track("Clicked Biggest offer", "Customer Portal v2", "Customer Portal", 0);
     let name = Tags.biggest;
     if (hasUiActionsSame) {
       name = BothTagsId;
