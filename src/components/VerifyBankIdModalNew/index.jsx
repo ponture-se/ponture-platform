@@ -13,7 +13,7 @@ export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   const { t } = useLocale();
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [startResult, setStartResult] = useState();
-  const [status, setStatus] = useState("VERIFY_BANKID_MODAL_START");
+  const [status, setStatus] = useState(t("VERIFY_BANKID_MODAL_START"));
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
 
