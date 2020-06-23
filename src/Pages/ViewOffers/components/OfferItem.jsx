@@ -6,6 +6,8 @@ import React, {
 } from "react";
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
+import track from "utils/trackAnalytic";
+
 const OfferItem = (
   { offer = {}, onAcceptClicked, isAccepted, showDetail, opportunity },
   ref
@@ -20,6 +22,10 @@ const OfferItem = (
   function toggle() {
     toggleMoreInfoBox((prev) => !prev);
   }
+  React.useEffect(() => {
+    if (moreInfoBox)
+      track("Clicked Other terms", "Customer Portal v2", "Customer Portal", 0);
+  }, [moreInfoBox]);
   const focusOnDetail = () => {
     if (moreInfoBox && !isAccepted)
       if (detailRef.current)
@@ -27,6 +33,7 @@ const OfferItem = (
   };
   React.useEffect(focusOnDetail, [moreInfoBox]);
   function handleAcceptClicked() {
+    track("Accept Offer", "Customer Portal v2", "Customer Portal", 0);
     if (onAcceptClicked) onAcceptClicked(offer);
   }
   function getOfferClass() {

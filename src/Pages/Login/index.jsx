@@ -64,7 +64,7 @@ const Login = (props) => {
           if (!didCancel) {
             track(
               "BankID Verification",
-              "Customer Portal",
+              "Customer Portal v2",
               "Customer Portal login bankid popup",
               0
             );
@@ -76,12 +76,7 @@ const Login = (props) => {
           }
         })
         .onServerError((result) => {
-          if (window.analytics)
-            window.analytics.track("BankID Failed", {
-              category: "Customer Portal",
-              label: "Customer Portal login bankid popup",
-              value: 0,
-            });
+          track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
             dispatch({
@@ -94,12 +89,7 @@ const Login = (props) => {
           }
         })
         .onBadRequest((result) => {
-          if (window.analytics)
-            window.analytics.track("BankID Failed", {
-              category: "Customer Portal",
-              label: "Customer Portal login bankid popup",
-              value: 0,
-            });
+          track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
             dispatch({
@@ -112,12 +102,7 @@ const Login = (props) => {
           }
         })
         .unAuthorized((result) => {
-          if (window.analytics)
-            window.analytics.track("BankID Failed", {
-              category: "Customer Portal",
-              label: "Customer Portal login bankid popup",
-              value: 0,
-            });
+          track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
             dispatch({
@@ -130,12 +115,7 @@ const Login = (props) => {
           }
         })
         .unKnownError((result) => {
-          if (window.analytics)
-            window.analytics.track("BankID Failed", {
-              category: "Customer Portal",
-              label: "Customer Portal login bankid popup",
-              value: 0,
-            });
+          track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
             dispatch({
@@ -152,12 +132,12 @@ const Login = (props) => {
   }
 
   function handleSuccessVerify(result) {
-    if (window.analytics)
-      window.analytics.track("BankID Verified", {
-        category: "Customer Portal",
-        label: "Customer Portal login bankid popup",
-        value: 0,
-      });
+    track(
+      "BankID Verified",
+      "Customer Portal v2",
+      "Customer Portal login bankid popup",
+      0
+    );
     toggleVerifyModal(false);
     dispatch({
       type: "VERIFY_BANK_ID_SUCCESS",
@@ -182,15 +162,11 @@ const Login = (props) => {
     //   props.history.push("/app/panel/viewOffers");
   }
   function handleCancelVerify() {
-    track(
-      "BankID Failed",
-      "Customer Portal",
-      "Customer Portal login bankid popup",
-      0
-    );
     toggleVerifyModal(false);
     cancelVerify()
-      .onOk((result) => {})
+      .unKnownError((result) => {
+        track("Failure", "Customer Portal v2", "Customer Portal", 0);
+      })
       .call(startResult ? startResult.orderRef : null);
   }
   function handleTermChanged(e) {
@@ -295,12 +271,12 @@ const Login = (props) => {
           onClose={handleCancelVerify}
           onCancelVerify={handleCancelVerify}
           onFailedBankId={() => {
-            if (window.analytics)
-              window.analytics.track("BankID Failed", {
-                category: "Customer Portal",
-                label: "Customer Portal login bankid popup",
-                value: 0,
-              });
+            track(
+              "BankID Failed",
+              "Customer Portal v2",
+              "Customer Portal login bankid popup",
+              0
+            );
           }}
         />
       )}
