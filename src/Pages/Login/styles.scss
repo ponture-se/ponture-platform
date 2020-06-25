@@ -81,6 +81,32 @@
         justify-content: center;
         align-items: center;
       }
+      .emptyCompanies {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        span {
+          font-size: 13px;
+          margin-top: 20px;
+          text-align: center;
+        }
+        a {
+          background-color: #44b3c2;
+          transition: all 0.2s;
+          &:hover {
+            background-color: #188695;
+          }
+          color: white;
+          width: 100%;
+          text-decoration: none;
+          text-align: center;
+          margin-top: 20px;
+          padding: 10px 0;
+          border-radius: 5px;
+        }
+      }
+
       &__content {
         margin-top: 30px;
         display: flex;

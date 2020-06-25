@@ -79,8 +79,13 @@ const CompaniesBox = () => {
               }
               onClick={() => handleSelectCompany(item)}
             >
-              <IoMdBusiness className={styles.companiesBox__customBtn__icon} />
-              {item.companyName}
+              <div className={styles.companiesBox__customBtn__text}>
+                <IoMdBusiness
+                  className={styles.companiesBox__customBtn__icon}
+                />
+                <br />
+                <span>{item.companyName}</span>
+              </div>
             </Button>
           ))}
       </div>
