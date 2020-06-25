@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import Cookies from "js-cookie";
+import track from "utils/trackAnalytic";
 import { withRouter, Redirect } from "react-router-dom";
 import { customerLogin } from "api/main-api";
 import { useGlobalState, useLocale } from "hooks";
@@ -17,7 +18,7 @@ const widthResolver = (WrappedComponent) => {
     function refresh() {
       window.location.reload();
     }
-    useEffect(() => {
+    const init = () => {
       if (!token || !userInfo) {
         const obj = {
           id: verifyInfo.id,
@@ -46,6 +47,7 @@ const widthResolver = (WrappedComponent) => {
             toggleLoading(false);
           })
           .onServerError((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               title: t("INTERNAL_SERVER_ERROR"),
               msg: t("INTERNAL_SERVER_ERROR_MSG"),
@@ -60,12 +62,14 @@ const widthResolver = (WrappedComponent) => {
             toggleLoading(false);
           })
           .notFound((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               type: "notFound",
             });
             toggleLoading(false);
           })
           .onRequestError((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               title: t("ON_REQUEST_ERROR"),
               msg: t("ON_REQUEST_ERROR_MSG"),
@@ -73,6 +77,7 @@ const widthResolver = (WrappedComponent) => {
             toggleLoading(false);
           })
           .unKnownError((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               title: t("UNKNOWN_ERROR"),
               msg: t("UNKNOWN_ERROR_MSG"),
@@ -81,20 +86,8 @@ const widthResolver = (WrappedComponent) => {
           })
           .call(obj);
       }
-    }, [
-      dispatch,
-      t,
-      token,
-      userInfo,
-      verifyInfo.LookupPersonAddressStatus,
-      verifyInfo.error,
-      verifyInfo.id,
-      verifyInfo.ocspResponse,
-      verifyInfo.progressStatus,
-      verifyInfo.signature,
-      verifyInfo.status,
-      verifyInfo.userInfo,
-    ]);
+    };
+    useEffect(init, []);
     return !verifyInfo ? (
       <Redirect
         to={{
