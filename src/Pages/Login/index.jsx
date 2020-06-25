@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoMdBusiness } from "react-icons/io";
+import Empty from "components/Commons/ErrorsComponent/EmptySVG";
 import { useGlobalState, useLocale } from "hooks";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
@@ -188,11 +189,11 @@ const Login = (props) => {
         });
         toggleCompaniesSpinner(false);
         if (!result || !result.companies || result.companies.length === 0) {
-          props.history.push(`/app/panel/offers`);
+          setCompanies([]);
         } else {
           if (result.companies.length === 1) {
             props.history.push(
-              `/app/panel/offers${result.companies[0].orgNumber}`
+              `/app/panel/offers/${result.companies[0].orgNumber}`
             );
           } else {
             setCompanies(result.companies);
@@ -238,18 +239,28 @@ const Login = (props) => {
         </div>
         {showCompanies ? (
           <div className="loginBox__companies">
-            <span className="loginBox__companies__desc">
-              You have many offers associated with different companies. to see
-              offers choose a company
-            </span>
+            {companiesSpinner || (companies && companies.length) ? (
+              <span className="loginBox__companies__desc">
+                You have many offers associated with different companies. to see
+                offers choose a company
+              </span>
+            ) : null}
             <div className="loginBox__companies__content">
               {companiesSpinner ? (
                 <div className="companiesSpinner">
                   <CircleSpinner show={true} size="large" bgColor="#44b3c2" />
                   <h3>{t("Loading Companies...")}</h3>
                 </div>
+              ) : !companies || companies.length === 0 ? (
+                <div className="emptyCompanies">
+                  <Empty />
+                  <span>
+                    You have not applied any applications yet. click below link
+                    to apply your first application
+                  </span>
+                  <Link to="/app/loan/">Open Apply Form</Link>
+                </div>
               ) : (
-                companies &&
                 companies.map((item) => {
                   return (
                     <Link

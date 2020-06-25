@@ -9,7 +9,7 @@ const Button = ({
   ...rest
 }) => {
   return (
-    <div
+    <button
       className={
         styles.button +
         " " +
@@ -22,10 +22,10 @@ const Button = ({
       {...rest}
     >
       {selected && showSelectedCheckMark && (
-        <div className={styles.checkMarkButton} />
+        <button className={styles.checkMarkButton} />
       )}
       <div className={styles.text}>{children}</div>
-    </div>
+    </button>
   );
 };
 
