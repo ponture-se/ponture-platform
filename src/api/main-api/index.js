@@ -294,8 +294,12 @@ export function getLatestOffers() {
     }
   }
 
-  const _call = (personalNum) => {
-    const url = latestOffersUrl + `?personalNum=${personalNum}`;
+  const _call = (personalNum, orgNumber) => {
+    const url =
+      latestOffersUrl +
+      `?personalNum=${personalNum}${
+        orgNumber ? "&orgNumber=" + orgNumber : ""
+      }`;
     const token = Cookies.get("@ponture-customer-portal/token");
     axios
       .get(url, {

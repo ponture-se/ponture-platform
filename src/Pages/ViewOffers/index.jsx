@@ -120,7 +120,7 @@ const AllOffers = ({ match }) => {
       .onRequestError((result) => {
         init(null, "ON_REQUEST_ERROR", "ON_REQUEST_ERROR_MSG");
       })
-      .call(verifyInfo.userInfo.personalNumber);
+      .call(verifyInfo.userInfo.personalNumber, match.params.orgNumber);
     return () => {
       didCancel.current = true;
     };
