@@ -75,6 +75,7 @@ export default {
   MY_APPS_LOADING_TEXT: "Laddar mina applikationer...",
   MY_APPS_EMPTY_LIST_TITLE: "Tom lista!",
   MY_APPS_EMPTY_LIST_MSG: "Du har inte använt några applikationer hittills",
+  OFFERS_HEADER_CHANGE_COMPANIES_TEXT: "Mina ansökningar",
   OFFERS_HEADER_BACK: "Tillbaka till mina ansökningar",
   OFFERS_LOADING_TEXT: "Laddar erbjudanden...",
   OFFERS_EMPTY_LIST_TITLE: "Budgivning pågor!",

@@ -47,6 +47,11 @@ export const reducer = (state, action) => {
         ...state,
         userInfo: payload,
       };
+    case "TOGGLE_COMPANIES_MODAL":
+      return {
+        ...state,
+        companiesModal: !state.companiesModal,
+      };
     case "ADD_NOTIFY":
       let newItem = { ...action.value };
       newItem.id = Math.random();
