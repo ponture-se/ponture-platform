@@ -767,3 +767,61 @@ $itemBtnColor: #44b3c2;
     text-decoration: none;
   }
 }
+
+.companiesModal {
+  &__header {
+    position: relative;
+    text-align: center;
+    .closeIcon {
+      position: absolute;
+      top: 10px;
+      right: 0px;
+
+      cursor: pointer;
+    }
+  }
+  &__body {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    .companyItem {
+      flex: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 400px;
+      position: relative;
+      margin-right: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      height: 70px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: PoppinsSemiBold;
+      border: solid 2px #44b3c2;
+      background-color: #ffffff;
+      color: #188695;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      text-decoration: none;
+      &:focus {
+        outline: none;
+        transition: all 0.2s;
+      }
+      &:hover {
+        background-color: #188695;
+        color: white;
+      }
+      &__icon {
+        font-size: 30px;
+      }
+      text-align: center;
+      font-size: 13px;
+      span {
+        flex: 1;
+      }
+    }
+  }
+}

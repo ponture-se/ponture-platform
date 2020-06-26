@@ -12,6 +12,7 @@ import UiActions from "./components/UiActions";
 import OffersCategory from "./components/OffersCategory";
 import AcceptedOffer from "./components/AcceptedOffer";
 import IsDoneOpportunity from "./components/IsDoneOpportunity";
+import CompaniesModal from "./components/CompaniesModal";
 import { getLatestOffers } from "api/main-api";
 import {
   getCategorizedOffers,
@@ -23,7 +24,7 @@ import {
 //
 const AllOffers = ({ match }) => {
   const didCancel = useRef(false);
-  const [{ verifyInfo }] = useGlobalState();
+  const [{ verifyInfo, companiesModal }] = useGlobalState();
   const { t } = useLocale();
 
   const [state, setState] = useState({
@@ -41,83 +42,81 @@ const AllOffers = ({ match }) => {
     setState((prevState) => ({ ...prevState, ...changes }));
 
   const init = (result, errorTitle, errorMsg) => {
-    if (!didCancel.current) {
-      const opportunity = result.opportunityDetail;
-      if (
-        opportunity.opportunityStage.toLowerCase() ===
-          oppStages.won.toLowerCase() ||
-        opportunity.opportunityStage.toLowerCase() ===
-          oppStages.lost.toLowerCase()
-      ) {
-        setState((prevState) => ({
-          ...prevState,
-          loading: false,
-          opportunity,
-          isDone: true,
-        }));
-      } else {
-        if (result) {
-          if (!result.offers || result.offers.length === 0) {
-            setState((prevState) => ({
-              ...prevState,
-              loading: false,
-              opportunity: result.opportunityDetail,
-            }));
-          } else {
-            const categorizedOffers = getCategorizedOffers(result.offers);
-            const acceptedOffer = checkIsAcceptedOffer(result.offers);
-            const hasUiActionsSame = checkIsSameUiAction(result.offers);
-
-            setState((prevState) => ({
-              ...prevState,
-              loading: false,
-              opportunity: result.opportunityDetail,
-              offers: categorizedOffers,
-              isAccepted: acceptedOffer ? true : false,
-              acceptedOffer,
-              hasUiActionsSame,
-            }));
-          }
-        } else
-          updateState({
-            loading: false,
-            error: {
-              title: t(errorTitle),
-              message: t(errorMsg),
-            },
-          });
-      }
-    } else
-      updateState({
+    const opportunity = result.opportunityDetail;
+    if (
+      opportunity.opportunityStage.toLowerCase() ===
+        oppStages.won.toLowerCase() ||
+      opportunity.opportunityStage.toLowerCase() ===
+        oppStages.lost.toLowerCase()
+    ) {
+      setState((prevState) => ({
+        ...prevState,
         loading: false,
-        error: {
-          title: t(errorTitle),
-          message: t(errorMsg),
-        },
-      });
+        opportunity,
+        isDone: true,
+      }));
+    } else {
+      if (result) {
+        if (!result.offers || result.offers.length === 0) {
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            opportunity: result.opportunityDetail,
+          }));
+        } else {
+          const categorizedOffers = getCategorizedOffers(result.offers);
+          const acceptedOffer = checkIsAcceptedOffer(result.offers);
+          const hasUiActionsSame = checkIsSameUiAction(result.offers);
+
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            opportunity: result.opportunityDetail,
+            offers: categorizedOffers,
+            isAccepted: acceptedOffer ? true : false,
+            acceptedOffer,
+            hasUiActionsSame,
+          }));
+        }
+      } else
+        updateState({
+          loading: false,
+          error: {
+            title: t(errorTitle),
+            message: t(errorMsg),
+          },
+        });
+    }
   };
   function _getLatestOffers() {
+    if (!loading) {
+      setState((prevState) => ({ ...prevState, loading: true }));
+    }
     getLatestOffers()
-      .onOk((result) => {
-        init(result);
-      })
+      .onOk((result) => init(result))
       .onServerError((result) => {
+        setState((prevState) => ({ ...prevState, loading: false }));
         init(null, "INTERNAL_SERVER_ERROR", "INTERNAL_SERVER_ERROR_MSG");
       })
       .onBadRequest((result) => {
+        setState((prevState) => ({ ...prevState, loading: false }));
         init(null, "BAD_REQUEST", "BAD_REQUEST_MSG");
       })
       .unAuthorized((result) => {
+        setState((prevState) => ({ ...prevState, loading: false }));
         if (!didCancel.current) {
         }
       })
       .notFound((result) => {
+        setState((prevState) => ({ ...prevState, loading: false }));
         init(null, "NOT_FOUND", "NOT_FOUND_MSG");
       })
       .unKnownError((result) => {
+        setState((prevState) => ({ ...prevState, loading: false }));
         init(null, "UNKNOWN_ERROR", "UNKNOWN_ERROR_MSG");
       })
       .onRequestError((result) => {
+        setState((prevState) => ({ ...prevState, loading: false }));
         init(null, "ON_REQUEST_ERROR", "ON_REQUEST_ERROR_MSG");
       })
       .call(verifyInfo.userInfo.personalNumber, match.params.orgNumber);
@@ -135,7 +134,7 @@ const AllOffers = ({ match }) => {
     hasUiActionsSame,
     isDone,
   } = state;
-  useEffect(_getLatestOffers, []);
+  useEffect(_getLatestOffers, [match.params.orgNumber]);
 
   function handleAcceptedOffer() {
     setState((prevState) => ({ ...prevState, loading: true }));
@@ -190,6 +189,7 @@ const AllOffers = ({ match }) => {
           </>
         )}
       </div>
+      {companiesModal && <CompaniesModal />}
     </>
   );
 };

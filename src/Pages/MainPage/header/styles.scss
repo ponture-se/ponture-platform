@@ -10,7 +10,7 @@
   z-index: 10;
   width: 100%;
   font-family: Poppins;
-  height: 60px;
+  align-items: center;
   @include variable(main-header-bg, background, white);
   @include variable(main-header-box-shadow, box-shadow, 0 0 3px lightgray);
   padding-top: 0 !important;
@@ -21,7 +21,9 @@
     margin: auto;
     width: 100%;
     align-items: center;
-    height: 60px;
+    height: 70px;
+    position: relative;
+
     @include variable(main-header-width, max-width, 992px);
     .left {
       flex: 1;
@@ -62,8 +64,28 @@
       font-size: 16px;
     }
   }
-  &__userInfo {
-    font-size: 12px;
+  &__changeCompany {
+    font-size: 13px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    position: relative;
+    margin-top: 5px;
+    font-weight: bold;
+    transition: all 0.5s;
+    @include respond(phone) {
+      display: none;
+    }
+    &:hover {
+      transform: scale(0.99);
+    }
+    .icon {
+      position: absolute;
+      font-size: 15px;
+      top: 1px;
+      margin-right: 5px;
+      left: -20px;
+    }
     // padding: 0 20px;
   }
   &__signout {
@@ -75,6 +97,9 @@
     //   transition-duration: 0.2s;
     //   transform: scale(1.09);
     // }
+    span:first-child {
+      margin-left: 5px;
+    }
     span {
       font-weight: bold;
       // font-family: OpenSanceBold;
@@ -84,84 +109,90 @@
       }
     }
   }
-  &__bottom {
-    flex: 1;
-    margin: auto;
+  .menu {
     display: none;
-    justify-content: space-between;
-    @include variable(main-header-width, max-width, 992px);
-    width: 100%;
-    align-items: flex-end;
     @include respond(phone) {
-      display: none;
+      display: flex;
     }
+    margin-top: 5px;
+    &__checkbox {
+      display: none;
+      &:checked {
+        outline: 0;
+      }
+    }
+    &__button {
+      margin-top: -5px;
+      margin-right: 5px;
+      text-align: center;
+      cursor: pointer;
+      transition: transform 0.6s cubic-bezier(0.86, 0, 0.07, 1);
+    }
+
+    &__icon {
+      position: relative;
+      &,
+      &::after,
+      &::before {
+        height: 2px;
+        width: 1.7rem;
+        background-color: black;
+        display: inline-block;
+      }
+      &::after,
+      &::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        transition: all 0.2s;
+      }
+      &::before {
+        top: -0.5rem;
+      }
+      &::after {
+        top: 0.5rem;
+      }
+    }
+    &__button:hover .menu__icon::before {
+      // top: -1rem;
+    }
+    &__button:hover .menu__icon::after {
+      // top: 1rem;
+    }
+    &__checkbox:checked + .menu__button .menu__icon {
+      background-color: transparent;
+    }
+    &__checkbox:checked + .menu__button .menu__icon::before {
+      top: 0;
+      transform: rotate(135deg);
+    }
+    &__checkbox:checked + .menu__button .menu__icon::after {
+      top: 0;
+      transform: rotate(-135deg);
+    }
+  }
+  @keyframes height {
+    0% {
+      height: 0;
+    }
+    100% {
+      height: 60px;
+    }
+  }
+  &__bottom {
+    height: 60px;
+    display: flex;
+    align-items: center;
+    animation: height 0.3s;
     .tabItem {
-      font-size: 13px;
       cursor: pointer;
       display: flex;
-      justify-content: center;
-      margin: 0 20px;
-      // align-items: flex-end;
-      height: 30px;
-      .navLink {
-        position: relative;
-        height: 100%;
-        text-decoration: none;
-        & span {
-          @include variable(main-header-link-color, color, blue);
-          &::before {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            margin: auto;
-            height: 4px;
-            opacity: 0;
-            transition-duration: 0.2s;
-            width: 0;
-            @include variable(
-              main-header-link-hover-color,
-              background,
-              darkblue
-            );
-          }
-          &:hover::before {
-            width: 100%;
-            opacity: 1;
-            transition-duration: 0.2s;
-            bottom: 0;
-          }
-        }
-        &.active span {
-          // position: relative;
-          // font-family: OpenSanceBold;
-          font-weight: bold;
-          //   font-size: 14.5px;
-          height: 100%;
-          &::after {
-            content: "";
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            right: 0;
-            width: 100%;
-            margin: auto;
-            height: 4px;
-            @include variable(
-              main-header-link-active-color,
-              background,
-              darkblue
-            );
-          }
-        }
-      }
-      &:first-child {
-        margin-left: 0;
-      }
-      &:last-child {
-        margin-right: 0;
+      align-items: center;
+      font-size: 15px;
+      font-weight: bold;
+      .icon {
+        font-size: 25px;
+        margin-right: 10px;
       }
     }
   }
