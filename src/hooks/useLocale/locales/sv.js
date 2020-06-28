@@ -156,6 +156,9 @@ export default {
   OFFERS_CATEGORY_TITLE: "Dina lånererbjudanden",
   OFFERS_CATEGORY_IS_ACCEPTED_TITLE: "Dina andra erbjudanden",
   OFFERS_CATEGORY_TITLE_CHECK_CREDIT: "Dina erbjudanden för checkkredit",
+  OFFERS_NEEDS_VERIFY_BANKID_TEXT:
+    "För att gå vidare krävs det att du verifierar dig med BankID",
+  OFFERS_NEEDS_VERIFY_BANKID_BUTTON_TEXT: "Verifiera mig",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   CORONA_LOAN_HEADER_TITLE: "Ansök om brygglån",
@@ -179,13 +182,13 @@ export default {
   BL_TERMS_LINK: "läs våra användarvillkor",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PANADEMIN_IS_REQUIRED: "Detta är obligatoriskt",
-  PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
+  PHONE_NUMBER_IN_CORRECT: "Telefonnumret kan inte vara mindre än 9 karaktärer",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
-  EMAIL_IN_CORRECT: "email är felaktigt",
+  EMAIL_IN_CORRECT: "Den email du har angivit är felaktig",
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",
-  PERSONAL_NUMBER_IS_REQUIRED: "Personligt nummer krävs",
+  PERSONAL_NUMBER_IS_REQUIRED: "Personnummer krävs",
   PERSONAL_NUMBER_IN_CORRECT:
-    "Ange ditt korrekta personnummer exampel : 19806101-1234",
+    "Ange korrek personnummer. Exempel: 19806101-1234",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
@@ -277,6 +280,7 @@ export default {
   INVALID_OPP_STAGE: "Opp stage is invalid",
   VERIFICATION_NOT_NEEDED: "BankId Verification not needed",
 
+  LOAN_MAIN_SPINNER_TEXT: "Laddar låneformuläret",
   LOAN_WIZARD_DEFAULT_TITLE: "Ansök om företagslån",
   LOAN_AMOUNT_LABEL: "Lånebelopp",
   LOAN_AMOUNT_TOOLTIP:
@@ -291,18 +295,20 @@ export default {
   LOAN_AMOUNT_CHOOSE_BTN_TITLE: "Välj ...",
   LOAN_AMOUNT_CHANGE_BTN_TITLE: "Byt användningskategori",
   LOAN_AMOUNT_URL_NEEDS_LABEL: "Anledningar till lånet",
-  LOAN_AMOUNT_URL_NEEDS_TOOLTIP: "NO TOOLTIP YET",
+  LOAN_AMOUNT_URL_NEEDS_TOOLTIP:
+    "Nedanför väljer du den kategori som bäst beskriver vad företagslånet ska användas till",
   LOAN_AMOUNT_URL_NEEDS_CHANGE_CATEGORY:
     "Välj andra anledningar till lånet ...",
   LOAN_AMOUNT_GO_FURTHER: "Gå vidare",
-  LOAN_AMOUNT_MODAL_CATEGORIES_TITLE: "Choose a category",
+  LOAN_AMOUNT_MODAL_CATEGORIES_TITLE:
+    "Välj vad företagslånet ska användas till",
   NEEDS_LABEL: "Anledning till lån",
   NEEDS_TOOLTIP: "Välj från listan nedan",
   NEEDS_DESCRIPTION:
     "Om du har mer än en anledning till företagslån får du välja flera alternativ",
   NEEDS_GUIDE: "Välj minst en anledning från listan för att gå vidare.",
   PERSONAL_NUMBER_MORE_THAN_2_TEXT:
-    "You are not allowed to try more than twice",
+    "Det är inte möjligt att utfärda denna begäran mer än två gånger i rad",
   PERSONAL_NUMBER_TITLE:
     "Ange ditt personnummer och klicka på “Sök” för att hitta ditt företag",
   PERSONAL_NUMBER_VERIFIED: "Ditt personnummer har verifierats",
@@ -314,6 +320,8 @@ export default {
   PERSONAL_NUMBER_GUIDE_2: "Styrelsemedlemmar i företaget",
   PERSONAL_NUMBER_GUIDE_3: "Suppleant",
   PERSONAL_NUMBER_GUIDE_4: "En firmatecknare av företag",
+  PERSONAL_NUMBER_EMPTY_COMPANIES_WARNING:
+    "Vi kan inte hitta några företag kopplat till det angivna personnumret. Var vänlig och försök igen",
 
   COMPANIES_LABEL: "Välj ditt företag",
   COMPANIES_TOOLTIP:
@@ -324,7 +332,7 @@ export default {
   SUBMIT_LABEL: "Företagetsomsättning under de senaste 12 månader",
   SUBMIT_TOOLTIP:
     "Ange den totala summan från försäljningen som ditt företag har gjort de senaste 12 månaderna.Om ditt företag är mindre än 12 månader anger du summan av försäljningen från företagets startdatum.",
-  SUBMIT_REVENUE_NOT_VALID: "This is not valid value.",
+  SUBMIT_REVENUE_NOT_VALID: "Detta är inte en godkänd siffra",
   SUBMIT_TERMS_LABEL: "Härmed godkänner jag",
   SUBMIT_TERMS_LINK: "användarvillkoren.",
   SUBMIT_SEND_BUTTON: "Skicka",
@@ -361,16 +369,30 @@ export default {
   VERIFY_CANCEL_LINK: "Tillbakat till inloggning",
   VERIFY_CANCEL_DESCRIPTION:
     "Vår kundsäkerhet är av yttersta vikt för oss därför kräver vi att verfiera våra kunder genom BankID. Detta gör dig möjlighet att få snabba erbjudanden från oss.",
-  SUBMIT_SAVING_TEXT: "We are saving your bankid",
+  SUBMIT_SAVING_TEXT_1: "Vi behandlar din ansökan. Vänligen vänta",
+  SUBMIT_SAVING_TEXT_2:
+    "Ladda inte om eller lämna sidan medan ansökan behandlas.",
   SUBMIT_SUCCESS_TITLE: "Vi har mottagit din ansökan",
   SUBMIT_SUCCESS_DESCRIPTION:
     "Du blir navigerad automatisk till din konto hos oss inom 5 sekunder",
   SUBMIT_SUCCESS_LINK: "Klicka här för att gå vidare",
+  FORBIDDEN_VERIFY_WARNING:
+    "Du är redan en verifierad användare och kan inte verifiera igen.",
+  FORBIDDEN_VERIFY_WARNING_TITLE: "Obehörig begäran",
+  FORBIDDEN_VERIFY_WARNING_BODY:
+    "Du är inte behörig att se den här sidan. Kontakt oss direkt för att få hjälp.",
+  FORBIDDEN_VERIFY_WARNING_BUTTON_TEXT: "Tillbaks till hemsidan",
+
+  VERIFY_BANKID_MODAL_START: "Förbereder BankID",
 
   REFRESH_LINK_TEXT_1: "Börja om",
   REFRESH_LINK_TEXT_2: "Om du klicka här kommer förmuläret att nollställas",
-  REQUIRED_INPUT: "this is a required",
+  REQUIRED_INPUT: "Detta är ett obligatoriskt fält",
   LOGO_TEXT: "Ponture AB är registrerade hos Finansinspektionen",
   GO_UP_TEXT: "Hoppa till toppen",
   STEP: "Steg",
+  givenRevenue: "Omsättning",
+  phoneNumber: "Telefonnummer",
+  email: "Email",
+  terms: "Användarvillkoren",
 };

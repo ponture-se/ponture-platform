@@ -1,10 +1,4 @@
-import {
-  startBankId,
-  cancelVerify,
-  createOpp,
-  getNeedsList,
-  getCompanies,
-} from "api/business-loan-api";
+import { createOpp, getNeedsList, getCompanies } from "api/business-loan-api";
 import { getParameterByName } from "utils";
 import track from "utils/trackAnalytic";
 import useLocale from "hooks/useLocale";

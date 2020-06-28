@@ -153,7 +153,7 @@ const SubmitBox = ({ history }) => {
               payload: "noNeedBankId",
             });
           } else {
-            history.push(`/app/loan/verifybankId/${result.data.oppId}`);
+            history.push(`/app/loan/verifybankId/${result.data.oppId}/`);
           }
         },
         (result) => {
@@ -246,9 +246,9 @@ const SubmitBox = ({ history }) => {
           {spinner ? <CircleSpinner show={true} /> : t("SUBMIT_SEND_BUTTON")}
         </Button>
         <div className={styles.submitBox__actions__link}>
-          <a href="/app/loan">{t("REFRESH_LINK_TEXT_1")}</a>
+          <a href="/app/loan/">{t("REFRESH_LINK_TEXT_1")}</a>
           <div>
-            (<a href="/app/loan">{t("REFRESH_LINK_TEXT_2")}</a>)
+            (<a href="/app/loan/">{t("REFRESH_LINK_TEXT_2")}</a>)
           </div>
         </div>
       </div>
@@ -256,7 +256,7 @@ const SubmitBox = ({ history }) => {
         <div className={styles.submitBox__errors}>
           <ul>
             {Object.keys(errors).map((item, index) => (
-              <li key={index}>{item + "-" + errors[item].message}</li>
+              <li key={index}>{t(item) + " - " + errors[item].message}</li>
             ))}
           </ul>
         </div>

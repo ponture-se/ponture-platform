@@ -47,11 +47,17 @@ const AcceptModal = ({
     updateState({ spinner: true });
     acceptOffer()
       .onOk((result) => {
-        track("Accept Offer", "Customer Portal", "Customer Portal", 0);
+        track(
+          "Confirm Offer Accepted",
+          "Customer Portal v2",
+          "Customer Portal offer confirmation popup",
+          0
+        );
         close();
         if (onEndAccepting) onEndAccepting();
       })
       .onServerError((result) => {
+        track("Failure", "Customer Portal v2", "Customer Portal", 0);
         updateState({ spinner: false });
         showError();
       })
@@ -60,14 +66,17 @@ const AcceptModal = ({
         showError();
       })
       .notFound((result) => {
+        track("Failure", "Customer Portal v2", "Customer Portal", 0);
         updateState({ spinner: false });
         showError();
       })
       .unKnownError((result) => {
+        track("Failure", "Customer Portal v2", "Customer Portal", 0);
         updateState({ spinner: false });
         showError();
       })
       .onRequestError((result) => {
+        track("Failure", "Customer Portal v2", "Customer Portal", 0);
         updateState({ spinner: false });
         showError();
       })

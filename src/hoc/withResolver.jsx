@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import track from "utils/trackAnalytic";
 import Cookies from "js-cookie";
 import { withRouter, Redirect } from "react-router-dom";
 import { customerLogin } from "api/main-api";
@@ -6,8 +7,8 @@ import { useGlobalState, useLocale } from "hooks";
 import { Wrong } from "components/Commons/ErrorsComponent";
 import NotFoundUser from "Pages/NotFoundUser";
 //
-const widthResolver = WrappedComponent => {
-  return withRouter(props => {
+const widthResolver = (WrappedComponent) => {
+  return withRouter((props) => {
     const [{ verifyInfo, userInfo }, dispatch] = useGlobalState();
     const { t } = useLocale();
     const token = Cookies.get("@ponture-customer-portal/token");
@@ -17,7 +18,8 @@ const widthResolver = WrappedComponent => {
     function refresh() {
       window.location.reload();
     }
-    useEffect(() => {
+
+    const init = () => {
       if (!token || !userInfo) {
         const obj = {
           id: verifyInfo.id,
@@ -27,66 +29,71 @@ const widthResolver = WrappedComponent => {
           userInfo: verifyInfo.userInfo,
           ocspResponse: verifyInfo.ocspResponse,
           LookupPersonAddressStatus: verifyInfo.LookupPersonAddressStatus,
-          status: verifyInfo.status
+          status: verifyInfo.status,
         };
         customerLogin()
-          .onOk(result => {
+          .onOk((result) => {
             if (window.analytics) {
               window.analytics.identify(verifyInfo.userInfo.personalNumber, {
                 name: verifyInfo.userInfo.name,
                 email: verifyInfo.userInfo.email,
                 plan: verifyInfo.userInfo.plan,
-                logins: verifyInfo.userInfo.logins
+                logins: verifyInfo.userInfo.logins,
               });
             }
             dispatch({
               type: "SET_USER_INFO",
-              payload: result
+              payload: result,
             });
             toggleLoading(false);
           })
-          .onServerError(result => {
+          .onServerError((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               title: t("INTERNAL_SERVER_ERROR"),
-              msg: t("INTERNAL_SERVER_ERROR_MSG")
+              msg: t("INTERNAL_SERVER_ERROR_MSG"),
             });
             toggleLoading(false);
           })
-          .onBadRequest(result => {
+          .onBadRequest((result) => {
             setError({
               title: t("BAD_REQUEST"),
-              msg: t("BAD_REQUEST_MSG")
+              msg: t("BAD_REQUEST_MSG"),
             });
             toggleLoading(false);
           })
-          .notFound(result => {
+          .notFound((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
-              type: "notFound"
+              type: "notFound",
             });
             toggleLoading(false);
           })
-          .onRequestError(result => {
+          .onRequestError((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               title: t("ON_REQUEST_ERROR"),
-              msg: t("ON_REQUEST_ERROR_MSG")
+              msg: t("ON_REQUEST_ERROR_MSG"),
             });
             toggleLoading(false);
           })
-          .unKnownError(result => {
+          .unKnownError((result) => {
+            track("Failure", "Customer Portal v2", "Customer Portal", 0);
             setError({
               title: t("UNKNOWN_ERROR"),
-              msg: t("UNKNOWN_ERROR_MSG")
+              msg: t("UNKNOWN_ERROR_MSG"),
             });
             toggleLoading(false);
           })
           .call(obj);
       }
-    }, []);
+    };
+    useEffect(init, []);
     return !verifyInfo ? (
       <Redirect
         to={{
-          pathname: "/app/login",
-          state: { from: props.location }
+          pathname: "/app/login/",
+          state: { from: props.location },
         }}
       />
     ) : loading ? (

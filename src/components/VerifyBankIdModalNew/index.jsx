@@ -13,7 +13,7 @@ export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   const { t } = useLocale();
   const [mainSpinner, toggleMainSpinner] = useState(true);
   const [startResult, setStartResult] = useState();
-  const [status, setStatus] = useState("Starting bankid");
+  const [status, setStatus] = useState(t("VERIFY_BANKID_MODAL_START"));
   const [success, setSuccess] = useState(false);
   const [error, setError] = useState();
 
@@ -268,11 +268,7 @@ export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
               <span className="description">{t("BL_VERIFY_MODAL_INFO")}</span>
               {mainSpinner ? (
                 <div className="spinner">
-                  <CircleSpinner
-                    show={true}
-                    size="large"
-                    bgColor="rgb(66, 204, 173)"
-                  />
+                  <CircleSpinner show={true} size="large" bgColor="#44b3c2" />
                   <span>{status}</span>
                 </div>
               ) : success ? (
