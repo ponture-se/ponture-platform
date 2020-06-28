@@ -370,14 +370,21 @@ export default {
   VERIFY_CANCEL_LINK: "Tillbakat till inloggning",
   VERIFY_CANCEL_DESCRIPTION:
     "Vår kundsäkerhet är av yttersta vikt för oss därför kräver vi att verfiera våra kunder genom BankID. Detta gör dig möjlighet att få snabba erbjudanden från oss.",
-  SUBMIT_SAVING_TEXT: "Ditt BankID sparas nu",
+  SUBMIT_SAVING_TEXT_1: "Vi behandlar din ansökan. Vänligen vänta",
+  SUBMIT_SAVING_TEXT_2:
+    "Ladda inte om eller lämna sidan medan ansökan behandlas.",
   SUBMIT_SUCCESS_TITLE: "Vi har mottagit din ansökan",
   SUBMIT_SUCCESS_DESCRIPTION:
     "Du blir navigerad automatisk till din konto hos oss inom 5 sekunder",
   SUBMIT_SUCCESS_LINK: "Klicka här för att gå vidare",
   FORBIDDEN_VERIFY_WARNING:
     "Du är redan en verifierad användare och kan inte verifiera igen.",
-  VERIFY_BANKID_MODAL_START: "Startar BankID",
+  FORBIDDEN_VERIFY_WARNING_TITLE: "Obehörig begäran",
+  FORBIDDEN_VERIFY_WARNING_BODY:
+    "Du är inte behörig att se den här sidan. Kontakt oss direkt för att få hjälp.",
+  FORBIDDEN_VERIFY_WARNING_BUTTON_TEXT: "Tillbaks till hemsidan",
+
+  VERIFY_BANKID_MODAL_START: "Förbereder BankID",
 
   REFRESH_LINK_TEXT_1: "Börja om",
   REFRESH_LINK_TEXT_2: "Om du klicka här kommer förmuläret att nollställas",

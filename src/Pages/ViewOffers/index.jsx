@@ -35,6 +35,7 @@ const AllOffers = ({ match }) => {
     isAccepted: false,
     hasUiActionsSame: false,
     isDone: false,
+    bankIdRequired: false,
     offers: [],
   });
 
@@ -42,41 +43,56 @@ const AllOffers = ({ match }) => {
     setState((prevState) => ({ ...prevState, ...changes }));
 
   const init = (result, errorTitle, errorMsg) => {
-    const opportunity = result.opportunityDetail;
-    if (
-      opportunity.opportunityStage.toLowerCase() ===
-        oppStages.won.toLowerCase() ||
-      opportunity.opportunityStage.toLowerCase() ===
-        oppStages.lost.toLowerCase()
-    ) {
-      setState((prevState) => ({
-        ...prevState,
-        loading: false,
-        opportunity,
-        isDone: true,
-      }));
-    } else {
-      if (result) {
-        if (!result.offers || result.offers.length === 0) {
-          setState((prevState) => ({
-            ...prevState,
-            loading: false,
-            opportunity: result.opportunityDetail,
-          }));
-        } else {
-          const categorizedOffers = getCategorizedOffers(result.offers);
-          const acceptedOffer = checkIsAcceptedOffer(result.offers);
-          const hasUiActionsSame = checkIsSameUiAction(result.offers);
+    if (!didCancel.current) {
+      const opportunity = result.opportunityDetail;
+      const bankIdRequired = result.bankIdRequired;
+      if (
+        opportunity.opportunityStage.toLowerCase() ===
+          oppStages.won.toLowerCase() ||
+        opportunity.opportunityStage.toLowerCase() ===
+          oppStages.lost.toLowerCase()
+      ) {
+        setState((prevState) => ({
+          ...prevState,
+          loading: false,
+          opportunity,
+          bankIdRequired,
+          isDone: true,
+        }));
+      } else {
+        if (result) {
+          if (!result.offers || result.offers.length === 0) {
+            setState((prevState) => ({
+              ...prevState,
+              loading: false,
+              bankIdRequired,
+              opportunity: result.opportunityDetail,
+            }));
+          } else {
+            const categorizedOffers = getCategorizedOffers(result.offers);
+            const acceptedOffer = checkIsAcceptedOffer(result.offers);
+            const hasUiActionsSame = checkIsSameUiAction(result.offers);
 
-          setState((prevState) => ({
-            ...prevState,
+            setState((prevState) => ({
+              ...prevState,
+              loading: false,
+              opportunity: result.opportunityDetail,
+              bankIdRequired,
+              offers: categorizedOffers,
+              isAccepted: acceptedOffer ? true : false,
+              acceptedOffer,
+              hasUiActionsSame,
+            }));
+          }
+        } else
+          updateState({
             loading: false,
             opportunity: result.opportunityDetail,
             offers: categorizedOffers,
             isAccepted: acceptedOffer ? true : false,
             acceptedOffer,
             hasUiActionsSame,
-          }));
+          });
         }
       } else
         updateState({
@@ -133,6 +149,7 @@ const AllOffers = ({ match }) => {
     acceptedOffer,
     hasUiActionsSame,
     isDone,
+    bankIdRequired,
   } = state;
   useEffect(_getLatestOffers, [match.params.orgNumber]);
 
@@ -148,7 +165,7 @@ const AllOffers = ({ match }) => {
           <Loading />
         ) : error ? (
           <Error />
-        ) : !opportunity.bankVerified ? (
+        ) : bankIdRequired ? (
           <>
             <OppInfo opportunity={opportunity} />
             <NeedsBankId opportunity={opportunity} />

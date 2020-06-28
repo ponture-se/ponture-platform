@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
-import Cookies from "js-cookie";
 import track from "utils/trackAnalytic";
+import Cookies from "js-cookie";
 import { withRouter, Redirect } from "react-router-dom";
 import { customerLogin } from "api/main-api";
 import { useGlobalState, useLocale } from "hooks";
