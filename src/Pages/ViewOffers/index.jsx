@@ -84,25 +84,16 @@ const AllOffers = ({ match }) => {
               hasUiActionsSame,
             }));
           }
-        } else
-          updateState({
-            loading: false,
-            opportunity: result.opportunityDetail,
-            offers: categorizedOffers,
-            isAccepted: acceptedOffer ? true : false,
-            acceptedOffer,
-            hasUiActionsSame,
-          });
         }
-      } else
-        updateState({
-          loading: false,
-          error: {
-            title: t(errorTitle),
-            message: t(errorMsg),
-          },
-        });
-    }
+      }
+    } else
+      updateState({
+        loading: false,
+        error: {
+          title: t(errorTitle),
+          message: t(errorMsg),
+        },
+      });
   };
   function _getLatestOffers() {
     if (!loading) {

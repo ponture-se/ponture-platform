@@ -52,16 +52,6 @@
   min-height: 60px;
   cursor: pointer;
   transition: all 0.2s;
-<<<<<<< HEAD
-  & * {
-    font-family: PoppinsSemiBold;
-  }
-  display: flex !important;
-  align-items: center !important;
-  justify-content: center !important;
-  word-wrap: break-word;
-  overflow: visible;
-=======
   font-family: PoppinsSemiBold;
   overflow: visible;
   // word-wrap: break-word;
@@ -69,27 +59,13 @@
   // flex-direction: column;
   // justify-content: center;
   // align-items: center;
->>>>>>> B-loan-cross-browser
   &:focus {
     outline: none;
     transition: all 0.2s;
   }
-<<<<<<< HEAD
-  .text {
-    font-family: PoppinsSemiBold;
-    width: 100%;
-    text-align: center;
-    word-wrap: break-word;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    overflow: hidden;
-=======
   .textDiv {
     font-family: PoppinsSemiBold;
     width: 95%;
->>>>>>> B-loan-cross-browser
   }
 }
 .primaryBtn {

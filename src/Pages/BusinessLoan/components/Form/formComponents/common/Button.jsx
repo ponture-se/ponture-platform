@@ -24,11 +24,7 @@ const Button = ({
       {selected && showSelectedCheckMark && (
         <button className={styles.checkMarkButton} />
       )}
-<<<<<<< HEAD
-      <div className={styles.text}>{children}</div>
-=======
       <div className={styles.textDiv}>{children}</div>
->>>>>>> B-loan-cross-browser
     </button>
   );
 };

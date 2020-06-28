@@ -79,19 +79,9 @@ const CompaniesBox = () => {
               }
               onClick={() => handleSelectCompany(item)}
             >
-<<<<<<< HEAD
-              <div className={styles.companiesBox__customBtn__text}>
-                <IoMdBusiness
-                  className={styles.companiesBox__customBtn__icon}
-                />
-                <br />
-                <span>{item.companyName}</span>
-              </div>
-=======
               <IoMdBusiness className={styles.companiesBox__customBtn__icon} />
               <br />
               {item.companyName}
->>>>>>> B-loan-cross-browser
             </Button>
           ))}
       </div>
