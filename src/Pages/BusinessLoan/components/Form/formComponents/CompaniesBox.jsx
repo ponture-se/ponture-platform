@@ -80,6 +80,7 @@ const CompaniesBox = () => {
               onClick={() => handleSelectCompany(item)}
             >
               <IoMdBusiness className={styles.companiesBox__customBtn__icon} />
+              <br />
               {item.companyName}
             </Button>
           ))}

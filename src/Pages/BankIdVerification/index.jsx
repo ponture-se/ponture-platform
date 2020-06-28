@@ -148,9 +148,22 @@ const BankIdVerification = ({ match, headerBottom }) => {
           <ErrorBox
             title={
               isError && isError.type === "forbidden"
-                ? t("FORBIDDEN_VERIFY_WARNING")
+                ? t("FORBIDDEN_VERIFY_WARNING_TITLE")
                 : null
             }
+            body={
+              isError && isError.type === "forbidden"
+                ? t("FORBIDDEN_VERIFY_WARNING_BODY")
+                : null
+            }
+            buttonText={
+              isError && isError.type === "forbidden"
+                ? t("FORBIDDEN_VERIFY_WARNING_BUTTON_TEXT")
+                : null
+            }
+            buttonAction={() => {
+              window.location.replace("https://www.ponture.com/");
+            }}
           />
         ) : bankIdStatus === "verify" ? (
           <BankIDMenu

@@ -34,6 +34,7 @@ const AllOffers = ({ match }) => {
     isAccepted: false,
     hasUiActionsSame: false,
     isDone: false,
+    bankIdRequired: false,
     offers: [],
   });
 
@@ -43,6 +44,7 @@ const AllOffers = ({ match }) => {
   const init = (result, errorTitle, errorMsg) => {
     if (!didCancel.current) {
       const opportunity = result.opportunityDetail;
+      const bankIdRequired = result.bankIdRequired;
       if (
         opportunity.opportunityStage.toLowerCase() ===
           oppStages.won.toLowerCase() ||
@@ -53,6 +55,7 @@ const AllOffers = ({ match }) => {
           ...prevState,
           loading: false,
           opportunity,
+          bankIdRequired,
           isDone: true,
         }));
       } else {
@@ -61,6 +64,7 @@ const AllOffers = ({ match }) => {
             setState((prevState) => ({
               ...prevState,
               loading: false,
+              bankIdRequired,
               opportunity: result.opportunityDetail,
             }));
           } else {
@@ -72,6 +76,7 @@ const AllOffers = ({ match }) => {
               ...prevState,
               loading: false,
               opportunity: result.opportunityDetail,
+              bankIdRequired,
               offers: categorizedOffers,
               isAccepted: acceptedOffer ? true : false,
               acceptedOffer,
@@ -134,6 +139,7 @@ const AllOffers = ({ match }) => {
     acceptedOffer,
     hasUiActionsSame,
     isDone,
+    bankIdRequired,
   } = state;
   useEffect(_getLatestOffers, []);
 
@@ -149,7 +155,7 @@ const AllOffers = ({ match }) => {
           <Loading />
         ) : error ? (
           <Error />
-        ) : !opportunity.bankVerified ? (
+        ) : bankIdRequired ? (
           <>
             <OppInfo opportunity={opportunity} />
             <NeedsBankId opportunity={opportunity} />

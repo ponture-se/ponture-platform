@@ -53,9 +53,19 @@
   cursor: pointer;
   transition: all 0.2s;
   font-family: PoppinsSemiBold;
+  overflow: visible;
+  // word-wrap: break-word;
+  // display: flex;
+  // flex-direction: column;
+  // justify-content: center;
+  // align-items: center;
   &:focus {
     outline: none;
     transition: all 0.2s;
+  }
+  .textDiv {
+    font-family: PoppinsSemiBold;
+    width: 95%;
   }
 }
 .primaryBtn {
@@ -504,6 +514,12 @@
     min-height: 100px;
     padding: 5px 0px;
     font-size: 12px;
+    &__div {
+      text-align: center;
+      & * {
+        display: block;
+      }
+    }
     &:nth-child(3n) {
       margin-right: 0;
       flex-basis: calc(33.3333333% - 10px);
