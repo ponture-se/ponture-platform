@@ -172,10 +172,17 @@ const Login = (props) => {
   function handleTermChanged(e) {
     toggleTerms(e.target.checked);
   }
+  function handleLogoClicked() {
+    window.location.href = "https://www.ponture.com/";
+  }
   return (
     <div className="loginContainer">
       <div className="loginHeader">
-        <img src={require("assets/logo-c.png")} alt="" />
+        <img
+          src={require("assets/logo-c.png")}
+          alt=""
+          onClick={handleLogoClicked}
+        />
       </div>
       <div className="loginBox animated fadeIn">
         <div className="loginBox__header">
