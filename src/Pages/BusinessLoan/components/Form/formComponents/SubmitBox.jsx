@@ -15,7 +15,10 @@ import useGlobalState from "hooks/useGlobalState";
 import CircleSpinner from "components/CircleSpinner";
 import track from "utils/trackAnalytic";
 
+const euGuaranteeCode = "1337";
+
 const SubmitBox = ({ history }) => {
+  const pCode = getParameterByName("pcode");
   const [{}, globalDispatch] = useGlobalState();
   const {
     errors,
@@ -239,6 +242,17 @@ const SubmitBox = ({ history }) => {
           }
         />
       </div>
+      {pCode === euGuaranteeCode ? (
+        <div className={styles.submitBox__terms}>
+          <Checkbox
+            title={t("SUBMIT_CODE_1337_TITLE")}
+            id="termChk"
+            name="euGuarantee"
+            ref={register({ required: t("SUBMIT_1337_IS_REQUIRED") })}
+            errorText={errors.euGuarantee && errors.euGuarantee.message}
+          />
+        </div>
+      ) : null}
       <div className={styles.submitBox__actions}>
         <Button
           type="submit"
@@ -264,6 +278,15 @@ const SubmitBox = ({ history }) => {
           </ul>
         </div>
       )}
+      {pCode === euGuaranteeCode ? (
+        <div className={styles.submitBox__euGuarantee}>
+          <img src={require("assets/euGaurantee.jpg")} alt="" />
+          <span>
+            Lånet omfattas av en garanti som finansieras av Europeiska unionen
+            inom programmet för sysselsättning och social innovation
+          </span>
+        </div>
+      ) : null}
       <div className={styles.submitBox__info}>
         {[
           t("SUBMIT_GUID_1"),
