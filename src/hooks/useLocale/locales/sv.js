@@ -335,6 +335,9 @@ export default {
   SUBMIT_REVENUE_NOT_VALID: "Detta är inte en godkänd siffra",
   SUBMIT_TERMS_LABEL: "Härmed godkänner jag",
   SUBMIT_TERMS_LINK: "användarvillkoren.",
+  SUBMIT_CODE_1337_TITLE:
+    "Jag är ok med att få andra erbjudanden utöver det lån med EU-garanti",
+  SUBMIT_1337_IS_REQUIRED: "Detta är ett obligatoriskt fält",
   SUBMIT_SEND_BUTTON: "Skicka",
   SUBMIT_GUID_1: "Ansökan är kostnadsfritt",
   SUBMIT_GUID_2: "Vi tar bara en UC kreditupplysning på ditt företag",
@@ -395,4 +398,5 @@ export default {
   phoneNumber: "Telefonnummer",
   email: "Email",
   terms: "Användarvillkoren",
+  euGuarantee: "Utökade erbjudanden",
 };
