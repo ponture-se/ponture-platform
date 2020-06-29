@@ -101,30 +101,33 @@ const SubmitBox = ({ history }) => {
         phoneNumber: data.phoneNumber,
       };
       const pCode = getParameterByName("pcode");
+      if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pcode"] = pCode;
+
       const utm_source = getParameterByName("utm_source");
       const utm_medium = getParameterByName("utm_medium");
       const utm_campaign = getParameterByName("utm_campaign");
       const referral_id = getParameterByName("referral_id");
       const last_referral_date = getParameterByName("last_referral_date");
-      try {
-        const ref = JSON.parse(referral_params);
-        if (ref && ref.utm_source) {
-          obj["utm_source"] = ref.utm_source;
-        }
-        if (ref && ref.utm_medium) {
-          obj["utm_medium"] = ref.utm_medium;
-        }
-        if (ref && ref.utm_campaign) {
-          obj["utm_campaign"] = ref.utm_campaign;
-        }
-        if (ref && ref.referral_id) {
-          obj["referral_id"] = ref.referral_id;
-        }
-        if (ref && ref.last_referral_date) {
-          obj["last_referral_date"] = ref.last_referral_date;
-        }
-      } catch (error) {}
-      if (pCode && pCode.length > 0 && isNumber(pCode)) obj["pcode"] = pCode;
+      if (referral_params) {
+        try {
+          const ref = JSON.parse(referral_params);
+          if (ref && ref.utm_source) {
+            obj["utm_source"] = ref.utm_source;
+          }
+          if (ref && ref.utm_medium) {
+            obj["utm_medium"] = ref.utm_medium;
+          }
+          if (ref && ref.utm_campaign) {
+            obj["utm_campaign"] = ref.utm_campaign;
+          }
+          if (ref && ref.referral_id) {
+            obj["referral_id"] = ref.referral_id;
+          }
+          if (ref && ref.last_referral_date) {
+            obj["last_referral_date"] = ref.last_referral_date;
+          }
+        } catch (error) {}
+      }
       if (utm_source) obj["utm_source"] = utm_source;
       if (utm_medium) obj["utm_medium"] = utm_medium;
       if (utm_campaign) obj["utm_campaign"] = utm_campaign;
