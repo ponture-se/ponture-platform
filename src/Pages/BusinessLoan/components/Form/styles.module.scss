@@ -449,14 +449,10 @@
       height: 45px;
       min-height: 45px;
       // margin-top: 10px;
-<<<<<<< HEAD
-      max-width: 220px;
-=======
       max-width: 200px;
       & .textDiv {
         width: 100%;
       }
->>>>>>> B-loan-form-button-style
       padding: 0 10px !important;
       left: 270px;
       top: 60%;
@@ -465,11 +461,6 @@
       justify-content: center;
       align-items: center;
       display: flex;
-<<<<<<< HEAD
-      font-size: 14px;
-=======
-
->>>>>>> B-loan-form-button-style
       @include respond(phone) {
         margin-top: 20px;
         position: static !important;
