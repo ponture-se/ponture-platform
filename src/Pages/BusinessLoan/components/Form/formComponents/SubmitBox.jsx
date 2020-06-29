@@ -246,7 +246,7 @@ const SubmitBox = ({ history }) => {
         <div className={styles.submitBox__terms}>
           <Checkbox
             title={t("SUBMIT_CODE_1337_TITLE")}
-            id="termChk"
+            id="euGuarantyChk"
             name="euGuarantee"
             ref={register({ required: t("SUBMIT_1337_IS_REQUIRED") })}
             errorText={errors.euGuarantee && errors.euGuarantee.message}
