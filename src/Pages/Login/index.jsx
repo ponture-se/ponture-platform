@@ -226,8 +226,8 @@ const Login = (props) => {
       })
       .call(obj);
   };
-  function openPonturSite() {
-    window.open("https://www.ponture.com", "_blank");
+  function handleLogoClicked() {
+    window.location.href = "https://www.ponture.com/";
   }
   return (
     <div className="loginContainer">
@@ -235,7 +235,7 @@ const Login = (props) => {
         <img
           src={require("assets/logo-c.png")}
           alt=""
-          onClick={openPonturSite}
+          onClick={handleLogoClicked}
         />
       </div>
       <div className="loginBox animated fadeIn">

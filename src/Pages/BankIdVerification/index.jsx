@@ -162,7 +162,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
                 : null
             }
             buttonAction={() => {
-              window.location.replace("https://www.ponture.com/");
+              window.location.href = "https://www.ponture.com/";
             }}
           />
         ) : bankIdStatus === "verify" ? (
