@@ -66,6 +66,11 @@
   .textDiv {
     font-family: PoppinsSemiBold;
     width: 95%;
+    text-align: center;
+    // display: flex;
+    // flex-direction: column;
+    // justify-content: center;
+    // align-items: center;
   }
 }
 .primaryBtn {
@@ -444,7 +449,10 @@
       height: 45px;
       min-height: 45px;
       // margin-top: 10px;
-      max-width: 190px;
+      max-width: 200px;
+      & .textDiv {
+        width: 100%;
+      }
       padding: 0 10px !important;
       left: 270px;
       top: 60%;
@@ -453,6 +461,7 @@
       justify-content: center;
       align-items: center;
       display: flex;
+
       @include respond(phone) {
         margin-top: 20px;
         position: static !important;
