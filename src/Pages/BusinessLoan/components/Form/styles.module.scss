@@ -613,7 +613,7 @@
     }
   }
   &__terms {
-    margin-bottom: 50px;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: row;
     @include respond(phone) {
@@ -628,7 +628,9 @@
       }
     }
   }
+
   &__actions {
+    margin-top: 50px;
     display: flex;
     justify-content: space-between;
     flex-direction: row;
@@ -724,6 +726,20 @@
       margin-top: 20px;
       padding-left: 20px;
       color: red;
+    }
+  }
+  &__euGuarantee {
+    margin-top: 50px;
+    display: flex;
+    img {
+      width: 110px;
+      margin-right: 20px;
+      height: 85px;
+    }
+    span {
+      display: block;
+      max-width: 270px;
+      font-size: 13px;
     }
   }
 }
