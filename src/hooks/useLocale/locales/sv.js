@@ -97,7 +97,12 @@ export default {
   OFFER_NOT_ACCEPTED_TITLE_XS:
     "Välj det erbjudande som passar dig bäst för att gå vidare.",
   OFFER_NOT_ACCEPTED_DESCRIPTION_XS: "Våra erbjudanden är ej binande.",
-  OFFER_DONE_TEXT: "Din ansökan är stängd.",
+  OFFER_LOST_TEXT1: "Sök din företagsfinansiering hos oss",
+  OFFER_LOST_TEXT2: "Ditt ärende är avslutat.",
+  OFFER_WON_TEXT1: "Sök din företagsfinansiering hos oss",
+  OFFER_WON_TEXT2: "Ditt ärende är avslutat.",
+  OFFER_WON_TEXT3:
+    "Har du andra frågor gällande lånet kontakta din långivare direkt.",
   OFFER_ITEM_CHEAPEST_TITLE: "Billigaste lånet",
   OFFER_ITEM_BIGGEST_TITLE: "Högsta beloppet",
   OFFER_ITEM_ACCEPT_BTN: "Gå vidare",
