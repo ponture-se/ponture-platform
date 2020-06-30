@@ -10,7 +10,7 @@ const ErrorBox = ({ title, body, buttonText, buttonAction }) => {
     } else window.location.reload();
   }
   return (
-    <div className={"animated fadeIn " + styles.errorBox}>
+    <div className={"animated fadeIn errorBox " + styles.errorBox}>
       <div className={styles.top}>
         <div className={styles.errorIcon}>
           <i className="icon-warning" />

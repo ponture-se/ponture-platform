@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { IoMdBusiness } from "react-icons/io";
-import Empty from "components/Commons/ErrorsComponent/EmptySVG";
 import { useGlobalState, useLocale } from "hooks";
+import EmptyCompanies from "./EmptyCompanies";
+import ErrorBox from "components/ErrorBox";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import { isBankId } from "utils";
@@ -11,6 +12,13 @@ import batchStates from "utils/batchStates";
 import { startBankId, cancelVerify } from "api/business-loan-api";
 import { customerLogin } from "api/main-api";
 import "./styles.scss";
+
+const boxes = {
+  form: "LOGIN_FORM",
+  companies: "LOGIN_LOAD_COMPANIES",
+  emptyCompanies: "LOGIN_COMPANIES_EMPTY",
+  errorBox: "LOGIN_COMPANIES_ERROR",
+};
 
 const Login = (props) => {
   let didCancel = false;
@@ -22,7 +30,7 @@ const Login = (props) => {
   const [verifyModal, toggleVerifyModal] = useState();
   const [startResult, setStartResult] = useState();
   const [terms, toggleTerms] = useState(true);
-  const [showCompanies, toggleCompaniesBox] = useState(false);
+  const [currentBox, setCurrentBox] = useState(boxes.form);
   const [companies, setCompanies] = useState([]);
   const [companiesSpinner, toggleCompaniesSpinner] = useState(true);
 
@@ -122,7 +130,7 @@ const Login = (props) => {
       0
     );
     toggleVerifyModal(false);
-    toggleCompaniesBox(true);
+    setCurrentBox(boxes.companies);
     checkCompanies(result);
 
     // const open = window.open(window.origin + `/app/panel/viewOffers`);
@@ -189,7 +197,7 @@ const Login = (props) => {
         });
         toggleCompaniesSpinner(false);
         if (!result || !result.companies || result.companies.length === 0) {
-          setCompanies([]);
+          setCurrentBox(boxes.emptyCompanies);
         } else {
           if (result.companies.length === 1) {
             props.history.push(
@@ -203,26 +211,26 @@ const Login = (props) => {
       .onServerError((result) => {
         track("Failure", "Customer Portal v2", "Customer Portal", 0);
         toggleCompaniesSpinner(false);
-        showError();
+        setCurrentBox(boxes.errorBox);
       })
       .onBadRequest((result) => {
         toggleCompaniesSpinner(false);
-        showError();
+        setCurrentBox(boxes.errorBox);
       })
       .notFound((result) => {
         track("Failure", "Customer Portal v2", "Customer Portal", 0);
         toggleCompaniesSpinner(false);
-        showError();
+        setCurrentBox(boxes.errorBox);
       })
       .onRequestError((result) => {
         track("Failure", "Customer Portal v2", "Customer Portal", 0);
         toggleCompaniesSpinner(false);
-        showError();
+        setCurrentBox(boxes.errorBox);
       })
       .unKnownError((result) => {
         track("Failure", "Customer Portal v2", "Customer Portal", 0);
         toggleCompaniesSpinner(false);
-        showError();
+        setCurrentBox(boxes.errorBox);
       })
       .call(obj);
   };
@@ -238,52 +246,12 @@ const Login = (props) => {
           onClick={handleLogoClicked}
         />
       </div>
-      <div className="loginBox animated fadeIn">
-        <div className="loginBox__header">
-          <span>
-            {!showCompanies ? t("LOGIN_TITLE") : t("Choose a company")}
-          </span>
-        </div>
-        {showCompanies ? (
-          <div className="loginBox__companies">
-            {companiesSpinner || (companies && companies.length) ? (
-              <span className="loginBox__companies__desc">
-                You have many offers associated with different companies. to see
-                offers choose a company
-              </span>
-            ) : null}
-            <div className="loginBox__companies__content">
-              {companiesSpinner ? (
-                <div className="companiesSpinner">
-                  <CircleSpinner show={true} size="large" bgColor="#44b3c2" />
-                  <h3>{t("Loading Companies...")}</h3>
-                </div>
-              ) : !companies || companies.length === 0 ? (
-                <div className="emptyCompanies">
-                  <Empty />
-                  <span>
-                    You have not applied any applications yet. click below link
-                    to apply your first application
-                  </span>
-                  <Link to="/app/loan/">Open Apply Form</Link>
-                </div>
-              ) : (
-                companies.map((item) => {
-                  return (
-                    <Link
-                      key={item.orgNumber}
-                      className="companyItem"
-                      to={`/app/panel/offers/${item.orgNumber}`}
-                    >
-                      <IoMdBusiness className="companyItem__icon" />
-                      {item.orgName}
-                    </Link>
-                  );
-                })
-              )}
-            </div>
+
+      {currentBox === boxes.form ? (
+        <div className="loginBox animated fadeIn">
+          <div className="loginBox__header">
+            <span>{t("LOGIN_TITLE")}</span>
           </div>
-        ) : (
           <form onSubmit={handleLoginClicked}>
             <div className="loginBox__body__info">
               <span className="firstText">{t("LOGIN_TITLE1")}</span>
@@ -366,8 +334,55 @@ const Login = (props) => {
               {!loading ? t("LOGIN_BTN_NAME") : <CircleSpinner show={true} />}
             </button>
           </form>
-        )}
-      </div>
+        </div>
+      ) : currentBox === boxes.companies ? (
+        <div className="loginBox animated fadeIn">
+          <div className="loginBox__header">
+            <span>{t("Opening offers page")}</span>
+          </div>
+          <div className="loginBox__companies">
+            {companiesSpinner || (companies && companies.length) ? (
+              <span className="loginBox__companies__desc">
+                You have many offers associated with different companies. to see
+                offers choose a company
+              </span>
+            ) : null}
+            <div className="loginBox__companies__content">
+              {companiesSpinner ? (
+                <div className="companiesSpinner">
+                  <CircleSpinner show={true} size="large" bgColor="#44b3c2" />
+                  <h3>{t("Loading Companies...")}</h3>
+                </div>
+              ) : (
+                companies &&
+                companies.map((item) => {
+                  return (
+                    <Link
+                      key={item.orgNumber}
+                      className="companyItem"
+                      to={`/app/panel/offers/${item.orgNumber}`}
+                    >
+                      <IoMdBusiness className="companyItem__icon" />
+                      {item.orgName}
+                    </Link>
+                  );
+                })
+              )}
+            </div>
+          </div>
+        </div>
+      ) : currentBox === boxes.emptyCompanies ? (
+        <EmptyCompanies />
+      ) : currentBox === boxes.errorBox ? (
+        <ErrorBox
+          title={null}
+          body={null}
+          buttonText={null}
+          buttonAction={() => {
+            window.location.href = "https://www.ponture.com/";
+          }}
+        />
+      ) : null}
       {verifyModal && (
         <VerifyBankIdModal
           isLogin

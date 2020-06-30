@@ -43,57 +43,48 @@ const AllOffers = ({ match }) => {
     setState((prevState) => ({ ...prevState, ...changes }));
 
   const init = (result, errorTitle, errorMsg) => {
-    if (!didCancel.current) {
-      const opportunity = result.opportunityDetail;
-      const bankIdRequired = result.bankIdRequired;
-      if (
-        opportunity.opportunityStage.toLowerCase() ===
-          oppStages.won.toLowerCase() ||
-        opportunity.opportunityStage.toLowerCase() ===
-          oppStages.lost.toLowerCase()
-      ) {
-        setState((prevState) => ({
-          ...prevState,
-          loading: false,
-          opportunity,
-          bankIdRequired,
-          isDone: true,
-        }));
-      } else {
-        if (result) {
-          if (!result.offers || result.offers.length === 0) {
-            setState((prevState) => ({
-              ...prevState,
-              loading: false,
-              bankIdRequired,
-              opportunity: result.opportunityDetail,
-            }));
-          } else {
-            const categorizedOffers = getCategorizedOffers(result.offers);
-            const acceptedOffer = checkIsAcceptedOffer(result.offers);
-            const hasUiActionsSame = checkIsSameUiAction(result.offers);
+    const opportunity = result.opportunityDetail;
+    const bankIdRequired = result.bankIdRequired;
+    if (
+      opportunity.opportunityStage.toLowerCase() ===
+        oppStages.won.toLowerCase() ||
+      opportunity.opportunityStage.toLowerCase() ===
+        oppStages.lost.toLowerCase()
+    ) {
+      setState((prevState) => ({
+        ...prevState,
+        loading: false,
+        opportunity,
+        bankIdRequired,
+        isDone: true,
+      }));
+    } else {
+      if (result) {
+        if (!result.offers || result.offers.length === 0) {
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            bankIdRequired,
+            opportunity: result.opportunityDetail,
+          }));
+        } else {
+          const categorizedOffers = getCategorizedOffers(result.offers);
+          const acceptedOffer = checkIsAcceptedOffer(result.offers);
+          const hasUiActionsSame = checkIsSameUiAction(result.offers);
 
-            setState((prevState) => ({
-              ...prevState,
-              loading: false,
-              opportunity: result.opportunityDetail,
-              bankIdRequired,
-              offers: categorizedOffers,
-              isAccepted: acceptedOffer ? true : false,
-              acceptedOffer,
-              hasUiActionsSame,
-            }));
-          }
+          setState((prevState) => ({
+            ...prevState,
+            loading: false,
+            opportunity: result.opportunityDetail,
+            bankIdRequired,
+            offers: categorizedOffers,
+            isAccepted: acceptedOffer ? true : false,
+            acceptedOffer,
+            hasUiActionsSame,
+          }));
         }
       }
-    } else
-      updateState({
-        loading: false,
-        error: {
-          title: t(errorTitle),
-          message: t(errorMsg),
-        },
-      });
+    }
   };
   function _getLatestOffers() {
     if (!loading) {
