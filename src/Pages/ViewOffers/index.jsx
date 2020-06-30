@@ -11,7 +11,8 @@ import NeedsBankId from "./components/NeedsBankID";
 import UiActions from "./components/UiActions";
 import OffersCategory from "./components/OffersCategory";
 import AcceptedOffer from "./components/AcceptedOffer";
-import IsDoneOpportunity from "./components/IsDoneOpportunity";
+import IsLostOpportunity from "./components/IsLostOpportunity";
+import IsWonOpportunity from "./components/IsWonOpportunity";
 import CompaniesModal from "./components/CompaniesModal";
 import { getLatestOffers } from "api/main-api";
 import {
@@ -35,6 +36,8 @@ const AllOffers = ({ match }) => {
     isAccepted: false,
     hasUiActionsSame: false,
     isDone: false,
+    isLost: false,
+    isWon: false,
     bankIdRequired: false,
     offers: [],
   });
@@ -57,6 +60,12 @@ const AllOffers = ({ match }) => {
         opportunity,
         bankIdRequired,
         isDone: true,
+        isWon:
+          opportunity.opportunityStage.toLowerCase() ===
+          oppStages.won.toLowerCase(),
+        isLost:
+          opportunity.opportunityStage.toLowerCase() ===
+          oppStages.lost.toLowerCase(),
       }));
     } else {
       if (result) {
@@ -131,6 +140,8 @@ const AllOffers = ({ match }) => {
     acceptedOffer,
     hasUiActionsSame,
     isDone,
+    isWon,
+    isLost,
     bankIdRequired,
   } = state;
   useEffect(_getLatestOffers, [match.params.orgNumber]);
@@ -155,7 +166,13 @@ const AllOffers = ({ match }) => {
         ) : isDone ? (
           <>
             <OppInfo opportunity={opportunity} />
-            <IsDoneOpportunity />
+            {isLost ? (
+              <IsLostOpportunity />
+            ) : isWon ? (
+              <>
+                <IsWonOpportunity />
+              </>
+            ) : null}
           </>
         ) : !offers || offers.length === 0 ? (
           <>
