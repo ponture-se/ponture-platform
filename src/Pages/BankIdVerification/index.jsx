@@ -24,11 +24,15 @@ const BankIdVerification = ({ match, headerBottom }) => {
   const [loading, toggleMainSpinner] = React.useState(true);
   const [isSubmitting, toggleIsSubmitting] = React.useState(false);
   const [isError, setError] = React.useState(match.params.oppId ? false : true);
+  const [orgNumber, setOrgNumber] = React.useState();
   function init() {
     if (match.params.oppId)
       checkCriteria()
         .onOk((result) => {
           toggleMainSpinner(false);
+          setOrgNumber(
+            result ? (result.data ? result.data.orgNumber : "") : ""
+          );
         })
         .onServerError((result) => {
           track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
@@ -173,7 +177,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
             onErrorBankId={handleErrorBankId}
           />
         ) : bankIdStatus === "success" ? (
-          <SuccessFullBankId />
+          <SuccessFullBankId orgNumber={orgNumber} />
         ) : bankIdStatus === "unSuccess" ? (
           <UnSuccessFullBankId />
         ) : null}
