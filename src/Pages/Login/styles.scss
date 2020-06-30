@@ -117,31 +117,6 @@
         justify-content: center;
         align-items: center;
       }
-      .emptyCompanies {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        span {
-          font-size: 13px;
-          margin-top: 20px;
-          text-align: center;
-        }
-        a {
-          background-color: #44b3c2;
-          transition: all 0.2s;
-          &:hover {
-            background-color: #188695;
-          }
-          color: white;
-          width: 100%;
-          text-decoration: none;
-          text-align: center;
-          margin-top: 20px;
-          padding: 10px 0;
-          border-radius: 5px;
-        }
-      }
 
       &__content {
         margin-top: 30px;
@@ -191,8 +166,61 @@
       }
     }
   }
+  .errorBox {
+    margin-top: 0;
+  }
 }
 
+.emptyCompanies {
+  margin-top: 50px;
+  padding: 10px 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.14);
+  background-color: #ffffff;
+  min-width: 600px;
+  max-width: 600px;
+  &__icon {
+    display: flex;
+    justify-content: center;
+  }
+  h2 {
+    margin: 0;
+  }
+  span {
+    font-size: 13px;
+    font-weight: bold;
+  }
+  .text3 {
+    align-self: center;
+    margin-top: 20px;
+  }
+  &__actions {
+    margin-top: 10px;
+    align-self: center;
+    button {
+      border: solid 2px #44b3c2;
+      background-color: #ffffff;
+      color: #188695;
+      transition: all 0.2s;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: PoppinsSemiBold;
+      margin-right: 10px;
+      padding: 5px 20px;
+      &:hover {
+        color: #ffffff;
+        background-color: #188695;
+      }
+    }
+  }
+  .text4 {
+    margin-top: 20px;
+  }
+}
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .loginBox {
