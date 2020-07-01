@@ -1,6 +1,6 @@
 import React from "react";
 import useLocale from "hooks/useLocale";
-const IsWonOpp = ({ acceptedOffer = {} }) => {
+const IsWonOpp = ({ wonOffer = {} }) => {
   const { t } = useLocale();
   return (
     <>
@@ -19,50 +19,51 @@ const IsWonOpp = ({ acceptedOffer = {} }) => {
         </span>
         <span className="notAcceptedOfferAlert__description">
           <span>
-            {t("PARTNER_NAME")} {acceptedOffer.partnerDisplayName}
+            {t("PARTNER_NAME")} {wonOffer.partnerDisplayName}
           </span>
           <span>
             <i className="icon-phone" />
-            {acceptedOffer.partnerContactInfo &&
-            acceptedOffer.partnerContactInfo.phone
-              ? acceptedOffer.partnerContactInfo.phone
+            {wonOffer.partnerContactInfo && wonOffer.partnerContactInfo.phone
+              ? wonOffer.partnerContactInfo.phone
               : "----"}
           </span>
           <span>
             <i className="icon-envelope" />
-            {acceptedOffer.partnerContactInfo &&
-            acceptedOffer.partnerContactInfo.email
-              ? acceptedOffer.partnerContactInfo.email
+            {wonOffer.partnerContactInfo && wonOffer.partnerContactInfo.email
+              ? wonOffer.partnerContactInfo.email
               : "----"}
           </span>
         </span>
       </div>
-      <div className="acceptedOffer animated fadeIn">
+      <div
+        className="acceptedOffer animated fadeIn"
+        style={{ marginBottom: 40 }}
+      >
         <div className="offerItem">
           <div className="offerItem__content" style={{ marginTop: 15 }}>
             <div className="offerItem__top visible-f-xs">
-              {acceptedOffer.partnerLogo ? (
+              {wonOffer.partnerLogo ? (
                 <div className="offerItem__img">
-                  <img src={acceptedOffer.partnerLogo} alt="" />
+                  <img src={wonOffer.partnerLogo} alt="" />
                 </div>
               ) : (
                 <div className="offerItem__noImage">
-                  <span>{acceptedOffer.partnerDisplayName}</span>
+                  <span>{wonOffer.partnerDisplayName}</span>
                 </div>
               )}
             </div>
-            {acceptedOffer.partnerLogo ? (
+            {wonOffer.partnerLogo ? (
               <div className="offerItem__img hidden-xs">
-                <img src={acceptedOffer.partnerLogo} alt="logo" />
+                <img src={wonOffer.partnerLogo} alt="logo" />
               </div>
             ) : (
               <div className="offerItem__noImage  hidden-xs">
-                <span>{acceptedOffer.partnerDisplayName}</span>
+                <span>{wonOffer.partnerDisplayName}</span>
               </div>
             )}
             <div className="offerItem__info">
-              {acceptedOffer.inListProps &&
-                acceptedOffer.inListProps.map((item, index) => (
+              {wonOffer.inListProps &&
+                wonOffer.inListProps.map((item, index) => (
                   <div key={index} className="offerItem__value">
                     <h4 className="font-bold">
                       {item.value ? item.value : "-----"}

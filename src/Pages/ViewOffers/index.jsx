@@ -20,6 +20,7 @@ import {
   checkIsAcceptedOffer,
   checkIsSameUiAction,
   oppStages,
+  getWonOffer,
 } from "./helper";
 
 //
@@ -38,6 +39,7 @@ const AllOffers = ({ match }) => {
     isDone: false,
     isLost: false,
     isWon: false,
+    wonOffer: null,
     bankIdRequired: false,
     offers: [],
   });
@@ -54,11 +56,18 @@ const AllOffers = ({ match }) => {
       opportunity.opportunityStage.toLowerCase() ===
         oppStages.lost.toLowerCase()
     ) {
+      let wonOffer = {};
+      if (result && result.offers && result.offers.length) {
+        const c_offers = getCategorizedOffers(result.offers);
+        wonOffer = getWonOffer(result.offers);
+      }
+
       setState((prevState) => ({
         ...prevState,
         loading: false,
         opportunity,
         bankIdRequired,
+        wonOffer,
         isDone: true,
         isWon:
           opportunity.opportunityStage.toLowerCase() ===
@@ -75,6 +84,10 @@ const AllOffers = ({ match }) => {
             loading: false,
             bankIdRequired,
             opportunity: result.opportunityDetail,
+            wonOffer: null,
+            isDone: false,
+            isWon: false,
+            isLost: false,
           }));
         } else {
           const categorizedOffers = getCategorizedOffers(result.offers);
@@ -90,6 +103,10 @@ const AllOffers = ({ match }) => {
             isAccepted: acceptedOffer ? true : false,
             acceptedOffer,
             hasUiActionsSame,
+            wonOffer: null,
+            isDone: false,
+            isWon: false,
+            isLost: false,
           }));
         }
       }
@@ -143,6 +160,7 @@ const AllOffers = ({ match }) => {
     isWon,
     isLost,
     bankIdRequired,
+    wonOffer,
   } = state;
   useEffect(_getLatestOffers, [match.params.orgNumber]);
 
@@ -170,7 +188,7 @@ const AllOffers = ({ match }) => {
               <IsLostOpportunity />
             ) : isWon ? (
               <>
-                <IsWonOpportunity />
+                <IsWonOpportunity wonOffer={wonOffer} />
               </>
             ) : null}
           </>

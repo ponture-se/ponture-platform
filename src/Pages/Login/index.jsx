@@ -165,7 +165,7 @@ const Login = (props) => {
       type: "ADD_NOTIFY",
       value: {
         type: "error",
-        message: t("ERROR_OCCURRED"),
+        message: t("LOGIN_COMPANIES_ERROR_TITLE"),
       },
     });
   }
@@ -337,21 +337,17 @@ const Login = (props) => {
         </div>
       ) : currentBox === boxes.companies ? (
         <div className="loginBox animated fadeIn">
-          <div className="loginBox__header">
-            <span>{t("Opening offers page")}</span>
-          </div>
+          {companies && companies.length > 1 && (
+            <div className="loginBox__header">
+              <span>{t("LOGIN_COMPANIES_TITLE")}</span>
+            </div>
+          )}
           <div className="loginBox__companies">
-            {companiesSpinner || (companies && companies.length) ? (
-              <span className="loginBox__companies__desc">
-                You have many offers associated with different companies. to see
-                offers choose a company
-              </span>
-            ) : null}
             <div className="loginBox__companies__content">
               {companiesSpinner ? (
                 <div className="companiesSpinner">
                   <CircleSpinner show={true} size="large" bgColor="#44b3c2" />
-                  <h3>{t("Loading Companies...")}</h3>
+                  <h3>{t("LOGIN_COMPANIES_LOADING_TEXT")}</h3>
                 </div>
               ) : (
                 companies &&
@@ -374,14 +370,7 @@ const Login = (props) => {
       ) : currentBox === boxes.emptyCompanies ? (
         <EmptyCompanies />
       ) : currentBox === boxes.errorBox ? (
-        <ErrorBox
-          title={null}
-          body={null}
-          buttonText={null}
-          buttonAction={() => {
-            window.location.href = "https://www.ponture.com/";
-          }}
-        />
+        <ErrorBox title={t("LOGIN_COMPANIES_ERROR_TITLE")} />
       ) : null}
       {verifyModal && (
         <VerifyBankIdModal
