@@ -96,7 +96,7 @@ const SubmitBox = ({ history }) => {
         orgNumber: data.company.companyId,
         orgName: data.company.companyName,
         personalNumber: pId,
-        givenRevenue: parseInt(data.givenRevenue),
+        givenRevenue: parseInt(data.givenRevenue.split(" ").join("")),
         amount: parseInt(data.amount),
         amourtizationPeriod: parseInt(data.amourtizationPeriod),
         need: data.need.map((n) => n.API_Name),
