@@ -28,7 +28,7 @@
   }
   .loginBox {
     border-radius: 6px;
-    min-height: 400px;
+    min-height: 300px;
     padding: 0px 20px 30px 20px;
     margin: 90px auto 0 auto;
     display: flex;
@@ -116,6 +116,7 @@
         flex-direction: column;
         justify-content: center;
         align-items: center;
+        padding-top: 60px;
       }
 
       &__content {
@@ -172,7 +173,7 @@
 }
 
 .emptyCompanies {
-  margin-top: 50px;
+  margin: 50px 10px 0 10px;
   padding: 10px 30px;
   display: flex;
   flex-direction: column;
@@ -180,27 +181,29 @@
   border-radius: 12px;
   box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.14);
   background-color: #ffffff;
-  min-width: 600px;
+  min-width: 300px;
   max-width: 600px;
   &__icon {
     display: flex;
     justify-content: center;
   }
-  h2 {
+  h3 {
     margin: 0;
   }
   span {
     font-size: 13px;
-    font-weight: bold;
+    margin: 5px 0;
   }
   .text3 {
     align-self: center;
     margin-top: 20px;
   }
   &__actions {
-    margin-top: 10px;
+    margin: 10px 0;
     align-self: center;
-    button {
+    a {
+      text-decoration: none;
+      font-size: 13px;
       border: solid 2px #44b3c2;
       background-color: #ffffff;
       color: #188695;

@@ -7,7 +7,7 @@ const loginUrl = baseUrl + config.REACT_APP_CUSTOMER_LOGIN;
 const myAppsUrl = baseUrl + config.REACT_APP_MY_APPS;
 const cancelAppUrl = baseUrl + config.REACT_APP_CANCEL_APP;
 const offersUrl = baseUrl + config.REACT_APP_REQUEST_OFFERS;
-const latestOffersUrl = baseUrl + "/apply/offersOfLatestOpp";
+const latestOffersUrl = baseUrl + "/apply/offersOfLatestOpp/v2";
 const rejectOfferUrl = baseUrl + config.REACT_APP_REJECT_OFFER;
 const acceptOfferUrl = baseUrl + config.REACT_APP_ACCEPT_OFFER;
 
