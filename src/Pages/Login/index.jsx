@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { IoMdBusiness } from "react-icons/io";
+import { IoMdBusiness, IoMdCloseCircleOutline } from "react-icons/io";
 import { useGlobalState, useLocale } from "hooks";
 import EmptyCompanies from "./EmptyCompanies";
 import ErrorBox from "components/ErrorBox";
@@ -27,6 +27,7 @@ const Login = (props) => {
   const [personalNumber, setPersonalNumber] = useState("");
   const [loading, toggleLoading] = useState(false);
   const [error, setError] = useState();
+  const [loginFailed, setLoginFailed] = useState(false);
   const [verifyModal, toggleVerifyModal] = useState();
   const [startResult, setStartResult] = useState();
   const [terms, toggleTerms] = useState(true);
@@ -70,6 +71,7 @@ const Login = (props) => {
   function handleLoginClicked(e) {
     e.preventDefault();
     if (!error || !error.personalNumber || !error.personalNumber.isError) {
+      setLoginFailed(false);
       toggleLoading(true);
 
       let pId = personalNumber.replace("-", "");
@@ -77,6 +79,7 @@ const Login = (props) => {
       startBankId()
         .onOk((result) => {
           if (!didCancel) {
+            setLoginFailed(false);
             track(
               "BankID Verification",
               "Customer Portal v2",
@@ -94,28 +97,27 @@ const Login = (props) => {
           track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
-            showError();
+            setLoginFailed(true);
           }
         })
         .onBadRequest((result) => {
-          track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
-            showError();
+            setLoginFailed(true);
           }
         })
         .unAuthorized((result) => {
           track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
-            showError();
+            setLoginFailed(true);
           }
         })
         .unKnownError((result) => {
           track("Failure", "Customer Portal v2", "Customer Portal", 0);
           if (!didCancel) {
             toggleLoading(false);
-            showError();
+            setLoginFailed(true);
           }
         })
         .call(pId);
@@ -159,15 +161,6 @@ const Login = (props) => {
   }
   function handleTermChanged(e) {
     toggleTerms(e.target.checked);
-  }
-  function showError() {
-    dispatch({
-      type: "ADD_NOTIFY",
-      value: {
-        type: "error",
-        message: t("LOGIN_COMPANIES_ERROR_TITLE"),
-      },
-    });
   }
   const checkCompanies = (verifyInfo) => {
     toggleCompaniesSpinner(true);
@@ -325,6 +318,12 @@ const Login = (props) => {
                 </span>
               </label>
             </div>
+            {loginFailed ? (
+              <div className="loginBox__body__error">
+                <IoMdCloseCircleOutline className="loginBox__body__error__icon" />
+                <span>{t("LOGIN_FAILED_TEXT")}</span>
+              </div>
+            ) : null}
             <button
               className="btn btn-success"
               disabled={

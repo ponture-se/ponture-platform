@@ -78,6 +78,7 @@ export default {
   LOGIN_COMPANIES_EMPTY_ACTION2_TEXT: "fakturaköp",
   LOGIN_COMPANIES_LOADING_TEXT: "Laddar...",
   LOGIN_COMPANIES_ERROR_TITLE: "Hoppsan, något gick fel!",
+  LOGIN_FAILED_TEXT: "Hoppsan, något gick fel! Försök igen.",
   HEADER_TITLE_MY: "Mina",
   HEADER_TITLE_OFFERS: "Erbjudanden",
   HEADER_TITLE_PAGES: "Sidor",
