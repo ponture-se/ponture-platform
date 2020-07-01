@@ -36,7 +36,7 @@ const App = () => {
               />
               <Route
                 key="appLoan"
-                path="/app/oldloan"
+                path="/app/loan1"
                 exact
                 render={(props) => <BusinessLoanOld {...props} />}
               />
