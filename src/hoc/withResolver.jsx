@@ -18,7 +18,6 @@ const widthResolver = (WrappedComponent) => {
     function refresh() {
       window.location.reload();
     }
-
     const init = () => {
       if (!token || !userInfo) {
         const obj = {
