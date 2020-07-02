@@ -173,6 +173,7 @@ const SubmitBox = ({ history }) => {
     <div ref={submitBoxRef} className={styles.submitBox}>
       <div className={styles.submitBox__inputs}>
         <CurrencyInput
+          index="1"
           title={t("SUBMIT_LABEL")}
           tooltip={t("SUBMIT_TOOLTIP")}
           placeholder="t.ex.  1 200 000 kr"
@@ -192,6 +193,7 @@ const SubmitBox = ({ history }) => {
         <div className={styles.submitBox__twoColumns}>
           <div className={styles.submitBox__twoColumns__col}>
             <Input
+              index="2"
               title="Ditt telefonnummer"
               placeholder="t.ex.  070 980 20 91"
               extraClassStyle={styles.submitBox__inputs__phone}
@@ -208,6 +210,7 @@ const SubmitBox = ({ history }) => {
           </div>
           <div className={styles.submitBox__twoColumns__col}>
             <Input
+              index="3"
               title="Ditt e-post"
               placeholder="t.ex fredrik@comany.com"
               extraClassStyle={styles.submitBox__inputs__email}
@@ -226,6 +229,7 @@ const SubmitBox = ({ history }) => {
       </div>
       <div className={styles.submitBox__terms}>
         <Checkbox
+          index={4}
           title={t("SUBMIT_TERMS_LABEL")}
           id="termChk"
           name="terms"
@@ -233,6 +237,7 @@ const SubmitBox = ({ history }) => {
           errorText={errors.terms && errors.terms.message}
           extraLabel={
             <a
+              index={5}
               href="https://www.ponture.com/eula"
               target="_blank"
               rel="noopener noreferrer"
@@ -245,6 +250,7 @@ const SubmitBox = ({ history }) => {
       {pCode === euGuaranteeCode ? (
         <div className={styles.submitBox__terms}>
           <Checkbox
+            index="6"
             title={t("SUBMIT_CODE_1337_TITLE")}
             id="euGuarantyChk"
             name="euGuarantee"
@@ -255,6 +261,7 @@ const SubmitBox = ({ history }) => {
       ) : null}
       <div className={styles.submitBox__actions}>
         <Button
+          index="7"
           type="submit"
           customClass={styles.submitBox__customBtn}
           warning

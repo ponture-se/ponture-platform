@@ -183,7 +183,9 @@
   width: 100%;
   position: relative;
   &__chk {
-    display: none;
+    opacity: 0;
+    position: absolute;
+    left: 10px;
   }
 
   &__label {
@@ -230,6 +232,9 @@
       opacity: 0;
       transition-duration: 0.2s;
     }
+  }
+  &__chk:focus + &__label .checkbox__btn {
+    box-shadow: 0 0 10px lightgray;
   }
   &__chk:checked + &__label span::after {
     opacity: 1;
