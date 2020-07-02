@@ -3,6 +3,7 @@ export default function track(action, category, label, value) {
     window.analytics.track(action, {
       category: category,
       label: label,
-      value: value
+      value: value,
     });
+  else console.log(action, category, label, value);
 }
