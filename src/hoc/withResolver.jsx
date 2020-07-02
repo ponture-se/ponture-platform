@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import track from "utils/trackAnalytic";
+import track, { identifyUser } from "utils/trackAnalytic";
 import Cookies from "js-cookie";
 import { withRouter, Redirect } from "react-router-dom";
 import { customerLogin } from "api/main-api";
@@ -32,14 +32,7 @@ const widthResolver = (WrappedComponent) => {
         };
         customerLogin()
           .onOk((result) => {
-            if (window.analytics) {
-              window.analytics.identify(verifyInfo.userInfo.personalNumber, {
-                name: verifyInfo.userInfo.name,
-                email: verifyInfo.userInfo.email,
-                plan: verifyInfo.userInfo.plan,
-                logins: verifyInfo.userInfo.logins,
-              });
-            }
+            identifyUser(result);
             dispatch({
               type: "SET_USER_INFO",
               payload: result,

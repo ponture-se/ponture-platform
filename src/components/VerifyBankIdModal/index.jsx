@@ -34,17 +34,6 @@ export default function VerifyBankIdModal({
                   case "complete":
                     toggleMainSpinner(false);
                     setSuccess(true);
-                    if (window.analytics) {
-                      window.analytics.identify(
-                        result.userInfo.personalNumber,
-                        {
-                          name: result.userInfo.name,
-                          email: result.userInfo.email,
-                          plan: result.userInfo.plan,
-                          logins: result.userInfo.logins,
-                        }
-                      );
-                    }
                     if (onSuccess) onSuccess(result);
                     if (!isLogin) _getCompanies(result);
                     break;
