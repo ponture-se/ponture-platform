@@ -1336,7 +1336,15 @@ export default function BusinessLoan(props) {
           personalNumber={personalNumber}
           onClose={handleCloseVerifyModal}
           onCancelVerify={handleCancelVerify}
-          onSuccess={() => {
+          onSuccess={(result) => {
+            if (window.analytics) {
+              window.analytics.identify(result.userInfo.personalNumber, {
+                name: result.userInfo.name,
+                email: result.userInfo.email,
+                plan: result.userInfo.plan,
+                logins: result.userInfo.logins,
+              });
+            }
             if (window.analytics)
               window.analytics.track("BankID Verified", {
                 category: "Loan Application",

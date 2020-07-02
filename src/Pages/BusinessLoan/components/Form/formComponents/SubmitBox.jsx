@@ -13,7 +13,7 @@ import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
 import CircleSpinner from "components/CircleSpinner";
-import track from "utils/trackAnalytic";
+import track, { identifyUser } from "utils/trackAnalytic";
 
 const euGuaranteeCode = "1337";
 
@@ -140,6 +140,7 @@ const SubmitBox = ({ history }) => {
       _createOpp(
         obj,
         (result) => {
+          identifyUser(result ? (result.data ? result.data.userInfo : {}) : {});
           track(
             "Submit",
             "Loan Application v2",

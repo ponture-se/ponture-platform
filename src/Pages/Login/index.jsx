@@ -7,7 +7,7 @@ import ErrorBox from "components/ErrorBox";
 import CircleSpinner from "components/CircleSpinner";
 import VerifyBankIdModal from "components/VerifyBankIdModal";
 import { isBankId } from "utils";
-import track from "utils/trackAnalytic";
+import track, { identifyUser } from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
 import { startBankId, cancelVerify } from "api/business-loan-api";
 import { customerLogin } from "api/main-api";
@@ -176,6 +176,7 @@ const Login = (props) => {
     };
     customerLogin()
       .onOk((result) => {
+        identifyUser(result);
         dispatch({
           type: "VERIFY_BANK_ID_SUCCESS",
           payload: verifyInfo,
