@@ -12,7 +12,7 @@ const Checkbox = ({ title, id, errorText, extraLabel, ...rest }, ref) => {
         id={id}
         {...rest}
       />
-      <label htmlFor={id} className={styles.checkbox__label}>
+      <label htmlFor={id} className={styles.checkbox__label} index={rest.index}>
         <span className={styles.checkbox__btn}></span>
         {title}
       </label>
