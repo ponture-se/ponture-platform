@@ -99,11 +99,7 @@ const useLoanApi = () => {
         if (onError) onError();
       })
       .notFound((result) => {
-        dispatch({
-          type: "TOGGLE_ERROR_BOX",
-          payload: true,
-        });
-        if (onError) onError();
+        if (onError) onError(404);
       })
       .unKnownError((result) => {
         dispatch({
