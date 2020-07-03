@@ -104,9 +104,21 @@ const PersonalNumberBox = () => {
               });
             }
           },
-          () => {
+          (errorCode) => {
             toggleSpinner(false);
-            track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
+            if (errorCode && errorCode === 404) {
+              dispatch({
+                type: "INCREMENT_P_NUMBER_TRY_COUNTER",
+              });
+              setError([
+                {
+                  type: "pattern",
+                  name: "personalNumber",
+                  message: t("PERSONAL_NUMBER_NOT_FOUND"),
+                },
+              ]);
+            } else
+              track("Failure", "Loan Application v2", "/app/loan/ wizard", 0);
           }
         );
       }

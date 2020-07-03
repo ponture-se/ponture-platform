@@ -339,7 +339,8 @@ export default {
   PERSONAL_NUMBER_GUIDE_4: "En firmatecknare av företag",
   PERSONAL_NUMBER_EMPTY_COMPANIES_WARNING:
     "Vi kan inte hitta några företag kopplat till det angivna personnumret. Var vänlig och försök igen",
-
+  PERSONAL_NUMBER_NOT_FOUND:
+    "Fel personnummer. Vänligen ange korrekt perssonnummer.",
   COMPANIES_LABEL: "Välj ditt företag",
   COMPANIES_TOOLTIP:
     "Om du har mer än ett företag välj det företag som kommer att använda lånet.",
