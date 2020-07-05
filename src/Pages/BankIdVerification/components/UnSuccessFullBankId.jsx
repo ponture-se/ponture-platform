@@ -1,10 +1,15 @@
 import React from "react";
+import { Link } from "react-router-dom";
 import useLocale from "hooks/useLocale";
 import Signs from "./Signs";
 import styles from "../styles.module.scss";
 
-const UnSuccessFullBankId = () => {
+const UnSuccessFullBankId = ({ oppId }) => {
   const { t } = useLocale();
+
+  function handleLinkClicked() {
+    window.location.reload();
+  }
   return (
     <div className={styles.unSuccessFullBankId}>
       <div className={styles.unSuccessFullBankId__header}>
@@ -15,9 +20,13 @@ const UnSuccessFullBankId = () => {
           {t("VERIFY_CANCEL_TITLE")}
         </h2>
       </div>
-      <a href="#" className={styles.link}>
+      <span
+        className={styles.link}
+        style={{ textDecoration: "underline", cursor: "pointer" }}
+        onClick={handleLinkClicked}
+      >
         {t("VERIFY_CANCEL_LINK")}
-      </a>
+      </span>
       <span className={styles.info}>{t("VERIFY_CANCEL_DESCRIPTION")}</span>
       <Signs />
     </div>
