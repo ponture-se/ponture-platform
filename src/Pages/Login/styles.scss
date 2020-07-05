@@ -7,16 +7,21 @@
   align-items: center;
   justify-content: center;
   flex-direction: column;
+  font-family: Poppins;
   .loginHeader {
     width: 100%;
-    @include variable(login-header-height, height, 70px);
+    height: 60px;
     @include variable(login-header-bg, background, white);
     @include variable(login-header-box-shadow, box-shadow, 0 0 3px lightgray);
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12);
+    display: flex;
+    align-items: center;
     img {
-      width: 180px;
+      width: 120px;
       height: 50%;
       object-fit: contain;
-      margin: 20px;
+      margin: 0 20px;
+      cursor: pointer;
     }
     position: fixed;
     top: 0;
@@ -24,10 +29,15 @@
     z-index: 10;
   }
   .loginBox {
+    border-radius: 6px;
+    min-height: 300px;
     padding: 0px 20px 30px 20px;
     margin: 90px auto 0 auto;
     display: flex;
     flex-direction: column;
+    border-radius: 12px;
+    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.14);
+    background-color: #ffffff;
     @include variable(login-box-shadow, box-shadow, 0 0 1px lightgray);
     @include variable(login-box-bg, background, white);
     &__header {
@@ -43,6 +53,7 @@
     }
     .termChk {
       margin-top: 20px;
+      margin-bottom: 40px;
     }
     &__body {
       &__info {
@@ -54,21 +65,188 @@
           padding-bottom: 10px;
         }
       }
-    }
-    form {
-      margin-top: 20px;
-      .formInput {
-        margin-top: 30px;
+      &__error {
+        background-color: lightcoral;
+        height: 45px;
+        border-radius: 3px;
+        display: flex;
+        align-items: center;
+        padding: 0 10px;
+        &__icon {
+          font-size: 24px;
+          margin-right: 10px;
+        }
+        span {
+          font-size: 13px;
+          @include respond(phone) {
+            font-size: 12px;
+          }
+        }
       }
     }
-    button {
-      width: 100%;
-      margin-top: 50px;
-      align-self: flex-end;
+    form {
+      margin-top: 10px;
+      .formInput {
+        margin-top: 30px;
+        input:focus {
+          outline-color: #44b3c2 !important;
+        }
+        input {
+          border: solid 2px #44b3c2;
+          display: block;
+          width: 100%;
+          height: 45px !important;
+          padding: 5px 10px;
+          border-radius: 8px;
+          overflow: hidden;
+          background-color: white;
+          font-size: 16px;
+          transition: all 0.3;
+          font-family: inherit;
+          backface-visibility: hidden;
+          transition: all 0.3s;
+          color: inherit;
+          outline: none;
+          margin-top: 5px;
+        }
+      }
+      .checkmark {
+        background-color: #44b3c2 !important;
+      }
+      .btn-success {
+        background-color: #44b3c2 !important;
+        &:hover {
+          background-color: darken(#44b3c2, 10%) !important;
+        }
+      }
+      button {
+        width: 100%;
+        margin-top: 20px;
+        align-self: flex-end;
+      }
     }
+    &__companies {
+      &__desc {
+        display: block;
+        padding: 30px 0;
+        font-size: 13px;
+      }
+      .companiesSpinner {
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        padding-top: 60px;
+      }
+
+      &__content {
+        margin-top: 30px;
+        display: flex;
+        flex-wrap: wrap;
+
+        .companyItem {
+          width: calc(50% - 15px);
+          position: relative;
+          margin-right: 15px;
+          margin-bottom: 20px;
+          border-radius: 10px;
+          height: 100px;
+          cursor: pointer;
+          transition: all 0.2s;
+          font-family: PoppinsSemiBold;
+          border: solid 2px #44b3c2;
+          background-color: #ffffff;
+          color: #188695;
+          transition: all 0.2s;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          padding: 10px;
+          text-decoration: none;
+          &:focus {
+            outline: none;
+            transition: all 0.2s;
+          }
+          &:hover {
+            background-color: #188695;
+            color: white;
+          }
+          &__icon {
+            font-size: 30px;
+            margin-bottom: 10px;
+          }
+          text-align: center;
+          font-size: 11px;
+        }
+      }
+      button {
+        width: 100%;
+        margin-top: 30px;
+        align-self: flex-end;
+      }
+    }
+  }
+  .errorBox {
+    margin-top: 0;
   }
 }
 
+.emptyCompanies {
+  margin: 50px 10px 0 10px;
+  padding: 10px 30px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.14);
+  background-color: #ffffff;
+  min-width: 300px;
+  max-width: 600px;
+  &__icon {
+    display: flex;
+    justify-content: center;
+  }
+  h3 {
+    margin: 0;
+    font-family: PoppinsBold;
+  }
+  span {
+    font-size: 13px;
+    margin: 5px 0;
+  }
+  .text3 {
+    align-self: center;
+    margin-top: 20px;
+  }
+  &__actions {
+    margin: 15px 0;
+    margin-bottom: 50px;
+    align-self: center;
+    a {
+      text-decoration: none;
+      font-size: 13px;
+      border: solid 2px #44b3c2;
+      background-color: #ffffff;
+      color: #188695;
+      transition: all 0.2s;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: PoppinsSemiBold;
+      margin-right: 10px;
+      padding: 5px 20px;
+      &:hover {
+        color: #ffffff;
+        background-color: #188695;
+      }
+    }
+  }
+  .text4 {
+    margin-top: 20px;
+  }
+}
 // Small devices (landscape phones, 576px and up)
 @media (max-width: 576px) {
   .loginBox {

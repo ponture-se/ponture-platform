@@ -1,11 +1,12 @@
 import React from "react";
 import Cookies from "js-cookie";
-import { NavLink } from "react-router-dom";
+import { IoMdBusiness } from "react-icons/io";
 import "./styles.scss";
 import { useGlobalState, useLocale } from "hooks";
 
 const Header = (props) => {
   const [{ userInfo, currentRole }, dispatch] = useGlobalState();
+  const [isOpenMenu, toggleMenu] = React.useState(false);
   const { t } = useLocale();
   function handleSignout() {
     sessionStorage.removeItem("@ponture-customer-bankid");
@@ -19,6 +20,15 @@ const Header = (props) => {
   function openPonturSite() {
     window.open("https://www.ponture.com", "_blank");
   }
+  function handleChangeCompanies() {
+    if (isOpenMenu) {
+      toggleMenu(false);
+    }
+    dispatch({
+      type: "TOGGLE_COMPANIES_MODAL",
+    });
+  }
+
   return (
     <div className="mainHeader">
       <div className="mainHeader__top">
@@ -34,18 +44,42 @@ const Header = (props) => {
         <div className="right">
           <div className="mainHeader__signout" onClick={handleSignout}>
             <span>{t("SIGN_OUT")}</span>
+            <span className="icon-sign-out"></span>
           </div>
-          <div className="mainHeader__userInfo hidden-xs">
-            {userInfo &&
-              (["admin", "agent"].indexOf(currentRole) > -1
-                ? userInfo.name
-                : userInfo.firstName + " " + userInfo.lastName)}
-          </div>
+          {userInfo.companies && userInfo.companies.length > 1 ? (
+            <>
+              <div
+                className="mainHeader__changeCompany"
+                onClick={handleChangeCompanies}
+              >
+                <span>{t("OFFERS_HEADER_CHANGE_COMPANIES_TEXT")}</span>
+                <IoMdBusiness className="icon" />
+              </div>
+              <div className="menu">
+                <input
+                  type="checkbox"
+                  className={"menu__checkbox"}
+                  id="navi-toggle"
+                  checked={isOpenMenu}
+                  onChange={(e) => toggleMenu(e.target.checked)}
+                />
+
+                <label htmlFor="navi-toggle" className={"menu__button"}>
+                  <span className={"menu__icon"}></span>
+                </label>
+              </div>
+            </>
+          ) : null}
         </div>
       </div>
-      <div className="mainHeader__bottom">
-        <div className="tabItem"></div>
-      </div>
+      {isOpenMenu ? (
+        <div className="mainHeader__bottom">
+          <div className="tabItem" onClick={handleChangeCompanies}>
+            <IoMdBusiness className="icon" />
+            <span>{t("OFFERS_HEADER_CHANGE_COMPANIES_TEXT")}</span>
+          </div>
+        </div>
+      ) : null}
     </div>
   );
 };

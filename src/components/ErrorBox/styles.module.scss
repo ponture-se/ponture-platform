@@ -1,0 +1,61 @@
+@import "./../../styles/mixins";
+.errorBox {
+  max-width: 768px;
+  margin: 0 auto;
+  min-height: 200px;
+  border-radius: 12px;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.14);
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 50px;
+  margin-top: 150px;
+  @include respond(tab-port) {
+    margin: 0 10px;
+    margin-top: 150px;
+  }
+  @include respond(phone) {
+    padding: 20px;
+  }
+  .top {
+    display: flex;
+    align-items: center;
+    h4 {
+      @include respond(phone) {
+        margin: 0;
+      }
+    }
+    .errorIcon {
+      margin-right: 10px;
+      width: 60px;
+      height: 60px;
+      border-radius: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: transparent;
+      color: red;
+      font-size: 42px;
+    }
+    .errorTopText {
+      font-size: 18px;
+      margin-left: 10px;
+      margin-right: 10px;
+    }
+  }
+
+  .longDesc {
+    font-size: 14px;
+    line-height: 2;
+    padding-bottom: 20px;
+    text-align: justify;
+  }
+  hr {
+    background: transparent;
+    width: 100%;
+    opacity: 0.5;
+  }
+  .actions {
+    display: flex;
+  }
+}

@@ -5,6 +5,7 @@ const FieldTypes = {
 };
 const Stages = {
   accepted: "Offer Accepted",
+  won: "Offer Won",
 };
 export const Tags = {
   cheapest: "cheapest",
@@ -170,6 +171,10 @@ export const checkIsAcceptedOffer = (offers) => {
   if (item) return item;
 
   return false;
+};
+export const getWonOffer = (offers) => {
+  const item = offers.find((item) => item.Stage === Stages.won);
+  return item;
 };
 export const checkIsSameUiAction = (offers) => {
   if (offers && offers.length > 0) {

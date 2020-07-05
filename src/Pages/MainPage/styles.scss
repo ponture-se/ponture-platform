@@ -2,7 +2,7 @@
 //
 .mainPage {
   // @include variable(main-header-height, margin-top, 100px);
-  margin-top: 55px;
+  margin-top: 65px;
   padding-top: 20px;
   @include respond(phone) {
     padding-top: 10px;

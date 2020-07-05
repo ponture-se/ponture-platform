@@ -462,6 +462,7 @@ $itemBtnColor: #44b3c2;
     margin-top: 10px;
     display: flex;
     flex-direction: row;
+    font-family: poppins;
     @include respond(phone) {
       flex-direction: column;
       margin-top: 5px;
@@ -470,6 +471,8 @@ $itemBtnColor: #44b3c2;
       width: 260px;
       color: black;
       flex-shrink: 0;
+      font-family: poppins;
+      font-weight: bold;
       @include respond(phone) {
         width: auto;
         font-size: 13px;
@@ -479,7 +482,7 @@ $itemBtnColor: #44b3c2;
       color: #000000;
       font-size: 14px;
       text-align: justify;
-      // width: 170px;
+      font-family: poppins;
 
       @include respond(phone) {
         width: auto;
@@ -493,6 +496,7 @@ $itemBtnColor: #44b3c2;
     z-index: 0;
     border-radius: 10px;
     font-size: 13px;
+    font-family: poppins;
   }
 }
 .row-title {
@@ -742,5 +746,82 @@ $itemBtnColor: #44b3c2;
   width: 100%;
   div {
     display: block;
+  }
+}
+
+.needBankIdBox {
+  background-color: white;
+  padding: 10px;
+  box-shadow: 0 0 5px lightgray;
+  border-radius: 12px;
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  button {
+    background-color: $itemBtnColor;
+  }
+  a {
+    width: 150px;
+    color: white;
+    text-decoration: none;
+  }
+}
+
+.companiesModal {
+  &__header {
+    position: relative;
+    text-align: center;
+    .closeIcon {
+      position: absolute;
+      top: 10px;
+      right: 0px;
+
+      cursor: pointer;
+    }
+  }
+  &__body {
+    margin-top: 40px;
+    display: flex;
+    flex-direction: column;
+    .companyItem {
+      flex: 1;
+      left: 50%;
+      transform: translateX(-50%);
+      max-width: 400px;
+      position: relative;
+      margin-right: 15px;
+      margin-bottom: 20px;
+      border-radius: 10px;
+      height: 70px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: PoppinsSemiBold;
+      border: solid 2px #44b3c2;
+      background-color: #ffffff;
+      color: #188695;
+      transition: all 0.2s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 10px;
+      text-decoration: none;
+      &:focus {
+        outline: none;
+        transition: all 0.2s;
+      }
+      &:hover {
+        background-color: #188695;
+        color: white;
+      }
+      &__icon {
+        font-size: 30px;
+      }
+      text-align: center;
+      font-size: 13px;
+      span {
+        flex: 1;
+      }
+    }
   }
 }

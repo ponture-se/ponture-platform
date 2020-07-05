@@ -68,6 +68,17 @@ export default {
   LOGIN_BTN_NAME: "Identifiera med BankID",
   LOGIN_TERMS_TEXT: "Jag godkänner Ponture:s användarvillkoren",
   LOGIN_TERMS_LINK: "Läs Ponture:s användarvillkor...",
+  LOGIN_COMPANIES_TITLE: "Välj företag",
+  LOGIN_COMPANIES_EMPTY_TITLE: "Hej och välkommen! Kul att du hittade hit!",
+  LOGIN_COMPANIES_EMPTY_TEXT1: "Just nu har du ingen aktiv ansökan hos oss.",
+  LOGIN_COMPANIES_EMPTY_TEXT2:
+    "Du kan ansöka och jämföra finansieringsalternativ från upp till 21 långivare genom att välja företagslån eller fakturaköp nedanför. Det är helt kostnadsfritt.",
+  LOGIN_COMPANIES_EMPTY_ACTION_TITLE: "Vad vill du ansöka om?",
+  LOGIN_COMPANIES_EMPTY_ACTION1_TEXT: "företagslån",
+  LOGIN_COMPANIES_EMPTY_ACTION2_TEXT: "fakturaköp",
+  LOGIN_COMPANIES_LOADING_TEXT: "Laddar...",
+  LOGIN_COMPANIES_ERROR_TITLE: "Hoppsan, något gick fel!",
+  LOGIN_FAILED_TEXT: "Hoppsan, något gick fel! Försök igen.",
   HEADER_TITLE_MY: "Mina",
   HEADER_TITLE_OFFERS: "Erbjudanden",
   HEADER_TITLE_PAGES: "Sidor",
@@ -75,6 +86,7 @@ export default {
   MY_APPS_LOADING_TEXT: "Laddar mina applikationer...",
   MY_APPS_EMPTY_LIST_TITLE: "Tom lista!",
   MY_APPS_EMPTY_LIST_MSG: "Du har inte använt några applikationer hittills",
+  OFFERS_HEADER_CHANGE_COMPANIES_TEXT: "Mina ansökningar",
   OFFERS_HEADER_BACK: "Tillbaka till mina ansökningar",
   OFFERS_LOADING_TEXT: "Laddar erbjudanden...",
   OFFERS_EMPTY_LIST_TITLE: "Budgivning pågor!",
@@ -96,7 +108,12 @@ export default {
   OFFER_NOT_ACCEPTED_TITLE_XS:
     "Välj det erbjudande som passar dig bäst för att gå vidare.",
   OFFER_NOT_ACCEPTED_DESCRIPTION_XS: "Våra erbjudanden är ej binande.",
-  OFFER_DONE_TEXT: "Din ansökan är stängd.",
+  OFFER_LOST_TEXT1: "Sök din företagsfinansiering hos oss",
+  OFFER_LOST_TEXT2: "Ditt ärende är avslutat.",
+  OFFER_WON_TEXT1: "Sök din företagsfinansiering hos oss",
+  OFFER_WON_TEXT2: "Ditt ärende är avslutat.",
+  OFFER_WON_TEXT3:
+    "Har du andra frågor gällande lånet kontakta din långivare direkt.",
   OFFER_ITEM_CHEAPEST_TITLE: "Billigaste lånet",
   OFFER_ITEM_BIGGEST_TITLE: "Högsta beloppet",
   OFFER_ITEM_ACCEPT_BTN: "Gå vidare",
@@ -156,6 +173,9 @@ export default {
   OFFERS_CATEGORY_TITLE: "Dina lånererbjudanden",
   OFFERS_CATEGORY_IS_ACCEPTED_TITLE: "Dina andra erbjudanden",
   OFFERS_CATEGORY_TITLE_CHECK_CREDIT: "Dina erbjudanden för checkkredit",
+  OFFERS_NEEDS_VERIFY_BANKID_TEXT:
+    "För att gå vidare krävs det att du verifierar dig med BankID",
+  OFFERS_NEEDS_VERIFY_BANKID_BUTTON_TEXT: "Verifiera mig",
 
   BISINUSS_LOAN: "Ansök om företagslån",
   CORONA_LOAN_HEADER_TITLE: "Ansök om brygglån",
@@ -179,13 +199,13 @@ export default {
   BL_TERMS_LINK: "läs våra användarvillkor",
   PHONE_NUMBER_IS_REQUIRED: "Ange ditt telefonnummer",
   PANADEMIN_IS_REQUIRED: "Detta är obligatoriskt",
-  PHONE_NUMBER_IN_CORRECT: "telefonnummer kan inte vara mindre än 9 chacter",
+  PHONE_NUMBER_IN_CORRECT: "Telefonnumret kan inte vara mindre än 9 karaktärer",
   EMAIL_IS_REQUIRED: "Ange din e-postaddress",
-  EMAIL_IN_CORRECT: "email är felaktigt",
+  EMAIL_IN_CORRECT: "Den email du har angivit är felaktig",
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",
-  PERSONAL_NUMBER_IS_REQUIRED: "Personligt nummer krävs",
+  PERSONAL_NUMBER_IS_REQUIRED: "Personnummer krävs",
   PERSONAL_NUMBER_IN_CORRECT:
-    "Ange ditt korrekta personnummer exampel : 19806101-1234)",
+    "Ange korrek personnummer. Exempel: 19806101-1234",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
@@ -274,4 +294,129 @@ export default {
   CUSTOMER_LOGIN_NO_APP_BTN_F: "Fakturaköp",
   CUSTOMER_LOGIN_NO_APP_INFO3:
     "Visste du att genom oss skickar du bara en ansökan och får erbjudanden från upp till 15 banker och finansiella institut - helt kostnadsfritt",
+
+  ALREADY_VERIFIED: "Primary Contact of this opp was already verified.",
+  INVALID_OPP_STAGE: "Opp stage is invalid",
+  VERIFICATION_NOT_NEEDED: "BankId Verification not needed",
+
+  LOAN_MAIN_SPINNER_TEXT: "Laddar låneformuläret",
+  LOAN_WIZARD_DEFAULT_TITLE: "Ansök om företagslån",
+  LOAN_AMOUNT_LABEL: "Lånebelopp",
+  LOAN_AMOUNT_TOOLTIP:
+    "När du väljer ett lånebelopp tänk på om din företagsekonomi är tillräckligt bra för att betala tillbaka lånet.",
+  LOAN_PERIOD_LABEL: "Låneperiod",
+  LOAN_PERIOD_TOOLTIP:
+    "De flesta långivare kan inte erbjuda en låneperiod mer än 36 månader för belopp lägre än 1 miljon",
+  LOAN_NEEDS_CATEGORIES_LABEL: "Vad ska lånet används till",
+  LOAN_NEEDS_CATEGORIES_TOOLTIP:
+    "Försök att välja det skäl som bäst beskriver ditt behov.",
+  LOAN_AMOUNT_GUIDE: "Välj ett alternativ ovan för att gå vidare",
+  LOAN_AMOUNT_CHOOSE_BTN_TITLE: "Välj ...",
+  LOAN_AMOUNT_CHANGE_BTN_TITLE: "Byt användningskategori",
+  LOAN_AMOUNT_URL_NEEDS_LABEL: "Anledningar till lånet",
+  LOAN_AMOUNT_URL_NEEDS_TOOLTIP:
+    "Nedanför väljer du den kategori som bäst beskriver vad företagslånet ska användas till",
+  LOAN_AMOUNT_URL_NEEDS_CHANGE_CATEGORY:
+    "Välj andra anledningar till lånet ...",
+  LOAN_AMOUNT_GO_FURTHER: "Gå vidare",
+  LOAN_AMOUNT_MODAL_CATEGORIES_TITLE:
+    "Välj vad företagslånet ska användas till",
+  NEEDS_LABEL: "Anledning till lån",
+  NEEDS_TOOLTIP: "Välj från listan nedan",
+  NEEDS_DESCRIPTION:
+    "Om du har mer än en anledning till företagslån får du välja flera alternativ",
+  NEEDS_GUIDE: "Välj minst en anledning från listan för att gå vidare.",
+  PERSONAL_NUMBER_MORE_THAN_2_TEXT:
+    "Det är inte möjligt att utfärda denna begäran mer än två gånger i rad",
+  PERSONAL_NUMBER_TITLE:
+    "Ange ditt personnummer och klicka på “Sök” för att hitta ditt företag",
+  PERSONAL_NUMBER_VERIFIED: "Ditt personnummer har verifierats",
+  PERSONAL_NUMBER_INPUT_LABEL: "Ange personnummer",
+  PERSONAL_NUMBER_INPUT_TOOLTIP: `Det personnummer som kan accepteras är: ägare av företaget, styrelsemedlemmar i företaget, suppleant eller en firmatecknare av företag`,
+  PERSONAL_NUMBER_BUTTON_TEXT: "Sök efter mitt företag",
+  PERSONAL_NUMBER_GUIDE_TITLE: "Det personnummer som kan accepteras är:",
+  PERSONAL_NUMBER_GUIDE_1: "Ägare av företaget",
+  PERSONAL_NUMBER_GUIDE_2: "Styrelsemedlemmar i företaget",
+  PERSONAL_NUMBER_GUIDE_3: "Suppleant",
+  PERSONAL_NUMBER_GUIDE_4: "En firmatecknare av företag",
+  PERSONAL_NUMBER_EMPTY_COMPANIES_WARNING:
+    "Vi kan inte hitta några företag kopplat till det angivna personnumret. Var vänlig och försök igen",
+  PERSONAL_NUMBER_NOT_FOUND:
+    "Fel personnummer. Vänligen ange korrekt perssonnummer.",
+  COMPANIES_LABEL: "Välj ditt företag",
+  COMPANIES_TOOLTIP:
+    "Om du har mer än ett företag välj det företag som kommer att använda lånet.",
+  COMPANIES_DESCRIPTION: "Vi har hittat följade företag. Välj det...",
+  COMPANIES_GUIDE:
+    "Välj ditt företag som du söker finansiering till för att gå vidare.",
+  SUBMIT_LABEL: "Företagetsomsättning under de senaste 12 månader",
+  SUBMIT_TOOLTIP:
+    "Ange den totala summan från försäljningen som ditt företag har gjort de senaste 12 månaderna.Om ditt företag är mindre än 12 månader anger du summan av försäljningen från företagets startdatum.",
+  SUBMIT_REVENUE_NOT_VALID: "Detta är inte en godkänd siffra",
+  SUBMIT_TERMS_LABEL: "Härmed godkänner jag",
+  SUBMIT_TERMS_LINK: "användarvillkoren.",
+  SUBMIT_CODE_1337_TITLE:
+    "Jag är ok med att få andra erbjudanden utöver det lån med EU-garanti",
+  SUBMIT_1337_IS_REQUIRED: "Detta är ett obligatoriskt fält",
+  SUBMIT_SEND_BUTTON: "Skicka",
+  SUBMIT_GUID_1: "Ansökan är kostnadsfritt",
+  SUBMIT_GUID_2: "Vi tar bara en UC kreditupplysning på ditt företag",
+  SUBMIT_GUID_3: "Du binder dig inte till något",
+  SUBMIT_GUID_4:
+    "Våra finanskonsulter finns för att hjälpa dig inom hela processen",
+  NO_BANKID_NEED_SUCCESS_TITLE: "Tack för din ansökan.",
+  NO_BANKID_NEED_SUCCESS_QUESTION1: "Vad händer nu?",
+  NO_BANKID_NEED_SUCCESS_QUESTION2:
+    "En av våra finanskonsulter ska kontakta dig inom kort.",
+  NO_BANKID_NEED_SUCCESS_DESCRIPTION:
+    "Är det akut du är värmt velkommen att kontakta oss direkt på telefon",
+
+  PROFILE_TITLE: "Så här ansöka du om företagslån hos oss",
+  PROFILE_DESC_1: "1. Fyll i det här förmularät.",
+  PROFILE_DESC_2: "2. Vi genomför en sök mellan 20+ banker och långivare",
+  PROFILE_DESC_3:
+    "3. Du får erbjudanden i ditt konto hos oss Vi kommer att maila och SMSa igenom processen.",
+  PROFILE_DESC_4:
+    "Du kan jämföra och gå vidare med erbjudandet som passar dig bäst på ditt konto hos oss.",
+  PROFILE_DESC_5:
+    "I vissa fall kommer vi att kontakta dig för att ta in mer information som behövs.",
+  PROFILE_DESC_6: "Kontakta mig om du vill ha mer hjälp.",
+  VERIFY_MENU_TITLE: "Välj inloggningsalternativ",
+  VERIFY_MENU_OPTION_1_BROWSER_TITLE: "Mobilt BankID på annan enhet",
+  VERIFY_MENU_OPTION_1_MOBILE_TITLE: "Mobilt BankID på denna enhet",
+  VERIFY_MENU_OPTION_2_BROWSER_TITLE: "BankID på denna enhet",
+  VERIFY_MENU_OPTION_2_MOBILE_TITLE: "BankID på annan enhet",
+  VERIFY_MENU_DESCRIPTION:
+    "Vår kundsäkerhet är av yttersta vikt för oss därför kräver vi att verfiera våra kunder genom BankID. Detta gör dig möjlighet att få snabba erbjudanden från oss.",
+  VERIFY_CANCEL_TITLE: "Din BankID inloggning fortfarande behövs",
+  VERIFY_CANCEL_LINK: "Tillbakat till inloggning",
+  VERIFY_CANCEL_DESCRIPTION:
+    "Vår kundsäkerhet är av yttersta vikt för oss därför kräver vi att verfiera våra kunder genom BankID. Detta gör dig möjlighet att få snabba erbjudanden från oss.",
+  SUBMIT_SAVING_TEXT_1: "Vi behandlar din ansökan. Vänligen vänta",
+  SUBMIT_SAVING_TEXT_2:
+    "Ladda inte om eller lämna sidan medan ansökan behandlas.",
+  SUBMIT_SUCCESS_TITLE: "Vi har mottagit din ansökan",
+  SUBMIT_SUCCESS_DESCRIPTION:
+    "Du blir navigerad automatisk till din konto hos oss inom 5 sekunder",
+  SUBMIT_SUCCESS_LINK: "Klicka här för att gå vidare",
+  FORBIDDEN_VERIFY_WARNING:
+    "Du är redan en verifierad användare och kan inte verifiera igen.",
+  FORBIDDEN_VERIFY_WARNING_TITLE: "Obehörig begäran",
+  FORBIDDEN_VERIFY_WARNING_BODY:
+    "Du är inte behörig att se den här sidan. Kontakt oss direkt för att få hjälp.",
+  FORBIDDEN_VERIFY_WARNING_BUTTON_TEXT: "Tillbaks till hemsidan",
+
+  VERIFY_BANKID_MODAL_START: "Förbereder BankID",
+
+  REFRESH_LINK_TEXT_1: "Börja om",
+  REFRESH_LINK_TEXT_2: "Om du klicka här kommer förmuläret att nollställas",
+  REQUIRED_INPUT: "Detta är ett obligatoriskt fält",
+  LOGO_TEXT: "Ponture AB är registrerade hos Finansinspektionen",
+  GO_UP_TEXT: "Hoppa till toppen",
+  STEP: "Steg",
+  givenRevenue: "Omsättning",
+  phoneNumber: "Telefonnummer",
+  email: "Email",
+  terms: "Användarvillkoren",
+  euGuarantee: "Utökade erbjudanden",
 };
