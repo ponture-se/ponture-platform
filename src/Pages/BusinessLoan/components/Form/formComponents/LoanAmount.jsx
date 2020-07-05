@@ -186,7 +186,7 @@ const LoanAmount = () => {
   }
   function handleCloseCategoriesModal(item) {
     toggleCategoriesModal(false);
-    if (item) {
+    if (item && selectedType !== item) {
       setType(item);
       setValue("need", undefined);
       dispatch({
