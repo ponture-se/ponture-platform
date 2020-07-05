@@ -179,7 +179,7 @@ const BankIdVerification = ({ match, headerBottom }) => {
         ) : bankIdStatus === "success" ? (
           <SuccessFullBankId orgNumber={orgNumber} />
         ) : bankIdStatus === "unSuccess" ? (
-          <UnSuccessFullBankId />
+          <UnSuccessFullBankId oppId={match.params.oppId} />
         ) : null}
         {isSubmitting && <SubmitLoading />}
       </div>
