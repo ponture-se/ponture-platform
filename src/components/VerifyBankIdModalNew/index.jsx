@@ -238,10 +238,7 @@ export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   }
   function openBankIDTab(device, startResult) {
     const a = document.createElement("a");
-    if (device === "mobile")
-      a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
-    else
-      a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
+    a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
     a.target = "_blank";
     document.body.appendChild(a);
     a.click();
