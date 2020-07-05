@@ -3,6 +3,7 @@ import loadScript from "utils/loadScript";
 export default function initScripts() {
   if (process.env.REACT_APP_ENABLE_LIVE_VIEW === "true") {
     loadScript("//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js", () => {
+      if (window.tidioChatApi) window.tidioChatApi.display(false);
       if (document.tidioChatLang) document.tidioChatLang = "sv";
     });
     document.write(
