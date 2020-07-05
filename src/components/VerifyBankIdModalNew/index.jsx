@@ -239,7 +239,7 @@ export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   function openBankIDTab(device, startResult) {
     const a = document.createElement("a");
     a.href = `bankid:///?autostarttoken =${startResult.autoStartToken} &redirect=null`;
-    a.target = "_blank";
+    // a.target = "_blank";
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);
