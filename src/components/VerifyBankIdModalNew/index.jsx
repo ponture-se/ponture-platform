@@ -153,7 +153,7 @@ export default function VerifyBankIdModal({ oppId, onClose, bankIdDevice }) {
   const startBankId = () => {
     startBankIdByOppId()
       .onOk((result) => {
-        if (bankIdDevice) openBankIDTab(bankIdDevice, result);
+        openBankIDTab(bankIdDevice, result);
         setStatus(t("RFA1"));
         setStartResult(result);
         fetchInterval = setInterval(() => {
