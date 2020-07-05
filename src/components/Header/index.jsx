@@ -15,8 +15,8 @@ const Header = ({ headerBottom }) => {
     return isUrlNeeds && index > 2 ? index - 1 : index;
   }
   function openChat() {
-    if (document.tidioChatApi) {
-      document.tidioChatApi.display(true);
+    if (window.tidioChatApi) {
+      window.tidioChatApi.display(true);
       track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
     }
   }
