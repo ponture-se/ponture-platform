@@ -1,4 +1,5 @@
 import React from "react";
+import loadScript from "utils/loadScript";
 import { useLoanState } from "hooks/useLoan";
 import useLocale from "hooks/useLocale";
 import styles from "./styles.module.scss";
@@ -15,9 +16,19 @@ const Header = ({ headerBottom }) => {
     return isUrlNeeds && index > 2 ? index - 1 : index;
   }
   function openChat() {
-    if (window.tidioChatApi) {
+    if (window.tidioChatApi || document.tidioChatApi) {
       window.tidioChatApi.display(true);
       track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
+    } else {
+      if (process.env.REACT_APP_ENABLE_LIVE_VIEW === "true") {
+        loadScript(
+          "//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js",
+          () => {
+            if (window.tidioChatApi) window.tidioChatApi.display(true);
+            track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
+          }
+        );
+      }
     }
   }
   function handleLogoClicked() {

@@ -16,6 +16,7 @@ import { getParameterByName, isNumber } from "utils";
 import useLocale from "hooks/useLocale";
 import useGlobalState from "hooks/useGlobalState";
 import track from "utils/trackAnalytic";
+import usePageTitle from "hooks/usePageTitle";
 
 const BankIdVerification = ({ match, headerBottom }) => {
   const [{}, dispatch] = useGlobalState();
@@ -25,6 +26,8 @@ const BankIdVerification = ({ match, headerBottom }) => {
   const [isSubmitting, toggleIsSubmitting] = React.useState(false);
   const [isError, setError] = React.useState(match.params.oppId ? false : true);
   const [orgNumber, setOrgNumber] = React.useState();
+
+  usePageTitle(t("VERIFY_BANK_ID_PAGE_TITLE"));
   function init() {
     if (match.params.oppId)
       checkCriteria()
