@@ -6,12 +6,14 @@ import Content from "./components/Content";
 import { useLoanState } from "hooks/useLoan";
 import useLoanApi from "hooks/useLoan/useLoanApi";
 import useLocale from "hooks/useLocale";
+import usePageTitle from "hooks/usePageTitle";
 
 const ApplyLoan = ({ headerBottom }) => {
   const { errorBox } = useLoanState();
   const { t } = useLocale();
   const { getNeeds } = useLoanApi();
   const [loading, toggleLoading] = React.useState(true);
+  usePageTitle(t("LOAN_PAGE_TITLE"));
   const init = () => {
     getNeeds(
       (needs) => toggleLoading(false),

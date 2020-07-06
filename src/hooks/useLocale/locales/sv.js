@@ -371,16 +371,16 @@ export default {
   NO_BANKID_NEED_SUCCESS_DESCRIPTION:
     "Är det akut du är värmt velkommen att kontakta oss direkt på telefon",
 
-  PROFILE_TITLE: "Så här ansöka du om företagslån hos oss",
-  PROFILE_DESC_1: "1. Fyll i det här förmularät.",
-  PROFILE_DESC_2: "2. Vi genomför en sök mellan 20+ banker och långivare",
+  PROFILE_TITLE: "Så här ansöker du om företagslån hos oss",
+  PROFILE_DESC_1: "1. Fyll i formuläret",
+  PROFILE_DESC_2:
+    "2. En ansökan görs automatiskt hos 21+ olika banker och långivare",
   PROFILE_DESC_3:
-    "3. Du får erbjudanden i ditt konto hos oss Vi kommer att maila och SMSa igenom processen.",
-  PROFILE_DESC_4:
-    "Du kan jämföra och gå vidare med erbjudandet som passar dig bäst på ditt konto hos oss.",
+    "3. Du får ett eller fler låneerbjudanden på “dina sidor” inom 24h",
+  PROFILE_DESC_4: "4. Jämför och välj det erbjudande som passar dig bäst",
   PROFILE_DESC_5:
-    "I vissa fall kommer vi att kontakta dig för att ta in mer information som behövs.",
-  PROFILE_DESC_6: "Kontakta mig om du vill ha mer hjälp.",
+    "I vissa fall kommer vi att kontakta dig för mer information så du kan få så bra erbjudande som möjligt",
+  PROFILE_DESC_6: "Kontakta mig direkt om du vill ha mer hjälp.",
   VERIFY_MENU_TITLE: "Välj inloggningsalternativ",
   VERIFY_MENU_OPTION_1_BROWSER_TITLE: "Mobilt BankID på annan enhet",
   VERIFY_MENU_OPTION_1_MOBILE_TITLE: "Mobilt BankID på denna enhet",
@@ -419,4 +419,9 @@ export default {
   email: "Email",
   terms: "Användarvillkoren",
   euGuarantee: "Utökade erbjudanden",
+
+  LOAN_PAGE_TITLE: "Ansök om Företagslån | Ponture",
+  VERIFY_BANK_ID_PAGE_TITLE: "BankID verifiering | Ponture",
+  LOGIN_PAGE_TITLE: "Logga in | Ponture",
+  APPLICATION_OFFERS_PAGE_TITLE: "Mina Sidor | Ponture",
 };
