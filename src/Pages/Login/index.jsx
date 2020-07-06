@@ -11,6 +11,7 @@ import track, { identifyUser } from "utils/trackAnalytic";
 import batchStates from "utils/batchStates";
 import { startBankId, cancelVerify } from "api/business-loan-api";
 import { customerLogin } from "api/main-api";
+import usePageTitle from "hooks/usePageTitle";
 import "./styles.scss";
 
 const boxes = {
@@ -35,6 +36,7 @@ const Login = (props) => {
   const [companies, setCompanies] = useState([]);
   const [companiesSpinner, toggleCompaniesSpinner] = useState(true);
 
+  usePageTitle(t("LOGIN_PAGE_TITLE"));
   useEffect(() => {
     return () => {
       didCancel = true;

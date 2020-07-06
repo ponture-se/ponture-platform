@@ -15,6 +15,7 @@ import IsLostOpportunity from "./components/IsLostOpportunity";
 import IsWonOpportunity from "./components/IsWonOpportunity";
 import CompaniesModal from "./components/CompaniesModal";
 import { getLatestOffers } from "api/main-api";
+import usePageTitle from "hooks/usePageTitle";
 import {
   getCategorizedOffers,
   checkIsAcceptedOffer,
@@ -28,7 +29,7 @@ const AllOffers = ({ match }) => {
   const didCancel = useRef(false);
   const [{ verifyInfo, companiesModal }] = useGlobalState();
   const { t } = useLocale();
-
+  usePageTitle(t("APPLICATION_OFFERS_PAGE_TITLE"));
   const [state, setState] = useState({
     loading: true,
     error: false,
@@ -43,9 +44,6 @@ const AllOffers = ({ match }) => {
     bankIdRequired: false,
     offers: [],
   });
-
-  const updateState = (...changes) =>
-    setState((prevState) => ({ ...prevState, ...changes }));
 
   const init = (result, errorTitle, errorMsg) => {
     const opportunity = result.opportunityDetail;

@@ -417,4 +417,9 @@ export default {
   email: "Email",
   terms: "Användarvillkoren",
   euGuarantee: "Utökade erbjudanden",
+
+  LOAN_PAGE_TITLE: "Ansök om Företagslån | Ponture",
+  VERIFY_BANK_ID_PAGE_TITLE: "BankID verifiering | Ponture",
+  LOGIN_PAGE_TITLE: "Logga in | Ponture",
+  APPLICATION_OFFERS_PAGE_TITLE: "Mina Sidor | Ponture",
 };
