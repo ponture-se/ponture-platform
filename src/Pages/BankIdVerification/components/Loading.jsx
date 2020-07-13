@@ -6,7 +6,6 @@ const Loading = ({ error }) => {
   return (
     <div className="page-loading">
       <CircleSpinner show={true} size="large" bgColor="#44b3c2" />
-      <h2>{t("OFFERS_LOADING_TEXT")}</h2>
     </div>
   );
 };
