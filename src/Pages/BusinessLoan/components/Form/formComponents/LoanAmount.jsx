@@ -324,6 +324,7 @@ const LoanAmount = () => {
                       ref={editPeriodInputRef}
                       min={1}
                       type="number"
+                      onFocus={(e) => e.currentTarget.select()}
                       value={loanPeriod}
                       onChange={(e) =>
                         handleChangeSliderEditValue(
