@@ -249,27 +249,27 @@ const LoanAmount = () => {
                 }
               >
                 <div className={styles.sliderEditable__input}>
-                  <NumberFormat
-                    thousandSeparator={" "}
-                    decimalSeparator={"."}
-                    decimalScale={2}
-                    allowNegative={false}
-                    allowEmptyFormatting={true}
-                    getInputRef={(elem) => (editAmountInputRef.current = elem)}
-                    value={loanAmount}
-                    onValueChange={(values) =>
-                      handleChangeSliderEditValue(
-                        "loanAmount",
-                        values.floatValue
-                      )
-                    }
-                  />
-                  {/* {!isEditAmount ? (
-                    <h4 onClick={editAmount}>
-                      {separateNumberByChar(loanAmount)} kr
-                    </h4>
-                  ) : (
-                    <input
+                  <div className={styles.elementInput}>
+                    <NumberFormat
+                      thousandSeparator={" "}
+                      decimalSeparator={"."}
+                      decimalScale={0}
+                      allowNegative={false}
+                      allowEmptyFormatting={true}
+                      suffix={" kr"}
+                      getInputRef={(elem) =>
+                        (editAmountInputRef.current = elem)
+                      }
+                      value={loanAmount}
+                      onValueChange={(values) =>
+                        handleChangeSliderEditValue(
+                          "loanAmount",
+                          values.floatValue
+                        )
+                      }
+                    />
+
+                    {/* <input
                       step="10000"
                       max={loanAmountMax}
                       ref={editAmountInputRef}
@@ -281,13 +281,10 @@ const LoanAmount = () => {
                           e.target.value
                         )
                       }
-                    />
-                  )} */}
+                    /> */}
+                  </div>
                 </div>
-                <div
-                  className={styles.sliderEditable__icon}
-                  onClick={editAmount}
-                >
+                <div className={styles.sliderEditable__icon}>
                   <img src={require("assets/icons/edit.png")} alt="" />
                 </div>
               </div>
@@ -312,33 +309,39 @@ const LoanAmount = () => {
                   " " +
                   (isEditPeriod ? styles.isEditSliderEditValue : "")
                 }
-                onMouseLeave={handlePeriodLostFocus}
               >
                 <div className={styles.sliderEditable__input}>
-                  {!isEditPeriod ? (
-                    <h4 onClick={editPeriod}>
-                      {loanPeriod} {loanPeriod === 1 ? "månad" : "månader"}
-                    </h4>
-                  ) : (
-                    <input
-                      ref={editPeriodInputRef}
-                      min={1}
-                      type="number"
-                      onFocus={(e) => e.currentTarget.select()}
+                  <div className={styles.elementInput}>
+                    <NumberFormat
+                      thousandSeparator={""}
+                      decimalSeparator={"."}
+                      decimalScale={0}
+                      allowNegative={false}
+                      allowEmptyFormatting={true}
+                      suffix={loanPeriod === 1 ? " månad" : " månader"}
+                      getInputRef={(elem) =>
+                        (editPeriodInputRef.current = elem)
+                      }
                       value={loanPeriod}
-                      onChange={(e) =>
+                      onValueChange={(values) =>
                         handleChangeSliderEditValue(
                           "loanPeriod",
-                          e.target.value
+                          values.floatValue
                         )
                       }
                     />
-                  )}
+                  </div>
+                  {/* <input
+                    ref={editPeriodInputRef}
+                    min={1}
+                    type="number"
+                    value={loanPeriod}
+                    onChange={(e) =>
+                      handleChangeSliderEditValue("loanPeriod", e.target.value)
+                    }
+                  /> */}
                 </div>
-                <div
-                  className={styles.sliderEditable__icon}
-                  onClick={editPeriod}
-                >
+                <div className={styles.sliderEditable__icon}>
                   <img src={require("assets/icons/edit.png")} alt="" />
                 </div>
               </div>
