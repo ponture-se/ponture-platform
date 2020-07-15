@@ -1,9 +1,6 @@
 @import "../../styles/mixins";
 .container {
   @include layoutbase;
-  & * {
-    font-family: poppins;
-  }
 }
 .mainContent {
   max-width: 768px;

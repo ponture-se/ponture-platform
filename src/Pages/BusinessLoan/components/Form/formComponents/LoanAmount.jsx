@@ -247,11 +247,12 @@ const LoanAmount = () => {
                   (isEditAmount ? styles.isEditSliderEditValue : "")
                 }
                 onMouseLeave={handleAmountLostFocus}
-                onClick={editAmount}
               >
                 <div className={styles.sliderEditable__input}>
                   {!isEditAmount ? (
-                    <h4>{separateNumberByChar(loanAmount)} kr</h4>
+                    <h4 onClick={editAmount}>
+                      {separateNumberByChar(loanAmount)} kr
+                    </h4>
                   ) : (
                     <input
                       step="10000"
@@ -268,7 +269,10 @@ const LoanAmount = () => {
                     />
                   )}
                 </div>
-                <div className={styles.sliderEditable__icon}>
+                <div
+                  className={styles.sliderEditable__icon}
+                  onClick={editAmount}
+                >
                   <img src={require("assets/icons/edit.png")} alt="" />
                 </div>
               </div>
@@ -293,12 +297,11 @@ const LoanAmount = () => {
                   " " +
                   (isEditPeriod ? styles.isEditSliderEditValue : "")
                 }
-                onClick={editPeriod}
                 onMouseLeave={handlePeriodLostFocus}
               >
                 <div className={styles.sliderEditable__input}>
                   {!isEditPeriod ? (
-                    <h4>
+                    <h4 onClick={editPeriod}>
                       {loanPeriod} {loanPeriod === 1 ? "månad" : "månader"}
                     </h4>
                   ) : (
@@ -316,7 +319,10 @@ const LoanAmount = () => {
                     />
                   )}
                 </div>
-                <div className={styles.sliderEditable__icon}>
+                <div
+                  className={styles.sliderEditable__icon}
+                  onClick={editPeriod}
+                >
                   <img src={require("assets/icons/edit.png")} alt="" />
                 </div>
               </div>

@@ -210,6 +210,9 @@ export default function BusinessLoan(props) {
   const [bankIdResult, setBankIdResult] = useState();
 
   useEffect(() => {
+    if (window.tidioChatApi) window.tidioChatApi.display(true);
+  }, []);
+  useEffect(() => {
     _loadNeeds();
     return () => {
       didCancel = true;

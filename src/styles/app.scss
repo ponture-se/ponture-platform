@@ -45,16 +45,27 @@
 html {
   font-size: 100%;
 }
-.font-bold {
-  font-family: openSanceBold;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  font-family: "Poppins", sans-serif !important;
+}
+span,
+div,
+input,
+button {
+  font-family: "Poppins", sans-serif !important;
 }
 body {
   font-size: 100%;
   padding: 0;
   margin: 0;
-  font-family: OpenSance;
   overflow-x: hidden;
   @include variable(body-background, background, whitesmoke);
+  font-family: "Poppins", sans-serif !important;
   // direction: rtl;
   // text-align: right;
   // @include variable(direction, direction, ltr);
