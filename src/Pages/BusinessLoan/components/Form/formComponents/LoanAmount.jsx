@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import NumberFormat from "react-number-format";
 import separateNumberByChar from "utils/separateNumberByChar";
 import { getParameterByName, isNumber } from "utils";
 import { isPhone } from "utils/responsiveSizes";
@@ -164,9 +165,7 @@ const LoanAmount = () => {
   React.useEffect(() => {
     if (isEditAmount) {
       if (editAmountInputRef.current) {
-        setTimeout(() => {
-          editAmountInputRef.current.focus();
-        }, 1000);
+        editAmountInputRef.current.focus();
       }
     }
   }, [isEditAmount]);
@@ -250,7 +249,22 @@ const LoanAmount = () => {
                 }
               >
                 <div className={styles.sliderEditable__input}>
-                  {!isEditAmount ? (
+                  <NumberFormat
+                    thousandSeparator={" "}
+                    decimalSeparator={"."}
+                    decimalScale={2}
+                    allowNegative={false}
+                    allowEmptyFormatting={true}
+                    getInputRef={(elem) => (editAmountInputRef.current = elem)}
+                    value={loanAmount}
+                    onValueChange={(values) =>
+                      handleChangeSliderEditValue(
+                        "loanAmount",
+                        values.floatValue
+                      )
+                    }
+                  />
+                  {/* {!isEditAmount ? (
                     <h4 onClick={editAmount}>
                       {separateNumberByChar(loanAmount)} kr
                     </h4>
@@ -268,7 +282,7 @@ const LoanAmount = () => {
                         )
                       }
                     />
-                  )}
+                  )} */}
                 </div>
                 <div
                   className={styles.sliderEditable__icon}
