@@ -164,7 +164,9 @@ const LoanAmount = () => {
   React.useEffect(() => {
     if (isEditAmount) {
       if (editAmountInputRef.current) {
-        editAmountInputRef.current.focus();
+        setTimeout(() => {
+          editAmountInputRef.current.focus();
+        }, 500);
       }
     }
   }, [isEditAmount]);
