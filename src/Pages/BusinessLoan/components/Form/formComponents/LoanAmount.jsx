@@ -166,7 +166,7 @@ const LoanAmount = () => {
       if (editAmountInputRef.current) {
         setTimeout(() => {
           editAmountInputRef.current.focus();
-        }, 500);
+        }, 1000);
       }
     }
   }, [isEditAmount]);
@@ -248,7 +248,6 @@ const LoanAmount = () => {
                   " " +
                   (isEditAmount ? styles.isEditSliderEditValue : "")
                 }
-                onMouseLeave={handleAmountLostFocus}
               >
                 <div className={styles.sliderEditable__input}>
                   {!isEditAmount ? (
