@@ -296,7 +296,6 @@ const LoanAmount = () => {
           step={loanPeriodStep}
           maxValue={loanPeriodMax}
           minValue={loanPeriodMin}
-          unit="kr"
           value={loanPeriod}
           onChangedValue={handleOnChangedPeriod}
           tooltip={t("LOAN_PERIOD_TOOLTIP")}
