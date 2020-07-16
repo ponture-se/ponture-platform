@@ -1,5 +1,4 @@
 import React from "react";
-import loadScript from "utils/loadScript";
 import { useLoanState } from "hooks/useLoan";
 import useLocale from "hooks/useLocale";
 import styles from "./styles.module.scss";
@@ -8,11 +7,11 @@ import track from "utils/trackAnalytic";
 
 const Header = ({ headerBottom }) => {
   const [isOpenMenu, toggleMenu] = React.useState(false);
+  const [chatItem, toggleChatItem] = React.useState(false);
   const { loanFormStatus, isUrlNeeds, steps, currentStep } =
     useLoanState() || {};
   const { t } = useLocale();
   function getStepValue() {
-    const index = steps[currentStep].index;
     let i = 0;
     for (const key in steps) {
       const step = steps[key];
@@ -32,20 +31,24 @@ const Header = ({ headerBottom }) => {
   }
   function openChat() {
     if (window.tidioChatApi || document.tidioChatApi) {
-      window.tidioChatApi.display(true);
+      if (window.tidioChatApi) window.tidioChatApi.display(true);
+      if (document.tidioChatApi) document.tidioChatApi.display(true);
       track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
-    } else {
-      if (process.env.REACT_APP_ENABLE_LIVE_VIEW === "true") {
-        loadScript(
-          "//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js",
-          () => {
-            if (window.tidioChatApi) window.tidioChatApi.display(true);
-            track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
-          }
-        );
-      }
     }
   }
+  React.useEffect(() => {
+    function onTidioChatApiReady() {
+      toggleChatItem(true);
+    }
+    if (window.tidioChatApi) {
+      window.tidioChatApi.on("ready", onTidioChatApiReady);
+    } else {
+      document.addEventListener("tidioChat-ready", onTidioChatApiReady);
+    }
+    return () => {
+      document.removeEventListener("tidioChat-ready");
+    };
+  }, []);
   function handleLogoClicked() {
     track("Logo clicked", "Loan Application v2", "/app/loan wizard", 0);
   }
@@ -80,14 +83,16 @@ const Header = ({ headerBottom }) => {
             </div>
           </div>
           <div className={styles.info}>
-            <span
-              className={styles.info__item}
-              onClick={openChat}
-              style={{ cursor: "pointer" }}
-            >
-              <img src={require("assets/icons/chat.png")} alt="" />
-              <span>Chat</span>
-            </span>
+            {chatItem && (
+              <span
+                className={styles.info__item}
+                onClick={openChat}
+                style={{ cursor: "pointer" }}
+              >
+                <img src={require("assets/icons/chat.png")} alt="" />
+                <span>Chat</span>
+              </span>
+            )}
             <span
               className={styles.info__item}
               onClick={handlePhoneNumberClicked}
@@ -118,14 +123,16 @@ const Header = ({ headerBottom }) => {
           </div>
           {isOpenMenu && (
             <div className={styles.info__mobile}>
-              <span
-                className={styles.item}
-                onClick={openChat}
-                style={{ cursor: "pointer" }}
-              >
-                <img src={require("assets/icons/chat.png")} alt="" />
-                <span>Chat</span>
-              </span>
+              {chatItem && (
+                <span
+                  className={styles.item}
+                  onClick={openChat}
+                  style={{ cursor: "pointer" }}
+                >
+                  <img src={require("assets/icons/chat.png")} alt="" />
+                  <span>Chat</span>
+                </span>
+              )}
               <span className={styles.item} onClick={handlePhoneNumberClicked}>
                 <img src={require("assets/icons/phone.png")} alt="" />
                 <a href="tel:0101292920">010 129 29 20</a>
