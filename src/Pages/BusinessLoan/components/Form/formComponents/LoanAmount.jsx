@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import NumberFormat from "react-number-format";
-import CurrencyInput from "react-currency-input";
 import separateNumberByChar from "utils/separateNumberByChar";
 import { getParameterByName, isNumber } from "utils";
 import { isPhone } from "utils/responsiveSizes";
