@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
 import NumberFormat from "react-number-format";
+import CurrencyInput from "react-currency-input";
 import separateNumberByChar from "utils/separateNumberByChar";
 import { getParameterByName, isNumber } from "utils";
 import { isPhone } from "utils/responsiveSizes";
@@ -100,7 +101,13 @@ const LoanAmount = () => {
     if (name === "loanAmount") {
       handleOnChangedAmount(parseInt(value));
     } else {
-      handleOnChangedPeriod(parseInt(value));
+      if (value > loanPeriodMax) {
+        handleOnChangedPeriod(loanPeriodMax);
+      } else if (value < loanPeriodMin) {
+        handleOnChangedPeriod(loanPeriodMin);
+      } else {
+        handleOnChangedPeriod(parseInt(value));
+      }
     }
   }
   function handleSelectedCategory(item) {
@@ -130,30 +137,26 @@ const LoanAmount = () => {
     }
   }
   function handleAmountLostFocus() {
-    if (isEditAmount) {
-      toggleAmountEdit(false);
-      if (!loanAmount) {
-        handleOnChangedAmount(loanAmountDefaultValue);
-      } else {
-        if (loanAmount > loanAmountMax) {
-          handleOnChangedAmount(loanAmountMax);
-        } else if (loanAmount < loanAmountMin) {
-          handleOnChangedAmount(loanAmountMin);
-        }
+    toggleAmountEdit(false);
+    if (!loanAmount) {
+      handleOnChangedAmount(loanAmountDefaultValue);
+    } else {
+      if (loanAmount > loanAmountMax) {
+        handleOnChangedAmount(loanAmountMax);
+      } else if (loanAmount < loanAmountMin) {
+        handleOnChangedAmount(loanAmountMin);
       }
     }
   }
   function handlePeriodLostFocus() {
-    if (isEditPeriod) {
-      togglePeriodEdit(false);
-      if (!loanPeriod) {
-        handleOnChangedPeriod(loanPeriodDefaultValue);
-      } else {
-        if (loanPeriod > loanPeriodMax) {
-          handleOnChangedPeriod(loanPeriodMax);
-        } else if (loanPeriod < loanPeriodMin) {
-          handleOnChangedPeriod(loanPeriodMin);
-        }
+    togglePeriodEdit(false);
+    if (!loanPeriod) {
+      handleOnChangedPeriod(loanPeriodDefaultValue);
+    } else {
+      if (loanPeriod > loanPeriodMax) {
+        handleOnChangedPeriod(loanPeriodMax);
+      } else if (loanPeriod < loanPeriodMin) {
+        handleOnChangedPeriod(loanPeriodMin);
       }
     }
   }
@@ -267,6 +270,8 @@ const LoanAmount = () => {
                           values.floatValue
                         )
                       }
+                      maxLength={13}
+                      onBlur={handleAmountLostFocus}
                     />
 
                     {/* <input
@@ -328,6 +333,8 @@ const LoanAmount = () => {
                           values.floatValue
                         )
                       }
+                      onBlur={handlePeriodLostFocus}
+                      maxLength={10}
                     />
                   </div>
                   {/* <input
