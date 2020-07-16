@@ -13,7 +13,22 @@ const Header = ({ headerBottom }) => {
   const { t } = useLocale();
   function getStepValue() {
     const index = steps[currentStep].index;
-    return isUrlNeeds && index > 2 ? index - 1 : index;
+    let i = 0;
+    for (const key in steps) {
+      const step = steps[key];
+      if (isUrlNeeds) {
+        if (key !== "needsBox" && !step.isFinished) {
+          i = step.index;
+          break;
+        }
+      } else {
+        if (!step.isFinished) {
+          i = step.index;
+          break;
+        }
+      }
+    }
+    return isUrlNeeds && i > 2 ? i - 1 : i;
   }
   function openChat() {
     if (window.tidioChatApi || document.tidioChatApi) {
