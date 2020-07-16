@@ -205,7 +205,7 @@ export default {
   OTHER_REASON_IS_REQUIRED: "Beskriv övrig anledning till företagslån",
   PERSONAL_NUMBER_IS_REQUIRED: "Personnummer krävs",
   PERSONAL_NUMBER_IN_CORRECT:
-    "Ange korrek personnummer. Exempel: 19806101-1234",
+    "Ange korrekt personnummer. Exempel: 19806101-1234",
   PERSONAL_NUMBER_PLACEHOLDER: "exempel:19800101-1234",
   COMAPNIES_REQUIRED_ERROR:
     "Välj vilket företag lånet är avsett för .Om du inte kan hitta ditt företag i listan ovan kan detta bero på att ditt företag är inaktivt eller andra skäl . Kontakta oss direkt så hjälper vi dig.",
@@ -364,13 +364,12 @@ export default {
   SUBMIT_GUID_3: "Du binder dig inte till något",
   SUBMIT_GUID_4:
     "Våra finanskonsulter finns för att hjälpa dig inom hela processen",
-  NO_BANKID_NEED_SUCCESS_TITLE: "Tack för din ansökan.",
+  NO_BANKID_NEED_SUCCESS_TITLE: "Tack för din ansökan",
   NO_BANKID_NEED_SUCCESS_QUESTION1: "Vad händer nu?",
   NO_BANKID_NEED_SUCCESS_QUESTION2:
-    "En av våra finanskonsulter ska kontakta dig inom kort.",
+    "En av våra finanskonsulter kommer att kontakta dig inom kort.",
   NO_BANKID_NEED_SUCCESS_DESCRIPTION:
-    "Är det akut du är värmt velkommen att kontakta oss direkt på telefon",
-
+    "Om det är det akut är du varmt välkommen att kontakt oss direkt på telefon",
   PROFILE_TITLE: "Så här ansöker du om företagslån hos oss",
   PROFILE_DESC_1: "1. Fyll i formuläret",
   PROFILE_DESC_2:

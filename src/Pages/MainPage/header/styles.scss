@@ -9,7 +9,6 @@
   right: 0;
   z-index: 10;
   width: 100%;
-  font-family: Poppins;
   align-items: center;
   @include variable(main-header-bg, background, white);
   @include variable(main-header-box-shadow, box-shadow, 0 0 3px lightgray);

@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { useFormContext } from "react-hook-form";
+import NumberFormat from "react-number-format";
 import separateNumberByChar from "utils/separateNumberByChar";
 import { getParameterByName, isNumber } from "utils";
 import { isPhone } from "utils/responsiveSizes";
@@ -99,7 +100,13 @@ const LoanAmount = () => {
     if (name === "loanAmount") {
       handleOnChangedAmount(parseInt(value));
     } else {
-      handleOnChangedPeriod(parseInt(value));
+      if (value > loanPeriodMax) {
+        handleOnChangedPeriod(loanPeriodMax);
+      } else if (value < loanPeriodMin) {
+        handleOnChangedPeriod(loanPeriodMin);
+      } else {
+        handleOnChangedPeriod(parseInt(value));
+      }
     }
   }
   function handleSelectedCategory(item) {
@@ -129,30 +136,26 @@ const LoanAmount = () => {
     }
   }
   function handleAmountLostFocus() {
-    if (isEditAmount) {
-      toggleAmountEdit(false);
-      if (!loanAmount) {
-        handleOnChangedAmount(loanAmountDefaultValue);
-      } else {
-        if (loanAmount > loanAmountMax) {
-          handleOnChangedAmount(loanAmountMax);
-        } else if (loanAmount < loanAmountMin) {
-          handleOnChangedAmount(loanAmountMin);
-        }
+    toggleAmountEdit(false);
+    if (!loanAmount) {
+      handleOnChangedAmount(loanAmountDefaultValue);
+    } else {
+      if (loanAmount > loanAmountMax) {
+        handleOnChangedAmount(loanAmountMax);
+      } else if (loanAmount < loanAmountMin) {
+        handleOnChangedAmount(loanAmountMin);
       }
     }
   }
   function handlePeriodLostFocus() {
-    if (isEditPeriod) {
-      togglePeriodEdit(false);
-      if (!loanPeriod) {
-        handleOnChangedPeriod(loanPeriodDefaultValue);
-      } else {
-        if (loanPeriod > loanPeriodMax) {
-          handleOnChangedPeriod(loanPeriodMax);
-        } else if (loanPeriod < loanPeriodMin) {
-          handleOnChangedPeriod(loanPeriodMin);
-        }
+    togglePeriodEdit(false);
+    if (!loanPeriod) {
+      handleOnChangedPeriod(loanPeriodDefaultValue);
+    } else {
+      if (loanPeriod > loanPeriodMax) {
+        handleOnChangedPeriod(loanPeriodMax);
+      } else if (loanPeriod < loanPeriodMin) {
+        handleOnChangedPeriod(loanPeriodMin);
       }
     }
   }
@@ -246,14 +249,31 @@ const LoanAmount = () => {
                   " " +
                   (isEditAmount ? styles.isEditSliderEditValue : "")
                 }
-                onMouseLeave={handleAmountLostFocus}
-                onClick={editAmount}
               >
                 <div className={styles.sliderEditable__input}>
-                  {!isEditAmount ? (
-                    <h4>{separateNumberByChar(loanAmount)} kr</h4>
-                  ) : (
-                    <input
+                  <div className={styles.elementInput}>
+                    <NumberFormat
+                      thousandSeparator={" "}
+                      decimalSeparator={"."}
+                      decimalScale={0}
+                      allowNegative={false}
+                      allowEmptyFormatting={true}
+                      suffix={" kr"}
+                      getInputRef={(elem) =>
+                        (editAmountInputRef.current = elem)
+                      }
+                      value={loanAmount}
+                      onValueChange={(values) =>
+                        handleChangeSliderEditValue(
+                          "loanAmount",
+                          values.floatValue
+                        )
+                      }
+                      maxLength={13}
+                      onBlur={handleAmountLostFocus}
+                    />
+
+                    {/* <input
                       step="10000"
                       max={loanAmountMax}
                       ref={editAmountInputRef}
@@ -265,8 +285,8 @@ const LoanAmount = () => {
                           e.target.value
                         )
                       }
-                    />
-                  )}
+                    /> */}
+                  </div>
                 </div>
                 <div className={styles.sliderEditable__icon}>
                   <img src={require("assets/icons/edit.png")} alt="" />
@@ -280,7 +300,6 @@ const LoanAmount = () => {
           step={loanPeriodStep}
           maxValue={loanPeriodMax}
           minValue={loanPeriodMin}
-          unit="kr"
           value={loanPeriod}
           onChangedValue={handleOnChangedPeriod}
           tooltip={t("LOAN_PERIOD_TOOLTIP")}
@@ -293,28 +312,39 @@ const LoanAmount = () => {
                   " " +
                   (isEditPeriod ? styles.isEditSliderEditValue : "")
                 }
-                onClick={editPeriod}
-                onMouseLeave={handlePeriodLostFocus}
               >
                 <div className={styles.sliderEditable__input}>
-                  {!isEditPeriod ? (
-                    <h4>
-                      {loanPeriod} {loanPeriod === 1 ? "månad" : "månader"}
-                    </h4>
-                  ) : (
-                    <input
-                      ref={editPeriodInputRef}
-                      min={1}
-                      type="number"
+                  <div className={styles.elementInput}>
+                    <NumberFormat
+                      thousandSeparator={""}
+                      decimalSeparator={"."}
+                      decimalScale={0}
+                      allowNegative={false}
+                      allowEmptyFormatting={true}
+                      suffix={loanPeriod === 1 ? " månad" : " månader"}
+                      getInputRef={(elem) =>
+                        (editPeriodInputRef.current = elem)
+                      }
                       value={loanPeriod}
-                      onChange={(e) =>
+                      onValueChange={(values) =>
                         handleChangeSliderEditValue(
                           "loanPeriod",
-                          e.target.value
+                          values.floatValue
                         )
                       }
+                      onBlur={handlePeriodLostFocus}
+                      maxLength={10}
                     />
-                  )}
+                  </div>
+                  {/* <input
+                    ref={editPeriodInputRef}
+                    min={1}
+                    type="number"
+                    value={loanPeriod}
+                    onChange={(e) =>
+                      handleChangeSliderEditValue("loanPeriod", e.target.value)
+                    }
+                  /> */}
                 </div>
                 <div className={styles.sliderEditable__icon}>
                   <img src={require("assets/icons/edit.png")} alt="" />

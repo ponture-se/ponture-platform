@@ -22,7 +22,7 @@ const LoanCategoriesModal = ({ onClose }) => {
   return ReactDOM.createPortal(
     <React.Fragment>
       <div className="acceptModal">
-        <div className="acceptModal__bg" onClick={close} />
+        <div className="acceptModal__bg" onClick={() => close()} />
         <div className="acceptModal__content animated fadeInUp faster">
           <div className="acceptModal__header">
             <span className="title">
