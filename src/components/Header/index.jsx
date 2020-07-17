@@ -38,6 +38,8 @@ const Header = ({ headerBottom }) => {
   }
   React.useEffect(() => {
     function onTidioChatApiReady() {
+      if (window.tidioChatApi) window.tidioChatApi.display(false);
+      if (document.tidioChatApi) document.tidioChatApi.display(false);
       toggleChatItem(true);
     }
     if (window.tidioChatApi) {
