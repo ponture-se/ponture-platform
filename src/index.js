@@ -8,7 +8,8 @@ import ReactDOM from "react-dom";
 import App from "./App";
 import CacheBuster from "./CacheBuster";
 import * as serviceWorker from "./serviceWorker";
-
+import initScripts from "./initScripts";
+initScripts();
 cssVars({
   preserveStatic: false,
 });
