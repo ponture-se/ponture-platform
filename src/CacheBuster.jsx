@@ -1,6 +1,6 @@
 import React from "react";
 // import packageJson from "{root-dir}/package.json";
-global.appVersion = "0.2.0";
+global.appVersion = "0.2.1";
 
 // version from response - first param, local version second param
 const semverGreaterThan = (versionA, versionB) => {
