@@ -1,10 +1,6 @@
-import loadScript from "utils/loadScript";
-
 export default function initScripts() {
   if (process.env.REACT_APP_ENABLE_LIVE_VIEW === "true") {
-    loadScript("//code.tidio.co/txtwqfpyw2wwumoqftw0v2ejphnagywz.js", () => {
-      if (document.tidioChatLang) document.tidioChatLang = "sv";
-    });
+
     document.write(
       `<script>
       (function(h, o, t, j, a, r) {
