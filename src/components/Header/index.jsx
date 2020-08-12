@@ -7,7 +7,7 @@ import track from "utils/trackAnalytic";
 
 const Header = ({ headerBottom }) => {
   const [isOpenMenu, toggleMenu] = React.useState(false);
-  const [chatItem, toggleChatItem] = React.useState(false);
+  const [chatItem, toggleChatItem] = React.useState(true);
   const { loanFormStatus, isUrlNeeds, steps, currentStep } =
     useLoanState() || {};
   const { t } = useLocale();
@@ -36,19 +36,6 @@ const Header = ({ headerBottom }) => {
       track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
     }
   }
-  React.useEffect(() => {
-    function onTidioChatApiReady() {
-      toggleChatItem(true);
-    }
-    if (window.tidioChatApi) {
-      window.tidioChatApi.on("ready", onTidioChatApiReady);
-    } else {
-      document.addEventListener("tidioChat-ready", onTidioChatApiReady);
-    }
-    return () => {
-      document.removeEventListener("tidioChat-ready");
-    };
-  }, []);
   function handleLogoClicked() {
     track("Logo clicked", "Loan Application v2", "/app/loan wizard", 0);
   }
