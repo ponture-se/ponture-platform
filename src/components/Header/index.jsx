@@ -31,15 +31,13 @@ const Header = ({ headerBottom }) => {
   }
   function openChat() {
     if (window.tidioChatApi || document.tidioChatApi) {
-      if (window.tidioChatApi) window.tidioChatApi.display(true);
-      if (document.tidioChatApi) document.tidioChatApi.display(true);
+      if (window.tidioChatApi) window.tidioChatApi.open();
+      if (document.tidioChatApi) document.tidioChatApi.open();
       track("Chat clicked", "Loan Application v2", "/app/loan wizard", 0);
     }
   }
   React.useEffect(() => {
     function onTidioChatApiReady() {
-      if (window.tidioChatApi) window.tidioChatApi.display(false);
-      if (document.tidioChatApi) document.tidioChatApi.display(false);
       toggleChatItem(true);
     }
     if (window.tidioChatApi) {
